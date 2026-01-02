@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>오직미 | 식당 찾기</title>
+  <meta name="description" content="오직미 쌀 사용 식당을 검색하고 예약 가능한 매장을 확인하세요." />
+  <meta property="og:title" content="오직미 식당 찾기" />
+  <meta property="og:description" content="오직미 쌀 사용 식당을 발견하고 예약하세요." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-placeholder.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="site-header">
+      <a class="logo" href="index.html">OZICME</a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="restaurants.html" aria-current="page">식당 찾기</a>
+        <a href="index.html#how">서비스 소개</a>
+      </nav>
+      <a class="btn btn-primary" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
+    </header>
+
+    <main class="list-page">
+      <section class="list-hero">
+        <div>
+          <p class="eyebrow">오직미 쌀 사용 매장</p>
+          <h1>식당을 찾고 바로 예약하세요.</h1>
+          <p>검색·필터로 원하는 매장을 찾고 예약 가능한 매장을 빠르게 확인하세요.</p>
+        </div>
+        <div class="quick-region" aria-label="지역 빠른 선택">
+          <button type="button" class="chip" data-region="서울">서울</button>
+          <button type="button" class="chip" data-region="경기">경기</button>
+          <button type="button" class="chip" data-region="부산">부산</button>
+          <button type="button" class="chip" data-region="제주">제주</button>
+        </div>
+      </section>
+
+      <section class="filters" aria-label="식당 필터">
+        <label class="search" for="search-input">
+          <span class="sr-only">식당명 검색</span>
+          <input id="search-input" type="search" placeholder="식당명 검색" />
+        </label>
+        <label class="select" for="region-select">
+          <span>지역</span>
+          <select id="region-select">
+            <option value="">전체</option>
+          </select>
+        </label>
+        <div class="category-group" aria-label="카테고리">
+          <button type="button" class="chip is-active" data-category="">전체</button>
+        </div>
+        <label class="toggle">
+          <input id="reserve-toggle" type="checkbox" />
+          <span>예약 가능 매장만</span>
+        </label>
+        <label class="select" for="sort-select">
+          <span>정렬</span>
+          <select id="sort-select">
+            <option value="recommended">추천순</option>
+            <option value="name">가나다순</option>
+            <option value="region">지역순</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="list-meta" aria-live="polite">
+        <p id="result-count">매장을 불러오는 중...</p>
+      </section>
+
+      <section class="restaurant-grid" id="restaurant-grid">
+        <!-- cards -->
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>정보는 공개된 내용만 제공하며, 자세한 위치는 지도 링크로 확인합니다.</p>
+    </footer>
+  </div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
