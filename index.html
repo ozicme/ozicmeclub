@@ -3,1991 +3,630 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OZICME | 식당 고객 검색</title>
+  <title>오직미(ozicme) 식당 구매처 리스트</title>
   <style>
     :root{
-      --bg:#ffffff;
+      --bg:#f8fafc;
       --text:#0f172a;
       --muted:#64748b;
       --border:#e2e8f0;
       --card:#ffffff;
-      --shadow:0 8px 24px rgba(15,23,42,.08);
+      --shadow:0 10px 28px rgba(15,23,42,.08);
       --green:#16a34a;
       --green2:#22c55e;
       --greenSoft:#dcfce7;
-      --warn:#ef4444;
-      --amber:#f59e0b;
-      --slate:#334155;
       --chip:#f1f5f9;
       --chipText:#0f172a;
+      --amber:#f59e0b;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
-      background:linear-gradient(180deg,#ffffff 0,#f8fafc 60%,#ffffff 100%);
+      background:var(--bg);
       color:var(--text);
     }
-    a{color:inherit}
+    a{color:inherit; text-decoration:none}
     .app{min-height:100vh; display:flex; flex-direction:column}
     header{
-      position:sticky; top:0; z-index:20;
-      background:rgba(255,255,255,.85);
-      backdrop-filter:saturate(140%) blur(10px);
+      position:sticky; top:0; z-index:10;
+      background:rgba(255,255,255,.92);
       border-bottom:1px solid var(--border);
+      backdrop-filter:saturate(140%) blur(10px);
     }
     .header-inner{
-      max-width:1200px; margin:0 auto; padding:14px 16px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      max-width:1200px; margin:0 auto; padding:18px 20px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
     }
     .brand{
-      display:flex; align-items:center; gap:10px;
-      font-weight:800; letter-spacing:.2px;
+      display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px;
     }
     .logo{
-      width:34px; height:34px; border-radius:12px;
+      width:44px; height:44px; border-radius:14px;
       background:linear-gradient(135deg,var(--green),#0ea5e9);
+      display:grid; place-items:center; color:#fff; font-size:15px;
       box-shadow:0 10px 18px rgba(22,163,74,.18);
-      display:inline-flex; align-items:center; justify-content:center; color:#fff;
-      font-size:14px;
-      user-select:none;
     }
-    .brand small{display:block; font-weight:600; color:var(--muted); margin-top:2px}
-    .actions{display:flex; align-items:center; gap:8px; flex-wrap:wrap; justify-content:flex-end}
-    .btn{
-      border:1px solid var(--border);
-      background:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      font-weight:700;
-      font-size:13px;
-      cursor:pointer;
-      transition:transform .03s ease, box-shadow .15s ease, border-color .15s ease;
+    .brand small{display:block; font-weight:600; color:var(--muted); margin-top:4px}
+    .cta{
       display:inline-flex; align-items:center; gap:8px;
+      padding:12px 16px; border-radius:12px;
+      background:linear-gradient(180deg,var(--green2),var(--green));
+      color:#fff; font-weight:800; font-size:14px; border:1px solid rgba(22,163,74,.4);
+      box-shadow:0 12px 24px rgba(22,163,74,.2);
     }
-    .btn:hover{box-shadow:0 10px 20px rgba(15,23,42,.06); border-color:#cbd5e1}
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{background:linear-gradient(180deg,var(--green2),var(--green)); border-color:rgba(22,163,74,.4); color:#fff}
-    .btn.danger{border-color:rgba(239,68,68,.35); color:#b91c1c; background:#fff}
-    .btn.ghost{background:transparent}
-    .btn.small{padding:8px 10px; border-radius:10px; font-size:12px}
-    .pill{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:7px 10px; border-radius:999px;
-      background:var(--chip); border:1px solid var(--border);
-      font-weight:700; font-size:12px; color:var(--chipText);
-      cursor:pointer; user-select:none;
-    }
-    .pill.active{background:var(--greenSoft); border-color:rgba(22,163,74,.4); color:#14532d}
     .wrap{
-      max-width:1200px; margin:0 auto; padding:18px 16px 28px;
-      display:grid; grid-template-columns: 420px 1fr; gap:14px;
+      max-width:1200px; margin:0 auto; padding:24px 20px 40px;
+      display:grid; grid-template-columns: 320px 1fr; gap:16px;
     }
-    @media (max-width: 980px){
+    @media (max-width: 960px){
       .wrap{grid-template-columns:1fr}
-      .sticky-col{position:static !important}
     }
     .card{
       background:var(--card);
       border:1px solid var(--border);
-      border-radius:16px;
+      border-radius:18px;
       box-shadow:var(--shadow);
       overflow:hidden;
     }
     .card .hd{
-      padding:14px 14px 10px;
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      padding:16px 16px 12px; border-bottom:1px solid var(--border);
     }
-    .card .hd h2, .card .hd h3{
-      margin:0;
-      font-size:15px;
-      letter-spacing:.2px;
-    }
-    .card .hd p{margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.35}
-    .card .bd{padding:14px}
-    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    .grid3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
-    @media (max-width: 560px){ .grid2,.grid3{grid-template-columns:1fr} }
-
-    label{display:block; font-size:12px; color:var(--muted); font-weight:700; margin-bottom:6px}
-    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], input[type="password"], select, textarea{
-      width:100%;
-      padding:10px 11px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      outline:none;
-      font-size:13px;
-      background:#fff;
-      color:var(--text);
-    }
-    textarea{min-height:90px; resize:vertical}
-    input:focus, select:focus, textarea:focus{border-color:rgba(22,163,74,.5); box-shadow:0 0 0 4px rgba(34,197,94,.12)}
-    .row{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+    .card .hd h2{margin:0; font-size:16px}
+    .card .hd p{margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.4}
+    .card .bd{padding:16px}
     .muted{color:var(--muted)}
-    .hint{font-size:12px; color:var(--muted); line-height:1.35}
-    .kpi{
-      padding:12px; border-radius:14px; border:1px solid var(--border);
-      background:linear-gradient(180deg,#ffffff,#f8fafc);
+    label{display:block; font-size:12px; color:var(--muted); font-weight:700; margin-bottom:6px}
+    input[type="text"], select{
+      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border);
+      font-size:13px; background:#fff; color:var(--text);
     }
-    .kpi b{display:block; font-size:18px}
-    .kpi span{font-size:12px; color:var(--muted); font-weight:700}
-    .bar{
-      height:10px; border-radius:999px; background:#e2e8f0; overflow:hidden;
-      border:1px solid #e2e8f0;
+    input:focus, select:focus{outline:none; border-color:rgba(22,163,74,.4); box-shadow:0 0 0 4px rgba(34,197,94,.12)}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width: 560px){ .grid2{grid-template-columns:1fr} }
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .chip{
+      display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
+      border:1px solid var(--border); background:var(--chip); color:var(--chipText);
+      font-size:12px; font-weight:700; cursor:pointer; user-select:none;
     }
-    .bar > i{
-      display:block; height:100%;
-      background:linear-gradient(90deg,var(--green2),var(--green));
-      width:0%;
+    .chip.active{background:var(--greenSoft); border-color:rgba(22,163,74,.4); color:#14532d}
+    .divider{height:1px; background:var(--border); margin:14px 0}
+    .summary{
+      display:grid; gap:8px; font-size:12px; color:var(--muted);
     }
-
-    table{width:100%; border-collapse:separate; border-spacing:0; font-size:13px}
-    th,td{padding:10px 10px; border-bottom:1px solid var(--border); vertical-align:top}
-    th{
-      text-align:left; font-size:12px; color:var(--muted); font-weight:800;
-      position:sticky; top:0; background:#fff; z-index:1;
+    .list{
+      display:grid; gap:12px;
     }
-    .table-wrap{max-height:520px; overflow:auto; border-radius:14px; border:1px solid var(--border)}
+    .restaurant-card{
+      padding:16px; border-radius:16px; border:1px solid var(--border);
+      background:#fff; box-shadow:0 8px 18px rgba(15,23,42,.05);
+      display:grid; gap:10px;
+    }
+    .restaurant-title{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      font-weight:800; font-size:16px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:6px; padding:5px 8px; border-radius:999px;
+      background:#fff7ed; color:#9a3412; font-size:11px; font-weight:800; border:1px solid rgba(245,158,11,.4);
+    }
+    .meta{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px}
     .tag{
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 9px; border-radius:999px;
-      border:1px solid var(--border); background:#fff;
-      font-weight:700; font-size:12px; margin:3px 6px 0 0;
+      display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:999px;
+      border:1px solid var(--border); background:#fff; font-weight:700; font-size:12px;
     }
     .tag.green{background:var(--greenSoft); border-color:rgba(22,163,74,.35); color:#14532d}
     .tag.gray{background:#f8fafc; color:#0f172a}
-    .status{
-      font-weight:900; font-size:12px;
-      display:inline-flex; align-items:center; gap:6px;
-      padding:6px 9px; border-radius:999px; border:1px solid var(--border);
+    .empty{
+      padding:30px; text-align:center; color:var(--muted);
+      border:1px dashed var(--border); border-radius:16px; background:#fff;
     }
-    .status.on{background:var(--greenSoft); border-color:rgba(22,163,74,.35); color:#14532d}
-    .status.sleep{background:#fff7ed; border-color:rgba(245,158,11,.35); color:#92400e}
-    .status.off{background:#fef2f2; border-color:rgba(239,68,68,.35); color:#991b1b}
-
-    .divider{height:1px; background:var(--border); margin:12px 0}
-    .sticky-col{position:sticky; top:82px; align-self:start}
-
-    .modal-backdrop{
-      position:fixed; inset:0; background:rgba(2,6,23,.56);
-      display:none; align-items:center; justify-content:center; padding:18px;
-      z-index:50;
-    }
-    .modal{
-      width:min(720px,100%);
-      background:#fff;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 30px 70px rgba(2,6,23,.35);
-      overflow:hidden;
-    }
-    .modal .mh{
-      padding:14px 14px 10px; border-bottom:1px solid var(--border);
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-    }
-    .modal .mh h3{margin:0; font-size:15px}
-    .modal .mb{padding:14px}
-    .modal .mf{
-      padding:12px 14px; border-top:1px solid var(--border);
-      display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap;
-      background:#f8fafc;
-    }
-    .chips{
-      display:flex; gap:8px; flex-wrap:wrap;
-      padding:10px; border:1px solid var(--border); border-radius:14px; background:#fff;
-    }
-    .chips .pill{border-radius:999px}
-    .mini{font-size:11px; color:var(--muted); font-weight:700}
-    .warn{color:var(--warn)}
-    .right{margin-left:auto}
-
-    /* login overlay */
-    .lock{
-      position:fixed; inset:0; background:linear-gradient(180deg,#ffffff 0,#f1f5f9 70%,#ffffff 100%);
-      display:none; z-index:100;
-      padding:18px;
-    }
-    .lock-inner{
-      max-width:520px; margin:7vh auto 0;
-      background:#fff; border:1px solid var(--border); border-radius:20px; box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .lock-hd{padding:16px; border-bottom:1px solid var(--border)}
-    .lock-hd h1{margin:0; font-size:18px}
-    .lock-hd p{margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.35}
-    .lock-bd{padding:16px}
-    .lock-ft{padding:14px 16px; border-top:1px solid var(--border); background:#f8fafc; display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap}
-    .note{
-      padding:10px 12px; border:1px dashed #cbd5e1; border-radius:14px;
-      background:#f8fafc; color:var(--slate); font-size:12px; line-height:1.4;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:6px;
-      font-size:11px; font-weight:900;
-      padding:6px 9px; border-radius:999px;
-      border:1px solid rgba(22,163,74,.35); background:var(--greenSoft); color:#14532d;
-    }
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;}
+    .footer-note{font-size:12px; color:var(--muted); line-height:1.5}
+    .file-box{display:grid; gap:8px; font-size:12px; color:var(--muted)}
   </style>
 </head>
 <body>
-<div class="app" id="app">
-
+<div class="app">
   <header>
     <div class="header-inner">
       <div class="brand">
-        <span class="logo">OZ</span>
+        <div class="logo">OZ</div>
         <div>
-          <div>OZICME <span class="badge">내부용</span></div>
-          <small>식당 고객 검색 · 지역 / 쌀 품종 / 주판매요리</small>
+          <div>오직미(ozicme) 식당 구매처 리스트</div>
+          <small>요리별 맞춤 쌀 추천 · OZICME Picks로 찾는 신뢰로운 식당 파트너</small>
         </div>
       </div>
-
-      <div class="actions">
-        <button class="btn" id="btnAddRestaurant">+ 식당 추가</button>
-        <button class="btn" id="btnExportCSV">CSV 내보내기</button>
-        <button class="btn" id="btnImportCSV">CSV 가져오기</button>
-        <button class="btn ghost" id="btnSettings">설정</button>
-        <button class="btn danger" id="btnLogout">로그아웃</button>
-      </div>
+      <a class="cta" href="https://ozicme.com" target="_blank" rel="noopener noreferrer">오직미 쇼핑몰에서 쌀 구매하기 →</a>
     </div>
   </header>
 
   <main class="wrap">
-    <!-- LEFT: Filters + Dashboard -->
-    <section class="sticky-col">
+    <section>
       <div class="card">
         <div class="hd">
-          <div>
-            <h2>검색 · 필터</h2>
-            <p>식당명/주소/연락처/메모를 검색하고, 지역·쌀·요리로 필터링하세요.</p>
-          </div>
-          <button class="btn small" id="btnClearFilters">초기화</button>
+          <h2>검색 · 필터</h2>
+          <p>로그인 없이 공개된 식당 구매처만 보여드립니다. 개인정보는 표시하지 않습니다.</p>
         </div>
         <div class="bd">
-          <div style="margin-bottom:10px">
-            <label>전역 검색</label>
-            <input type="text" id="q" placeholder="예) 오직김밥, 강남, 010-1234, 돌솥..." />
+          <div>
+            <label>식당명 검색</label>
+            <input type="text" id="searchInput" placeholder="식당명을 입력하세요" />
           </div>
+
+          <div class="divider"></div>
 
           <div class="grid2">
             <div>
               <label>시/도</label>
-              <select id="fSido"></select>
+              <select id="sidoSelect"></select>
             </div>
             <div>
               <label>시/군/구</label>
-              <select id="fSigungu"></select>
+              <select id="sigunguSelect"></select>
             </div>
           </div>
 
           <div class="divider"></div>
 
           <div>
-            <div class="row" style="justify-content:space-between">
-              <label style="margin:0">요리별 Picks (빠른 필터)</label>
-              <span class="mini">클릭하면 요리 태그가 자동 선택됩니다</span>
-            </div>
-            <div class="row" style="margin-top:8px">
-              <span class="pill" data-picks="김밥;초밥">김밥·초밥</span>
-              <span class="pill" data-picks="볶음밥;덮밥;리조또">볶음밥·덮밥·리조또</span>
-              <span class="pill" data-picks="생선구이;돌솥밥">생선구이·돌솥밥</span>
-              <span class="pill" data-picks="백반;나물밥;국밥">백반·나물밥·국밥</span>
-            </div>
-          </div>
-
-          <div style="margin-top:12px">
-            <label>주판매요리 태그 (복수 선택)</label>
-            <div class="chips" id="dishChips"></div>
-            <div class="row" style="margin-top:8px">
-              <input type="text" id="newDishTag" placeholder="새 요리 태그 추가 (예: 파스타)" />
-              <button class="btn small" id="btnAddDishTag">추가</button>
-            </div>
+            <label>구매 쌀 종류 (복수 선택)</label>
+            <div class="chips" id="riceFilters"></div>
           </div>
 
           <div class="divider"></div>
 
           <div>
-            <div class="row" style="justify-content:space-between">
-              <label style="margin:0">쌀 품종 필터 (복수 선택)</label>
-              <div class="row">
-                <span class="mini">기준:</span>
-                <select id="riceBasis" style="width:auto; padding:8px 10px; border-radius:10px; font-size:12px">
-                  <option value="purchases">구매이력 기준</option>
-                  <option value="preferred">선호(등록) 기준</option>
-                  <option value="either">둘 중 하나</option>
-                </select>
-              </div>
-            </div>
-            <div class="chips" id="riceChips"></div>
-            <div class="row" style="margin-top:8px">
-              <input type="text" id="newRiceVariety" placeholder="새 쌀 품종 추가 (예: 신동진)" />
-              <button class="btn small" id="btnAddRiceVariety">추가</button>
-            </div>
+            <label>주판매요리 (선택)</label>
+            <select id="dishSelect"></select>
           </div>
 
           <div class="divider"></div>
 
-          <div class="grid3">
-            <div>
-              <label>거래상태</label>
-              <select id="fStatus">
-                <option value="">전체</option>
-                <option value="거래중">거래중</option>
-                <option value="휴면">휴면</option>
-                <option value="중단">중단</option>
-              </select>
-            </div>
-            <div>
-              <label>최근 구매(일)</label>
-              <select id="fRecentDays">
-                <option value="">전체</option>
-                <option value="30">최근 30일</option>
-                <option value="90">최근 90일</option>
-                <option value="180">최근 180일</option>
-                <option value="365">최근 1년</option>
-              </select>
-            </div>
-            <div>
-              <label>정렬</label>
-              <select id="fSort">
-                <option value="recent">최근 구매일</option>
-                <option value="qty">구매수량(기간)</option>
-                <option value="name">식당명</option>
-              </select>
-            </div>
+          <div>
+            <label>정렬</label>
+            <select id="sortSelect">
+              <option value="recent">최근구매일 내림차순</option>
+              <option value="name">가나다순</option>
+            </select>
           </div>
 
           <div class="divider"></div>
 
-          <div class="row" style="justify-content:space-between">
-            <div>
-              <div class="mini">현재 조건</div>
-              <div class="hint" id="filterSummary">-</div>
-            </div>
-          </div>
+          <div class="summary" id="summary"></div>
         </div>
       </div>
 
-      <div class="card" style="margin-top:14px">
+      <div class="card" style="margin-top:16px">
         <div class="hd">
-          <div>
-            <h2>대시보드</h2>
-            <p>필터 조건에 따른 요약 통계입니다.</p>
-          </div>
-          <button class="btn small" id="btnSeed">샘플데이터</button>
+          <h2>데이터 불러오기</h2>
+          <p>공개용 CSV/JSON으로부터 즉시 리스트를 구성합니다.</p>
         </div>
         <div class="bd">
-          <div class="grid3">
-            <div class="kpi"><b id="kpiTotal">0</b><span>총 식당 수</span></div>
-            <div class="kpi"><b id="kpiOn">0</b><span>거래중</span></div>
-            <div class="kpi"><b id="kpiSleep">0</b><span>휴면</span></div>
-          </div>
-          <div class="grid2" style="margin-top:10px">
-            <div class="kpi"><b id="kpiOff">0</b><span>중단</span></div>
-            <div class="kpi"><b id="kpiRecent">0</b><span>최근 구매(기간내)</span></div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div>
-            <div class="row" style="justify-content:space-between">
-              <b style="font-size:13px">지역 TOP</b>
-              <span class="mini">필터 적용</span>
-            </div>
-            <div id="topRegions" style="margin-top:8px; display:grid; gap:8px"></div>
-          </div>
-
-          <div style="margin-top:14px">
-            <div class="row" style="justify-content:space-between">
-              <b style="font-size:13px">쌀 품종 TOP (기간내 구매수량)</b>
-              <span class="mini">필터 적용</span>
-            </div>
-            <div id="topRice" style="margin-top:8px; display:grid; gap:8px"></div>
+          <div class="file-box">
+            <div>• 원본 CSV를 업로드하면 공개용 데이터로 즉시 정제됩니다.</div>
+            <input type="file" id="fileInput" accept=".csv,.json" />
+            <div class="footer-note">CSV에는 발주일/배송시작일/상품명/주문상품명/수령인/수령인 주소(전체)/식당 컬럼이 포함되어야 합니다.</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- RIGHT: Results + Details -->
     <section>
       <div class="card">
         <div class="hd">
-          <div>
-            <h2>검색 결과</h2>
-            <p><span id="resultCount">0</span>건 · 클릭하면 상세/구매이력을 볼 수 있습니다.</p>
-          </div>
-          <div class="row">
-            <button class="btn small" id="btnCompact">표 보기/접기</button>
-          </div>
+          <h2>식당 리스트</h2>
+          <p><span id="resultCount">0</span>곳의 공개 구매처를 찾았습니다.</p>
         </div>
         <div class="bd">
-          <div class="table-wrap" id="tableWrap">
-            <table>
-              <thead>
-              <tr>
-                <th style="min-width:180px">식당</th>
-                <th style="min-width:140px">지역</th>
-                <th style="min-width:180px">연락처</th>
-                <th style="min-width:160px">주판매요리</th>
-                <th style="min-width:160px">쌀 품종</th>
-                <th style="min-width:120px">최근 구매일</th>
-                <th style="min-width:110px">거래상태</th>
-              </tr>
-              </thead>
-              <tbody id="tbody"></tbody>
-            </table>
-          </div>
-          <div class="hint" style="margin-top:10px">
-            • 데이터는 브라우저 <b>로컬저장(localStorage)</b>에 저장됩니다. (내부용 간편 MVP)<br/>
-            • 실제 운영(다중 사용자/보안/백업)에는 서버/DB 적용이 필요합니다.
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:14px">
-        <div class="hd">
-          <div>
-            <h2>식당 상세</h2>
-            <p>선택한 식당의 정보와 구매이력을 관리합니다.</p>
-          </div>
-          <div class="row">
-            <button class="btn small" id="btnAddPurchase" disabled>+ 구매이력 추가</button>
-            <button class="btn small" id="btnEditRestaurant" disabled>수정</button>
-            <button class="btn small danger" id="btnDeleteRestaurant" disabled>삭제</button>
-          </div>
-        </div>
-        <div class="bd" id="detail">
-          <div class="hint">왼쪽 표에서 식당을 선택하세요.</div>
+          <div class="list" id="restaurantList"></div>
         </div>
       </div>
     </section>
   </main>
 </div>
 
-<!-- LOGIN -->
-<div class="lock" id="lock">
-  <div class="lock-inner">
-    <div class="lock-hd">
-      <h1>OZICME 내부 로그인</h1>
-      <p>이 페이지는 내부용입니다. (클라이언트 단 로그인 게이트 · 실제 운영은 서버 인증 권장)</p>
-    </div>
-    <div class="lock-bd">
-      <div class="note">
-        기본 계정(최초 1회): <span class="mono"><b>admin</b> / <b>admin</b></span><br/>
-        로그인 후 <b>설정</b>에서 비밀번호를 변경하세요.
-      </div>
-      <div style="margin-top:12px" class="grid2">
-        <div>
-          <label>아이디</label>
-          <input type="text" id="loginId" placeholder="admin" autocomplete="username" />
-        </div>
-        <div>
-          <label>비밀번호</label>
-          <input type="password" id="loginPw" placeholder="admin" autocomplete="current-password" />
-        </div>
-      </div>
-      <div class="hint warn" id="loginErr" style="margin-top:10px; display:none"></div>
-    </div>
-    <div class="lock-ft">
-      <button class="btn primary" id="btnLogin">로그인</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: RESTAURANT -->
-<div class="modal-backdrop" id="mRestaurant">
-  <div class="modal">
-    <div class="mh">
-      <div>
-        <h3 id="mRestaurantTitle">식당 추가</h3>
-        <div class="mini">필수: 식당명, 지역(시/도), 주소, 거래상태</div>
-      </div>
-      <button class="btn small" data-close="mRestaurant">닫기</button>
-    </div>
-    <div class="mb">
-      <div class="grid2">
-        <div>
-          <label>식당명 *</label>
-          <input type="text" id="r_name" />
-        </div>
-        <div>
-          <label>거래상태 *</label>
-          <select id="r_status">
-            <option value="거래중">거래중</option>
-            <option value="휴면">휴면</option>
-            <option value="중단">중단</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="grid2" style="margin-top:10px">
-        <div>
-          <label>담당자명</label>
-          <input type="text" id="r_contact" />
-        </div>
-        <div>
-          <label>최초거래일</label>
-          <input type="date" id="r_first" />
-        </div>
-      </div>
-
-      <div class="grid2" style="margin-top:10px">
-        <div>
-          <label>전화/휴대폰</label>
-          <input type="tel" id="r_phone" />
-        </div>
-        <div>
-          <label>이메일</label>
-          <input type="email" id="r_email" />
-        </div>
-      </div>
-
-      <div style="margin-top:10px">
-        <label>주소(도로명) *</label>
-        <input type="text" id="r_addr" placeholder="예) 서울특별시 강남구 ..." />
-      </div>
-
-      <div class="grid2" style="margin-top:10px">
-        <div>
-          <label>시/도 *</label>
-          <input type="text" id="r_sido" placeholder="예) 서울특별시" />
-        </div>
-        <div>
-          <label>시/군/구</label>
-          <input type="text" id="r_sigungu" placeholder="예) 강남구" />
-        </div>
-      </div>
-
-      <div style="margin-top:10px">
-        <label>주판매요리 태그 (복수)</label>
-        <div class="chips" id="r_dishSelect"></div>
-      </div>
-
-      <div style="margin-top:10px">
-        <label>선호/주구매 쌀 품종 (복수)</label>
-        <div class="chips" id="r_riceSelect"></div>
-      </div>
-
-      <div style="margin-top:10px">
-        <label>메모</label>
-        <textarea id="r_memo" placeholder="특이사항, 결제/납품 정보 등"></textarea>
-      </div>
-
-      <div class="hint" id="r_err" style="display:none; margin-top:10px"></div>
-    </div>
-    <div class="mf">
-      <button class="btn" data-close="mRestaurant">취소</button>
-      <button class="btn primary" id="btnSaveRestaurant">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: PURCHASE -->
-<div class="modal-backdrop" id="mPurchase">
-  <div class="modal" style="width:min(640px,100%)">
-    <div class="mh">
-      <div>
-        <h3>구매이력 추가</h3>
-        <div class="mini">필수: 날짜, 쌀 품종, 수량</div>
-      </div>
-      <button class="btn small" data-close="mPurchase">닫기</button>
-    </div>
-    <div class="mb">
-      <div class="grid2">
-        <div>
-          <label>날짜 *</label>
-          <input type="date" id="p_date" />
-        </div>
-        <div>
-          <label>쌀 품종 *</label>
-          <select id="p_rice"></select>
-        </div>
-      </div>
-
-      <div class="grid3" style="margin-top:10px">
-        <div>
-          <label>규격</label>
-          <input type="text" id="p_unit" placeholder="예) 20kg" />
-        </div>
-        <div>
-          <label>수량(포/박스) *</label>
-          <input type="number" id="p_qty" min="0" step="1" />
-        </div>
-        <div>
-          <label>단가(선택)</label>
-          <input type="number" id="p_price" min="0" step="1" />
-        </div>
-      </div>
-
-      <div style="margin-top:10px">
-        <label>비고</label>
-        <input type="text" id="p_note" placeholder="예) 월정기, 행사, 급배송 등" />
-      </div>
-
-      <div class="hint warn" id="p_err" style="display:none; margin-top:10px"></div>
-    </div>
-    <div class="mf">
-      <button class="btn" data-close="mPurchase">취소</button>
-      <button class="btn primary" id="btnSavePurchase">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: IMPORT -->
-<div class="modal-backdrop" id="mImport">
-  <div class="modal" style="width:min(780px,100%)">
-    <div class="mh">
-      <div>
-        <h3>CSV 가져오기 (일괄 등록/업데이트)</h3>
-        <div class="mini">키: restaurant_name + phone (동일하면 업데이트)</div>
-      </div>
-      <button class="btn small" data-close="mImport">닫기</button>
-    </div>
-    <div class="mb">
-      <div class="note">
-        CSV 컬럼(헤더) 예시:<br/>
-        <span class="mono">
-          restaurant_name,contact_name,phone,email,address,region_sido,region_sigungu,status,dish_tags,preferred_rice,memo
-        </span><br/>
-        dish_tags / preferred_rice 는 <b>세미콜론(;) 구분</b> (예: 김밥;초밥)
-      </div>
-
-      <div style="margin-top:12px" class="grid2">
-        <div>
-          <label>CSV 파일 선택</label>
-          <input type="file" id="importFile" accept=".csv,text/csv" />
-        </div>
-        <div>
-          <label>템플릿 다운로드</label>
-          <button class="btn" id="btnDownloadTemplate">CSV 템플릿 받기</button>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div>
-        <label>가져오기 결과</label>
-        <div class="note" id="importReport" style="min-height:90px">-</div>
-      </div>
-    </div>
-    <div class="mf">
-      <button class="btn" data-close="mImport">닫기</button>
-      <button class="btn primary" id="btnRunImport">가져오기 실행</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL: SETTINGS -->
-<div class="modal-backdrop" id="mSettings">
-  <div class="modal" style="width:min(640px,100%)">
-    <div class="mh">
-      <div>
-        <h3>설정</h3>
-        <div class="mini">비밀번호 변경 · 데이터 백업/복원</div>
-      </div>
-      <button class="btn small" data-close="mSettings">닫기</button>
-    </div>
-    <div class="mb">
-      <div class="grid2">
-        <div>
-          <label>현재 로그인 사용자</label>
-          <input type="text" id="s_user" disabled />
-        </div>
-        <div>
-          <label>역할</label>
-          <input type="text" id="s_role" disabled />
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="grid2">
-        <div>
-          <label>새 비밀번호</label>
-          <input type="password" id="s_newpw" placeholder="8자 이상 권장" />
-        </div>
-        <div>
-          <label>새 비밀번호 확인</label>
-          <input type="password" id="s_newpw2" />
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px; justify-content:flex-end">
-        <button class="btn primary" id="btnChangePw">비밀번호 변경</button>
-      </div>
-      <div class="hint" id="s_msg" style="margin-top:8px"></div>
-
-      <div class="divider"></div>
-
-      <div class="grid2">
-        <div>
-          <label>백업(JSON 다운로드)</label>
-          <button class="btn" id="btnBackup">백업 파일 받기</button>
-          <div class="hint">현재 데이터를 JSON으로 저장합니다.</div>
-        </div>
-        <div>
-          <label>복원(JSON 업로드)</label>
-          <input type="file" id="restoreFile" accept=".json,application/json" />
-          <div class="hint warn">복원 시 현재 데이터가 덮어쓰기 됩니다.</div>
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px; justify-content:flex-end">
-        <button class="btn danger" id="btnRestore">복원 실행</button>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="row" style="justify-content:space-between; align-items:flex-start">
-        <div>
-          <b style="font-size:13px">권한</b>
-          <div class="hint">ADMIN만 삭제/CSV 가져오기/복원 가능</div>
-        </div>
-        <button class="btn" id="btnMakeStaff">STAFF 모드 토글</button>
-      </div>
-    </div>
-    <div class="mf">
-      <button class="btn" data-close="mSettings">닫기</button>
-    </div>
-  </div>
-</div>
-
 <script>
-/**
- * OZICME 내부용 식당 고객 검색 (단일 HTML MVP)
- * - 데이터: localStorage 저장
- * - 기능: 식당 CRUD, 구매이력 CRUD(추가/삭제), 필터 검색, CSV 내보내기/가져오기, 대시보드, 간단 로그인
- * - 보안 주의: 실제 운영엔 서버 인증/DB 필요
- */
+  const rawOrdersCsv = `발주일,배송시작일,주문경로,주문자명,상품명(관리용),주문상품명,수량,총 결제금액,수령인,수령인 주소(전체),식당
+2024-02-03,2024-02-05,온라인,홍길동,고시히카리 20kg,고시히카리 20kg,1,62000,오직김밥,서울특별시 강남구 테헤란로 오직김밥,오직김밥
+2024-03-12,2024-03-14,온라인,김사장,수향미 10kg,골든퀸3호 수향미 10kg,2,75000,서초식당,서울특별시 서초구 서초대로 (서초식당),서초식당
+2024-04-02,2024-04-03,전화,박대표,포장지 100매,포장지 100매,1,8000,도담밥집,부산광역시 수영구 광안로 도담밥집,도담밥집
+2024-04-18,2024-04-20,온라인,이대리,신동진 20kg,신동진 20kg,1,61000,시장반찬,대구 달서구 월배로 3층 시장반찬,시장반찬
+2024-05-04,2024-05-06,온라인,장부장,삼광 10kg,삼광 10kg,1,48000,한옥밥상,전북 전주시 완산구 한옥밥상,한옥밥상
+2024-06-10,2024-06-12,온라인,최실장,현미 10kg,현미 10kg,1,39000,옥천식당,충북 옥천군 옥천로 옥천식당,옥천식당`;
 
-const LS_KEY = "ozicme_restaurant_app_v1";
-const AUTH_KEY = "ozicme_restaurant_auth_v1";
+  const publicDishTags = {
+    "오직김밥": "김밥",
+    "서초식당": "덮밥",
+    "도담밥집": "백반",
+    "시장반찬": "국밥",
+    "한옥밥상": "한정식"
+  };
 
-const $ = (sel, root=document) => root.querySelector(sel);
-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const nowISO = () => new Date().toISOString().slice(0,10);
-const uid = () => Math.random().toString(16).slice(2) + Date.now().toString(16);
-const clamp = (n,min,max)=> Math.max(min, Math.min(max,n));
+  const riceKeywordMap = [
+    { key:"고시히카리", label:"고시히카리" },
+    { key:"수향미", label:"수향미" },
+    { key:"골든퀸", label:"수향미" },
+    { key:"삼광", label:"삼광" },
+    { key:"신동진", label:"신동진" },
+    { key:"오대", label:"오대" },
+    { key:"백진주", label:"백진주" },
+    { key:"찹쌀", label:"찹쌀" },
+    { key:"현미", label:"현미" }
+  ];
 
-function toast(msg){
-  alert(msg);
-}
+  const nonRiceKeywords = ["떡국", "곤약", "포장지", "스티커", "쇼핑백", "사은품", "육수", "소스"];
 
-function safeText(s){ return (s ?? "").toString().trim(); }
-function splitTags(s){
-  return safeText(s).split(";").map(x=>x.trim()).filter(Boolean);
-}
-function uniq(arr){
-  return Array.from(new Set(arr.filter(Boolean)));
-}
-function formatPhone(p){
-  return safeText(p);
-}
-function daysBetween(dateStr){
-  if(!dateStr) return Infinity;
-  const d = new Date(dateStr+"T00:00:00");
-  const t = Date.now() - d.getTime();
-  return Math.floor(t / (1000*60*60*24));
-}
+  const sidoMap = {
+    "서울":"서울특별시",
+    "부산":"부산광역시",
+    "대구":"대구광역시",
+    "인천":"인천광역시",
+    "광주":"광주광역시",
+    "대전":"대전광역시",
+    "울산":"울산광역시",
+    "세종":"세종특별자치시",
+    "경기":"경기도",
+    "강원":"강원특별자치도",
+    "충북":"충청북도",
+    "충남":"충청남도",
+    "전북":"전북특별자치도",
+    "전남":"전라남도",
+    "경북":"경상북도",
+    "경남":"경상남도",
+    "제주":"제주특별자치도"
+  };
 
-function loadState(){
-  const raw = localStorage.getItem(LS_KEY);
-  if(!raw) return null;
-  try{ return JSON.parse(raw); }catch{ return null; }
-}
-function saveState(state){
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
-}
-function defaultState(){
-  return {
-    version: 1,
-    tags: {
-      dish: ["김밥","초밥","볶음밥","덮밥","리조또","생선구이","돌솥밥","백반","나물밥","국밥"],
-      rice: ["신동진","고시히카리","추청","삼광","현미","찹쌀"]
-    },
+  const state = {
     restaurants: [],
-    purchases: [],
-    audit: []
-  };
-}
-
-/** AUTH (간단) */
-function loadAuth(){
-  const raw = localStorage.getItem(AUTH_KEY);
-  if(!raw){
-    // default admin/admin
-    const auth = { users: [{ id:"admin", pw:"admin", role:"ADMIN" }], session:null };
-    localStorage.setItem(AUTH_KEY, JSON.stringify(auth));
-    return auth;
-  }
-  try{ return JSON.parse(raw); }catch{
-    const auth = { users: [{ id:"admin", pw:"admin", role:"ADMIN" }], session:null };
-    localStorage.setItem(AUTH_KEY, JSON.stringify(auth));
-    return auth;
-  }
-}
-function saveAuth(auth){ localStorage.setItem(AUTH_KEY, JSON.stringify(auth)); }
-function currentUser(){
-  const auth = loadAuth();
-  if(!auth.session) return null;
-  return auth.users.find(u=>u.id===auth.session.id) || null;
-}
-function requireAdmin(){
-  const u = currentUser();
-  return u && u.role === "ADMIN";
-}
-
-/** APP STATE */
-let STATE = loadState() || defaultState();
-let selectedRestaurantId = null;
-let compact = false;
-
-function audit(action, payload){
-  const u = currentUser();
-  STATE.audit.unshift({
-    id: uid(),
-    at: new Date().toISOString(),
-    user: u ? u.id : "unknown",
-    action,
-    payload
-  });
-  STATE.audit = STATE.audit.slice(0, 300);
-  saveState(STATE);
-}
-
-/** Seed sample data */
-function seedData(){
-  STATE = defaultState();
-  const samples = [
-    {name:"오직김밥 강남점", contact:"김대리", phone:"010-1234-5678", email:"", address:"서울특별시 강남구 테헤란로 123", sido:"서울특별시", sigungu:"강남구", status:"거래중",
-      dish:["김밥","초밥"], rice:["신동진","고시히카리"], memo:"점심 피크가 큼"},
-    {name:"한그릇덮밥 신촌", contact:"박실장", phone:"010-2222-3333", email:"", address:"서울특별시 서대문구 연세로 10", sido:"서울특별시", sigungu:"서대문구", status:"거래중",
-      dish:["덮밥","볶음밥"], rice:["삼광"], memo:"월 2회 정기"},
-    {name:"돌솥밥집 수원", contact:"이과장", phone:"010-4444-5555", email:"", address:"경기도 수원시 팔달구 1", sido:"경기도", sigungu:"수원시", status:"휴면",
-      dish:["돌솥밥","백반"], rice:["추청","현미"], memo:"재오픈 예정"},
-    {name:"국밥명가 부산", contact:"최대표", phone:"010-7777-8888", email:"", address:"부산광역시 해운대구 77", sido:"부산광역시", sigungu:"해운대구", status:"거래중",
-      dish:["국밥","백반"], rice:["신동진"], memo:"행사 시 추가 발주"},
-    {name:"초밥다이닝 인천", contact:"정매니저", phone:"010-9999-0000", email:"", address:"인천광역시 연수구 88", sido:"인천광역시", sigungu:"연수구", status:"중단",
-      dish:["초밥"], rice:["고시히카리"], memo:"단가 이슈로 중단"}
-  ];
-
-  const rmap = [];
-  for(const s of samples){
-    const id = uid();
-    STATE.restaurants.push({
-      id,
-      name:s.name,
-      contactName:s.contact,
-      phone:s.phone,
-      email:s.email,
-      address:s.address,
-      sido:s.sido,
-      sigungu:s.sigungu,
-      status:s.status,
-      dishTags: uniq(s.dish),
-      preferredRice: uniq(s.rice),
-      memo:s.memo,
-      firstTradeDate:"",
-      createdAt: new Date().toISOString(),
-      deleted:false
-    });
-    rmap.push({id, s});
-  }
-
-  // add purchases
-  const today = new Date();
-  function dateMinus(days){
-    const d = new Date(today.getTime() - days*24*3600*1000);
-    return d.toISOString().slice(0,10);
-  }
-  const purchases = [
-    {r:0, date:dateMinus(7), rice:"신동진", unit:"20kg", qty:3, price:0, note:"정기"},
-    {r:0, date:dateMinus(35), rice:"고시히카리", unit:"20kg", qty:2, price:0, note:""},
-    {r:1, date:dateMinus(12), rice:"삼광", unit:"20kg", qty:4, price:0, note:""},
-    {r:2, date:dateMinus(190), rice:"추청", unit:"20kg", qty:2, price:0, note:""},
-    {r:3, date:dateMinus(3), rice:"신동진", unit:"20kg", qty:5, price:0, note:"급배송"},
-    {r:4, date:dateMinus(420), rice:"고시히카리", unit:"20kg", qty:2, price:0, note:""}
-  ];
-  for(const p of purchases){
-    const rid = rmap[p.r].id;
-    const riceId = ensureRiceVariety(p.rice);
-    STATE.purchases.push({
-      id: uid(),
-      restaurantId: rid,
-      date: p.date,
-      riceVarietyId: riceId,
-      riceName: p.rice,
-      unit: p.unit,
-      qty: Number(p.qty)||0,
-      price: Number(p.price)||0,
-      note: p.note || ""
-    });
-  }
-
-  saveState(STATE);
-  selectedRestaurantId = null;
-  toast("샘플 데이터를 생성했습니다.");
-  refreshAll();
-}
-
-/** Tags / Rice registry */
-function ensureDishTag(name){
-  name = safeText(name);
-  if(!name) return;
-  if(!STATE.tags.dish.includes(name)) STATE.tags.dish.push(name);
-}
-function ensureRiceVariety(name){
-  name = safeText(name);
-  if(!name) return null;
-  if(!STATE.tags.rice.includes(name)) STATE.tags.rice.push(name);
-  return name; // use name as ID for simplicity
-}
-
-/** UI: modal controls */
-function openModal(id){ $("#"+id).style.display = "flex"; }
-function closeModal(id){ $("#"+id).style.display = "none"; }
-$$("[data-close]").forEach(btn=>{
-  btn.addEventListener("click", ()=> closeModal(btn.getAttribute("data-close")));
-});
-$("#mRestaurant").addEventListener("click", e=>{ if(e.target.id==="mRestaurant") closeModal("mRestaurant"); });
-$("#mPurchase").addEventListener("click", e=>{ if(e.target.id==="mPurchase") closeModal("mPurchase"); });
-$("#mImport").addEventListener("click", e=>{ if(e.target.id==="mImport") closeModal("mImport"); });
-$("#mSettings").addEventListener("click", e=>{ if(e.target.id==="mSettings") closeModal("mSettings"); });
-
-/** Filters state */
-const FILTERS = {
-  q:"",
-  sido:"",
-  sigungu:"",
-  dish: new Set(),
-  rice: new Set(),
-  riceBasis:"purchases",
-  status:"",
-  recentDays:"",
-  sort:"recent"
-};
-
-function buildFilterSummary(){
-  const parts = [];
-  if(FILTERS.q) parts.push(`검색: "${FILTERS.q}"`);
-  if(FILTERS.sido) parts.push(`시/도: ${FILTERS.sido}`);
-  if(FILTERS.sigungu) parts.push(`시/군/구: ${FILTERS.sigungu}`);
-  if(FILTERS.status) parts.push(`상태: ${FILTERS.status}`);
-  if(FILTERS.recentDays) parts.push(`최근구매: ${FILTERS.recentDays}일`);
-  if(FILTERS.dish.size) parts.push(`요리: ${Array.from(FILTERS.dish).join(", ")}`);
-  if(FILTERS.rice.size) parts.push(`쌀(${FILTERS.riceBasis}): ${Array.from(FILTERS.rice).join(", ")}`);
-  $("#filterSummary").textContent = parts.length ? parts.join(" · ") : "-";
-}
-
-/** Region selects */
-function regionOptionsFromData(){
-  const restos = STATE.restaurants.filter(r=>!r.deleted);
-  const sidos = uniq(restos.map(r=>safeText(r.sido)).filter(Boolean)).sort();
-  return { sidos };
-}
-function rebuildRegionSelects(){
-  const { sidos } = regionOptionsFromData();
-  const sidoSel = $("#fSido");
-  sidoSel.innerHTML = `<option value="">전체</option>` + sidos.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-  sidoSel.value = FILTERS.sido || "";
-
-  const sigunguSel = $("#fSigungu");
-  const sigungus = uniq(
-    STATE.restaurants
-      .filter(r=>!r.deleted)
-      .filter(r=>!FILTERS.sido || safeText(r.sido)===FILTERS.sido)
-      .map(r=>safeText(r.sigungu)).filter(Boolean)
-  ).sort();
-  sigunguSel.innerHTML = `<option value="">전체</option>` + sigungus.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join("");
-  sigunguSel.value = FILTERS.sigungu || "";
-}
-
-/** Chips (filter) */
-function chipEl(label, active=false){
-  const el = document.createElement("span");
-  el.className = "pill" + (active ? " active" : "");
-  el.textContent = label;
-  return el;
-}
-function rebuildDishChips(){
-  const root = $("#dishChips");
-  root.innerHTML = "";
-  STATE.tags.dish.slice().sort((a,b)=>a.localeCompare(b,"ko")).forEach(tag=>{
-    const el = chipEl(tag, FILTERS.dish.has(tag));
-    el.addEventListener("click", ()=>{
-      if(FILTERS.dish.has(tag)) FILTERS.dish.delete(tag); else FILTERS.dish.add(tag);
-      refreshAll();
-    });
-    root.appendChild(el);
-  });
-}
-function rebuildRiceChips(){
-  const root = $("#riceChips");
-  root.innerHTML = "";
-  STATE.tags.rice.slice().sort((a,b)=>a.localeCompare(b,"ko")).forEach(rice=>{
-    const el = chipEl(rice, FILTERS.rice.has(rice));
-    el.addEventListener("click", ()=>{
-      if(FILTERS.rice.has(rice)) FILTERS.rice.delete(rice); else FILTERS.rice.add(rice);
-      refreshAll();
-    });
-    root.appendChild(el);
-  });
-}
-
-/** Helper: compute per-restaurant stats */
-function restaurantPurchases(restaurantId){
-  return STATE.purchases.filter(p=>p.restaurantId===restaurantId);
-}
-function lastPurchaseDate(restaurantId){
-  const ps = restaurantPurchases(restaurantId);
-  if(!ps.length) return "";
-  return ps.map(p=>p.date).sort().slice(-1)[0] || "";
-}
-function qtySumInPeriod(restaurantId, days){
-  const ps = restaurantPurchases(restaurantId);
-  const d = Number(days);
-  const filtered = (!d) ? ps : ps.filter(p=>daysBetween(p.date) <= d);
-  return filtered.reduce((sum,p)=>sum + (Number(p.qty)||0), 0);
-}
-function purchasedRiceSet(restaurantId){
-  const ps = restaurantPurchases(restaurantId);
-  return new Set(ps.map(p=>p.riceName || p.riceVarietyId).filter(Boolean));
-}
-
-/** Filtering */
-function normalize(s){ return safeText(s).toLowerCase(); }
-function matchText(hay, needle){
-  return normalize(hay).includes(normalize(needle));
-}
-function applyFilters(){
-  const q = safeText(FILTERS.q);
-  const qn = normalize(q);
-
-  let list = STATE.restaurants.filter(r=>!r.deleted);
-
-  // region
-  if(FILTERS.sido) list = list.filter(r=>safeText(r.sido)===FILTERS.sido);
-  if(FILTERS.sigungu) list = list.filter(r=>safeText(r.sigungu)===FILTERS.sigungu);
-
-  // status
-  if(FILTERS.status) list = list.filter(r=>safeText(r.status)===FILTERS.status);
-
-  // recent purchase
-  if(FILTERS.recentDays){
-    const days = Number(FILTERS.recentDays);
-    list = list.filter(r=>{
-      const lp = lastPurchaseDate(r.id);
-      if(!lp) return false;
-      return daysBetween(lp) <= days;
-    });
-  }
-
-  // dish tags
-  if(FILTERS.dish.size){
-    const want = Array.from(FILTERS.dish);
-    list = list.filter(r=> want.every(t=> (r.dishTags||[]).includes(t)) );
-  }
-
-  // rice filter
-  if(FILTERS.rice.size){
-    const want = Array.from(FILTERS.rice);
-    list = list.filter(r=>{
-      const pref = new Set((r.preferredRice||[]).filter(Boolean));
-      const pur = purchasedRiceSet(r.id);
-      if(FILTERS.riceBasis==="preferred"){
-        return want.every(x=>pref.has(x));
-      }else if(FILTERS.riceBasis==="purchases"){
-        return want.every(x=>pur.has(x));
-      }else{
-        // either
-        return want.every(x=>pref.has(x) || pur.has(x));
-      }
-    });
-  }
-
-  // query (name/address/phone/memo)
-  if(qn){
-    list = list.filter(r=>{
-      const blob = [
-        r.name, r.address, r.phone, r.memo, r.contactName, r.email, r.sido, r.sigungu
-      ].filter(Boolean).join(" ");
-      return normalize(blob).includes(qn);
-    });
-  }
-
-  // sort
-  if(FILTERS.sort==="recent"){
-    list.sort((a,b)=> (lastPurchaseDate(b.id) || "").localeCompare(lastPurchaseDate(a.id) || ""));
-  }else if(FILTERS.sort==="qty"){
-    const days = FILTERS.recentDays ? Number(FILTERS.recentDays) : 365; // default window
-    list.sort((a,b)=> qtySumInPeriod(b.id, days) - qtySumInPeriod(a.id, days));
-  }else{
-    list.sort((a,b)=> safeText(a.name).localeCompare(safeText(b.name),"ko"));
-  }
-
-  return list;
-}
-
-/** Render table */
-function statusBadge(s){
-  const val = safeText(s);
-  if(val==="거래중") return `<span class="status on">● 거래중</span>`;
-  if(val==="휴면") return `<span class="status sleep">● 휴면</span>`;
-  return `<span class="status off">● 중단</span>`;
-}
-function escapeHtml(str){
-  return safeText(str)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-}
-function tagListHTML(tags, green=false){
-  const arr = (tags||[]).filter(Boolean).slice(0, 6);
-  if(!arr.length) return `<span class="muted">-</span>`;
-  return arr.map(t=>`<span class="tag ${green?'green':'gray'}">${escapeHtml(t)}</span>`).join("");
-}
-function riceListForRow(r){
-  const pref = (r.preferredRice||[]);
-  const pur = Array.from(purchasedRiceSet(r.id));
-  const combined = uniq([...pref, ...pur]);
-  return combined.length ? tagListHTML(combined, true) : `<span class="muted">-</span>`;
-}
-
-function renderTable(list){
-  const tb = $("#tbody");
-  tb.innerHTML = "";
-  $("#resultCount").textContent = list.length;
-
-  for(const r of list){
-    const lp = lastPurchaseDate(r.id);
-    const region = [safeText(r.sido), safeText(r.sigungu)].filter(Boolean).join(" ");
-    const tr = document.createElement("tr");
-    tr.style.cursor = "pointer";
-    tr.innerHTML = `
-      <td>
-        <b>${escapeHtml(r.name)}</b><br/>
-        <span class="mini">${escapeHtml(safeText(r.address) || "-")}</span>
-      </td>
-      <td>${escapeHtml(region || "-")}</td>
-      <td>
-        <div>${escapeHtml(formatPhone(r.phone) || "-")}</div>
-        <div class="mini">${escapeHtml(safeText(r.contactName) || "")}</div>
-      </td>
-      <td>${tagListHTML(r.dishTags)}</td>
-      <td>${riceListForRow(r)}</td>
-      <td>${lp ? escapeHtml(lp) : `<span class="muted">-</span>`}</td>
-      <td>${statusBadge(r.status)}</td>
-    `;
-    tr.addEventListener("click", ()=>{
-      selectedRestaurantId = r.id;
-      renderDetail();
-      highlightSelectedRow();
-    });
-    tb.appendChild(tr);
-  }
-  highlightSelectedRow();
-}
-
-function highlightSelectedRow(){
-  const rows = $$("#tbody tr");
-  rows.forEach(row=> row.style.background = "");
-  if(!selectedRestaurantId) return;
-  // find row by matching name is unreliable; do quick: render table in same order and compare with applied list
-}
-
-/** Detail view */
-function renderDetail(){
-  const root = $("#detail");
-  const r = STATE.restaurants.find(x=>x.id===selectedRestaurantId && !x.deleted);
-  const btns = {
-    addP: $("#btnAddPurchase"),
-    edit: $("#btnEditRestaurant"),
-    del: $("#btnDeleteRestaurant")
-  };
-
-  if(!r){
-    root.innerHTML = `<div class="hint">왼쪽 표에서 식당을 선택하세요.</div>`;
-    btns.addP.disabled = true;
-    btns.edit.disabled = true;
-    btns.del.disabled = true;
-    return;
-  }
-  btns.addP.disabled = false;
-  btns.edit.disabled = false;
-  btns.del.disabled = !requireAdmin();
-
-  const ps = restaurantPurchases(r.id).slice().sort((a,b)=> (b.date||"").localeCompare(a.date||""));
-  const region = [safeText(r.sido), safeText(r.sigungu)].filter(Boolean).join(" ");
-  const lp = lastPurchaseDate(r.id);
-
-  const prefRice = (r.preferredRice||[]);
-  const dishTags = (r.dishTags||[]);
-
-  root.innerHTML = `
-    <div class="row" style="justify-content:space-between; align-items:flex-start">
-      <div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center">
-          <h3 style="margin:0; font-size:16px">${escapeHtml(r.name)}</h3>
-          ${statusBadge(r.status)}
-        </div>
-        <div class="hint" style="margin-top:6px">
-          <b>지역</b> ${escapeHtml(region || "-")} ·
-          <b>주소</b> ${escapeHtml(r.address || "-")}<br/>
-          <b>연락처</b> ${escapeHtml(r.phone || "-")} ${r.contactName ? `(${escapeHtml(r.contactName)})` : ""} ·
-          <b>이메일</b> ${escapeHtml(r.email || "-")}<br/>
-          <b>최근 구매일</b> ${lp ? escapeHtml(lp) : "-"} ·
-          <b>최초거래일</b> ${escapeHtml(r.firstTradeDate || "-")}
-        </div>
-      </div>
-      <div class="mini" style="text-align:right">
-        ID: <span class="mono">${escapeHtml(r.id.slice(-10))}</span><br/>
-        등록: ${escapeHtml((r.createdAt||"").slice(0,10) || "-")}
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div>
-      <b style="font-size:13px">주판매요리</b>
-      <div style="margin-top:6px">${dishTags.length ? tagListHTML(dishTags) : `<span class="muted">-</span>`}</div>
-    </div>
-
-    <div style="margin-top:10px">
-      <b style="font-size:13px">선호/주구매 쌀 품종</b>
-      <div style="margin-top:6px">${prefRice.length ? tagListHTML(prefRice,true) : `<span class="muted">-</span>`}</div>
-      <div class="mini" style="margin-top:6px">* 구매이력에 등장한 품종도 결과표에 함께 표시됩니다.</div>
-    </div>
-
-    <div style="margin-top:10px">
-      <b style="font-size:13px">메모</b>
-      <div class="note" style="margin-top:6px; white-space:pre-wrap">${escapeHtml(r.memo || "-")}</div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="row" style="justify-content:space-between">
-      <b style="font-size:13px">구매이력</b>
-      <span class="mini">총 ${ps.length}건</span>
-    </div>
-
-    <div class="table-wrap" style="max-height:260px; margin-top:8px">
-      <table>
-        <thead>
-          <tr>
-            <th style="min-width:120px">날짜</th>
-            <th style="min-width:140px">쌀 품종</th>
-            <th style="min-width:100px">규격</th>
-            <th style="min-width:90px">수량</th>
-            <th style="min-width:110px">단가</th>
-            <th style="min-width:180px">비고</th>
-            <th style="min-width:90px">삭제</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${
-            ps.length ? ps.map(p=>`
-              <tr>
-                <td>${escapeHtml(p.date || "-")}</td>
-                <td>${escapeHtml(p.riceName || p.riceVarietyId || "-")}</td>
-                <td>${escapeHtml(p.unit || "-")}</td>
-                <td>${escapeHtml(String(p.qty ?? "-"))}</td>
-                <td>${p.price ? escapeHtml(String(p.price)) : `<span class="muted">-</span>`}</td>
-                <td>${p.note ? escapeHtml(p.note) : `<span class="muted">-</span>`}</td>
-                <td><button class="btn small danger" data-del-p="${p.id}" ${requireAdmin() ? "" : "disabled"}>삭제</button></td>
-              </tr>
-            `).join("") : `<tr><td colspan="7" class="muted">구매이력이 없습니다.</td></tr>`
-          }
-        </tbody>
-      </table>
-    </div>
-  `;
-
-  $$("[data-del-p]", root).forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      if(!requireAdmin()){
-        toast("ADMIN만 삭제할 수 있습니다.");
-        return;
-      }
-      const pid = btn.getAttribute("data-del-p");
-      if(confirm("이 구매이력을 삭제할까요?")){
-        STATE.purchases = STATE.purchases.filter(p=>p.id!==pid);
-        audit("purchase_delete", {purchaseId:pid, restaurantId:r.id});
-        saveState(STATE);
-        refreshAll(false);
-        renderDetail();
-      }
-    });
-  });
-}
-
-/** Dashboard */
-function renderDashboard(list){
-  const total = list.length;
-  const on = list.filter(r=>r.status==="거래중").length;
-  const sleep = list.filter(r=>r.status==="휴면").length;
-  const off = list.filter(r=>r.status==="중단").length;
-
-  $("#kpiTotal").textContent = total;
-  $("#kpiOn").textContent = on;
-  $("#kpiSleep").textContent = sleep;
-  $("#kpiOff").textContent = off;
-
-  const days = FILTERS.recentDays ? Number(FILTERS.recentDays) : 90;
-  const recent = list.filter(r=>{
-    const lp = lastPurchaseDate(r.id);
-    return lp && daysBetween(lp) <= days;
-  }).length;
-  $("#kpiRecent").textContent = recent;
-
-  // Top Regions
-  const regionCount = {};
-  list.forEach(r=>{
-    const key = [safeText(r.sido), safeText(r.sigungu)].filter(Boolean).join(" ") || "(미입력)";
-    regionCount[key] = (regionCount[key]||0)+1;
-  });
-  const topR = Object.entries(regionCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const topRegions = $("#topRegions");
-  topRegions.innerHTML = topR.length ? "" : `<div class="muted">-</div>`;
-  const maxR = topR.length ? topR[0][1] : 1;
-  topR.forEach(([k,v])=>{
-    const row = document.createElement("div");
-    row.className = "kpi";
-    row.style.padding = "10px 12px";
-    row.innerHTML = `
-      <div class="row" style="justify-content:space-between">
-        <b style="font-size:13px">${escapeHtml(k)}</b>
-        <span class="mini">${v}곳</span>
-      </div>
-      <div class="bar" style="margin-top:8px"><i style="width:${(v/maxR*100).toFixed(1)}%"></i></div>
-    `;
-    topRegions.appendChild(row);
-  });
-
-  // Top Rice by qty within period
-  const riceCount = {};
-  const windowDays = FILTERS.recentDays ? Number(FILTERS.recentDays) : 180;
-  const setIds = new Set(list.map(r=>r.id));
-  STATE.purchases
-    .filter(p=>setIds.has(p.restaurantId))
-    .filter(p=>!windowDays || daysBetween(p.date) <= windowDays)
-    .forEach(p=>{
-      const k = p.riceName || p.riceVarietyId || "(미입력)";
-      riceCount[k] = (riceCount[k]||0) + (Number(p.qty)||0);
-    });
-  const topRice = Object.entries(riceCount).sort((a,b)=>b[1]-a[1]).slice(0,5);
-  const topRiceRoot = $("#topRice");
-  topRiceRoot.innerHTML = topRice.length ? "" : `<div class="muted">-</div>`;
-  const maxQ = topRice.length ? topRice[0][1] : 1;
-  topRice.forEach(([k,v])=>{
-    const row = document.createElement("div");
-    row.className = "kpi";
-    row.style.padding = "10px 12px";
-    row.innerHTML = `
-      <div class="row" style="justify-content:space-between">
-        <b style="font-size:13px">${escapeHtml(k)}</b>
-        <span class="mini">${v}포</span>
-      </div>
-      <div class="bar" style="margin-top:8px"><i style="width:${(v/maxQ*100).toFixed(1)}%"></i></div>
-    `;
-    topRiceRoot.appendChild(row);
-  });
-}
-
-/** Refresh all */
-function refreshAll(renderDetailAlso=true){
-  rebuildRegionSelects();
-  rebuildDishChips();
-  rebuildRiceChips();
-  buildFilterSummary();
-
-  const list = applyFilters();
-  renderTable(list);
-  renderDashboard(list);
-
-  if(renderDetailAlso) renderDetail();
-  updateActionButtons();
-}
-
-/** Buttons state by role */
-function updateActionButtons(){
-  $("#btnImportCSV").disabled = !requireAdmin();
-  $("#btnDeleteRestaurant").disabled = !requireAdmin() || !selectedRestaurantId;
-}
-
-/** Restaurant modal (create/edit) */
-let editingRestaurantId = null;
-
-function rebuildSelectChips(rootId, selectedSet, allTags){
-  const root = $("#"+rootId);
-  root.innerHTML = "";
-  allTags.slice().sort((a,b)=>a.localeCompare(b,"ko")).forEach(tag=>{
-    const el = chipEl(tag, selectedSet.has(tag));
-    el.addEventListener("click", ()=>{
-      if(selectedSet.has(tag)) selectedSet.delete(tag); else selectedSet.add(tag);
-      el.classList.toggle("active");
-    });
-    root.appendChild(el);
-  });
-}
-
-function openRestaurantModal(id=null){
-  editingRestaurantId = id;
-  $("#mRestaurantTitle").textContent = id ? "식당 수정" : "식당 추가";
-  const err = $("#r_err"); err.style.display="none"; err.textContent="";
-
-  const r = id ? STATE.restaurants.find(x=>x.id===id) : null;
-
-  $("#r_name").value = r ? r.name : "";
-  $("#r_status").value = r ? r.status : "거래중";
-  $("#r_contact").value = r ? (r.contactName||"") : "";
-  $("#r_first").value = r ? (r.firstTradeDate||"") : "";
-  $("#r_phone").value = r ? (r.phone||"") : "";
-  $("#r_email").value = r ? (r.email||"") : "";
-  $("#r_addr").value = r ? (r.address||"") : "";
-  $("#r_sido").value = r ? (r.sido||"") : "";
-  $("#r_sigungu").value = r ? (r.sigungu||"") : "";
-  $("#r_memo").value = r ? (r.memo||"") : "";
-
-  const dishSel = new Set((r?.dishTags)||[]);
-  const riceSel = new Set((r?.preferredRice)||[]);
-  rebuildSelectChips("r_dishSelect", dishSel, STATE.tags.dish);
-  rebuildSelectChips("r_riceSelect", riceSel, STATE.tags.rice);
-
-  $("#btnSaveRestaurant").onclick = ()=>{
-    const name = safeText($("#r_name").value);
-    const status = $("#r_status").value;
-    const address = safeText($("#r_addr").value);
-    const sido = safeText($("#r_sido").value);
-
-    if(!name || !address || !sido){
-      err.style.display="block";
-      err.className="hint warn";
-      err.textContent="필수값을 확인해주세요: 식당명, 주소, 시/도";
-      return;
+    filters: {
+      search: "",
+      sido: "",
+      sigungu: "",
+      rice: new Set(),
+      dish: "",
+      sort: "recent"
     }
-
-    const payload = {
-      name,
-      status,
-      contactName: safeText($("#r_contact").value),
-      firstTradeDate: $("#r_first").value || "",
-      phone: safeText($("#r_phone").value),
-      email: safeText($("#r_email").value),
-      address,
-      sido,
-      sigungu: safeText($("#r_sigungu").value),
-      dishTags: Array.from(dishSel),
-      preferredRice: Array.from(riceSel),
-      memo: safeText($("#r_memo").value),
-    };
-
-    if(id){
-      const idx = STATE.restaurants.findIndex(x=>x.id===id);
-      if(idx>=0){
-        STATE.restaurants[idx] = { ...STATE.restaurants[idx], ...payload };
-        audit("restaurant_update", {id, ...payload});
-      }
-    }else{
-      const newId = uid();
-      STATE.restaurants.unshift({
-        id:newId,
-        createdAt:new Date().toISOString(),
-        deleted:false,
-        ...payload
-      });
-      audit("restaurant_create", {id:newId, ...payload});
-      selectedRestaurantId = newId;
-    }
-
-    saveState(STATE);
-    closeModal("mRestaurant");
-    refreshAll(true);
   };
 
-  openModal("mRestaurant");
-}
+  const $ = (id)=>document.getElementById(id);
+  const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
 
-/** Purchase modal */
-function openPurchaseModal(){
-  const r = STATE.restaurants.find(x=>x.id===selectedRestaurantId && !x.deleted);
-  if(!r){ toast("식당을 먼저 선택하세요."); return; }
-
-  $("#p_date").value = nowISO();
-  $("#p_unit").value = "20kg";
-  $("#p_qty").value = "";
-  $("#p_price").value = "";
-  $("#p_note").value = "";
-  $("#p_err").style.display = "none";
-
-  // rice select
-  const sel = $("#p_rice");
-  const sorted = STATE.tags.rice.slice().sort((a,b)=>a.localeCompare(b,"ko"));
-  sel.innerHTML = sorted.map(x=>`<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");
-  sel.value = sorted[0] || "";
-
-  $("#btnSavePurchase").onclick = ()=>{
-    const date = $("#p_date").value;
-    const rice = $("#p_rice").value;
-    const qty = Number($("#p_qty").value);
-    if(!date || !rice || !Number.isFinite(qty) || qty<=0){
-      $("#p_err").style.display="block";
-      $("#p_err").textContent="필수값을 확인해주세요: 날짜, 쌀 품종, 수량(1 이상)";
-      return;
-    }
-    const unit = safeText($("#p_unit").value);
-    const price = Number($("#p_price").value)||0;
-    const note = safeText($("#p_note").value);
-
-    ensureRiceVariety(rice);
-
-    STATE.purchases.unshift({
-      id: uid(),
-      restaurantId: r.id,
-      date,
-      riceVarietyId: rice,
-      riceName: rice,
-      unit,
-      qty,
-      price,
-      note
-    });
-
-    audit("purchase_create", {restaurantId:r.id, date, rice, qty, unit, price, note});
-    saveState(STATE);
-    closeModal("mPurchase");
-    refreshAll(false);
-    renderDetail();
-  };
-
-  openModal("mPurchase");
-}
-
-/** Delete restaurant */
-function deleteRestaurant(){
-  if(!requireAdmin()){
-    toast("ADMIN만 삭제할 수 있습니다.");
-    return;
-  }
-  const r = STATE.restaurants.find(x=>x.id===selectedRestaurantId && !x.deleted);
-  if(!r) return;
-  if(confirm(`"${r.name}" 을(를) 삭제할까요? (복구 불가)`)){
-    r.deleted = true;
-    // optionally keep purchases; here keep but hidden by restaurant deletion
-    audit("restaurant_delete", {id:r.id, name:r.name});
-    saveState(STATE);
-    selectedRestaurantId = null;
-    refreshAll(true);
-  }
-}
-
-/** CSV export (filtered) */
-function toCSVRow(arr){
-  // quote if needed
-  return arr.map(v=>{
-    const s = (v ?? "").toString();
-    if(/[",\n\r]/.test(s)) return `"${s.replaceAll('"','""')}"`;
-    return s;
-  }).join(",");
-}
-function exportCSV(){
-  const list = applyFilters();
-  const header = ["restaurant_name","contact_name","phone","email","address","region_sido","region_sigungu","status","dish_tags","preferred_rice","memo"];
-  const rows = [toCSVRow(header)];
-
-  list.forEach(r=>{
-    rows.push(toCSVRow([
-      r.name||"",
-      r.contactName||"",
-      r.phone||"",
-      r.email||"",
-      r.address||"",
-      r.sido||"",
-      r.sigungu||"",
-      r.status||"",
-      (r.dishTags||[]).join(";"),
-      (r.preferredRice||[]).join(";"),
-      r.memo||""
-    ]));
-  });
-
-  const csv = "\uFEFF" + rows.join("\n"); // BOM for Excel KR
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `ozicme_restaurants_${nowISO()}.csv`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-/** CSV import */
-function parseCSV(text){
-  // minimal CSV parser supporting quotes
-  const rows = [];
-  let i=0, field="", row=[], inQuotes=false;
-  while(i<text.length){
-    const c = text[i];
-    if(inQuotes){
-      if(c === '"'){
-        if(text[i+1] === '"'){ field+='"'; i+=2; continue; }
-        inQuotes=false; i++; continue;
+  function parseCSV(text){
+    const rows = [];
+    let field = "", row = [], i = 0, inQuotes = false;
+    while(i < text.length){
+      const c = text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        }
+        field += c; i++; continue;
       }
-      field += c; i++; continue;
-    }else{
-      if(c === '"'){ inQuotes=true; i++; continue; }
-      if(c === ','){ row.push(field); field=""; i++; continue; }
-      if(c === '\n'){
-        row.push(field); field="";
-        // skip \r
-        rows.push(row);
-        row=[];
-        i++;
-        continue;
-      }
+      if(c === '"'){ inQuotes = true; i++; continue; }
+      if(c === ','){ row.push(field); field = ""; i++; continue; }
+      if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ""; i++; continue; }
       if(c === '\r'){ i++; continue; }
-      field += c; i++; continue;
+      field += c; i++;
     }
+    row.push(field);
+    rows.push(row);
+    return rows.filter(r=>r.some(x=>x.trim() !== ""));
   }
-  row.push(field);
-  rows.push(row);
-  // remove empty last line
-  return rows.filter(r=>r.some(x=>safeText(x)!==""));
-}
-function downloadTemplate(){
-  const header = "restaurant_name,contact_name,phone,email,address,region_sido,region_sigungu,status,dish_tags,preferred_rice,memo";
-  const sample = [
-    "오직김밥 강남점,김대리,010-1234-5678,,서울특별시 강남구 테헤란로 123,서울특별시,강남구,거래중,김밥;초밥,신동진;고시히카리,점심 피크",
-    "한그릇덮밥 신촌,박실장,010-2222-3333,,서울특별시 서대문구 연세로 10,서울특별시,서대문구,거래중,덮밥;볶음밥,삼광,월 2회 정기"
-  ];
-  const csv = "\uFEFF" + [header, ...sample].join("\n");
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "ozicme_import_template.csv";
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
 
-function runImport(){
-  if(!requireAdmin()){
-    toast("ADMIN만 CSV 가져오기를 할 수 있습니다.");
-    return;
+  function normalizeSido(sido){
+    if(!sido) return "";
+    const trimmed = sido.trim();
+    if(trimmed.endsWith("도") || trimmed.endsWith("시")) return trimmed;
+    return sidoMap[trimmed] || trimmed;
   }
-  const file = $("#importFile").files?.[0];
-  if(!file){
-    $("#importReport").textContent = "파일을 선택하세요.";
-    return;
+
+  function parseRegion(address){
+    if(!address) return {sido:"", sigungu:""};
+    const tokens = address.trim().split(/\s+/);
+    const rawSido = tokens[0] || "";
+    const rawSigungu = tokens[1] || "";
+    return {
+      sido: normalizeSido(rawSido),
+      sigungu: rawSigungu
+    };
   }
-  const reader = new FileReader();
-  reader.onload = ()=>{
-    const text = (reader.result || "").toString().replace(/^\uFEFF/,""); // remove BOM
-    const rows = parseCSV(text);
-    if(rows.length < 2){
-      $("#importReport").textContent = "데이터 행이 없습니다.";
-      return;
+
+  function extractRestaurantName(address, recipient){
+    if(!address) return { name: recipient || "식당명 미확인", placeholder: true };
+    const parenMatch = address.match(/\(([^)]+)\)/);
+    if(parenMatch){
+      return { name: parenMatch[1].trim(), placeholder: false };
     }
-    const header = rows[0].map(h=>safeText(h));
-    const idx = (name)=> header.indexOf(name);
-
-    const required = ["restaurant_name","address","region_sido","status"];
-    const missing = required.filter(x=>idx(x)===-1);
-    if(missing.length){
-      $("#importReport").textContent = "헤더 누락: " + missing.join(", ");
-      return;
-    }
-
-    let ok=0, fail=0;
-    const failLines = [];
-
-    for(let r=1; r<rows.length; r++){
-      const line = rows[r];
-      const get = (col)=> safeText(line[idx(col)] ?? "");
-      const restaurant_name = get("restaurant_name");
-      const phone = get("phone");
-      const keyName = restaurant_name;
-      const keyPhone = phone;
-
-      if(!restaurant_name){
-        fail++; failLines.push({row:r+1, reason:"restaurant_name 누락"}); continue;
+    const tokens = address.trim().split(/\s+/).filter(Boolean);
+    if(tokens.length){
+      const last = tokens[tokens.length - 1];
+      const secondLast = tokens[tokens.length - 2] || "";
+      if(/[\d]+층|호|동/.test(last) && secondLast){
+        return { name: secondLast, placeholder: false };
       }
-      const address = get("address");
-      const region_sido = get("region_sido");
-      const status = get("status") || "거래중";
-
-      if(!address || !region_sido){
-        fail++; failLines.push({row:r+1, reason:"address/region_sido 누락"}); continue;
+      if(last){
+        return { name: last, placeholder: false };
       }
-
-      const dish_tags = splitTags(get("dish_tags"));
-      const preferred_rice = splitTags(get("preferred_rice"));
-      dish_tags.forEach(ensureDishTag);
-      preferred_rice.forEach(ensureRiceVariety);
-
-      // upsert by name+phone
-      const existing = STATE.restaurants.find(x=>!x.deleted && safeText(x.name)===keyName && safeText(x.phone)===keyPhone);
-      const payload = {
-        name: restaurant_name,
-        contactName: get("contact_name"),
-        phone: phone,
-        email: get("email"),
-        address: address,
-        sido: region_sido,
-        sigungu: get("region_sigungu"),
-        status: status,
-        dishTags: dish_tags,
-        preferredRice: preferred_rice,
-        memo: get("memo")
-      };
-
-      if(existing){
-        Object.assign(existing, payload);
-        audit("restaurant_upsert_update", {id:existing.id, ...payload});
-      }else{
-        const id = uid();
-        STATE.restaurants.unshift({
-          id, createdAt:new Date().toISOString(), deleted:false,
-          firstTradeDate:"",
-          ...payload
-        });
-        audit("restaurant_upsert_create", {id, ...payload});
-      }
-      ok++;
     }
-
-    saveState(STATE);
-    $("#importReport").textContent =
-      `완료: 성공 ${ok}건 / 실패 ${fail}건\n` +
-      (failLines.length ? ("\n실패 상세:\n" + failLines.slice(0,20).map(x=>`- ${x.row}행: ${x.reason}`).join("\n") + (failLines.length>20?`\n... (+${failLines.length-20}건 더)`: "")) : "");
-    refreshAll(true);
-  };
-  reader.readAsText(file, "utf-8");
-}
-
-/** Settings: password + backup/restore + staff toggle */
-function openSettings(){
-  const u = currentUser();
-  $("#s_user").value = u ? u.id : "-";
-  $("#s_role").value = u ? u.role : "-";
-  $("#s_msg").textContent = "";
-  $("#s_newpw").value = "";
-  $("#s_newpw2").value = "";
-  openModal("mSettings");
-}
-function changePassword(){
-  const u = currentUser();
-  if(!u){ toast("로그인이 필요합니다."); return; }
-  const p1 = $("#s_newpw").value;
-  const p2 = $("#s_newpw2").value;
-  if(p1.length < 4){
-    $("#s_msg").textContent = "비밀번호는 4자 이상 권장(8자 이상 권장)"; return;
+    return { name: recipient || "식당명 미확인", placeholder: true };
   }
-  if(p1 !== p2){
-    $("#s_msg").textContent = "비밀번호 확인이 일치하지 않습니다."; return;
-  }
-  const auth = loadAuth();
-  const idx = auth.users.findIndex(x=>x.id===u.id);
-  if(idx>=0){
-    auth.users[idx].pw = p1;
-    saveAuth(auth);
-    $("#s_msg").textContent = "비밀번호가 변경되었습니다.";
-  }
-}
-function backupJSON(){
-  const blob = new Blob([JSON.stringify(STATE, null, 2)], {type:"application/json;charset=utf-8"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = `ozicme_backup_${nowISO()}.json`;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-function restoreJSON(){
-  if(!requireAdmin()){
-    toast("ADMIN만 복원할 수 있습니다.");
-    return;
-  }
-  const file = $("#restoreFile").files?.[0];
-  if(!file){ toast("복원할 JSON 파일을 선택하세요."); return; }
-  if(!confirm("현재 데이터가 덮어쓰기 됩니다. 계속할까요?")) return;
 
-  const reader = new FileReader();
-  reader.onload = ()=>{
-    try{
-      const obj = JSON.parse((reader.result||"").toString());
-      if(!obj || !obj.restaurants || !obj.purchases) throw new Error("형식 오류");
-      STATE = obj;
-      saveState(STATE);
-      selectedRestaurantId = null;
-      toast("복원이 완료되었습니다.");
-      closeModal("mSettings");
-      refreshAll(true);
-    }catch(e){
-      toast("복원 실패: 파일 형식을 확인하세요.");
-    }
-  };
-  reader.readAsText(file, "utf-8");
-}
-function toggleStaff(){
-  const auth = loadAuth();
-  const u = currentUser();
-  if(!u) return;
-  const idx = auth.users.findIndex(x=>x.id===u.id);
-  if(idx<0) return;
-  auth.users[idx].role = (auth.users[idx].role==="ADMIN") ? "STAFF" : "ADMIN";
-  saveAuth(auth);
-  toast(`역할 변경: ${auth.users[idx].role}`);
-  openSettings();
-  updateActionButtons();
-}
-
-/** Login/Logout */
-function showLock(show){
-  $("#lock").style.display = show ? "block" : "none";
-}
-function login(){
-  const id = safeText($("#loginId").value) || "admin";
-  const pw = $("#loginPw").value || "";
-  const auth = loadAuth();
-  const u = auth.users.find(x=>x.id===id && x.pw===pw);
-  if(!u){
-    $("#loginErr").style.display="block";
-    $("#loginErr").textContent="아이디 또는 비밀번호가 올바르지 않습니다.";
-    return;
+  function isNonRiceItem(text){
+    return nonRiceKeywords.some(keyword=>text.includes(keyword));
   }
-  auth.session = { id:u.id, at:Date.now() };
-  saveAuth(auth);
-  showLock(false);
-  refreshAll(true);
-}
-function logout(){
-  const auth = loadAuth();
-  auth.session = null;
-  saveAuth(auth);
-  selectedRestaurantId = null;
-  showLock(true);
-}
 
-/** Wire events */
-function wire(){
-  // filters
-  $("#q").addEventListener("input", e=>{ FILTERS.q = safeText(e.target.value); refreshAll(false); });
-  $("#fSido").addEventListener("change", e=>{
-    FILTERS.sido = e.target.value;
-    // reset sigungu if mismatch
-    FILTERS.sigungu = "";
-    refreshAll(false);
-  });
-  $("#fSigungu").addEventListener("change", e=>{ FILTERS.sigungu = e.target.value; refreshAll(false); });
-  $("#fStatus").addEventListener("change", e=>{ FILTERS.status = e.target.value; refreshAll(false); });
-  $("#fRecentDays").addEventListener("change", e=>{ FILTERS.recentDays = e.target.value; refreshAll(false); });
-  $("#fSort").addEventListener("change", e=>{ FILTERS.sort = e.target.value; refreshAll(false); });
-  $("#riceBasis").addEventListener("change", e=>{ FILTERS.riceBasis = e.target.value; refreshAll(false); });
-
-  // picks
-  $$(".pill[data-picks]").forEach(p=>{
-    p.addEventListener("click", ()=>{
-      const tags = splitTags(p.getAttribute("data-picks"));
-      // toggle: if all are selected -> clear them; else select them
-      const allSelected = tags.every(t=>FILTERS.dish.has(t));
-      tags.forEach(t=> allSelected ? FILTERS.dish.delete(t) : FILTERS.dish.add(t));
-      refreshAll(false);
+  function extractRiceVarieties(productName, orderName){
+    const combined = `${productName} ${orderName}`;
+    if(isNonRiceItem(combined)) return [];
+    const found = new Set();
+    riceKeywordMap.forEach(({key, label})=>{
+      if(combined.includes(key)) found.add(label);
     });
-  });
+    return Array.from(found);
+  }
 
-  // add tag/rice
-  $("#btnAddDishTag").addEventListener("click", ()=>{
-    const v = safeText($("#newDishTag").value);
-    if(!v) return;
-    ensureDishTag(v);
-    $("#newDishTag").value="";
-    saveState(STATE);
-    refreshAll(false);
-  });
-  $("#btnAddRiceVariety").addEventListener("click", ()=>{
-    const v = safeText($("#newRiceVariety").value);
-    if(!v) return;
-    ensureRiceVariety(v);
-    $("#newRiceVariety").value="";
-    saveState(STATE);
-    refreshAll(false);
-  });
+  function toDateString(date){
+    if(!date) return "";
+    const dt = new Date(date);
+    if(Number.isNaN(dt.getTime())) return "";
+    return dt.toISOString().split("T")[0];
+  }
 
-  $("#btnClearFilters").addEventListener("click", ()=>{
-    FILTERS.q="";
-    FILTERS.sido="";
-    FILTERS.sigungu="";
-    FILTERS.status="";
-    FILTERS.recentDays="";
-    FILTERS.sort="recent";
-    FILTERS.riceBasis="purchases";
-    FILTERS.dish.clear();
-    FILTERS.rice.clear();
-    $("#q").value="";
-    $("#fStatus").value="";
-    $("#fRecentDays").value="";
-    $("#fSort").value="recent";
-    $("#riceBasis").value="purchases";
-    refreshAll(false);
-  });
+  function buildPublicDataFromOrders(orders){
+    const map = new Map();
+    orders.forEach(order=>{
+      if(!order.restaurant) return;
+      const { name, placeholder } = extractRestaurantName(order.address, order.recipient);
+      const region = parseRegion(order.address);
+      const riceList = extractRiceVarieties(order.productName, order.orderName);
+      const orderDate = toDateString(order.orderDate || order.deliveryStartDate);
+      const key = name;
+      if(!map.has(key)){
+        map.set(key, {
+          name,
+          sido: region.sido,
+          sigungu: region.sigungu,
+          rice: new Set(),
+          dish: publicDishTags[name] || "",
+          firstPurchase: orderDate,
+          recentPurchase: orderDate,
+          placeholder
+        });
+      }
+      const entry = map.get(key);
+      riceList.forEach(r=>entry.rice.add(r));
+      if(orderDate){
+        if(!entry.firstPurchase || orderDate < entry.firstPurchase) entry.firstPurchase = orderDate;
+        if(!entry.recentPurchase || orderDate > entry.recentPurchase) entry.recentPurchase = orderDate;
+      }
+      if(!entry.dish && publicDishTags[name]) entry.dish = publicDishTags[name];
+      if(!entry.sido && region.sido) entry.sido = region.sido;
+      if(!entry.sigungu && region.sigungu) entry.sigungu = region.sigungu;
+    });
+    return Array.from(map.values()).map(item=>({
+      ...item,
+      rice: Array.from(item.rice).length ? Array.from(item.rice) : ["기타쌀"]
+    }));
+  }
 
-  // actions
-  $("#btnAddRestaurant").addEventListener("click", ()=> openRestaurantModal(null));
-  $("#btnEditRestaurant").addEventListener("click", ()=>{
-    if(!selectedRestaurantId) return;
-    openRestaurantModal(selectedRestaurantId);
-  });
-  $("#btnDeleteRestaurant").addEventListener("click", deleteRestaurant);
-  $("#btnAddPurchase").addEventListener("click", openPurchaseModal);
+  function parseOrdersFromCSV(csvText){
+    const rows = parseCSV(csvText.replace(/^\uFEFF/, ""));
+    if(rows.length < 2) return [];
+    const header = rows[0].map(h=>h.trim());
+    const idx = (name)=> header.indexOf(name);
+    return rows.slice(1).map(row=>({
+      orderDate: row[idx("발주일")] || "",
+      deliveryStartDate: row[idx("배송시작일")] || "",
+      orderPath: row[idx("주문경로")] || "",
+      buyer: row[idx("주문자명")] || "",
+      productName: row[idx("상품명(관리용)")] || "",
+      orderName: row[idx("주문상품명")] || "",
+      qty: row[idx("수량")] || "",
+      totalPrice: row[idx("총 결제금액")] || "",
+      recipient: row[idx("수령인")] || "",
+      address: row[idx("수령인 주소(전체)")] || "",
+      restaurant: row[idx("식당")] || ""
+    })).filter(row=>row.restaurant && row.address);
+  }
 
-  $("#btnExportCSV").addEventListener("click", exportCSV);
+  function buildFilters(){
+    const sidoSet = new Set();
+    const sigunguMap = new Map();
+    const dishSet = new Set(["전체"]);
+    const riceSet = new Set();
 
-  $("#btnImportCSV").addEventListener("click", ()=>{
-    if(!requireAdmin()){
-      toast("ADMIN만 CSV 가져오기를 할 수 있습니다.");
+    state.restaurants.forEach(r=>{
+      if(r.sido){
+        sidoSet.add(r.sido);
+        if(!sigunguMap.has(r.sido)) sigunguMap.set(r.sido, new Set());
+        if(r.sigungu) sigunguMap.get(r.sido).add(r.sigungu);
+      }
+      if(r.dish) dishSet.add(r.dish);
+      r.rice.forEach(rice=>riceSet.add(rice));
+    });
+
+    const sidoSelect = $("sidoSelect");
+    sidoSelect.innerHTML = "<option value=\"\">전체</option>" + Array.from(sidoSet).sort().map(s=>`<option value="${s}">${s}</option>`).join("");
+    sidoSelect.value = state.filters.sido;
+
+    const dishSelect = $("dishSelect");
+    dishSelect.innerHTML = Array.from(dishSet).sort().map(d=>`<option value="${d === "전체" ? "" : d}">${d}</option>`).join("");
+
+    const riceFilters = $("riceFilters");
+    riceFilters.innerHTML = "";
+    Array.from(riceSet).sort().forEach(rice=>{
+      const chip = document.createElement("span");
+      chip.className = "chip" + (state.filters.rice.has(rice) ? " active" : "");
+      chip.textContent = rice;
+      chip.addEventListener("click", ()=>{
+        if(state.filters.rice.has(rice)) state.filters.rice.delete(rice);
+        else state.filters.rice.add(rice);
+        chip.classList.toggle("active");
+        render();
+      });
+      riceFilters.appendChild(chip);
+    });
+
+    rebuildSigunguOptions(sigunguMap);
+  }
+
+  function rebuildSigunguOptions(sigunguMap){
+    const sigunguSelect = $("sigunguSelect");
+    const options = ["<option value=\"\">전체</option>"];
+    if(state.filters.sido && sigunguMap.has(state.filters.sido)){
+      Array.from(sigunguMap.get(state.filters.sido)).sort().forEach(sigungu=>{
+        options.push(`<option value="${sigungu}">${sigungu}</option>`);
+      });
+    }
+    sigunguSelect.innerHTML = options.join("");
+    sigunguSelect.value = state.filters.sigungu;
+  }
+
+  function applyFilters(){
+    let list = state.restaurants.slice();
+    if(state.filters.search){
+      const q = state.filters.search.toLowerCase();
+      list = list.filter(r=>r.name.toLowerCase().includes(q));
+    }
+    if(state.filters.sido){
+      list = list.filter(r=>r.sido === state.filters.sido);
+    }
+    if(state.filters.sigungu){
+      list = list.filter(r=>r.sigungu === state.filters.sigungu);
+    }
+    if(state.filters.rice.size){
+      list = list.filter(r=>r.rice.some(rice=>state.filters.rice.has(rice)));
+    }
+    if(state.filters.dish){
+      list = list.filter(r=>r.dish === state.filters.dish);
+    }
+
+    if(state.filters.sort === "name"){
+      list.sort((a,b)=>a.name.localeCompare(b.name, "ko"));
+    }else{
+      list.sort((a,b)=>{
+        if(a.recentPurchase === b.recentPurchase) return a.name.localeCompare(b.name, "ko");
+        return (b.recentPurchase || "").localeCompare(a.recentPurchase || "");
+      });
+    }
+    return list;
+  }
+
+  function renderList(list){
+    const root = $("restaurantList");
+    root.innerHTML = "";
+    if(!list.length){
+      root.innerHTML = '<div class="empty">조건에 맞는 식당이 없습니다.</div>';
       return;
     }
-    $("#importReport").textContent = "-";
-    $("#importFile").value = "";
-    openModal("mImport");
-  });
-  $("#btnRunImport").addEventListener("click", runImport);
-  $("#btnDownloadTemplate").addEventListener("click", downloadTemplate);
-
-  $("#btnSettings").addEventListener("click", openSettings);
-  $("#btnChangePw").addEventListener("click", changePassword);
-  $("#btnBackup").addEventListener("click", backupJSON);
-  $("#btnRestore").addEventListener("click", restoreJSON);
-  $("#btnMakeStaff").addEventListener("click", toggleStaff);
-
-  $("#btnLogout").addEventListener("click", logout);
-  $("#btnLogin").addEventListener("click", login);
-  $("#loginPw").addEventListener("keydown", (e)=>{ if(e.key==="Enter") login(); });
-  $("#loginId").addEventListener("keydown", (e)=>{ if(e.key==="Enter") login(); });
-
-  $("#btnSeed").addEventListener("click", ()=>{ if(confirm("샘플 데이터를 새로 생성할까요? (기존 데이터 삭제)")) seedData(); });
-
-  $("#btnCompact").addEventListener("click", ()=>{
-    compact = !compact;
-    $("#tableWrap").style.maxHeight = compact ? "260px" : "520px";
-  });
-}
-
-/** Initial */
-function init(){
-  wire();
-  // auth gate
-  const u = currentUser();
-  if(!u){
-    showLock(true);
-  }else{
-    showLock(false);
+    list.forEach(r=>{
+      const card = document.createElement("div");
+      card.className = "restaurant-card";
+      const dishText = r.dish || "미등록";
+      const riceTags = r.rice.map(rice=>`<span class="tag green">${rice}</span>`).join("");
+      card.innerHTML = `
+        <div class="restaurant-title">
+          ${r.name}
+          ${r.placeholder ? '<span class="badge">상호명 미확인</span>' : ''}
+        </div>
+        <div class="meta">
+          <span>지역: ${r.sido || "-"} ${r.sigungu || ""}</span>
+          <span>최근구매일: ${r.recentPurchase || "-"}</span>
+          <span>최초구매일: ${r.firstPurchase || "-"}</span>
+        </div>
+        <div class="meta">주판매요리: <b>${dishText}</b></div>
+        <div>${riceTags}</div>
+      `;
+      root.appendChild(card);
+    });
   }
-  rebuildRegionSelects();
-  refreshAll(true);
-  updateActionButtons();
-}
 
-init();
+  function renderSummary(list){
+    const summary = $("summary");
+    const uniqueSido = new Set(list.map(r=>r.sido).filter(Boolean));
+    const riceCount = new Set(list.flatMap(r=>r.rice));
+    summary.innerHTML = `
+      <div>결과: <b>${list.length}</b>곳</div>
+      <div>지역: <b>${uniqueSido.size}</b>개 시/도</div>
+      <div>주요 품종: <b>${riceCount.size}</b>종</div>
+    `;
+  }
+
+  function render(){
+    buildFilters();
+    const list = applyFilters();
+    $("resultCount").textContent = list.length;
+    renderList(list);
+    renderSummary(list);
+  }
+
+  function setRestaurants(data){
+    state.restaurants = data.map(r=>({
+      name: r.name,
+      sido: r.sido,
+      sigungu: r.sigungu,
+      rice: r.rice && r.rice.length ? r.rice : ["기타쌀"],
+      dish: r.dish || "",
+      firstPurchase: r.firstPurchase || "",
+      recentPurchase: r.recentPurchase || "",
+      placeholder: Boolean(r.placeholder)
+    }));
+  }
+
+  function loadInitialData(){
+    const orders = parseOrdersFromCSV(rawOrdersCsv);
+    const publicData = buildPublicDataFromOrders(orders);
+    setRestaurants(publicData);
+  }
+
+  function bindEvents(){
+    $("searchInput").addEventListener("input", e=>{
+      state.filters.search = e.target.value.trim();
+      render();
+    });
+    $("sidoSelect").addEventListener("change", e=>{
+      state.filters.sido = e.target.value;
+      state.filters.sigungu = "";
+      render();
+    });
+    $("sigunguSelect").addEventListener("change", e=>{
+      state.filters.sigungu = e.target.value;
+      render();
+    });
+    $("dishSelect").addEventListener("change", e=>{
+      state.filters.dish = e.target.value;
+      render();
+    });
+    $("sortSelect").addEventListener("change", e=>{
+      state.filters.sort = e.target.value;
+      render();
+    });
+    $("fileInput").addEventListener("change", async e=>{
+      const file = e.target.files?.[0];
+      if(!file) return;
+      const text = await file.text();
+      if(file.name.endsWith(".json")){
+        const data = JSON.parse(text);
+        setRestaurants(data);
+      }else{
+        const orders = parseOrdersFromCSV(text);
+        const data = buildPublicDataFromOrders(orders);
+        setRestaurants(data);
+      }
+      state.filters.search = "";
+      state.filters.sido = "";
+      state.filters.sigungu = "";
+      state.filters.rice.clear();
+      state.filters.dish = "";
+      render();
+    });
+  }
+
+  loadInitialData();
+  bindEvents();
+  render();
 </script>
 </body>
 </html>
