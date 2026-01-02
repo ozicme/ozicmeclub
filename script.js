@@ -1,8 +1,5 @@
 const DATA_URL = "public-restaurants.json";
 
-const PLACEHOLDER_IMAGE =
-  "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80";
-
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
 
@@ -19,39 +16,37 @@ const getBestDate = (item) => {
   if (item.verifiedMonth) {
     return new Date(`${item.verifiedMonth}-01`);
   }
-  if (item.lastOrder) {
-    return new Date(item.lastOrder);
-  }
-  if (item.firstOrder) {
-    return new Date(item.firstOrder);
-  }
   return new Date(0);
 };
 
-const getThumbnail = (item) =>
-  item.thumbnail || item.images?.[0] || PLACEHOLDER_IMAGE;
+const getThumbnail = (item) => item.thumbnail || item.images?.[0] || "";
 
-const getReserveLink = (reserveLinks = {}) =>
-  reserveLinks.catchtable ||
-  reserveLinks.naverReservation ||
-  reserveLinks.kakao ||
+const getReservationLink = (item) =>
+  item.naverReservationUrl || item.naverPlaceUrl || "";
+
+const getReservationLabel = (item) =>
+  item.naverReservationUrl
+    ? "네이버 예약"
+    : item.naverPlaceUrl
+      ? "네이버 플레이스"
+      : "예약 준비중";
+
+const getMapLink = (item) =>
+  item.naverMapUrl ||
+  item.mapLinks?.naver ||
+  item.mapLinks?.kakao ||
+  item.mapLinks?.google ||
   "";
 
-const getMapLink = (mapLinks = {}) =>
-  mapLinks.naver || mapLinks.kakao || mapLinks.google || "";
+const getPhoneLink = (item) => (item.phone ? `tel:${item.phone}` : "");
 
-const getHomepageLink = (reserveLinks = {}) => reserveLinks.homepage || "";
-
-const getPhoneLink = (reserveLinks = {}) =>
-  reserveLinks.phone ? `tel:${reserveLinks.phone}` : "";
-
-const hasReservation = (item) => Boolean(getReserveLink(item.reserveLinks));
+const hasReservation = (item) => Boolean(getReservationLink(item));
 
 const buildMenuList = (menus) => {
   if (!menus || menus.length === 0) {
     return "대표 메뉴 미등록";
   }
-  return menus.slice(0, 2).join(" · ");
+  return menus.slice(0, 3).join(" · ");
 };
 
 const getBadgeLabel = (item) =>
@@ -85,60 +80,137 @@ const renderSkeletons = (container, count = 6) => {
   });
 };
 
+const buildMediaFrame = ({ src, alt, withOverlay }) => {
+  const frame = document.createElement("div");
+  frame.className = "media-frame";
+  if (src) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = alt;
+    img.loading = "lazy";
+    img.decoding = "async";
+    frame.appendChild(img);
+  } else {
+    const placeholder = document.createElement("div");
+    placeholder.className = "media-placeholder";
+    placeholder.textContent = "OZICME";
+    frame.appendChild(placeholder);
+  }
+  if (withOverlay) {
+    const overlay = document.createElement("div");
+    overlay.className = "media-overlay";
+    frame.appendChild(overlay);
+  }
+  return frame;
+};
+
 const buildCurationCard = (item) => {
   const card = document.createElement("article");
   card.className = "curation-card";
-  card.innerHTML = `
-    <a href="restaurant.html?slug=${slugify(item.name)}" aria-label="${item.name} 상세보기">
-      <img src="${getThumbnail(item)}" alt="${item.name} 썸네일" loading="lazy" />
-    </a>
-    <div>
-      <span class="badge is-muted">오직미 인증</span>
-      <h3 class="card-title">${item.name}</h3>
-      <p class="card-meta">${formatValue(item.category)} · ${formatValue(
+  const link = document.createElement("a");
+  link.href = `restaurant.html?slug=${slugify(item.name)}`;
+  link.setAttribute("aria-label", `${item.name} 상세보기`);
+  const frame = buildMediaFrame({
+    src: getThumbnail(item),
+    alt: `${item.name} 썸네일`,
+  });
+  link.appendChild(frame);
+  const info = document.createElement("div");
+  info.innerHTML = `
+    <span class="badge is-muted">오직미 인증</span>
+    <h3 class="card-title">${item.name}</h3>
+    <p class="card-meta">${formatValue(item.category)} · ${formatValue(
     item.region?.sido
   )}</p>
-      <p class="card-meta">${buildMenuList(item.signatureMenus)}</p>
-    </div>
+    <p class="card-meta">${buildMenuList(item.signatureMenus)}</p>
   `;
+  card.append(link, info);
   return card;
 };
 
+const buildActionButton = ({ label, href, primary, external, staticText }) => {
+  const element = document.createElement(href ? "a" : "span");
+  element.className = `btn ${primary ? "btn-primary" : "btn-ghost"} btn-sm`;
+  if (staticText) {
+    element.classList.add("btn-static");
+  }
+  element.textContent = label;
+  if (href) {
+    element.href = href;
+    if (external) {
+      element.target = "_blank";
+      element.rel = "noopener";
+    }
+  }
+  return element;
+};
+
 const renderCard = (item) => {
-  const reserveLink = getReserveLink(item.reserveLinks);
-  const mapLink = getMapLink(item.mapLinks);
+  const reserveLink = getReservationLink(item);
+  const mapLink = getMapLink(item);
+  const phoneLink = getPhoneLink(item);
   const card = document.createElement("article");
   card.className = "restaurant-card";
-  card.innerHTML = `
-    <a class="card-media" href="restaurant.html?slug=${slugify(
-      item.name
-    )}" aria-label="${item.name} 상세보기">
-      <img src="${getThumbnail(item)}" alt="${item.name} 썸네일" loading="lazy" />
-      <div class="media-content">
-        <span class="badge">${getBadgeLabel(item)}${item.verifiedMonth ? ` · ${item.verifiedMonth}` : ""}</span>
-        <h3 class="card-title">${item.name}</h3>
-        <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
+
+  const cardLink = document.createElement("a");
+  cardLink.className = "card-media";
+  cardLink.href = `restaurant.html?slug=${slugify(item.name)}`;
+  cardLink.setAttribute("aria-label", `${item.name} 상세보기`);
+
+  const frame = buildMediaFrame({
+    src: getThumbnail(item),
+    alt: `${item.name} 썸네일`,
+    withOverlay: true,
+  });
+
+  const mediaContent = document.createElement("div");
+  mediaContent.className = "media-content";
+  mediaContent.innerHTML = `
+    <span class="badge">${getBadgeLabel(item)}${
+    item.verifiedMonth ? ` · ${item.verifiedMonth}` : ""
+  }</span>
+    <h3 class="card-title">${item.name}</h3>
+    <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
     item.region?.sigungu
   )} · ${formatValue(item.category)}</p>
-        <p class="card-meta">${formatValue(item.priceRange)}</p>
-      </div>
-    </a>
-    <div class="card-body">
-      <div class="menu-list">${buildMenuList(item.signatureMenus)}</div>
-      <div class="card-actions">
-        <a class="btn btn-primary btn-sm" ${
-          reserveLink
-            ? `href="${reserveLink}" target="_blank" rel="noreferrer"`
-            : "aria-disabled=\"true\""
-        }>예약</a>
-        <a class="btn btn-ghost btn-sm" ${
-          mapLink
-            ? `href="${mapLink}" target="_blank" rel="noreferrer"`
-            : "aria-disabled=\"true\""
-        }>길찾기</a>
-      </div>
-    </div>
   `;
+
+  frame.appendChild(mediaContent);
+  cardLink.appendChild(frame);
+
+  const cardBody = document.createElement("div");
+  cardBody.className = "card-body";
+  cardBody.innerHTML = `
+    <div class="menu-list">${buildMenuList(item.signatureMenus)}</div>
+    <p class="card-meta">${formatValue(item.priceRange, "가격대 미등록")}</p>
+    <p class="cta-hint">예약: ${getReservationLabel(item)}</p>
+  `;
+
+  const actions = document.createElement("div");
+  actions.className = "card-actions";
+  actions.appendChild(
+    reserveLink
+      ? buildActionButton({
+          label: "예약",
+          href: reserveLink,
+          primary: true,
+          external: true,
+        })
+      : buildActionButton({ label: "예약 준비중", primary: true, staticText: true })
+  );
+
+  if (mapLink) {
+    actions.appendChild(
+      buildActionButton({ label: "길찾기", href: mapLink, external: true })
+    );
+  }
+
+  if (!reserveLink && phoneLink) {
+    actions.appendChild(buildActionButton({ label: "전화 문의", href: phoneLink }));
+  }
+
+  cardBody.appendChild(actions);
+  card.append(cardLink, cardBody);
   return card;
 };
 
@@ -146,7 +218,7 @@ const updateMetaTags = (item) => {
   const title = `${item.name} | 오직미`;
   const description = `${formatValue(item.category)} · ${formatValue(
     item.region?.sido
-  )} ${formatValue(item.region?.sigungu)}의 오직미 인증 매장. 예약 및 길찾기 정보를 확인하세요.`;
+  )} ${formatValue(item.region?.sigungu)}의 오직미 인증 매장. 네이버 예약과 길찾기 정보를 확인하세요.`;
   document.title = title;
   const descTag = document.querySelector('meta[name="description"]');
   if (descTag) descTag.setAttribute("content", description);
@@ -155,7 +227,7 @@ const updateMetaTags = (item) => {
   const ogDesc = document.querySelector('meta[property="og:description"]');
   if (ogDesc) ogDesc.setAttribute("content", description);
   const ogImage = document.querySelector('meta[property="og:image"]');
-  if (ogImage) ogImage.setAttribute("content", getThumbnail(item));
+  if (ogImage) ogImage.setAttribute("content", getThumbnail(item) || "/og-placeholder.png");
 };
 
 const initRestaurantsPage = async () => {
@@ -163,7 +235,6 @@ const initRestaurantsPage = async () => {
   const categoryGroup = document.getElementById("category-group");
   const searchInput = document.getElementById("search-input");
   const reserveToggle = document.getElementById("reserve-toggle");
-  const sortSelect = document.getElementById("sort-select");
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
@@ -174,8 +245,14 @@ const initRestaurantsPage = async () => {
 
   if (!grid || !regionSelect || !categoryGroup) return;
 
+  const setListState = (message) => {
+    if (!listState) return;
+    listState.textContent = message || "";
+    listState.style.display = message ? "block" : "none";
+  };
+
   renderSkeletons(grid, 8);
-  listState.textContent = "";
+  setListState("");
 
   try {
     const response = await fetch(DATA_URL);
@@ -241,25 +318,16 @@ const initRestaurantsPage = async () => {
         return matchesName && matchesRegion && matchesCategory && matchesReserve;
       });
 
-      const sortValue = sortSelect.value;
-      if (sortValue === "name") {
-        results = results.sort((a, b) => a.name.localeCompare(b.name, "ko"));
-      } else if (sortValue === "region") {
-        results = results.sort((a, b) => {
-          const regionA = `${a.region?.sido || ""} ${a.region?.sigungu || ""}`.trim();
-          const regionB = `${b.region?.sido || ""} ${b.region?.sigungu || ""}`.trim();
-          return regionA.localeCompare(regionB, "ko");
-        });
-      } else {
-        results = results.sort((a, b) => getBestDate(b) - getBestDate(a));
-      }
+      results = results.sort((a, b) => getBestDate(b) - getBestDate(a));
 
       resultCount.textContent = `${results.length}개 매장`;
       grid.innerHTML = "";
-      listState.textContent = "";
+      setListState("");
 
       if (results.length === 0) {
-        listState.textContent = "조건에 맞는 매장이 없습니다.";
+        setListState(
+          "조건에 맞는 매장이 없습니다. 필터를 줄여 다시 확인해 주세요."
+        );
         return;
       }
 
@@ -276,7 +344,7 @@ const initRestaurantsPage = async () => {
       applyFilters();
     });
 
-    [searchInput, regionSelect, reserveToggle, sortSelect].forEach((el) => {
+    [searchInput, regionSelect, reserveToggle].forEach((el) => {
       el.addEventListener("input", applyFilters);
       el.addEventListener("change", applyFilters);
     });
@@ -284,7 +352,7 @@ const initRestaurantsPage = async () => {
     applyFilters();
   } catch (error) {
     grid.innerHTML = "";
-    listState.textContent = "데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
+    setListState("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
   }
 };
 
@@ -311,169 +379,160 @@ const initRestaurantDetail = async () => {
 
     updateMetaTags(item);
 
-    const reserveLink = getReserveLink(item.reserveLinks);
-    const mapLink = getMapLink(item.mapLinks);
-    const phoneLink = getPhoneLink(item.reserveLinks);
-    const homepageLink = getHomepageLink(item.reserveLinks);
+    const reserveLink = getReservationLink(item);
+    const reserveLabel = getReservationLabel(item);
+    const mapLink = getMapLink(item);
+    const phoneLink = getPhoneLink(item);
 
-    detailHero.innerHTML = `
-      <img src="${getThumbnail(item)}" alt="${item.name} 대표 이미지" />
-      <div class="detail-title">
-        <span class="badge">${getBadgeLabel(item)}${item.verifiedMonth ? ` · ${item.verifiedMonth}` : ""}</span>
+    if (detailHero) {
+      detailHero.innerHTML = "";
+      const frame = buildMediaFrame({
+        src: getThumbnail(item),
+        alt: `${item.name} 대표 이미지`,
+      });
+      const titleWrap = document.createElement("div");
+      titleWrap.className = "detail-title";
+      titleWrap.innerHTML = `
+        <span class="badge">${getBadgeLabel(item)}${
+        item.verifiedMonth ? ` · ${item.verifiedMonth}` : ""
+      }</span>
         <h1>${item.name}</h1>
+        <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
+        item.region?.sigungu
+      )}</p>
         <p class="card-meta">${formatValue(item.category)} · ${formatValue(
-      item.priceRange
-    )}</p>
-        <p class="card-meta">${formatValue(item.region?.sido)} ${formatValue(
-      item.region?.sigungu
-    )} · ${formatValue(item.addressPublic)}</p>
-        <div class="card-actions">
-          <a class="btn btn-primary btn-sm" ${
-            reserveLink
-              ? `href="${reserveLink}" target="_blank" rel="noreferrer"`
-              : "aria-disabled=\"true\""
-          }>예약하기</a>
-          <a class="btn btn-ghost btn-sm" ${
-            mapLink
-              ? `href="${mapLink}" target="_blank" rel="noreferrer"`
-              : "aria-disabled=\"true\""
-          }>길찾기</a>
-          <a class="btn btn-ghost btn-sm" ${
-            phoneLink ? `href="${phoneLink}"` : "aria-disabled=\"true\""
-          }>전화</a>
-        </div>
-      </div>
-    `;
+        item.priceRange,
+        "가격대 미등록"
+      )}</p>
+        <p class="card-meta">대표 메뉴: ${buildMenuList(item.signatureMenus)}</p>
+        <p class="cta-hint">예약: ${reserveLabel}</p>
+      `;
 
-    detailSummary.innerHTML = `
-      <div class="summary-card">
-        <span>카테고리</span>
-        <strong>${formatValue(item.category)}</strong>
-      </div>
-      <div class="summary-card">
-        <span>가격대</span>
-        <strong>${formatValue(item.priceRange)}</strong>
-      </div>
-      <div class="summary-card">
-        <span>대표 메뉴</span>
-        <strong>${buildMenuList(item.signatureMenus)}</strong>
-      </div>
-      <div class="summary-card">
-        <span>위치</span>
-        <strong>${formatValue(item.addressPublic)}</strong>
-      </div>
-    `;
+      const actions = document.createElement("div");
+      actions.className = "card-actions";
+      actions.appendChild(
+        reserveLink
+          ? buildActionButton({
+              label: "예약",
+              href: reserveLink,
+              primary: true,
+              external: true,
+            })
+          : buildActionButton({
+              label: "예약 준비중",
+              primary: true,
+              staticText: true,
+            })
+      );
+      if (mapLink) {
+        actions.appendChild(
+          buildActionButton({ label: "길찾기", href: mapLink, external: true })
+        );
+      }
+      if (!reserveLink && phoneLink) {
+        actions.appendChild(buildActionButton({ label: "전화 문의", href: phoneLink }));
+      }
 
-    detailInfo.innerHTML = `
-      <div class="info-card">
-        <h3>예약 & 길찾기</h3>
-        <div class="info-list">
-          <span>예약 링크: ${
-            reserveLink
-              ? `<a class="link" href="${reserveLink}" target="_blank" rel="noreferrer">예약하기</a>`
-              : "미등록"
-          }</span>
-          <span>지도 링크: ${
-            mapLink
-              ? `<a class="link" href="${mapLink}" target="_blank" rel="noreferrer">지도 열기</a>`
-              : "미등록"
-          }</span>
-          <span>전화: ${
-            phoneLink
-              ? `<a class="link" href="${phoneLink}">${item.reserveLinks?.phone}</a>`
-              : "미등록"
-          }</span>
-          <span>홈페이지: ${
-            homepageLink
-              ? `<a class="link" href="${homepageLink}" target="_blank" rel="noreferrer">바로가기</a>`
-              : "미등록"
-          }</span>
-        </div>
-      </div>
-      <div class="info-card">
-        <h3>대표 메뉴</h3>
-        <div class="info-list">
-          ${(item.signatureMenus || ["미등록"]).map((menu) => `<span>${menu}</span>`).join("")}
-        </div>
-      </div>
-      <div class="info-card">
-        <h3>오직미 쌀 품종</h3>
-        <div class="info-list">
-          ${(item.riceVarieties || ["미등록"]).map((rice) => `<span>${rice}</span>`).join("")}
-        </div>
-      </div>
-      <div class="info-card">
-        <h3>운영 정보</h3>
-        <div class="info-list">
-          <span>영업시간: ${formatValue(item.openHours)}</span>
-          <span>휴무일: ${formatValue(item.closedDays)}</span>
-        </div>
-      </div>
-    `;
+      titleWrap.appendChild(actions);
+      detailHero.append(frame, titleWrap);
+    }
 
-    if (item.images?.length) {
-      const galleryCard = document.createElement("div");
-      galleryCard.className = "info-card";
-      galleryCard.innerHTML = `
-        <h3>갤러리</h3>
-        <div class="gallery">
-          ${item.images
-            .slice(0, 6)
-            .map(
-              (src) => `<img src="${src}" alt="${item.name} 사진" loading="lazy" />`
-            )
-            .join("")}
+    if (detailSummary) {
+      detailSummary.innerHTML = `
+        <div class="summary-card">
+          <span>지역</span>
+          <strong>${formatValue(item.region?.sido)} ${formatValue(
+        item.region?.sigungu
+      )}</strong>
+        </div>
+        <div class="summary-card">
+          <span>카테고리</span>
+          <strong>${formatValue(item.category)}</strong>
+        </div>
+        <div class="summary-card">
+          <span>가격대</span>
+          <strong>${formatValue(item.priceRange, "미등록")}</strong>
+        </div>
+        <div class="summary-card">
+          <span>대표 메뉴</span>
+          <strong>${buildMenuList(item.signatureMenus)}</strong>
         </div>
       `;
-      detailInfo.appendChild(galleryCard);
+    }
+
+    if (detailInfo) {
+      const reserveLinkLabel = reserveLink ? reserveLabel : "예약 준비중";
+      detailInfo.innerHTML = `
+        <div class="info-card">
+          <h3>예약 & 길찾기</h3>
+          <div class="info-list">
+            <span>예약 링크: ${
+              reserveLink
+                ? `<a class="link" href="${reserveLink}" target="_blank" rel="noopener">${reserveLinkLabel}</a>`
+                : reserveLinkLabel
+            }</span>
+            <span>지도 링크: ${
+              mapLink
+                ? `<a class="link" href="${mapLink}" target="_blank" rel="noopener">지도 열기</a>`
+                : "미등록"
+            }</span>
+            <span>전화: ${
+              phoneLink
+                ? `<a class="link" href="${phoneLink}">${item.phone}</a>`
+                : "미등록"
+            }</span>
+          </div>
+        </div>
+        <div class="info-card">
+          <h3>대표 메뉴</h3>
+          <div class="info-list">
+            ${(item.signatureMenus || ["미등록"]).map((menu) => `<span>${menu}</span>`).join("")}
+          </div>
+        </div>
+      `;
+
+      if (item.images?.length) {
+        const galleryCard = document.createElement("div");
+        galleryCard.className = "info-card";
+        galleryCard.innerHTML = `
+          <h3>갤러리</h3>
+          <div class="gallery">
+            ${item.images
+              .slice(0, 6)
+              .map(
+                (src) =>
+                  `<img src="${src}" alt="${item.name} 사진" loading="lazy" />`
+              )
+              .join("")}
+          </div>
+        `;
+        detailInfo.appendChild(galleryCard);
+      }
     }
 
     if (certText) {
       certText.textContent = item.verifiedMonth
-        ? `오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 최근 확인 월은 ${item.verifiedMonth}이며, 소비자에게는 최소한의 정보만 공개합니다.`
-        : "오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 소비자에게는 최소한의 정보만 공개합니다.";
+        ? `오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 최근 확인 월은 ${item.verifiedMonth}이며, 소비자에게는 필요한 정보만 공개합니다.`
+        : "오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 소비자에게는 필요한 정보만 공개합니다.";
     }
 
     if (stickyCta) {
-      const primaryAction = reserveLink
-        ? { label: "예약하기", href: reserveLink, external: true }
-        : mapLink
-          ? { label: "길찾기", href: mapLink, external: true }
-          : phoneLink
-            ? { label: "전화하기", href: phoneLink, external: false }
-            : homepageLink
-              ? { label: "홈페이지", href: homepageLink, external: true }
-              : null;
-
-      const secondaryAction = reserveLink
-        ? mapLink
-          ? { label: "길찾기", href: mapLink, external: true }
-          : phoneLink
-            ? { label: "전화하기", href: phoneLink, external: false }
-            : null
-        : null;
+      const mapAction = mapLink
+        ? `<a class="btn btn-ghost" href="${mapLink}" target="_blank" rel="noopener">길찾기</a>`
+        : `<span class="btn btn-ghost btn-static">길찾기 준비중</span>`;
+      const reserveAction = reserveLink
+        ? `<a class="btn btn-primary" href="${reserveLink}" target="_blank" rel="noopener">예약</a>`
+        : `<span class="btn btn-primary btn-static">예약 준비중</span>`;
 
       stickyCta.innerHTML = `
         <div class="cta-content">
           <div>
             <strong>${item.name}</strong>
-            <p class="card-meta">${reserveLink ? "예약 가능한 링크가 있습니다" : "예약 링크가 없을 경우 길찾기/전화로 연결됩니다"}</p>
+            <p class="card-meta">예약: ${reserveLabel}</p>
           </div>
           <div class="cta-actions">
-            ${
-              primaryAction
-                ? `<a class="btn btn-primary" href="${primaryAction.href}" ${
-                    primaryAction.external ? "target=\"_blank\" rel=\"noreferrer\"" : ""
-                  }>${primaryAction.label}</a>`
-                : `<button class="btn btn-primary" aria-disabled="true">예약 링크 준비중</button>`
-            }
-            ${
-              secondaryAction
-                ? `<a class="btn btn-ghost" href="${secondaryAction.href}" ${
-                    secondaryAction.external ? "target=\"_blank\" rel=\"noreferrer\"" : ""
-                  }>${secondaryAction.label}</a>`
-                : ""
-            }
+            ${mapAction}
+            ${reserveAction}
           </div>
         </div>
       `;

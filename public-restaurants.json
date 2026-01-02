@@ -2,32 +2,17 @@
   {
     "name": "청담 오직미 다이닝",
     "region": {"sido": "서울", "sigungu": "강남구"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2023-05-10",
-    "lastOrder": "2024-08-02",
-    "purchaseCount": 42,
     "category": "한식",
     "signatureMenus": ["한우 솥밥", "우렁된장 정식", "제철 나물반상"],
     "priceRange": "3만원대",
-    "openHours": "11:30 - 21:30",
-    "closedDays": "일요일",
-    "addressPublic": "서울 강남구 청담동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "https://booking.naver.com",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "02-555-0101",
-      "homepage": "https://ozicme.com"
-    },
+    "naverReservationUrl": "https://booking.naver.com",
+    "naverPlaceUrl": "",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "02-555-0101",
     "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=900&q=80",
+      "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=900&q=80"
     ],
     "verifiedBadge": true,
     "verifiedMonth": "2024-08"
@@ -35,31 +20,16 @@
   {
     "name": "성수 오직미 비스트로",
     "region": {"sido": "서울", "sigungu": "성동구"},
-    "riceVarieties": ["오직미 프리미엄", "오직미 진"],
-    "firstOrder": "2023-09-12",
-    "lastOrder": "2024-07-18",
-    "purchaseCount": 28,
     "category": "양식",
     "signatureMenus": ["트러플 리조또", "광어 카르파초"],
     "priceRange": "3만원대",
-    "openHours": "12:00 - 22:00",
-    "closedDays": "월요일",
-    "addressPublic": "서울 성동구 성수동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "https://app.catchtable.co.kr",
-      "kakao": "",
-      "phone": "02-777-1122",
-      "homepage": "https://ozicme.com"
-    },
+    "naverReservationUrl": "",
+    "naverPlaceUrl": "https://place.naver.com",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "02-777-1122",
     "thumbnail": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80"
     ],
     "verifiedBadge": true,
     "verifiedMonth": "2024-07"
@@ -67,28 +37,13 @@
   {
     "name": "오직미 연남 국밥",
     "region": {"sido": "서울", "sigungu": "마포구"},
-    "riceVarieties": ["오직미 진"],
-    "firstOrder": "2024-01-04",
-    "lastOrder": "2024-08-15",
-    "purchaseCount": 12,
     "category": "국밥",
     "signatureMenus": ["돼지국밥", "수육백반"],
     "priceRange": "1만원대",
-    "openHours": "10:00 - 22:00",
-    "closedDays": "연중무휴",
-    "addressPublic": "서울 마포구 연남동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "02-333-4400",
-      "homepage": ""
-    },
+    "naverReservationUrl": "",
+    "naverPlaceUrl": "",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "02-333-4400",
     "thumbnail": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
     "images": [],
     "verifiedBadge": true,
@@ -97,312 +52,50 @@
   {
     "name": "오직미 해운대 스시",
     "region": {"sido": "부산", "sigungu": "해운대구"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2022-11-20",
-    "lastOrder": "2024-06-22",
-    "purchaseCount": 55,
     "category": "초밥",
     "signatureMenus": ["광어 초밥", "모듬 초밥", "사시미 세트"],
     "priceRange": "4만원대",
-    "openHours": "11:30 - 22:00",
-    "closedDays": "화요일",
-    "addressPublic": "부산 해운대구 우동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "https://booking.naver.com",
-      "catchtable": "",
-      "kakao": "https://pf.kakao.com",
-      "phone": "051-555-8900",
-      "homepage": ""
-    },
+    "naverReservationUrl": "https://booking.naver.com",
+    "naverPlaceUrl": "",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "051-555-8900",
     "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=900&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1542736667-069246bdbc74?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1542736667-069246bdbc74?auto=format&fit=crop&w=900&q=80"
     ],
     "verifiedBadge": true,
     "verifiedMonth": "2024-06"
-  },
-  {
-    "name": "오직미 광안리 김밥",
-    "region": {"sido": "부산", "sigungu": "수영구"},
-    "riceVarieties": ["오직미 진"],
-    "firstOrder": "2023-02-01",
-    "lastOrder": "2024-05-09",
-    "purchaseCount": 18,
-    "category": "김밥",
-    "signatureMenus": ["참치 김밥", "멸치 김밥"],
-    "priceRange": "1만원대",
-    "openHours": "09:00 - 20:00",
-    "closedDays": "일요일",
-    "addressPublic": "부산 수영구 광안동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "051-777-1313",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=900&q=80",
-    "images": [],
-    "verifiedBadge": false,
-    "verifiedMonth": "2024-05"
-  },
-  {
-    "name": "오직미 전주 비빔밥",
-    "region": {"sido": "전북", "sigungu": "전주시"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2023-03-14",
-    "lastOrder": "2024-07-03",
-    "purchaseCount": 24,
-    "category": "한식",
-    "signatureMenus": ["전주 비빔밥", "육회 비빔밥"],
-    "priceRange": "1만원대",
-    "openHours": "10:30 - 20:30",
-    "closedDays": "수요일",
-    "addressPublic": "전북 전주시 풍남동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "063-123-4567",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=900&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=800&q=80"
-    ],
-    "verifiedBadge": true,
-    "verifiedMonth": "2024-07"
-  },
-  {
-    "name": "오직미 대전 분식",
-    "region": {"sido": "대전", "sigungu": "서구"},
-    "riceVarieties": ["오직미 진"],
-    "firstOrder": "2023-06-18",
-    "lastOrder": "2024-08-01",
-    "purchaseCount": 9,
-    "category": "분식",
-    "signatureMenus": ["떡볶이", "순대", "오뎅"],
-    "priceRange": "1만원대",
-    "openHours": "11:00 - 21:00",
-    "closedDays": "월요일",
-    "addressPublic": "대전 서구 둔산동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "042-555-1212",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=900&q=80",
-    "images": [],
-    "verifiedBadge": true,
-    "verifiedMonth": "2024-08"
   },
   {
     "name": "오직미 판교 솥밥",
     "region": {"sido": "경기", "sigungu": "성남시"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2022-12-08",
-    "lastOrder": "2024-08-08",
-    "purchaseCount": 60,
     "category": "한식",
     "signatureMenus": ["전복 솥밥", "장어 솥밥"],
     "priceRange": "2만원대",
-    "openHours": "11:30 - 21:30",
-    "closedDays": "화요일",
-    "addressPublic": "경기 성남시 분당구",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "https://app.catchtable.co.kr",
-      "kakao": "",
-      "phone": "031-987-1010",
-      "homepage": "https://ozicme.com"
-    },
+    "naverReservationUrl": "",
+    "naverPlaceUrl": "https://place.naver.com",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "031-987-1010",
     "thumbnail": "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=900&q=80",
     "images": [
-      "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=800&q=80"
+      "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=900&q=80"
     ],
     "verifiedBadge": true,
     "verifiedMonth": "2024-08"
-  },
-  {
-    "name": "오직미 수원 캐주얼 다이닝",
-    "region": {"sido": "경기", "sigungu": "수원시"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2023-04-22",
-    "lastOrder": "2024-06-11",
-    "purchaseCount": 15,
-    "category": "카페",
-    "signatureMenus": ["버섯 크림 리조또", "새우 필라프"],
-    "priceRange": "2만원대",
-    "openHours": "10:00 - 20:00",
-    "closedDays": "월요일",
-    "addressPublic": "경기 수원시 권선구",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "031-555-2121",
-      "homepage": "https://ozicme.com"
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-    "images": [],
-    "verifiedBadge": false,
-    "verifiedMonth": "2024-06"
   },
   {
     "name": "오직미 제주 해물밥",
     "region": {"sido": "제주", "sigungu": "제주시"},
-    "riceVarieties": ["오직미 진"],
-    "firstOrder": "2023-08-03",
-    "lastOrder": "2024-07-25",
-    "purchaseCount": 20,
     "category": "해산물",
     "signatureMenus": ["해물 돌솥밥", "성게 미역국"],
     "priceRange": "2만원대",
-    "openHours": "09:30 - 20:30",
-    "closedDays": "목요일",
-    "addressPublic": "제주 제주시 구좌읍",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "https://pf.kakao.com",
-      "phone": "064-123-9988",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=900&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80"
-    ],
-    "verifiedBadge": true,
-    "verifiedMonth": "2024-07"
-  },
-  {
-    "name": "오직미 강릉 일식",
-    "region": {"sido": "강원", "sigungu": "강릉시"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2023-07-19",
-    "lastOrder": "2024-07-30",
-    "purchaseCount": 13,
-    "category": "일식",
-    "signatureMenus": ["사케동", "규동"],
-    "priceRange": "2만원대",
-    "openHours": "11:30 - 21:30",
-    "closedDays": "수요일",
-    "addressPublic": "강원 강릉시 교동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "033-123-9977",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    "naverReservationUrl": "",
+    "naverPlaceUrl": "",
+    "naverMapUrl": "https://map.naver.com",
+    "phone": "064-123-9988",
+    "thumbnail": "",
     "images": [],
     "verifiedBadge": true,
     "verifiedMonth": "2024-07"
-  },
-  {
-    "name": "오직미 인천 바다국수",
-    "region": {"sido": "인천", "sigungu": "중구"},
-    "riceVarieties": ["오직미 진"],
-    "firstOrder": "2023-10-05",
-    "lastOrder": "2024-08-10",
-    "purchaseCount": 11,
-    "category": "국수",
-    "signatureMenus": ["바다국수", "매운 해물국수"],
-    "priceRange": "1만원대",
-    "openHours": "10:30 - 20:30",
-    "closedDays": "화요일",
-    "addressPublic": "인천 중구 월미동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "032-111-2233",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=900&q=80",
-    "images": [],
-    "verifiedBadge": false,
-    "verifiedMonth": "2024-08"
-  },
-  {
-    "name": "오직미 광주 덮밥",
-    "region": {"sido": "광주", "sigungu": "서구"},
-    "riceVarieties": ["오직미 프리미엄"],
-    "firstOrder": "2023-01-18",
-    "lastOrder": "2024-05-20",
-    "purchaseCount": 17,
-    "category": "일식",
-    "signatureMenus": ["스테이크 덮밥", "연어 덮밥"],
-    "priceRange": "2만원대",
-    "openHours": "11:00 - 21:00",
-    "closedDays": "월요일",
-    "addressPublic": "광주 서구 치평동",
-    "mapLinks": {
-      "naver": "https://map.naver.com",
-      "kakao": "https://map.kakao.com",
-      "google": "https://maps.google.com"
-    },
-    "reserveLinks": {
-      "naverReservation": "https://booking.naver.com",
-      "catchtable": "",
-      "kakao": "",
-      "phone": "062-555-7777",
-      "homepage": ""
-    },
-    "thumbnail": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
-    "images": [
-      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80"
-    ],
-    "verifiedBadge": true,
-    "verifiedMonth": "2024-05"
   }
 ]
