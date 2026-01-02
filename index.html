@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>오직미 | 오직미 쌀 사용 식당 공개 디렉토리</title>
-  <meta name="description" content="오직미 쌀을 사용하는 식당을 찾아보고 예약까지 이어지는 공개 디렉토리." />
-  <meta property="og:title" content="오직미 쌀 사용 식당" />
-  <meta property="og:description" content="오직미 쌀 사용 매장을 발견하고 예약까지 한 번에." />
+  <title>오직미 | 오직미 쌀 사용 식당 리스트</title>
+  <meta name="description" content="오직미 쌀 사용 식당을 검색하고 바로 예약·길찾기로 이어지는 공개 리스트." />
+  <meta property="og:title" content="오직미 쌀 사용 식당 리스트" />
+  <meta property="og:description" content="오직미 인증 매장을 발견하고 예약 및 길찾기로 바로 연결하세요." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/og-placeholder.png" />
+  <meta name="theme-color" content="#1f7a4d" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,70 +17,110 @@
     <header class="site-header">
       <a class="logo" href="index.html">OZICME</a>
       <nav class="nav-links" aria-label="주요 메뉴">
-        <a href="restaurants.html">식당 찾기</a>
-        <a href="#how">서비스 소개</a>
+        <a href="index.html" aria-current="page">식당 찾기</a>
+        <a href="#about">오직미 인증 안내</a>
       </nav>
-      <a class="btn btn-primary" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
+      <a class="btn btn-ghost" href="https://ozicme.com" target="_blank" rel="noreferrer">오직미 공식 사이트</a>
     </header>
 
-    <main>
-      <section class="hero">
+    <main class="list-page">
+      <section class="list-hero">
         <div>
-          <p class="eyebrow">오직미 쌀 사용 매장 공개 디렉토리</p>
-          <h1>좋은 쌀을 사용하는 식당을<br />발견하고 바로 예약하세요.</h1>
+          <p class="eyebrow">오직미 쌀 사용 매장 리스트</p>
+          <h1>발견 → 상세 → 예약까지 이어지는<br />프리미엄 맛집 탐색</h1>
           <p class="hero-desc">
-            오직미는 엄선한 쌀을 사용하는 식당을 투명하게 소개합니다. 로그인 없이
-            바로 확인하고 방문·예약까지 이어집니다.
+            오직미 쌀 사용 매장을 빠르게 탐색하고, 예약·길찾기·전화까지 한 번에 이어집니다.
+            개인정보와 거래정보는 최소화해 신뢰 중심으로 안내합니다.
           </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="restaurants.html">식당 찾기</a>
-            <a class="btn btn-ghost" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
-          </div>
         </div>
-        <div class="hero-card">
-          <h2>오직미 인증 기준</h2>
-          <ul>
-            <li>오직미 쌀 사용 여부 정기 확인</li>
-            <li>거래 정보 및 개인정보는 비공개</li>
-            <li>지역·예약 정보는 최소한으로 안내</li>
-          </ul>
-          <a class="link" href="restaurants.html">지금 확인하기 →</a>
+        <div class="hero-stats">
+          <div>
+            <p class="stat-label">예약 가능 매장</p>
+            <strong id="reserve-count">-</strong>
+          </div>
+          <div>
+            <p class="stat-label">오직미 인증</p>
+            <strong id="verified-count">-</strong>
+          </div>
+          <div>
+            <p class="stat-label">전체 매장</p>
+            <strong id="total-count">-</strong>
+          </div>
         </div>
       </section>
 
-      <section class="section" id="how">
+      <section class="curation" aria-label="추천 섹션">
         <div class="section-header">
-          <h2>오직미는 이렇게 만듭니다</h2>
-          <p>발견부터 예약까지, 소비자용 공개 정보만 제공합니다.</p>
+          <h2>오직미 인증 매장</h2>
+          <p>최근 확인 월 기준으로 선별한 추천 매장입니다.</p>
         </div>
-        <div class="grid-3">
-          <div class="feature">
-            <h3>신뢰할 수 있는 매장 정보</h3>
-            <p>정기 확인일 기준으로 오직미 쌀 사용 매장을 선별합니다.</p>
+        <div class="curation-grid" id="curation-grid">
+          <!-- curated cards -->
+        </div>
+      </section>
+
+      <section class="filter-panel" aria-label="식당 필터">
+        <div class="filter-sticky">
+          <label class="search" for="search-input">
+            <span class="sr-only">식당명 검색</span>
+            <input id="search-input" type="search" placeholder="식당명 검색" autocomplete="off" />
+          </label>
+          <div class="filter-row">
+            <label class="select" for="region-select">
+              <span>지역</span>
+              <select id="region-select">
+                <option value="">전체</option>
+              </select>
+            </label>
+            <label class="toggle" for="reserve-toggle">
+              <input id="reserve-toggle" type="checkbox" />
+              <span>예약 가능만</span>
+            </label>
+            <label class="select" for="sort-select">
+              <span>정렬</span>
+              <select id="sort-select">
+                <option value="recommended">추천순</option>
+                <option value="name">가나다순</option>
+                <option value="region">지역순</option>
+              </select>
+            </label>
           </div>
-          <div class="feature">
-            <h3>개인정보 최소 노출</h3>
-            <p>주소는 구·동 수준으로 제공하며 상세 위치는 지도 링크로 안내합니다.</p>
-          </div>
-          <div class="feature">
-            <h3>예약 전환 중심</h3>
-            <p>예약과 길찾기 버튼을 한 번에 볼 수 있도록 구성합니다.</p>
+          <div class="chip-row" id="category-group" aria-label="카테고리">
+            <button type="button" class="chip is-active" data-category="">전체</button>
           </div>
         </div>
       </section>
 
-      <section class="section callout">
+      <section class="list-meta" aria-live="polite">
+        <p id="result-count">매장을 불러오는 중...</p>
+      </section>
+
+      <section class="list-state" id="list-state" aria-live="polite"></section>
+
+      <section class="restaurant-grid" id="restaurant-grid">
+        <!-- cards -->
+      </section>
+
+      <section class="about" id="about">
         <div>
-          <h2>좋은 쌀을 사용하는 식당을 바로 만나세요.</h2>
-          <p>지역별 추천 매장을 확인하고, 한 번에 예약까지 완료하세요.</p>
+          <h2>오직미 쌀 사용 인증 안내</h2>
+          <p>
+            오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 소비자에게는
+            최소한의 정보만 제공하며, 최신 확인 월 기준으로 인증 상태를 안내합니다.
+          </p>
         </div>
-        <a class="btn btn-primary" href="restaurants.html">식당 리스트 보기</a>
+        <div class="about-card">
+          <h3>개인정보 최소화</h3>
+          <p>상세 주소 대신 지도 링크를 제공하고, 개인 전화번호 외 정보는 노출하지 않습니다.</p>
+        </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 디렉토리.</p>
+      <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 리스트.</p>
     </footer>
   </div>
+
+  <script src="script.js" defer></script>
 </body>
 </html>

@@ -1,15 +1,15 @@
 [
   {
-    "name": "청담 오직미 한식",
+    "name": "청담 오직미 다이닝",
     "region": {"sido": "서울", "sigungu": "강남구"},
     "riceVarieties": ["오직미 프리미엄"],
     "firstOrder": "2023-05-10",
     "lastOrder": "2024-08-02",
     "purchaseCount": 42,
     "category": "한식",
-    "signatureMenus": ["우렁된장 정식", "제철 솥밥", "한우 불고기"],
-    "priceRange": "2만원대",
-    "openHours": "11:00 - 21:00",
+    "signatureMenus": ["한우 솥밥", "우렁된장 정식", "제철 나물반상"],
+    "priceRange": "3만원대",
+    "openHours": "11:30 - 21:30",
     "closedDays": "일요일",
     "addressPublic": "서울 강남구 청담동",
     "mapLinks": {
@@ -21,16 +21,16 @@
       "naverReservation": "https://booking.naver.com",
       "catchtable": "",
       "kakao": "",
-      "phone": "02-555-0101"
+      "phone": "02-555-0101",
+      "homepage": "https://ozicme.com"
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-      "gallery": [
-        "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=800&q=80"
-      ]
-    },
-    "verifiedAt": "2024-08"
+    "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-08"
   },
   {
     "name": "성수 오직미 비스트로",
@@ -54,13 +54,15 @@
       "naverReservation": "",
       "catchtable": "https://app.catchtable.co.kr",
       "kakao": "",
-      "phone": "02-777-1122"
+      "phone": "02-777-1122",
+      "homepage": "https://ozicme.com"
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80",
-      "gallery": []
-    },
-    "verifiedAt": "2024-07"
+    "thumbnail": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-07"
   },
   {
     "name": "오직미 연남 국밥",
@@ -84,15 +86,16 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "02-333-4400"
+      "phone": "02-333-4400",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-08"
+    "thumbnail": "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-08"
   },
   {
-    "name": "오직미 해운대 초밥",
+    "name": "오직미 해운대 스시",
     "region": {"sido": "부산", "sigungu": "해운대구"},
     "riceVarieties": ["오직미 프리미엄"],
     "firstOrder": "2022-11-20",
@@ -100,7 +103,7 @@
     "purchaseCount": 55,
     "category": "초밥",
     "signatureMenus": ["광어 초밥", "모듬 초밥", "사시미 세트"],
-    "priceRange": "3만원대",
+    "priceRange": "4만원대",
     "openHours": "11:30 - 22:00",
     "closedDays": "화요일",
     "addressPublic": "부산 해운대구 우동",
@@ -113,15 +116,15 @@
       "naverReservation": "https://booking.naver.com",
       "catchtable": "",
       "kakao": "https://pf.kakao.com",
-      "phone": "051-555-8900"
+      "phone": "051-555-8900",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80",
-      "gallery": [
-        "https://images.unsplash.com/photo-1542736667-069246bdbc74?auto=format&fit=crop&w=800&q=80"
-      ]
-    },
-    "verifiedAt": "2024-06"
+    "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1542736667-069246bdbc74?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-06"
   },
   {
     "name": "오직미 광안리 김밥",
@@ -145,12 +148,13 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "051-777-1313"
+      "phone": "051-777-1313",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-05"
+    "thumbnail": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": false,
+    "verifiedMonth": "2024-05"
   },
   {
     "name": "오직미 전주 비빔밥",
@@ -174,12 +178,15 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "063-123-4567"
+      "phone": "063-123-4567",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-07"
+    "thumbnail": "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-07"
   },
   {
     "name": "오직미 대전 분식",
@@ -203,12 +210,13 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "042-555-1212"
+      "phone": "042-555-1212",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-08"
+    "thumbnail": "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-08"
   },
   {
     "name": "오직미 판교 솥밥",
@@ -232,15 +240,18 @@
       "naverReservation": "",
       "catchtable": "https://app.catchtable.co.kr",
       "kakao": "",
-      "phone": "031-987-1010"
+      "phone": "031-987-1010",
+      "homepage": "https://ozicme.com"
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-08"
+    "thumbnail": "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1553621042-55b24b6a59f8?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-08"
   },
   {
-    "name": "오직미 수원 카페식",
+    "name": "오직미 수원 캐주얼 다이닝",
     "region": {"sido": "경기", "sigungu": "수원시"},
     "riceVarieties": ["오직미 프리미엄"],
     "firstOrder": "2023-04-22",
@@ -261,12 +272,13 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "031-555-2121"
+      "phone": "031-555-2121",
+      "homepage": "https://ozicme.com"
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1481931098730-318b6f776db0?auto=format&fit=crop&w=800&q=80"
-    },
-    "verifiedAt": "2024-06"
+    "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": false,
+    "verifiedMonth": "2024-06"
   },
   {
     "name": "오직미 제주 해물밥",
@@ -290,16 +302,16 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "https://pf.kakao.com",
-      "phone": "064-123-9988"
+      "phone": "064-123-9988",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-      "gallery": [
-        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
-        "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80"
-      ]
-    },
-    "verifiedAt": "2024-07"
+    "thumbnail": "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-07"
   },
   {
     "name": "오직미 강릉 일식",
@@ -323,11 +335,74 @@
       "naverReservation": "",
       "catchtable": "",
       "kakao": "",
-      "phone": "033-123-9977"
+      "phone": "033-123-9977",
+      "homepage": ""
     },
-    "images": {
-      "thumbnail": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
+    "thumbnail": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-07"
+  },
+  {
+    "name": "오직미 인천 바다국수",
+    "region": {"sido": "인천", "sigungu": "중구"},
+    "riceVarieties": ["오직미 진"],
+    "firstOrder": "2023-10-05",
+    "lastOrder": "2024-08-10",
+    "purchaseCount": 11,
+    "category": "국수",
+    "signatureMenus": ["바다국수", "매운 해물국수"],
+    "priceRange": "1만원대",
+    "openHours": "10:30 - 20:30",
+    "closedDays": "화요일",
+    "addressPublic": "인천 중구 월미동",
+    "mapLinks": {
+      "naver": "https://map.naver.com",
+      "kakao": "https://map.kakao.com",
+      "google": "https://maps.google.com"
     },
-    "verifiedAt": "2024-07"
+    "reserveLinks": {
+      "naverReservation": "",
+      "catchtable": "",
+      "kakao": "",
+      "phone": "032-111-2233",
+      "homepage": ""
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1506089676908-3592f7389d4d?auto=format&fit=crop&w=900&q=80",
+    "images": [],
+    "verifiedBadge": false,
+    "verifiedMonth": "2024-08"
+  },
+  {
+    "name": "오직미 광주 덮밥",
+    "region": {"sido": "광주", "sigungu": "서구"},
+    "riceVarieties": ["오직미 프리미엄"],
+    "firstOrder": "2023-01-18",
+    "lastOrder": "2024-05-20",
+    "purchaseCount": 17,
+    "category": "일식",
+    "signatureMenus": ["스테이크 덮밥", "연어 덮밥"],
+    "priceRange": "2만원대",
+    "openHours": "11:00 - 21:00",
+    "closedDays": "월요일",
+    "addressPublic": "광주 서구 치평동",
+    "mapLinks": {
+      "naver": "https://map.naver.com",
+      "kakao": "https://map.kakao.com",
+      "google": "https://maps.google.com"
+    },
+    "reserveLinks": {
+      "naverReservation": "https://booking.naver.com",
+      "catchtable": "",
+      "kakao": "",
+      "phone": "062-555-7777",
+      "homepage": ""
+    },
+    "thumbnail": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=80"
+    ],
+    "verifiedBadge": true,
+    "verifiedMonth": "2024-05"
   }
 ]
