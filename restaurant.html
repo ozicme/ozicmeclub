@@ -9,6 +9,7 @@
   <meta property="og:description" content="오직미 쌀 사용 매장의 대표 메뉴와 예약 정보를 확인하세요." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/og-placeholder.png" />
+  <meta name="theme-color" content="#1f7a4d" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -16,10 +17,10 @@
     <header class="site-header">
       <a class="logo" href="index.html">OZICME</a>
       <nav class="nav-links" aria-label="주요 메뉴">
-        <a href="restaurants.html">식당 찾기</a>
-        <a href="index.html#how">서비스 소개</a>
+        <a href="index.html">식당 찾기</a>
+        <a href="index.html#about">오직미 인증 안내</a>
       </nav>
-      <a class="btn btn-primary" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
+      <a class="btn btn-ghost" href="https://ozicme.com" target="_blank" rel="noreferrer">오직미 공식 사이트</a>
     </header>
 
     <main class="detail-page" id="detail-page">
@@ -27,15 +28,19 @@
         <!-- content inserted -->
       </section>
 
-      <section class="detail-body" id="detail-body">
-        <!-- content inserted -->
+      <section class="detail-summary" id="detail-summary">
+        <!-- summary inserted -->
       </section>
 
-      <section class="detail-cert">
+      <section class="detail-info" id="detail-info">
+        <!-- info inserted -->
+      </section>
+
+      <section class="detail-cert" id="detail-cert">
         <h2>오직미 쌀 사용 인증 안내</h2>
-        <p>
-          오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 인증 기준은
-          최근 주문 내역 확인 또는 현장 검증이며, 소비자에게는 최소한의 정보만 공개합니다.
+        <p id="detail-cert-text">
+          오직미는 매장별로 정기 확인을 통해 쌀 사용 여부를 확인합니다. 인증 기준은 최근 확인 월
+          또는 현장 검증을 기준으로 하며, 소비자에게는 최소한의 정보만 공개합니다.
         </p>
       </section>
 
@@ -50,9 +55,11 @@
     </main>
 
     <footer class="site-footer">
-      <a class="link" href="restaurants.html">← 전체 식당 리스트로 돌아가기</a>
+      <a class="link" href="index.html">← 전체 식당 리스트로 돌아가기</a>
     </footer>
   </div>
+
+  <div class="sticky-cta" id="sticky-cta"></div>
 
   <script src="script.js" defer></script>
 </body>
