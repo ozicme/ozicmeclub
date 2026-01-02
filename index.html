@@ -1,632 +1,85 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>오직미(ozicme) 식당 구매처 리스트</title>
-  <style>
-    :root{
-      --bg:#f8fafc;
-      --text:#0f172a;
-      --muted:#64748b;
-      --border:#e2e8f0;
-      --card:#ffffff;
-      --shadow:0 10px 28px rgba(15,23,42,.08);
-      --green:#16a34a;
-      --green2:#22c55e;
-      --greenSoft:#dcfce7;
-      --chip:#f1f5f9;
-      --chipText:#0f172a;
-      --amber:#f59e0b;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
-    a{color:inherit; text-decoration:none}
-    .app{min-height:100vh; display:flex; flex-direction:column}
-    header{
-      position:sticky; top:0; z-index:10;
-      background:rgba(255,255,255,.92);
-      border-bottom:1px solid var(--border);
-      backdrop-filter:saturate(140%) blur(10px);
-    }
-    .header-inner{
-      max-width:1200px; margin:0 auto; padding:18px 20px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .brand{
-      display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px;
-    }
-    .logo{
-      width:44px; height:44px; border-radius:14px;
-      background:linear-gradient(135deg,var(--green),#0ea5e9);
-      display:grid; place-items:center; color:#fff; font-size:15px;
-      box-shadow:0 10px 18px rgba(22,163,74,.18);
-    }
-    .brand small{display:block; font-weight:600; color:var(--muted); margin-top:4px}
-    .cta{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:12px 16px; border-radius:12px;
-      background:linear-gradient(180deg,var(--green2),var(--green));
-      color:#fff; font-weight:800; font-size:14px; border:1px solid rgba(22,163,74,.4);
-      box-shadow:0 12px 24px rgba(22,163,74,.2);
-    }
-    .wrap{
-      max-width:1200px; margin:0 auto; padding:24px 20px 40px;
-      display:grid; grid-template-columns: 320px 1fr; gap:16px;
-    }
-    @media (max-width: 960px){
-      .wrap{grid-template-columns:1fr}
-    }
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .card .hd{
-      padding:16px 16px 12px; border-bottom:1px solid var(--border);
-    }
-    .card .hd h2{margin:0; font-size:16px}
-    .card .hd p{margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.4}
-    .card .bd{padding:16px}
-    .muted{color:var(--muted)}
-    label{display:block; font-size:12px; color:var(--muted); font-weight:700; margin-bottom:6px}
-    input[type="text"], select{
-      width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border);
-      font-size:13px; background:#fff; color:var(--text);
-    }
-    input:focus, select:focus{outline:none; border-color:rgba(22,163,74,.4); box-shadow:0 0 0 4px rgba(34,197,94,.12)}
-    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media (max-width: 560px){ .grid2{grid-template-columns:1fr} }
-    .chips{display:flex; flex-wrap:wrap; gap:8px}
-    .chip{
-      display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px;
-      border:1px solid var(--border); background:var(--chip); color:var(--chipText);
-      font-size:12px; font-weight:700; cursor:pointer; user-select:none;
-    }
-    .chip.active{background:var(--greenSoft); border-color:rgba(22,163,74,.4); color:#14532d}
-    .divider{height:1px; background:var(--border); margin:14px 0}
-    .summary{
-      display:grid; gap:8px; font-size:12px; color:var(--muted);
-    }
-    .list{
-      display:grid; gap:12px;
-    }
-    .restaurant-card{
-      padding:16px; border-radius:16px; border:1px solid var(--border);
-      background:#fff; box-shadow:0 8px 18px rgba(15,23,42,.05);
-      display:grid; gap:10px;
-    }
-    .restaurant-title{
-      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-      font-weight:800; font-size:16px;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:6px; padding:5px 8px; border-radius:999px;
-      background:#fff7ed; color:#9a3412; font-size:11px; font-weight:800; border:1px solid rgba(245,158,11,.4);
-    }
-    .meta{display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:12px}
-    .tag{
-      display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border-radius:999px;
-      border:1px solid var(--border); background:#fff; font-weight:700; font-size:12px;
-    }
-    .tag.green{background:var(--greenSoft); border-color:rgba(22,163,74,.35); color:#14532d}
-    .tag.gray{background:#f8fafc; color:#0f172a}
-    .empty{
-      padding:30px; text-align:center; color:var(--muted);
-      border:1px dashed var(--border); border-radius:16px; background:#fff;
-    }
-    .footer-note{font-size:12px; color:var(--muted); line-height:1.5}
-    .file-box{display:grid; gap:8px; font-size:12px; color:var(--muted)}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>오직미 | 오직미 쌀 사용 식당 공개 디렉토리</title>
+  <meta name="description" content="오직미 쌀을 사용하는 식당을 찾아보고 예약까지 이어지는 공개 디렉토리." />
+  <meta property="og:title" content="오직미 쌀 사용 식당" />
+  <meta property="og:description" content="오직미 쌀 사용 매장을 발견하고 예약까지 한 번에." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/og-placeholder.png" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<div class="app">
-  <header>
-    <div class="header-inner">
-      <div class="brand">
-        <div class="logo">OZ</div>
+  <div class="page">
+    <header class="site-header">
+      <a class="logo" href="index.html">OZICME</a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="restaurants.html">식당 찾기</a>
+        <a href="#how">서비스 소개</a>
+      </nav>
+      <a class="btn btn-primary" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
+    </header>
+
+    <main>
+      <section class="hero">
         <div>
-          <div>오직미(ozicme) 식당 구매처 리스트</div>
-          <small>요리별 맞춤 쌀 추천 · OZICME Picks로 찾는 신뢰로운 식당 파트너</small>
-        </div>
-      </div>
-      <a class="cta" href="https://ozicme.com" target="_blank" rel="noopener noreferrer">오직미 쇼핑몰에서 쌀 구매하기 →</a>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section>
-      <div class="card">
-        <div class="hd">
-          <h2>검색 · 필터</h2>
-          <p>로그인 없이 공개된 식당 구매처만 보여드립니다. 개인정보는 표시하지 않습니다.</p>
-        </div>
-        <div class="bd">
-          <div>
-            <label>식당명 검색</label>
-            <input type="text" id="searchInput" placeholder="식당명을 입력하세요" />
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="grid2">
-            <div>
-              <label>시/도</label>
-              <select id="sidoSelect"></select>
-            </div>
-            <div>
-              <label>시/군/구</label>
-              <select id="sigunguSelect"></select>
-            </div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div>
-            <label>구매 쌀 종류 (복수 선택)</label>
-            <div class="chips" id="riceFilters"></div>
-          </div>
-
-          <div class="divider"></div>
-
-          <div>
-            <label>주판매요리 (선택)</label>
-            <select id="dishSelect"></select>
-          </div>
-
-          <div class="divider"></div>
-
-          <div>
-            <label>정렬</label>
-            <select id="sortSelect">
-              <option value="recent">최근구매일 내림차순</option>
-              <option value="name">가나다순</option>
-            </select>
-          </div>
-
-          <div class="divider"></div>
-
-          <div class="summary" id="summary"></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:16px">
-        <div class="hd">
-          <h2>데이터 불러오기</h2>
-          <p>공개용 CSV/JSON으로부터 즉시 리스트를 구성합니다.</p>
-        </div>
-        <div class="bd">
-          <div class="file-box">
-            <div>• 원본 CSV를 업로드하면 공개용 데이터로 즉시 정제됩니다.</div>
-            <input type="file" id="fileInput" accept=".csv,.json" />
-            <div class="footer-note">CSV에는 발주일/배송시작일/상품명/주문상품명/수령인/수령인 주소(전체)/식당 컬럼이 포함되어야 합니다.</div>
+          <p class="eyebrow">오직미 쌀 사용 매장 공개 디렉토리</p>
+          <h1>좋은 쌀을 사용하는 식당을<br />발견하고 바로 예약하세요.</h1>
+          <p class="hero-desc">
+            오직미는 엄선한 쌀을 사용하는 식당을 투명하게 소개합니다. 로그인 없이
+            바로 확인하고 방문·예약까지 이어집니다.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="restaurants.html">식당 찾기</a>
+            <a class="btn btn-ghost" href="https://ozicme.com/buy" target="_blank" rel="noreferrer">오직미 쌀 구매하기</a>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section>
-      <div class="card">
-        <div class="hd">
-          <h2>식당 리스트</h2>
-          <p><span id="resultCount">0</span>곳의 공개 구매처를 찾았습니다.</p>
+        <div class="hero-card">
+          <h2>오직미 인증 기준</h2>
+          <ul>
+            <li>오직미 쌀 사용 여부 정기 확인</li>
+            <li>거래 정보 및 개인정보는 비공개</li>
+            <li>지역·예약 정보는 최소한으로 안내</li>
+          </ul>
+          <a class="link" href="restaurants.html">지금 확인하기 →</a>
         </div>
-        <div class="bd">
-          <div class="list" id="restaurantList"></div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="section-header">
+          <h2>오직미는 이렇게 만듭니다</h2>
+          <p>발견부터 예약까지, 소비자용 공개 정보만 제공합니다.</p>
         </div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<script>
-  const rawOrdersCsv = `발주일,배송시작일,주문경로,주문자명,상품명(관리용),주문상품명,수량,총 결제금액,수령인,수령인 주소(전체),식당
-2024-02-03,2024-02-05,온라인,홍길동,고시히카리 20kg,고시히카리 20kg,1,62000,오직김밥,서울특별시 강남구 테헤란로 오직김밥,오직김밥
-2024-03-12,2024-03-14,온라인,김사장,수향미 10kg,골든퀸3호 수향미 10kg,2,75000,서초식당,서울특별시 서초구 서초대로 (서초식당),서초식당
-2024-04-02,2024-04-03,전화,박대표,포장지 100매,포장지 100매,1,8000,도담밥집,부산광역시 수영구 광안로 도담밥집,도담밥집
-2024-04-18,2024-04-20,온라인,이대리,신동진 20kg,신동진 20kg,1,61000,시장반찬,대구 달서구 월배로 3층 시장반찬,시장반찬
-2024-05-04,2024-05-06,온라인,장부장,삼광 10kg,삼광 10kg,1,48000,한옥밥상,전북 전주시 완산구 한옥밥상,한옥밥상
-2024-06-10,2024-06-12,온라인,최실장,현미 10kg,현미 10kg,1,39000,옥천식당,충북 옥천군 옥천로 옥천식당,옥천식당`;
-
-  const publicDishTags = {
-    "오직김밥": "김밥",
-    "서초식당": "덮밥",
-    "도담밥집": "백반",
-    "시장반찬": "국밥",
-    "한옥밥상": "한정식"
-  };
-
-  const riceKeywordMap = [
-    { key:"고시히카리", label:"고시히카리" },
-    { key:"수향미", label:"수향미" },
-    { key:"골든퀸", label:"수향미" },
-    { key:"삼광", label:"삼광" },
-    { key:"신동진", label:"신동진" },
-    { key:"오대", label:"오대" },
-    { key:"백진주", label:"백진주" },
-    { key:"찹쌀", label:"찹쌀" },
-    { key:"현미", label:"현미" }
-  ];
-
-  const nonRiceKeywords = ["떡국", "곤약", "포장지", "스티커", "쇼핑백", "사은품", "육수", "소스"];
-
-  const sidoMap = {
-    "서울":"서울특별시",
-    "부산":"부산광역시",
-    "대구":"대구광역시",
-    "인천":"인천광역시",
-    "광주":"광주광역시",
-    "대전":"대전광역시",
-    "울산":"울산광역시",
-    "세종":"세종특별자치시",
-    "경기":"경기도",
-    "강원":"강원특별자치도",
-    "충북":"충청북도",
-    "충남":"충청남도",
-    "전북":"전북특별자치도",
-    "전남":"전라남도",
-    "경북":"경상북도",
-    "경남":"경상남도",
-    "제주":"제주특별자치도"
-  };
-
-  const state = {
-    restaurants: [],
-    filters: {
-      search: "",
-      sido: "",
-      sigungu: "",
-      rice: new Set(),
-      dish: "",
-      sort: "recent"
-    }
-  };
-
-  const $ = (id)=>document.getElementById(id);
-  const $$ = (sel)=>Array.from(document.querySelectorAll(sel));
-
-  function parseCSV(text){
-    const rows = [];
-    let field = "", row = [], i = 0, inQuotes = false;
-    while(i < text.length){
-      const c = text[i];
-      if(inQuotes){
-        if(c === '"'){
-          if(text[i+1] === '"'){ field += '"'; i += 2; continue; }
-          inQuotes = false; i++; continue;
-        }
-        field += c; i++; continue;
-      }
-      if(c === '"'){ inQuotes = true; i++; continue; }
-      if(c === ','){ row.push(field); field = ""; i++; continue; }
-      if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ""; i++; continue; }
-      if(c === '\r'){ i++; continue; }
-      field += c; i++;
-    }
-    row.push(field);
-    rows.push(row);
-    return rows.filter(r=>r.some(x=>x.trim() !== ""));
-  }
-
-  function normalizeSido(sido){
-    if(!sido) return "";
-    const trimmed = sido.trim();
-    if(trimmed.endsWith("도") || trimmed.endsWith("시")) return trimmed;
-    return sidoMap[trimmed] || trimmed;
-  }
-
-  function parseRegion(address){
-    if(!address) return {sido:"", sigungu:""};
-    const tokens = address.trim().split(/\s+/);
-    const rawSido = tokens[0] || "";
-    const rawSigungu = tokens[1] || "";
-    return {
-      sido: normalizeSido(rawSido),
-      sigungu: rawSigungu
-    };
-  }
-
-  function extractRestaurantName(address, recipient){
-    if(!address) return { name: recipient || "식당명 미확인", placeholder: true };
-    const parenMatch = address.match(/\(([^)]+)\)/);
-    if(parenMatch){
-      return { name: parenMatch[1].trim(), placeholder: false };
-    }
-    const tokens = address.trim().split(/\s+/).filter(Boolean);
-    if(tokens.length){
-      const last = tokens[tokens.length - 1];
-      const secondLast = tokens[tokens.length - 2] || "";
-      if(/[\d]+층|호|동/.test(last) && secondLast){
-        return { name: secondLast, placeholder: false };
-      }
-      if(last){
-        return { name: last, placeholder: false };
-      }
-    }
-    return { name: recipient || "식당명 미확인", placeholder: true };
-  }
-
-  function isNonRiceItem(text){
-    return nonRiceKeywords.some(keyword=>text.includes(keyword));
-  }
-
-  function extractRiceVarieties(productName, orderName){
-    const combined = `${productName} ${orderName}`;
-    if(isNonRiceItem(combined)) return [];
-    const found = new Set();
-    riceKeywordMap.forEach(({key, label})=>{
-      if(combined.includes(key)) found.add(label);
-    });
-    return Array.from(found);
-  }
-
-  function toDateString(date){
-    if(!date) return "";
-    const dt = new Date(date);
-    if(Number.isNaN(dt.getTime())) return "";
-    return dt.toISOString().split("T")[0];
-  }
-
-  function buildPublicDataFromOrders(orders){
-    const map = new Map();
-    orders.forEach(order=>{
-      if(!order.restaurant) return;
-      const { name, placeholder } = extractRestaurantName(order.address, order.recipient);
-      const region = parseRegion(order.address);
-      const riceList = extractRiceVarieties(order.productName, order.orderName);
-      const orderDate = toDateString(order.orderDate || order.deliveryStartDate);
-      const key = name;
-      if(!map.has(key)){
-        map.set(key, {
-          name,
-          sido: region.sido,
-          sigungu: region.sigungu,
-          rice: new Set(),
-          dish: publicDishTags[name] || "",
-          firstPurchase: orderDate,
-          recentPurchase: orderDate,
-          placeholder
-        });
-      }
-      const entry = map.get(key);
-      riceList.forEach(r=>entry.rice.add(r));
-      if(orderDate){
-        if(!entry.firstPurchase || orderDate < entry.firstPurchase) entry.firstPurchase = orderDate;
-        if(!entry.recentPurchase || orderDate > entry.recentPurchase) entry.recentPurchase = orderDate;
-      }
-      if(!entry.dish && publicDishTags[name]) entry.dish = publicDishTags[name];
-      if(!entry.sido && region.sido) entry.sido = region.sido;
-      if(!entry.sigungu && region.sigungu) entry.sigungu = region.sigungu;
-    });
-    return Array.from(map.values()).map(item=>({
-      ...item,
-      rice: Array.from(item.rice).length ? Array.from(item.rice) : ["기타쌀"]
-    }));
-  }
-
-  function parseOrdersFromCSV(csvText){
-    const rows = parseCSV(csvText.replace(/^\uFEFF/, ""));
-    if(rows.length < 2) return [];
-    const header = rows[0].map(h=>h.trim());
-    const idx = (name)=> header.indexOf(name);
-    return rows.slice(1).map(row=>({
-      orderDate: row[idx("발주일")] || "",
-      deliveryStartDate: row[idx("배송시작일")] || "",
-      orderPath: row[idx("주문경로")] || "",
-      buyer: row[idx("주문자명")] || "",
-      productName: row[idx("상품명(관리용)")] || "",
-      orderName: row[idx("주문상품명")] || "",
-      qty: row[idx("수량")] || "",
-      totalPrice: row[idx("총 결제금액")] || "",
-      recipient: row[idx("수령인")] || "",
-      address: row[idx("수령인 주소(전체)")] || "",
-      restaurant: row[idx("식당")] || ""
-    })).filter(row=>row.restaurant && row.address);
-  }
-
-  function buildFilters(){
-    const sidoSet = new Set();
-    const sigunguMap = new Map();
-    const dishSet = new Set(["전체"]);
-    const riceSet = new Set();
-
-    state.restaurants.forEach(r=>{
-      if(r.sido){
-        sidoSet.add(r.sido);
-        if(!sigunguMap.has(r.sido)) sigunguMap.set(r.sido, new Set());
-        if(r.sigungu) sigunguMap.get(r.sido).add(r.sigungu);
-      }
-      if(r.dish) dishSet.add(r.dish);
-      r.rice.forEach(rice=>riceSet.add(rice));
-    });
-
-    const sidoSelect = $("sidoSelect");
-    sidoSelect.innerHTML = "<option value=\"\">전체</option>" + Array.from(sidoSet).sort().map(s=>`<option value="${s}">${s}</option>`).join("");
-    sidoSelect.value = state.filters.sido;
-
-    const dishSelect = $("dishSelect");
-    dishSelect.innerHTML = Array.from(dishSet).sort().map(d=>`<option value="${d === "전체" ? "" : d}">${d}</option>`).join("");
-
-    const riceFilters = $("riceFilters");
-    riceFilters.innerHTML = "";
-    Array.from(riceSet).sort().forEach(rice=>{
-      const chip = document.createElement("span");
-      chip.className = "chip" + (state.filters.rice.has(rice) ? " active" : "");
-      chip.textContent = rice;
-      chip.addEventListener("click", ()=>{
-        if(state.filters.rice.has(rice)) state.filters.rice.delete(rice);
-        else state.filters.rice.add(rice);
-        chip.classList.toggle("active");
-        render();
-      });
-      riceFilters.appendChild(chip);
-    });
-
-    rebuildSigunguOptions(sigunguMap);
-  }
-
-  function rebuildSigunguOptions(sigunguMap){
-    const sigunguSelect = $("sigunguSelect");
-    const options = ["<option value=\"\">전체</option>"];
-    if(state.filters.sido && sigunguMap.has(state.filters.sido)){
-      Array.from(sigunguMap.get(state.filters.sido)).sort().forEach(sigungu=>{
-        options.push(`<option value="${sigungu}">${sigungu}</option>`);
-      });
-    }
-    sigunguSelect.innerHTML = options.join("");
-    sigunguSelect.value = state.filters.sigungu;
-  }
-
-  function applyFilters(){
-    let list = state.restaurants.slice();
-    if(state.filters.search){
-      const q = state.filters.search.toLowerCase();
-      list = list.filter(r=>r.name.toLowerCase().includes(q));
-    }
-    if(state.filters.sido){
-      list = list.filter(r=>r.sido === state.filters.sido);
-    }
-    if(state.filters.sigungu){
-      list = list.filter(r=>r.sigungu === state.filters.sigungu);
-    }
-    if(state.filters.rice.size){
-      list = list.filter(r=>r.rice.some(rice=>state.filters.rice.has(rice)));
-    }
-    if(state.filters.dish){
-      list = list.filter(r=>r.dish === state.filters.dish);
-    }
-
-    if(state.filters.sort === "name"){
-      list.sort((a,b)=>a.name.localeCompare(b.name, "ko"));
-    }else{
-      list.sort((a,b)=>{
-        if(a.recentPurchase === b.recentPurchase) return a.name.localeCompare(b.name, "ko");
-        return (b.recentPurchase || "").localeCompare(a.recentPurchase || "");
-      });
-    }
-    return list;
-  }
-
-  function renderList(list){
-    const root = $("restaurantList");
-    root.innerHTML = "";
-    if(!list.length){
-      root.innerHTML = '<div class="empty">조건에 맞는 식당이 없습니다.</div>';
-      return;
-    }
-    list.forEach(r=>{
-      const card = document.createElement("div");
-      card.className = "restaurant-card";
-      const dishText = r.dish || "미등록";
-      const riceTags = r.rice.map(rice=>`<span class="tag green">${rice}</span>`).join("");
-      card.innerHTML = `
-        <div class="restaurant-title">
-          ${r.name}
-          ${r.placeholder ? '<span class="badge">상호명 미확인</span>' : ''}
+        <div class="grid-3">
+          <div class="feature">
+            <h3>신뢰할 수 있는 매장 정보</h3>
+            <p>정기 확인일 기준으로 오직미 쌀 사용 매장을 선별합니다.</p>
+          </div>
+          <div class="feature">
+            <h3>개인정보 최소 노출</h3>
+            <p>주소는 구·동 수준으로 제공하며 상세 위치는 지도 링크로 안내합니다.</p>
+          </div>
+          <div class="feature">
+            <h3>예약 전환 중심</h3>
+            <p>예약과 길찾기 버튼을 한 번에 볼 수 있도록 구성합니다.</p>
+          </div>
         </div>
-        <div class="meta">
-          <span>지역: ${r.sido || "-"} ${r.sigungu || ""}</span>
-          <span>최근구매일: ${r.recentPurchase || "-"}</span>
-          <span>최초구매일: ${r.firstPurchase || "-"}</span>
+      </section>
+
+      <section class="section callout">
+        <div>
+          <h2>좋은 쌀을 사용하는 식당을 바로 만나세요.</h2>
+          <p>지역별 추천 매장을 확인하고, 한 번에 예약까지 완료하세요.</p>
         </div>
-        <div class="meta">주판매요리: <b>${dishText}</b></div>
-        <div>${riceTags}</div>
-      `;
-      root.appendChild(card);
-    });
-  }
+        <a class="btn btn-primary" href="restaurants.html">식당 리스트 보기</a>
+      </section>
+    </main>
 
-  function renderSummary(list){
-    const summary = $("summary");
-    const uniqueSido = new Set(list.map(r=>r.sido).filter(Boolean));
-    const riceCount = new Set(list.flatMap(r=>r.rice));
-    summary.innerHTML = `
-      <div>결과: <b>${list.length}</b>곳</div>
-      <div>지역: <b>${uniqueSido.size}</b>개 시/도</div>
-      <div>주요 품종: <b>${riceCount.size}</b>종</div>
-    `;
-  }
-
-  function render(){
-    buildFilters();
-    const list = applyFilters();
-    $("resultCount").textContent = list.length;
-    renderList(list);
-    renderSummary(list);
-  }
-
-  function setRestaurants(data){
-    state.restaurants = data.map(r=>({
-      name: r.name,
-      sido: r.sido,
-      sigungu: r.sigungu,
-      rice: r.rice && r.rice.length ? r.rice : ["기타쌀"],
-      dish: r.dish || "",
-      firstPurchase: r.firstPurchase || "",
-      recentPurchase: r.recentPurchase || "",
-      placeholder: Boolean(r.placeholder)
-    }));
-  }
-
-  function loadInitialData(){
-    const orders = parseOrdersFromCSV(rawOrdersCsv);
-    const publicData = buildPublicDataFromOrders(orders);
-    setRestaurants(publicData);
-  }
-
-  function bindEvents(){
-    $("searchInput").addEventListener("input", e=>{
-      state.filters.search = e.target.value.trim();
-      render();
-    });
-    $("sidoSelect").addEventListener("change", e=>{
-      state.filters.sido = e.target.value;
-      state.filters.sigungu = "";
-      render();
-    });
-    $("sigunguSelect").addEventListener("change", e=>{
-      state.filters.sigungu = e.target.value;
-      render();
-    });
-    $("dishSelect").addEventListener("change", e=>{
-      state.filters.dish = e.target.value;
-      render();
-    });
-    $("sortSelect").addEventListener("change", e=>{
-      state.filters.sort = e.target.value;
-      render();
-    });
-    $("fileInput").addEventListener("change", async e=>{
-      const file = e.target.files?.[0];
-      if(!file) return;
-      const text = await file.text();
-      if(file.name.endsWith(".json")){
-        const data = JSON.parse(text);
-        setRestaurants(data);
-      }else{
-        const orders = parseOrdersFromCSV(text);
-        const data = buildPublicDataFromOrders(orders);
-        setRestaurants(data);
-      }
-      state.filters.search = "";
-      state.filters.sido = "";
-      state.filters.sigungu = "";
-      state.filters.rice.clear();
-      state.filters.dish = "";
-      render();
-    });
-  }
-
-  loadInitialData();
-  bindEvents();
-  render();
-</script>
+    <footer class="site-footer">
+      <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 디렉토리.</p>
+    </footer>
+  </div>
 </body>
 </html>
