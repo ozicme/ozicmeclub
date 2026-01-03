@@ -15,38 +15,52 @@ python -m http.server 8000
 - 리스트: `http://localhost:8000/index.html`
 - 상세: `http://localhost:8000/restaurant.html?slug=식당명`
 
-## JSON 데이터 추가/수정 방법
+## 데이터 업데이트 방법 (엑셀 → JSON)
 
-`public-restaurants.json`에 식당 정보를 추가합니다. 소비자에게 필요한 필드만 사용하며, 누락된 값은 UI에서 `미등록` 또는 `예약 준비중`으로 자동 보정됩니다.
+`오직미_식당디렉토리_사이트개발용_최종정비.csv`를 **정본(source of truth)** 으로 사용합니다. 최신 엑셀을 CSV로 저장해 해당 파일을 교체한 뒤, 변환 스크립트를 실행하면 `public-restaurants.json`이 완전히 교체됩니다.
+
+### 빠른 업데이트 절차
+
+1. 최신 엑셀 파일을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체합니다.
+2. 변환 스크립트를 실행합니다.
+   ```bash
+   node scripts/convert-restaurants.js
+   ```
+3. `public-restaurants.json`이 갱신되었는지 확인하고 배포합니다.
+
+### 변환 스크립트 옵션
+
+```bash
+node scripts/convert-restaurants.js [source.csv] [output.json]
+```
+
+### JSON 필드 참고
+
+변환 스크립트는 검색/필터에 필요한 필드를 유지하도록 아래 형태로 출력합니다.
 
 ```json
 {
   "name": "오직미 샘플 식당",
-  "region": {"sido": "서울", "sigungu": "강남구"},
+  "region": {"sido": "서울", "sigungu": "강남구", "eupmyeondong": "역삼동"},
   "category": "한식",
-  "signatureMenus": ["대표 메뉴 1", "대표 메뉴 2"],
-  "priceRange": "2만원대",
-  "naverReservationUrl": "https://booking.naver.com",
-  "naverPlaceUrl": "https://place.naver.com",
-  "naverMapUrl": "https://map.naver.com",
-  "phone": "02-000-0000",
-  "thumbnail": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=80",
-  "images": ["https://images.unsplash.com/photo-1525755662778-989d0524087e?auto=format&fit=crop&w=900&q=80"],
+  "categoryDetail": "백반/정식",
+  "mainDishes": ["백반", "정식"],
+  "searchTags": ["한식", "백반"],
+  "signatureMenus": ["백반", "정식"],
+  "address": "서울특별시 강남구 ...",
+  "naverReservationUrl": "",
+  "naverPlaceUrl": "https://map.naver.com/v5/search/...",
+  "naverMapUrl": "https://map.naver.com/v5/search/...",
+  "priceRange": "",
+  "phone": "",
+  "thumbnail": "",
+  "images": [],
   "verifiedBadge": true,
-  "verifiedMonth": "2024-08"
+  "verifiedMonth": ""
 }
 ```
 
-### 필드 설명
-
-- `naverReservationUrl`: 예약 최우선 링크입니다. 존재하면 모든 예약 CTA가 이 링크로 이동합니다.
-- `naverPlaceUrl`: `naverReservationUrl`이 없을 때 예약 CTA가 이동하는 네이버 플레이스 링크입니다.
-- `naverMapUrl`: 길찾기용 네이버 지도 링크입니다. 없을 경우 `mapLinks.naver` 또는 `mapLinks.kakao/google` 순으로 fallback 됩니다.
-- `phone`: 예약 링크가 없을 경우 대체 CTA로 사용되는 전화번호입니다.
-- `thumbnail`: 리스트 카드 썸네일 이미지(4:3 비율 권장)입니다.
-- `images`: 상세 페이지 갤러리 이미지 배열입니다.
-- `verifiedBadge`: 오직미 인증 배지 노출 여부입니다.
-- `verifiedMonth`: 최근 확인 월(YYYY-MM)로 입력합니다.
+> 내부 지표(주문수/누적결제금액 등)는 변환 과정에서 제외됩니다.
 
 ## 배포 방법
 
