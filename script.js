@@ -49,6 +49,7 @@ const buildSearchText = (item) => {
 
 let useClientData = false;
 let clientData = [];
+let requestId = 0;
 
 const ensureClientData = async () => {
   if (clientData.length > 0) return;
@@ -276,7 +277,7 @@ const initRestaurantsPage = async () => {
   let isLoading = false;
   let activeQuery = "";
   let totalCount = 0;
-  let requestId = 0;
+  requestId = 0;
 
   const updateResultCount = () => {
     if (!resultCount) return;
