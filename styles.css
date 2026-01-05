@@ -147,6 +147,27 @@ main {
 .list-hero {
   display: grid;
   gap: 20px;
+  text-align: center;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.list-hero h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.hero-search {
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  justify-items: stretch;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .hero-visual {
@@ -180,7 +201,8 @@ main {
 
 .hero-desc {
   color: var(--muted);
-  max-width: 520px;
+  max-width: 620px;
+  margin: 0;
 }
 
 .hero-stats {
@@ -191,6 +213,8 @@ main {
   padding: 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .stat-label {
@@ -252,11 +276,21 @@ main {
   background: var(--surface);
 }
 
+.search-pill input {
+  border-radius: 999px;
+  padding: 14px 18px;
+  box-shadow: 0 8px 20px rgba(20, 48, 32, 0.08);
+}
+
 .filter-row {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   align-items: end;
+}
+
+.filter-row.compact {
+  align-items: center;
 }
 
 .select {
@@ -291,6 +325,7 @@ select {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .chip {
@@ -643,7 +678,7 @@ select {
   }
 
   .list-hero {
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr;
     align-items: center;
   }
 
