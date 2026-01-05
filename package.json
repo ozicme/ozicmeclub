@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node server.js",
-    "seed": "node scripts/convert-restaurants.js"
+    "seed": "node scripts/convert-restaurants.js",
+    "verify-api": "node scripts/verify-api.js"
   }
 }

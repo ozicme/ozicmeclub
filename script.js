@@ -238,6 +238,11 @@ const initRestaurantsPage = async () => {
     listLoader.textContent = isLoading ? "불러오는 중..." : "";
   };
 
+  const setResultStatus = (message) => {
+    if (!resultCount) return;
+    resultCount.textContent = message;
+  };
+
   const setListEnd = (message) => {
     if (!listEnd) return;
     listEnd.textContent = message || "";
@@ -250,6 +255,29 @@ const initRestaurantsPage = async () => {
   let activeQuery = "";
   let totalCount = 0;
   let requestId = 0;
+
+  const renderErrorState = (message) => {
+    if (!listState) return;
+    listState.innerHTML = "";
+    listState.style.display = "block";
+    const text = document.createElement("p");
+    text.textContent = message;
+    const retryButton = buildActionButton({
+      label: "다시 시도",
+      primary: true,
+      onClick: () => {
+        requestId += 1;
+        isLoading = false;
+        hasMore = true;
+        resetList();
+        renderSkeletons(grid, 8);
+        setResultStatus("매장을 불러오는 중...");
+        fetchStores(requestId);
+      },
+    });
+    listState.appendChild(text);
+    listState.appendChild(retryButton);
+  };
 
   const updateResultCount = () => {
     if (!resultCount) return;
@@ -281,7 +309,7 @@ const initRestaurantsPage = async () => {
       params.set("limit", String(PAGE_SIZE));
       const response = await fetch(`${API_URL}?${params.toString()}`);
       if (!response.ok) {
-        throw new Error("API_ERROR");
+        throw new Error(`API_ERROR_${response.status}`);
       }
       const payload = await response.json();
       if (token !== requestId) {
@@ -313,8 +341,10 @@ const initRestaurantsPage = async () => {
       }
     } catch (error) {
       if (token === requestId) {
-        setListState("목록을 불러오지 못했습니다. 새로고침 해주세요.");
         hasMore = false;
+        setResultStatus("목록을 불러오지 못했습니다.");
+        setListEnd("");
+        renderErrorState("목록을 불러오지 못했습니다. 새로고침 또는 다시 시도해주세요.");
       }
     } finally {
       if (token === requestId) {
@@ -330,6 +360,7 @@ const initRestaurantsPage = async () => {
     isLoading = false;
     resetList();
     renderSkeletons(grid, 8);
+    setResultStatus("매장을 불러오는 중...");
     fetchStores(requestId);
   };
 
@@ -345,7 +376,7 @@ const initRestaurantsPage = async () => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && hasMore && !isLoading) {
           fetchStores();
         }
       });
@@ -357,6 +388,7 @@ const initRestaurantsPage = async () => {
 
   renderSkeletons(grid, 8);
   setListState("");
+  setResultStatus("매장을 불러오는 중...");
   fetchStores();
 };
 
