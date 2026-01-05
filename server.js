@@ -22,31 +22,36 @@ const loadRestaurants = () => {
   try {
     const raw = fs.readFileSync(DATA_PATH, "utf8");
     const parsed = JSON.parse(raw);
-    return parsed.map((item) => ({
-      ...item,
-      searchText: [
-        item.name,
-        item.address,
-        item.category,
-        item.categoryDetail,
-        item.region?.sido,
-        item.region?.sigungu,
-        item.region?.eupmyeondong,
-        ...(item.searchTags || []),
-        ...(item.signatureMenus || []),
-        ...(item.mainDishes || []),
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase(),
-    }));
+    return {
+      data: parsed.map((item) => ({
+        ...item,
+        searchText: [
+          item.name,
+          item.address,
+          item.category,
+          item.categoryDetail,
+          item.region?.sido,
+          item.region?.sigungu,
+          item.region?.eupmyeondong,
+          ...(item.searchTags || []),
+          ...(item.signatureMenus || []),
+          ...(item.mainDishes || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase(),
+      })),
+      error: null,
+    };
   } catch (error) {
     console.error("Failed to load restaurant data:", error);
-    return [];
+    return { data: [], error };
   }
 };
 
-let restaurantCache = loadRestaurants();
+let restaurantCache = [];
+let dataLoadError = null;
+({ data: restaurantCache, error: dataLoadError } = loadRestaurants());
 
 const filterRestaurants = (query) => {
   if (!query) return restaurantCache;
@@ -87,6 +92,17 @@ const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
   if (url.pathname === "/api/stores") {
+    if (dataLoadError) {
+      sendJson(res, 200, {
+        items: [],
+        nextCursor: null,
+        hasMore: false,
+        totalCount: 0,
+        dataReady: false,
+        error: "DATA_LOAD_FAILED",
+      });
+      return;
+    }
     const query = url.searchParams.get("query") || "";
     const cursor = Number.parseInt(url.searchParams.get("cursor") || "0", 10);
     const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
