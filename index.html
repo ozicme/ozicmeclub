@@ -9,17 +9,13 @@
   <meta property="og:description" content="오직미 인증 매장을 발견하고 네이버 예약과 길찾기로 이어지세요." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/og-placeholder.png" />
-  <meta name="theme-color" content="#1f7a4d" />
+  <meta name="theme-color" content="#1f6b4e" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="page">
     <header class="site-header">
       <a class="logo" href="index.html">OZICME</a>
-      <nav class="nav-links" aria-label="주요 메뉴">
-        <a href="index.html" aria-current="page">식당 찾기</a>
-        <a href="#about">오직미 인증 안내</a>
-      </nav>
       <a class="btn btn-ghost" href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>
     </header>
 
@@ -28,57 +24,38 @@
         <div class="hero-copy">
           <p class="eyebrow">오직미 쌀 사용 매장 디렉토리</p>
           <h1>우리 동네에서 좋은 쌀을 쓰는 식당을 검색해보세요</h1>
-          <p class="hero-desc">오직미 인증 매장을 한눈에 확인하고 네이버 예약으로 바로 연결됩니다.</p>
+          <p class="hero-desc">로그인 없이 바로 검색, 예약, 길찾기가 가능합니다.</p>
         </div>
         <div class="hero-search" aria-label="검색 및 필터">
-          <label class="search search-pill" for="search-input">
-            <span class="sr-only">식당명 검색</span>
-            <input id="search-input" type="search" placeholder="식당명 또는 지역을 입력하세요" autocomplete="off" />
-          </label>
-          <div class="filter-row compact">
-            <label class="select" for="region-select">
-              <span>지역</span>
-              <select id="region-select">
-                <option value="">전체</option>
-              </select>
-            </label>
-            <label class="toggle" for="reserve-toggle">
-              <input id="reserve-toggle" type="checkbox" />
-              <span>예약 가능한 곳만</span>
-            </label>
+          <div class="search-bar">
+            <span class="search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 21.5 21.5 20l-6-6zM10 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" />
+              </svg>
+            </span>
+            <label class="sr-only" for="search-input">식당 검색</label>
+            <input id="search-input" type="search" placeholder="검색(식당명/지역/메뉴)" autocomplete="off" />
+            <button class="icon-button" type="button" aria-label="음성 검색">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-2.08A7 7 0 0 0 19 12h-2z" />
+              </svg>
+            </button>
+            <button class="icon-button" type="button" aria-label="현재 위치">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm8 3h-1.05A7.002 7.002 0 0 0 13 5.05V4h-2v1.05A7.002 7.002 0 0 0 5.05 11H4v2h1.05A7.002 7.002 0 0 0 11 18.95V20h2v-1.05A7.002 7.002 0 0 0 18.95 13H20v-2z" />
+              </svg>
+            </button>
+            <button class="ai-toggle" type="button" id="ai-toggle" aria-pressed="false">AI 모드</button>
           </div>
-          <div class="chip-row" id="category-group" aria-label="카테고리">
-            <button type="button" class="chip is-active" data-category="">전체</button>
+          <div class="chip-row ai-chips" id="ai-chips" aria-label="추천 검색어" hidden>
+            <button type="button" class="chip" data-term="김밥">김밥</button>
+            <button type="button" class="chip" data-term="국밥">국밥</button>
+            <button type="button" class="chip" data-term="회">회</button>
+            <button type="button" class="chip" data-term="서울">서울</button>
+            <button type="button" class="chip" data-term="경기">경기</button>
           </div>
+          <p class="result-count" id="result-count">매장을 불러오는 중...</p>
         </div>
-        <div class="hero-stats" aria-label="요약 지표">
-          <div>
-            <p class="stat-label">예약 가능 매장</p>
-            <strong id="reserve-count">-</strong>
-          </div>
-          <div>
-            <p class="stat-label">오직미 인증</p>
-            <strong id="verified-count">-</strong>
-          </div>
-          <div>
-            <p class="stat-label">전체 매장</p>
-            <strong id="total-count">-</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="curation" aria-label="추천 섹션">
-        <div class="section-header">
-          <h2>오직미 인증 매장</h2>
-          <p>최근 확인 월 기준으로 선별한 추천 매장입니다.</p>
-        </div>
-        <div class="curation-grid" id="curation-grid">
-          <!-- curated cards -->
-        </div>
-      </section>
-
-      <section class="list-meta" aria-live="polite">
-        <p id="result-count">매장을 불러오는 중...</p>
       </section>
 
       <section class="list-state" id="list-state" aria-live="polite"></section>
@@ -86,6 +63,10 @@
       <section class="restaurant-grid" id="restaurant-grid">
         <!-- cards -->
       </section>
+
+      <div class="pagination" id="pagination" aria-live="polite">
+        <button type="button" class="btn btn-ghost" id="load-more">더보기</button>
+      </div>
 
       <section class="about" id="about">
         <div>
@@ -106,6 +87,8 @@
       <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 리스트.</p>
     </footer>
   </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="script.js" defer></script>
 </body>

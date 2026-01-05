@@ -12,35 +12,36 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
 
-const getBestDate = (item) => {
-  if (item.verifiedMonth) {
-    return new Date(`${item.verifiedMonth}-01`);
-  }
-  return new Date(0);
-};
-
 const getThumbnail = (item) => item.thumbnail || item.images?.[0] || "";
 
 const getReservationLink = (item) =>
-  item.naverReservationUrl || item.naverPlaceUrl || "";
+  item.naverBookingUrl ||
+  item.naverReservationUrl ||
+  item.naverPlaceUrl ||
+  "";
 
 const getReservationLabel = (item) =>
-  item.naverReservationUrl
+  item.naverBookingUrl || item.naverReservationUrl
     ? "네이버 예약"
     : item.naverPlaceUrl
       ? "네이버 플레이스"
-      : "예약 준비중";
+      : "예약 링크 없음";
 
-const getMapLink = (item) =>
-  item.naverMapUrl ||
-  item.mapLinks?.naver ||
-  item.mapLinks?.kakao ||
-  item.mapLinks?.google ||
-  "";
+const buildAddress = (item) =>
+  item.address ||
+  [item.region?.sido, item.region?.sigungu, item.region?.eupmyeondong]
+    .filter(Boolean)
+    .join(" ");
+
+const getMapLink = (item) => {
+  if (item.lat && item.lng) {
+    return `https://map.naver.com/v5/directions?c=${item.lng},${item.lat},15,0,0,0,dh`;
+  }
+  const query = [item.name, buildAddress(item)].filter(Boolean).join(" ");
+  return query ? `https://map.naver.com/v5/search/${encodeURIComponent(query)}` : "";
+};
 
 const getPhoneLink = (item) => (item.phone ? `tel:${item.phone}` : "");
-
-const hasReservation = (item) => Boolean(getReservationLink(item));
 
 const buildMenuList = (menus) => {
   if (!menus || menus.length === 0) {
@@ -52,10 +53,25 @@ const buildMenuList = (menus) => {
 const getBadgeLabel = (item) =>
   item.verifiedBadge ? "오직미 인증" : "인증 확인중";
 
-const setActiveChip = (container, value) => {
-  container.querySelectorAll(".chip").forEach((chip) => {
-    chip.classList.toggle("is-active", chip.dataset.category === value);
-  });
+const buildSearchText = (item) => {
+  const parts = [
+    item.name,
+    buildAddress(item),
+    item.category,
+    item.categoryDetail,
+    ...(item.searchTags || []),
+    ...(item.signatureMenus || []),
+    ...(item.mainDishes || []),
+  ];
+  return parts.filter(Boolean).join(" ").toLowerCase();
+};
+
+const debounce = (callback, delay = 200) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => callback(...args), delay);
+  };
 };
 
 const updateKakaoShare = () => {
@@ -80,7 +96,7 @@ const renderSkeletons = (container, count = 6) => {
   });
 };
 
-const buildMediaFrame = ({ src, alt, withOverlay }) => {
+const buildMediaFrame = ({ src, alt }) => {
   const frame = document.createElement("div");
   frame.className = "media-frame";
   if (src) {
@@ -96,59 +112,44 @@ const buildMediaFrame = ({ src, alt, withOverlay }) => {
     placeholder.textContent = "OZICME";
     frame.appendChild(placeholder);
   }
-  if (withOverlay) {
-    const overlay = document.createElement("div");
-    overlay.className = "media-overlay";
-    frame.appendChild(overlay);
-  }
   return frame;
 };
 
-const buildCurationCard = (item) => {
-  const card = document.createElement("article");
-  card.className = "curation-card";
-  const link = document.createElement("a");
-  link.href = `restaurant.html?slug=${slugify(item.name)}`;
-  link.setAttribute("aria-label", `${item.name} 상세보기`);
-  const frame = buildMediaFrame({
-    src: getThumbnail(item),
-    alt: `${item.name} 썸네일`,
-  });
-  link.appendChild(frame);
-  const info = document.createElement("div");
-  info.innerHTML = `
-    <span class="badge is-muted">오직미 인증</span>
-    <h3 class="card-title">${item.name}</h3>
-    <p class="card-meta">${formatValue(item.category)} · ${formatValue(
-    item.region?.sido
-  )}</p>
-    <p class="card-meta">${buildMenuList(item.signatureMenus)}</p>
-  `;
-  card.append(link, info);
-  return card;
-};
-
-const buildActionButton = ({ label, href, primary, external, staticText }) => {
-  const element = document.createElement(href ? "a" : "span");
-  element.className = `btn ${primary ? "btn-primary" : "btn-ghost"} btn-sm`;
-  if (staticText) {
-    element.classList.add("btn-static");
-  }
+const buildActionButton = ({
+  label,
+  href,
+  primary,
+  external,
+  disabled,
+  onClick,
+  ariaLabel,
+}) => {
+  const element = document.createElement(href ? "a" : "button");
+  element.className = `btn ${primary ? "btn-primary" : "btn-outline"} btn-sm`;
   element.textContent = label;
+  if (ariaLabel) element.setAttribute("aria-label", ariaLabel);
   if (href) {
     element.href = href;
     if (external) {
       element.target = "_blank";
       element.rel = "noopener";
     }
+  } else {
+    element.type = "button";
+  }
+  if (disabled) {
+    element.classList.add("btn-disabled");
+    element.setAttribute("aria-disabled", "true");
+  }
+  if (onClick) {
+    element.addEventListener("click", onClick);
   }
   return element;
 };
 
-const renderCard = (item) => {
+const renderCard = (item, onReserveMissing, onMapMissing) => {
   const reserveLink = getReservationLink(item);
   const mapLink = getMapLink(item);
-  const phoneLink = getPhoneLink(item);
   const card = document.createElement("article");
   card.className = "restaurant-card";
 
@@ -160,30 +161,34 @@ const renderCard = (item) => {
   const frame = buildMediaFrame({
     src: getThumbnail(item),
     alt: `${item.name} 썸네일`,
-    withOverlay: true,
   });
 
-  const mediaContent = document.createElement("div");
-  mediaContent.className = "media-content";
-  mediaContent.innerHTML = `
-    <span class="badge">${getBadgeLabel(item)}${
-    item.verifiedMonth ? ` · ${item.verifiedMonth}` : ""
-  }</span>
-    <h3 class="card-title">${item.name}</h3>
-    <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
-    item.region?.sigungu
-  )} · ${formatValue(item.category)}</p>
-  `;
+  if (item.verifiedBadge) {
+    const badge = document.createElement("span");
+    badge.className = "badge badge-verified";
+    badge.textContent = "오직미 인증";
+    frame.appendChild(badge);
+  }
 
-  frame.appendChild(mediaContent);
+  const label = document.createElement("span");
+  label.className = "media-label";
+  label.textContent = "OZICME";
+  frame.appendChild(label);
+
   cardLink.appendChild(frame);
 
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
   cardBody.innerHTML = `
-    <div class="menu-list">${buildMenuList(item.signatureMenus)}</div>
-    <p class="card-meta">${formatValue(item.priceRange, "가격대 미등록")}</p>
-    <p class="cta-hint">예약: ${getReservationLabel(item)}</p>
+    <h3 class="card-title">${item.name}</h3>
+    <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
+    item.region?.sigungu
+  )} · ${formatValue(item.category)}</p>
+    <div class="card-info">
+      <p>대표 메뉴: ${buildMenuList(item.signatureMenus)}</p>
+      <p>가격대: ${formatValue(item.priceRange, "가격대 미등록")}</p>
+      <p>예약: ${getReservationLabel(item)}</p>
+    </div>
   `;
 
   const actions = document.createElement("div");
@@ -195,19 +200,32 @@ const renderCard = (item) => {
           href: reserveLink,
           primary: true,
           external: true,
+          ariaLabel: `${item.name} 예약`,
         })
-      : buildActionButton({ label: "예약 준비중", primary: true, staticText: true })
+      : buildActionButton({
+          label: "예약",
+          primary: true,
+          disabled: true,
+          onClick: onReserveMissing,
+          ariaLabel: `${item.name} 예약 링크 없음`,
+        })
   );
 
-  if (mapLink) {
-    actions.appendChild(
-      buildActionButton({ label: "길찾기", href: mapLink, external: true })
-    );
-  }
-
-  if (!reserveLink && phoneLink) {
-    actions.appendChild(buildActionButton({ label: "전화 문의", href: phoneLink }));
-  }
+  actions.appendChild(
+    mapLink
+      ? buildActionButton({
+          label: "길찾기",
+          href: mapLink,
+          external: true,
+          ariaLabel: `${item.name} 길찾기`,
+        })
+      : buildActionButton({
+          label: "길찾기",
+          disabled: true,
+          onClick: onMapMissing,
+          ariaLabel: `${item.name} 길찾기 링크 없음`,
+        })
+  );
 
   cardBody.appendChild(actions);
   card.append(cardLink, cardBody);
@@ -231,19 +249,16 @@ const updateMetaTags = (item) => {
 };
 
 const initRestaurantsPage = async () => {
-  const regionSelect = document.getElementById("region-select");
-  const categoryGroup = document.getElementById("category-group");
   const searchInput = document.getElementById("search-input");
-  const reserveToggle = document.getElementById("reserve-toggle");
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
-  const curationGrid = document.getElementById("curation-grid");
-  const totalCount = document.getElementById("total-count");
-  const reserveCount = document.getElementById("reserve-count");
-  const verifiedCount = document.getElementById("verified-count");
+  const aiToggle = document.getElementById("ai-toggle");
+  const aiChips = document.getElementById("ai-chips");
+  const loadMoreButton = document.getElementById("load-more");
+  const toast = document.getElementById("toast");
 
-  if (!grid || !regionSelect || !categoryGroup) return;
+  if (!grid || !searchInput || !resultCount || !loadMoreButton) return;
 
   const setListState = (message) => {
     if (!listState) return;
@@ -251,102 +266,92 @@ const initRestaurantsPage = async () => {
     listState.style.display = message ? "block" : "none";
   };
 
-  renderSkeletons(grid, 8);
+  const showToast = (message) => {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("is-visible");
+    setTimeout(() => {
+      toast.classList.remove("is-visible");
+    }, 2000);
+  };
+
+  renderSkeletons(grid, 12);
   setListState("");
 
   try {
     const response = await fetch(DATA_URL);
     const data = await response.json();
+    const searchableData = data.map((item) => ({
+      ...item,
+      searchText: buildSearchText(item),
+    }));
 
-    if (totalCount) totalCount.textContent = data.length;
-    if (reserveCount) reserveCount.textContent = data.filter(hasReservation).length;
-    if (verifiedCount) {
-      verifiedCount.textContent = data.filter((item) => item.verifiedBadge).length;
-    }
+    const PAGE_SIZE = 30;
+    let filtered = searchableData;
+    let page = 1;
+    let renderedCount = 0;
 
-    const regions = Array.from(
-      new Set(data.map((item) => item.region?.sido).filter(Boolean))
-    ).sort();
-    regions.forEach((region) => {
-      const option = document.createElement("option");
-      option.value = region;
-      option.textContent = region;
-      regionSelect.appendChild(option);
-    });
-
-    const categories = Array.from(
-      new Set(data.map((item) => item.category).filter(Boolean))
-    ).sort();
-    categories.forEach((category) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "chip";
-      button.dataset.category = category;
-      button.textContent = category;
-      categoryGroup.appendChild(button);
-    });
-
-    const curated = data
-      .filter((item) => item.verifiedBadge)
-      .sort((a, b) => getBestDate(b) - getBestDate(a))
-      .slice(0, 3);
-    if (curationGrid) {
-      curationGrid.innerHTML = "";
-      if (curated.length === 0) {
-        curationGrid.innerHTML = "<p class=\"card-meta\">추천 매장이 아직 없습니다.</p>";
-      } else {
-        curated.forEach((item) => {
-          curationGrid.appendChild(buildCurationCard(item));
-        });
+    const renderResults = (reset = false) => {
+      if (reset) {
+        grid.innerHTML = "";
+        renderedCount = 0;
       }
-    }
-
-    let selectedCategory = "";
-
-    const applyFilters = () => {
-      const searchValue = searchInput.value.trim().toLowerCase();
-      const regionValue = regionSelect.value;
-      const mustHaveReserve = reserveToggle.checked;
-
-      let results = data.filter((item) => {
-        const matchesName = item.name.toLowerCase().includes(searchValue);
-        const matchesRegion = regionValue ? item.region?.sido === regionValue : true;
-        const matchesCategory = selectedCategory
-          ? item.category === selectedCategory
-          : true;
-        const matchesReserve = mustHaveReserve ? hasReservation(item) : true;
-        return matchesName && matchesRegion && matchesCategory && matchesReserve;
-      });
-
-      results = results.sort((a, b) => getBestDate(b) - getBestDate(a));
-
-      resultCount.textContent = `${results.length}개 매장`;
-      grid.innerHTML = "";
       setListState("");
-
-      if (results.length === 0) {
-        setListState(
-          "조건에 맞는 매장이 없습니다. 필터를 줄여 다시 확인해 주세요."
-        );
+      if (filtered.length === 0) {
+        setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
+        loadMoreButton.style.display = "none";
         return;
       }
 
-      results.forEach((item) => {
-        grid.appendChild(renderCard(item));
+      const targetCount = Math.min(filtered.length, page * PAGE_SIZE);
+      const slice = filtered.slice(renderedCount, targetCount);
+      slice.forEach((item) => {
+        grid.appendChild(
+          renderCard(
+            item,
+            () => showToast("예약 링크 없음"),
+            () => showToast("길찾기 링크 없음")
+          )
+        );
       });
+      renderedCount = targetCount;
+      loadMoreButton.style.display =
+        renderedCount < filtered.length ? "inline-flex" : "none";
     };
 
-    categoryGroup.addEventListener("click", (event) => {
-      const chip = event.target.closest(".chip");
-      if (!chip) return;
-      selectedCategory = chip.dataset.category;
-      setActiveChip(categoryGroup, selectedCategory);
-      applyFilters();
-    });
+    const applyFilters = () => {
+      const searchValue = searchInput.value.trim().toLowerCase();
+      const tokens = searchValue.split(/\s+/).filter(Boolean);
+      filtered = searchableData.filter((item) =>
+        tokens.every((token) => item.searchText.includes(token))
+      );
+      resultCount.textContent = `${filtered.length}개 매장`;
+      page = 1;
+      renderResults(true);
+    };
 
-    [searchInput, regionSelect, reserveToggle].forEach((el) => {
-      el.addEventListener("input", applyFilters);
-      el.addEventListener("change", applyFilters);
+    const debouncedSearch = debounce(applyFilters, 200);
+    searchInput.addEventListener("input", debouncedSearch);
+
+    if (aiToggle && aiChips) {
+      aiToggle.addEventListener("click", () => {
+        const isPressed = aiToggle.getAttribute("aria-pressed") === "true";
+        aiToggle.setAttribute("aria-pressed", String(!isPressed));
+        aiChips.hidden = isPressed;
+      });
+
+      aiChips.addEventListener("click", (event) => {
+        const chip = event.target.closest(".chip");
+        if (!chip) return;
+        const term = chip.dataset.term || chip.textContent;
+        searchInput.value = term;
+        applyFilters();
+      });
+    }
+
+    loadMoreButton.addEventListener("click", () => {
+      page += 1;
+      renderResults();
     });
 
     applyFilters();
@@ -419,18 +424,19 @@ const initRestaurantDetail = async () => {
               external: true,
             })
           : buildActionButton({
-              label: "예약 준비중",
+              label: "예약",
               primary: true,
-              staticText: true,
+              disabled: true,
             })
       );
       if (mapLink) {
         actions.appendChild(
-          buildActionButton({ label: "길찾기", href: mapLink, external: true })
+          buildActionButton({
+            label: "길찾기",
+            href: mapLink,
+            external: true,
+          })
         );
-      }
-      if (!reserveLink && phoneLink) {
-        actions.appendChild(buildActionButton({ label: "전화 문의", href: phoneLink }));
       }
 
       titleWrap.appendChild(actions);
