@@ -1,4 +1,5 @@
 const DATA_URL = "public-restaurants.json";
+const API_URL = "/api/stores";
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -34,6 +35,7 @@ const buildAddress = (item) =>
     .join(" ");
 
 const getMapLink = (item) => {
+  if (item.naverMapUrl) return item.naverMapUrl;
   if (item.lat && item.lng) {
     return `https://map.naver.com/v5/directions?c=${item.lng},${item.lat},15,0,0,0,dh`;
   }
@@ -52,19 +54,6 @@ const buildMenuList = (menus) => {
 
 const getBadgeLabel = (item) =>
   item.verifiedBadge ? "오직미 인증" : "인증 확인중";
-
-const buildSearchText = (item) => {
-  const parts = [
-    item.name,
-    buildAddress(item),
-    item.category,
-    item.categoryDetail,
-    ...(item.searchTags || []),
-    ...(item.signatureMenus || []),
-    ...(item.mainDishes || []),
-  ];
-  return parts.filter(Boolean).join(" ").toLowerCase();
-};
 
 const debounce = (callback, delay = 200) => {
   let timer;
@@ -87,10 +76,10 @@ const renderSkeletons = (container, count = 6) => {
     const card = document.createElement("div");
     card.className = "skeleton-card";
     card.innerHTML = `
-      <div class="skeleton skeleton-media"></div>
       <div class="skeleton" style="width: 70%; height: 18px;"></div>
-      <div class="skeleton" style="width: 50%; height: 14px;"></div>
+      <div class="skeleton" style="width: 45%; height: 14px;"></div>
       <div class="skeleton" style="width: 80%; height: 14px;"></div>
+      <div class="skeleton" style="width: 60%; height: 14px;"></div>
     `;
     container.appendChild(card);
   });
@@ -147,47 +136,28 @@ const buildActionButton = ({
   return element;
 };
 
-const renderCard = (item, onReserveMissing, onMapMissing) => {
+const buildRegionLabel = (item) => {
+  const parts = [item.region?.sigungu, item.region?.eupmyeondong].filter(Boolean);
+  if (parts.length > 0) return parts.join(" · ");
+  return formatValue(item.region?.sido);
+};
+
+const renderCard = (item) => {
   const reserveLink = getReservationLink(item);
   const mapLink = getMapLink(item);
   const card = document.createElement("article");
   card.className = "restaurant-card";
 
-  const cardLink = document.createElement("a");
-  cardLink.className = "card-media";
-  cardLink.href = `restaurant.html?slug=${slugify(item.name)}`;
-  cardLink.setAttribute("aria-label", `${item.name} 상세보기`);
-
-  const frame = buildMediaFrame({
-    src: getThumbnail(item),
-    alt: `${item.name} 썸네일`,
-  });
-
-  if (item.verifiedBadge) {
-    const badge = document.createElement("span");
-    badge.className = "badge badge-verified";
-    badge.textContent = "오직미 인증";
-    frame.appendChild(badge);
-  }
-
-  const label = document.createElement("span");
-  label.className = "media-label";
-  label.textContent = "OZICME";
-  frame.appendChild(label);
-
-  cardLink.appendChild(frame);
-
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
   cardBody.innerHTML = `
     <h3 class="card-title">${item.name}</h3>
-    <p class="card-meta">${formatValue(item.region?.sido)} · ${formatValue(
-    item.region?.sigungu
-  )} · ${formatValue(item.category)}</p>
+    <p class="card-meta">${formatValue(item.category)} · ${buildMenuList(
+    item.signatureMenus || item.mainDishes
+  )}</p>
     <div class="card-info">
-      <p>대표 메뉴: ${buildMenuList(item.signatureMenus)}</p>
-      <p>가격대: ${formatValue(item.priceRange, "가격대 미등록")}</p>
-      <p>예약: ${getReservationLabel(item)}</p>
+      <p>지역: ${buildRegionLabel(item)}</p>
+      <p>주소: ${formatValue(buildAddress(item))}</p>
     </div>
   `;
 
@@ -206,7 +176,6 @@ const renderCard = (item, onReserveMissing, onMapMissing) => {
           label: "예약",
           primary: true,
           disabled: true,
-          onClick: onReserveMissing,
           ariaLabel: `${item.name} 예약 링크 없음`,
         })
   );
@@ -222,13 +191,12 @@ const renderCard = (item, onReserveMissing, onMapMissing) => {
       : buildActionButton({
           label: "길찾기",
           disabled: true,
-          onClick: onMapMissing,
           ariaLabel: `${item.name} 길찾기 링크 없음`,
         })
   );
 
   cardBody.appendChild(actions);
-  card.append(cardLink, cardBody);
+  card.append(cardBody);
   return card;
 };
 
@@ -253,12 +221,12 @@ const initRestaurantsPage = async () => {
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
-  const aiToggle = document.getElementById("ai-toggle");
-  const aiChips = document.getElementById("ai-chips");
-  const loadMoreButton = document.getElementById("load-more");
-  const toast = document.getElementById("toast");
+  const listLoader = document.getElementById("list-loader");
+  const listEnd = document.getElementById("list-end");
+  const sentinel = document.getElementById("scroll-sentinel");
+  const searchForm = document.getElementById("search-form");
 
-  if (!grid || !searchInput || !resultCount || !loadMoreButton) return;
+  if (!grid || !searchInput || !resultCount || !sentinel || !listLoader) return;
 
   const setListState = (message) => {
     if (!listState) return;
@@ -266,99 +234,130 @@ const initRestaurantsPage = async () => {
     listState.style.display = message ? "block" : "none";
   };
 
-  const showToast = (message) => {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add("is-visible");
-    setTimeout(() => {
-      toast.classList.remove("is-visible");
-    }, 2000);
+  const setLoading = (isLoading) => {
+    listLoader.textContent = isLoading ? "불러오는 중..." : "";
   };
 
-  renderSkeletons(grid, 12);
-  setListState("");
+  const setListEnd = (message) => {
+    if (!listEnd) return;
+    listEnd.textContent = message || "";
+  };
 
-  try {
-    const response = await fetch(DATA_URL);
-    const data = await response.json();
-    const searchableData = data.map((item) => ({
-      ...item,
-      searchText: buildSearchText(item),
-    }));
+  const PAGE_SIZE = 20;
+  let cursor = 0;
+  let hasMore = true;
+  let isLoading = false;
+  let activeQuery = "";
+  let totalCount = 0;
+  let requestId = 0;
 
-    const PAGE_SIZE = 30;
-    let filtered = searchableData;
-    let page = 1;
-    let renderedCount = 0;
+  const updateResultCount = () => {
+    if (!resultCount) return;
+    if (activeQuery) {
+      resultCount.textContent = `검색 결과 ${totalCount.toLocaleString()}개`;
+    } else {
+      resultCount.textContent = `전체 ${totalCount.toLocaleString()}개 매장`;
+    }
+  };
 
-    const renderResults = (reset = false) => {
-      if (reset) {
-        grid.innerHTML = "";
-        renderedCount = 0;
+  const resetList = () => {
+    grid.innerHTML = "";
+    cursor = 0;
+    hasMore = true;
+    totalCount = 0;
+    setListState("");
+    setListEnd("");
+  };
+
+  const fetchStores = async (token = requestId) => {
+    if (isLoading || !hasMore) return;
+    isLoading = true;
+    setLoading(true);
+
+    try {
+      const params = new URLSearchParams();
+      if (activeQuery) params.set("query", activeQuery);
+      params.set("cursor", String(cursor));
+      params.set("limit", String(PAGE_SIZE));
+      const response = await fetch(`${API_URL}?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error("API_ERROR");
       }
-      setListState("");
-      if (filtered.length === 0) {
-        setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
-        loadMoreButton.style.display = "none";
+      const payload = await response.json();
+      if (token !== requestId) {
+        isLoading = false;
+        setLoading(false);
         return;
       }
 
-      const targetCount = Math.min(filtered.length, page * PAGE_SIZE);
-      const slice = filtered.slice(renderedCount, targetCount);
-      slice.forEach((item) => {
-        grid.appendChild(
-          renderCard(
-            item,
-            () => showToast("예약 링크 없음"),
-            () => showToast("길찾기 링크 없음")
-          )
-        );
-      });
-      renderedCount = targetCount;
-      loadMoreButton.style.display =
-        renderedCount < filtered.length ? "inline-flex" : "none";
-    };
+      const items = payload.items || [];
+      totalCount = payload.totalCount ?? totalCount;
+      if (cursor === 0) {
+        grid.innerHTML = "";
+      }
+      if (cursor === 0 && items.length === 0) {
+        setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
+      } else {
+        setListState("");
+      }
 
-    const applyFilters = () => {
-      const searchValue = searchInput.value.trim().toLowerCase();
-      const tokens = searchValue.split(/\s+/).filter(Boolean);
-      filtered = searchableData.filter((item) =>
-        tokens.every((token) => item.searchText.includes(token))
-      );
-      resultCount.textContent = `${filtered.length}개 매장`;
-      page = 1;
-      renderResults(true);
-    };
-
-    const debouncedSearch = debounce(applyFilters, 200);
-    searchInput.addEventListener("input", debouncedSearch);
-
-    if (aiToggle && aiChips) {
-      aiToggle.addEventListener("click", () => {
-        const isPressed = aiToggle.getAttribute("aria-pressed") === "true";
-        aiToggle.setAttribute("aria-pressed", String(!isPressed));
-        aiChips.hidden = isPressed;
+      items.forEach((item) => {
+        grid.appendChild(renderCard(item));
       });
 
-      aiChips.addEventListener("click", (event) => {
-        const chip = event.target.closest(".chip");
-        if (!chip) return;
-        const term = chip.dataset.term || chip.textContent;
-        searchInput.value = term;
-        applyFilters();
-      });
+      cursor = payload.nextCursor ?? cursor + items.length;
+      hasMore = payload.hasMore;
+      updateResultCount();
+      if (!hasMore && items.length > 0) {
+        setListEnd("마지막입니다.");
+      }
+    } catch (error) {
+      if (token === requestId) {
+        setListState("목록을 불러오지 못했습니다. 새로고침 해주세요.");
+        hasMore = false;
+      }
+    } finally {
+      if (token === requestId) {
+        isLoading = false;
+        setLoading(false);
+      }
     }
+  };
 
-    loadMoreButton.addEventListener("click", () => {
-      page += 1;
-      renderResults();
+  const applySearch = () => {
+    activeQuery = searchInput.value.trim();
+    requestId += 1;
+    isLoading = false;
+    resetList();
+    renderSkeletons(grid, 8);
+    fetchStores(requestId);
+  };
+
+  const debouncedSearch = debounce(applySearch, 300);
+  searchInput.addEventListener("input", debouncedSearch);
+  if (searchForm) {
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      applySearch();
     });
-
-    applyFilters();
-  } catch (error) {
-    grid.innerHTML = "";
-    setListState("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
   }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          fetchStores();
+        }
+      });
+    },
+    { rootMargin: "200px" }
+  );
+
+  observer.observe(sentinel);
+
+  renderSkeletons(grid, 8);
+  setListState("");
+  fetchStores();
 };
 
 const initRestaurantDetail = async () => {
