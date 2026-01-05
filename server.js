@@ -19,26 +19,31 @@ const CONTENT_TYPES = {
 };
 
 const loadRestaurants = () => {
-  const raw = fs.readFileSync(DATA_PATH, "utf8");
-  const parsed = JSON.parse(raw);
-  return parsed.map((item) => ({
-    ...item,
-    searchText: [
-      item.name,
-      item.address,
-      item.category,
-      item.categoryDetail,
-      item.region?.sido,
-      item.region?.sigungu,
-      item.region?.eupmyeondong,
-      ...(item.searchTags || []),
-      ...(item.signatureMenus || []),
-      ...(item.mainDishes || []),
-    ]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase(),
-  }));
+  try {
+    const raw = fs.readFileSync(DATA_PATH, "utf8");
+    const parsed = JSON.parse(raw);
+    return parsed.map((item) => ({
+      ...item,
+      searchText: [
+        item.name,
+        item.address,
+        item.category,
+        item.categoryDetail,
+        item.region?.sido,
+        item.region?.sigungu,
+        item.region?.eupmyeondong,
+        ...(item.searchTags || []),
+        ...(item.signatureMenus || []),
+        ...(item.mainDishes || []),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase(),
+    }));
+  } catch (error) {
+    console.error("Failed to load restaurant data:", error);
+    return [];
+  }
 };
 
 let restaurantCache = loadRestaurants();
