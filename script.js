@@ -1,5 +1,6 @@
 const DATA_URL = "public-restaurants.json";
 const API_URL = "/api/stores";
+const FETCH_TIMEOUT_MS = 8000;
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -327,13 +328,42 @@ const initRestaurantsPage = async () => {
     setListEnd("");
   };
 
+  const fetchJson = async (url, errorPrefix) => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+      if (!response.ok) {
+        throw new Error(`${errorPrefix}_${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error(`${errorPrefix}_TIMEOUT`);
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
+
+  const normalizePayload = (payload, sourceLabel) => {
+    if (!payload || !Array.isArray(payload.items)) {
+      throw new Error(`${sourceLabel}_INVALID_PAYLOAD`);
+    }
+    return {
+      items: payload.items,
+      nextCursor: payload.nextCursor ?? null,
+      hasMore: Boolean(payload.hasMore),
+      totalCount: Number.isFinite(payload.totalCount) ? payload.totalCount : payload.items.length,
+      dataReady: payload.dataReady !== false,
+      error: payload.error || "",
+    };
+  };
+
   const loadLocalRestaurants = async () => {
     if (cachedRestaurants) return cachedRestaurants;
-    const response = await fetch(DATA_URL);
-    if (!response.ok) {
-      throw new Error(`DATA_ERROR_${response.status}`);
-    }
-    const data = await response.json();
+    const data = await fetchJson(DATA_URL, "DATA_ERROR");
     cachedRestaurants = data.map((item) => ({
       ...item,
       searchText: buildSearchText(item),
@@ -346,11 +376,8 @@ const initRestaurantsPage = async () => {
     if (activeQuery) params.set("query", activeQuery);
     params.set("cursor", String(cursor));
     params.set("limit", String(PAGE_SIZE));
-    const response = await fetch(`${API_URL}?${params.toString()}`);
-    if (!response.ok) {
-      throw new Error(`API_ERROR_${response.status}`);
-    }
-    return response.json();
+    const response = await fetchJson(`${API_URL}?${params.toString()}`, "API_ERROR");
+    return normalizePayload(response, "API_ERROR");
   };
 
   const fetchStoresFromJson = async () => {
@@ -368,12 +395,16 @@ const initRestaurantsPage = async () => {
     const items = filtered.slice(cursor, cursor + PAGE_SIZE);
     const nextCursor = cursor + items.length;
     const hasMoreItems = nextCursor < filtered.length;
-    return {
-      items,
-      nextCursor: hasMoreItems ? nextCursor : null,
-      hasMore: hasMoreItems,
-      totalCount: filtered.length,
-    };
+    return normalizePayload(
+      {
+        items,
+        nextCursor: hasMoreItems ? nextCursor : null,
+        hasMore: hasMoreItems,
+        totalCount: filtered.length,
+        dataReady: true,
+      },
+      "DATA_ERROR"
+    );
   };
 
   const fetchStores = async (token = requestId) => {
@@ -388,6 +419,9 @@ const initRestaurantsPage = async () => {
       let payload;
       try {
         payload = await fetchStoresFromApi();
+        if (payload.dataReady === false) {
+          throw new Error(payload.error || "DATA_NOT_READY");
+        }
       } catch (error) {
         payload = await fetchStoresFromJson();
       }
