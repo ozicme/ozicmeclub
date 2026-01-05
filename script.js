@@ -55,6 +55,23 @@ const buildMenuList = (menus) => {
 const getBadgeLabel = (item) =>
   item.verifiedBadge ? "오직미 인증" : "인증 확인중";
 
+const buildSearchText = (item) =>
+  [
+    item.name,
+    item.address,
+    item.category,
+    item.categoryDetail,
+    item.region?.sido,
+    item.region?.sigungu,
+    item.region?.eupmyeondong,
+    ...(item.searchTags || []),
+    ...(item.signatureMenus || []),
+    ...(item.mainDishes || []),
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
 const debounce = (callback, delay = 200) => {
   let timer;
   return (...args) => {
@@ -236,6 +253,7 @@ const initRestaurantsPage = async () => {
 
   const setLoading = (isLoading) => {
     listLoader.textContent = isLoading ? "불러오는 중..." : "";
+    listLoader.style.display = isLoading ? "block" : "none";
   };
 
   const setResultStatus = (message) => {
@@ -255,6 +273,10 @@ const initRestaurantsPage = async () => {
   let activeQuery = "";
   let totalCount = 0;
   let requestId = 0;
+  let errorMessage = "";
+  let lastRequestKey = "";
+  let cachedRestaurants = null;
+  let observer = null;
 
   const renderErrorState = (message) => {
     if (!listState) return;
@@ -269,9 +291,15 @@ const initRestaurantsPage = async () => {
         requestId += 1;
         isLoading = false;
         hasMore = true;
+        errorMessage = "";
+        lastRequestKey = "";
         resetList();
         renderSkeletons(grid, 8);
         setResultStatus("매장을 불러오는 중...");
+        if (observer) {
+          observer.disconnect();
+          observer.observe(sentinel);
+        }
         fetchStores(requestId);
       },
     });
@@ -293,25 +321,76 @@ const initRestaurantsPage = async () => {
     cursor = 0;
     hasMore = true;
     totalCount = 0;
+    errorMessage = "";
+    lastRequestKey = "";
     setListState("");
     setListEnd("");
   };
 
+  const loadLocalRestaurants = async () => {
+    if (cachedRestaurants) return cachedRestaurants;
+    const response = await fetch(DATA_URL);
+    if (!response.ok) {
+      throw new Error(`DATA_ERROR_${response.status}`);
+    }
+    const data = await response.json();
+    cachedRestaurants = data.map((item) => ({
+      ...item,
+      searchText: buildSearchText(item),
+    }));
+    return cachedRestaurants;
+  };
+
+  const fetchStoresFromApi = async () => {
+    const params = new URLSearchParams();
+    if (activeQuery) params.set("query", activeQuery);
+    params.set("cursor", String(cursor));
+    params.set("limit", String(PAGE_SIZE));
+    const response = await fetch(`${API_URL}?${params.toString()}`);
+    if (!response.ok) {
+      throw new Error(`API_ERROR_${response.status}`);
+    }
+    return response.json();
+  };
+
+  const fetchStoresFromJson = async () => {
+    const restaurants = await loadLocalRestaurants();
+    const tokens = activeQuery
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean);
+    const filtered =
+      tokens.length === 0
+        ? restaurants
+        : restaurants.filter((item) =>
+            tokens.every((token) => item.searchText.includes(token))
+          );
+    const items = filtered.slice(cursor, cursor + PAGE_SIZE);
+    const nextCursor = cursor + items.length;
+    const hasMoreItems = nextCursor < filtered.length;
+    return {
+      items,
+      nextCursor: hasMoreItems ? nextCursor : null,
+      hasMore: hasMoreItems,
+      totalCount: filtered.length,
+    };
+  };
+
   const fetchStores = async (token = requestId) => {
-    if (isLoading || !hasMore) return;
+    if (isLoading || !hasMore || errorMessage) return;
+    const requestKey = `${activeQuery}|${cursor}`;
+    if (requestKey === lastRequestKey) return;
+    lastRequestKey = requestKey;
     isLoading = true;
     setLoading(true);
 
     try {
-      const params = new URLSearchParams();
-      if (activeQuery) params.set("query", activeQuery);
-      params.set("cursor", String(cursor));
-      params.set("limit", String(PAGE_SIZE));
-      const response = await fetch(`${API_URL}?${params.toString()}`);
-      if (!response.ok) {
-        throw new Error(`API_ERROR_${response.status}`);
+      let payload;
+      try {
+        payload = await fetchStoresFromApi();
+      } catch (error) {
+        payload = await fetchStoresFromJson();
       }
-      const payload = await response.json();
       if (token !== requestId) {
         isLoading = false;
         setLoading(false);
@@ -342,9 +421,17 @@ const initRestaurantsPage = async () => {
     } catch (error) {
       if (token === requestId) {
         hasMore = false;
+        errorMessage =
+          error instanceof Error ? error.message : "UNKNOWN_ERROR";
+        if (cursor === 0) {
+          grid.innerHTML = "";
+        }
         setResultStatus("목록을 불러오지 못했습니다.");
         setListEnd("");
         renderErrorState("목록을 불러오지 못했습니다. 새로고침 또는 다시 시도해주세요.");
+        if (observer) {
+          observer.disconnect();
+        }
       }
     } finally {
       if (token === requestId) {
@@ -373,10 +460,10 @@ const initRestaurantsPage = async () => {
     });
   }
 
-  const observer = new IntersectionObserver(
+  observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting && hasMore && !isLoading) {
+        if (entry.isIntersecting && hasMore && !isLoading && !errorMessage) {
           fetchStores();
         }
       });
