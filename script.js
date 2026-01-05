@@ -1,4 +1,7 @@
 const DATA_URL = "public-restaurants.json";
+const MAX_RESULTS = 490;
+const PAGE_SIZE = 24;
+const SEARCH_DEBOUNCE_MS = 300;
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -11,13 +14,6 @@ const slugify = (text) =>
     .replace(/[^a-zA-Z0-9가-힣]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
-
-const getBestDate = (item) => {
-  if (item.verifiedMonth) {
-    return new Date(`${item.verifiedMonth}-01`);
-  }
-  return new Date(0);
-};
 
 const getThumbnail = (item) => item.thumbnail || item.images?.[0] || "";
 
@@ -40,8 +36,6 @@ const getMapLink = (item) =>
 
 const getPhoneLink = (item) => (item.phone ? `tel:${item.phone}` : "");
 
-const hasReservation = (item) => Boolean(getReservationLink(item));
-
 const buildMenuList = (menus) => {
   if (!menus || menus.length === 0) {
     return "대표 메뉴 미등록";
@@ -51,12 +45,6 @@ const buildMenuList = (menus) => {
 
 const getBadgeLabel = (item) =>
   item.verifiedBadge ? "오직미 인증" : "인증 확인중";
-
-const setActiveChip = (container, value) => {
-  container.querySelectorAll(".chip").forEach((chip) => {
-    chip.classList.toggle("is-active", chip.dataset.category === value);
-  });
-};
 
 const updateKakaoShare = () => {
   const kakaoShare = document.getElementById("kakao-share");
@@ -104,28 +92,12 @@ const buildMediaFrame = ({ src, alt, withOverlay }) => {
   return frame;
 };
 
-const buildCurationCard = (item) => {
-  const card = document.createElement("article");
-  card.className = "curation-card";
-  const link = document.createElement("a");
-  link.href = `restaurant.html?slug=${slugify(item.name)}`;
-  link.setAttribute("aria-label", `${item.name} 상세보기`);
-  const frame = buildMediaFrame({
-    src: getThumbnail(item),
-    alt: `${item.name} 썸네일`,
-  });
-  link.appendChild(frame);
-  const info = document.createElement("div");
-  info.innerHTML = `
-    <span class="badge is-muted">오직미 인증</span>
-    <h3 class="card-title">${item.name}</h3>
-    <p class="card-meta">${formatValue(item.category)} · ${formatValue(
-    item.region?.sido
-  )}</p>
-    <p class="card-meta">${buildMenuList(item.signatureMenus)}</p>
-  `;
-  card.append(link, info);
-  return card;
+const debounce = (callback, delay = SEARCH_DEBOUNCE_MS) => {
+  let timer;
+  return (...args) => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => callback(...args), delay);
+  };
 };
 
 const buildActionButton = ({ label, href, primary, external, staticText }) => {
@@ -231,24 +203,31 @@ const updateMetaTags = (item) => {
 };
 
 const initRestaurantsPage = async () => {
-  const regionSelect = document.getElementById("region-select");
-  const categoryGroup = document.getElementById("category-group");
   const searchInput = document.getElementById("search-input");
-  const reserveToggle = document.getElementById("reserve-toggle");
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
-  const curationGrid = document.getElementById("curation-grid");
-  const totalCount = document.getElementById("total-count");
-  const reserveCount = document.getElementById("reserve-count");
-  const verifiedCount = document.getElementById("verified-count");
+  const loadingGrid = document.getElementById("loading-grid");
+  const scrollSentinel = document.getElementById("scroll-sentinel");
 
-  if (!grid || !regionSelect || !categoryGroup) return;
+  if (!grid || !searchInput || !scrollSentinel) return;
 
   const setListState = (message) => {
     if (!listState) return;
     listState.textContent = message || "";
     listState.style.display = message ? "block" : "none";
+  };
+
+  const showLoading = (count = 6) => {
+    if (!loadingGrid) return;
+    renderSkeletons(loadingGrid, count);
+    loadingGrid.style.display = "grid";
+  };
+
+  const hideLoading = () => {
+    if (!loadingGrid) return;
+    loadingGrid.innerHTML = "";
+    loadingGrid.style.display = "none";
   };
 
   renderSkeletons(grid, 8);
@@ -257,99 +236,99 @@ const initRestaurantsPage = async () => {
   try {
     const response = await fetch(DATA_URL);
     const data = await response.json();
+    const allData = data.slice(0, MAX_RESULTS);
+    let filteredData = [];
+    let renderedCount = 0;
+    let isLoading = false;
+    let observer;
 
-    if (totalCount) totalCount.textContent = data.length;
-    if (reserveCount) reserveCount.textContent = data.filter(hasReservation).length;
-    if (verifiedCount) {
-      verifiedCount.textContent = data.filter((item) => item.verifiedBadge).length;
-    }
+    const updateResultCount = () => {
+      if (!resultCount) return;
+      resultCount.textContent = `총 ${filteredData.length}개 매장`;
+    };
 
-    const regions = Array.from(
-      new Set(data.map((item) => item.region?.sido).filter(Boolean))
-    ).sort();
-    regions.forEach((region) => {
-      const option = document.createElement("option");
-      option.value = region;
-      option.textContent = region;
-      regionSelect.appendChild(option);
-    });
+    const resetList = () => {
+      grid.innerHTML = "";
+      renderedCount = 0;
+      setListState("");
+      hideLoading();
+    };
 
-    const categories = Array.from(
-      new Set(data.map((item) => item.category).filter(Boolean))
-    ).sort();
-    categories.forEach((category) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "chip";
-      button.dataset.category = category;
-      button.textContent = category;
-      categoryGroup.appendChild(button);
-    });
+    const loadNextPage = () => {
+      if (isLoading) return;
+      if (renderedCount >= filteredData.length) return;
+      isLoading = true;
+      showLoading();
 
-    const curated = data
-      .filter((item) => item.verifiedBadge)
-      .sort((a, b) => getBestDate(b) - getBestDate(a))
-      .slice(0, 3);
-    if (curationGrid) {
-      curationGrid.innerHTML = "";
-      if (curated.length === 0) {
-        curationGrid.innerHTML = "<p class=\"card-meta\">추천 매장이 아직 없습니다.</p>";
-      } else {
-        curated.forEach((item) => {
-          curationGrid.appendChild(buildCurationCard(item));
-        });
-      }
-    }
+      const start = renderedCount;
+      const end = Math.min(start + PAGE_SIZE, filteredData.length);
+      const nextItems = filteredData.slice(start, end);
 
-    let selectedCategory = "";
-
-    const applyFilters = () => {
-      const searchValue = searchInput.value.trim().toLowerCase();
-      const regionValue = regionSelect.value;
-      const mustHaveReserve = reserveToggle.checked;
-
-      let results = data.filter((item) => {
-        const matchesName = item.name.toLowerCase().includes(searchValue);
-        const matchesRegion = regionValue ? item.region?.sido === regionValue : true;
-        const matchesCategory = selectedCategory
-          ? item.category === selectedCategory
-          : true;
-        const matchesReserve = mustHaveReserve ? hasReservation(item) : true;
-        return matchesName && matchesRegion && matchesCategory && matchesReserve;
+      nextItems.forEach((item) => {
+        grid.appendChild(renderCard(item));
       });
 
-      results = results.sort((a, b) => getBestDate(b) - getBestDate(a));
+      renderedCount = end;
+      hideLoading();
+      isLoading = false;
+    };
 
-      resultCount.textContent = `${results.length}개 매장`;
-      grid.innerHTML = "";
-      setListState("");
+    const applySearch = (value) => {
+      const searchValue = value.trim().toLowerCase();
+      filteredData = allData.filter((item) =>
+        item.name.toLowerCase().includes(searchValue)
+      );
 
-      if (results.length === 0) {
-        setListState(
-          "조건에 맞는 매장이 없습니다. 필터를 줄여 다시 확인해 주세요."
-        );
+      updateResultCount();
+      resetList();
+
+      if (filteredData.length === 0) {
+        setListState("검색 결과가 없습니다. 다른 키워드를 입력해 보세요.");
         return;
       }
 
-      results.forEach((item) => {
-        grid.appendChild(renderCard(item));
-      });
+      loadNextPage();
     };
 
-    categoryGroup.addEventListener("click", (event) => {
-      const chip = event.target.closest(".chip");
-      if (!chip) return;
-      selectedCategory = chip.dataset.category;
-      setActiveChip(categoryGroup, selectedCategory);
-      applyFilters();
+    const updateQueryString = (value) => {
+      const params = new URLSearchParams(window.location.search);
+      if (value) {
+        params.set("q", value);
+      } else {
+        params.delete("q");
+      }
+      const query = params.toString();
+      const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState(null, "", nextUrl);
+    };
+
+    const debouncedSearch = debounce((value) => {
+      updateQueryString(value);
+      applySearch(value);
     });
 
-    [searchInput, regionSelect, reserveToggle].forEach((el) => {
-      el.addEventListener("input", applyFilters);
-      el.addEventListener("change", applyFilters);
+    observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          loadNextPage();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(scrollSentinel);
+
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get("q") || "";
+    searchInput.value = initialQuery;
+    searchInput.addEventListener("input", (event) => {
+      debouncedSearch(event.target.value);
     });
 
-    applyFilters();
+    filteredData = allData;
+    updateResultCount();
+    resetList();
+    applySearch(initialQuery);
   } catch (error) {
     grid.innerHTML = "";
     setListState("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");

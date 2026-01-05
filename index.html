@@ -25,61 +25,21 @@
 
     <main class="list-page">
       <section class="list-hero">
-        <div>
-          <p class="eyebrow">오직미 쌀 사용 매장 디렉토리</p>
-          <h1>깔끔한 디렉토리에서<br />네이버 예약 전환까지</h1>
-          <p class="hero-desc">
-            필요한 정보만 정리한 프리미엄 식당 리스트입니다. 모든 예약은 네이버 예약 또는 네이버
-            플레이스로만 연결됩니다.
-          </p>
+        <div class="hero-content">
+          <h1 class="hero-title">구글 처럼 깔끔하게 우리동네에서 좋은 쌀을 쓰는 식당을 검색해보세요</h1>
+          <p class="hero-desc">총 490개 매장만을 대상으로 검색 결과를 보여드립니다.</p>
         </div>
-        <div class="hero-stats" aria-label="요약 지표">
-          <div>
-            <p class="stat-label">예약 가능 매장</p>
-            <strong id="reserve-count">-</strong>
-          </div>
-          <div>
-            <p class="stat-label">오직미 인증</p>
-            <strong id="verified-count">-</strong>
-          </div>
-          <div>
-            <p class="stat-label">전체 매장</p>
-            <strong id="total-count">-</strong>
-          </div>
-        </div>
-      </section>
-
-      <section class="curation" aria-label="추천 섹션">
-        <div class="section-header">
-          <h2>오직미 인증 매장</h2>
-          <p>최근 확인 월 기준으로 선별한 추천 매장입니다.</p>
-        </div>
-        <div class="curation-grid" id="curation-grid">
-          <!-- curated cards -->
-        </div>
-      </section>
-
-      <section class="filter-panel" aria-label="식당 필터">
-        <div class="filter-sticky">
-          <label class="search" for="search-input">
-            <span class="sr-only">식당명 검색</span>
-            <input id="search-input" type="search" placeholder="식당명 검색" autocomplete="off" />
+        <div class="search-box" role="search">
+          <label class="search-field" for="search-input">
+            <span class="sr-only">식당 검색</span>
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L20 21.5 21.5 20l-6-6zm-6 0A4.5 4.5 0 1 1 10 5a4.5 4.5 0 0 1-.5 9z"
+                fill="currentColor"
+              />
+            </svg>
+            <input id="search-input" type="search" name="q" placeholder="식당 이름을 입력하세요" autocomplete="off" />
           </label>
-          <div class="filter-row">
-            <label class="select" for="region-select">
-              <span>지역</span>
-              <select id="region-select">
-                <option value="">전체</option>
-              </select>
-            </label>
-            <label class="toggle" for="reserve-toggle">
-              <input id="reserve-toggle" type="checkbox" />
-              <span>예약 가능한 곳만</span>
-            </label>
-          </div>
-          <div class="chip-row" id="category-group" aria-label="카테고리">
-            <button type="button" class="chip is-active" data-category="">전체</button>
-          </div>
         </div>
       </section>
 
@@ -92,6 +52,8 @@
       <section class="restaurant-grid" id="restaurant-grid">
         <!-- cards -->
       </section>
+      <section class="restaurant-grid loading-grid" id="loading-grid" aria-hidden="true"></section>
+      <div class="scroll-sentinel" id="scroll-sentinel" aria-hidden="true"></div>
 
       <section class="about" id="about">
         <div>
