@@ -47,6 +47,20 @@ const buildSearchText = (item) => {
   return parts.filter(Boolean).join(" ").toLowerCase();
 };
 
+let useClientData = false;
+let clientData = [];
+
+const ensureClientData = async () => {
+  if (clientData.length > 0) return;
+  const response = await fetch(DATA_URL);
+  if (!response.ok) throw new Error("DATA_ERROR");
+  const data = await response.json();
+  clientData = data.map((item) => ({
+    ...item,
+    searchText: buildSearchText(item),
+  }));
+};
+
 const getMapLink = (item) => {
   if (item.naverMapUrl) return item.naverMapUrl;
   if (item.lat && item.lng) {
@@ -263,8 +277,6 @@ const initRestaurantsPage = async () => {
   let activeQuery = "";
   let totalCount = 0;
   let requestId = 0;
-  let useClientData = false;
-  let clientData = [];
 
   const updateResultCount = () => {
     if (!resultCount) return;
@@ -338,17 +350,6 @@ const initRestaurantsPage = async () => {
         setLoading(false);
       }
     }
-  };
-
-  const ensureClientData = async () => {
-    if (clientData.length > 0) return;
-    const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error("DATA_ERROR");
-    const data = await response.json();
-    clientData = data.map((item) => ({
-      ...item,
-      searchText: buildSearchText(item),
-    }));
   };
 
   const fetchStoresFromClient = (token) => {
