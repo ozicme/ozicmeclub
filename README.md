@@ -4,16 +4,17 @@
 
 ## 로컬 실행 방법
 
-간단한 정적 서버로 실행합니다.
-
 ```bash
-python -m http.server 8000
+npm run dev
 ```
 
-브라우저에서 아래 주소로 접속하세요.
+브라우저에서 `http://localhost:3000`에 접속하세요.
 
-- 리스트: `http://localhost:8000/index.html`
-- 상세: `http://localhost:8000/restaurant.html?slug=식당명`
+## 데이터 업데이트 (5줄 요약)
+
+1) 최신 엑셀을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체
+2) `npm run seed` 실행
+3) `public-restaurants.json` 갱신 확인 후 배포
 
 ## 데이터 업데이트 방법 (엑셀 → JSON)
 
