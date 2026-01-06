@@ -1,11 +1,15 @@
 const fs = require("fs");
 const path = require("path");
 
-const defaultSource = path.resolve(
-  __dirname,
-  "..",
-  "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
-);
+const defaultSourceCandidates = [
+  "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv",
+  "오직미_식당디렉토리_사이트개발용_최종정비.csv",
+];
+const defaultSource =
+  defaultSourceCandidates
+    .map((candidate) => path.resolve(__dirname, "..", candidate))
+    .find((candidate) => fs.existsSync(candidate)) ||
+  path.resolve(__dirname, "..", defaultSourceCandidates[0]);
 const defaultOutput = path.resolve(__dirname, "..", "public-restaurants.json");
 
 const sourcePath = path.resolve(process.argv[2] || defaultSource);
