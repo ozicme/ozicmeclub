@@ -23,24 +23,32 @@ const loadRestaurants = () => {
     const raw = fs.readFileSync(DATA_PATH, "utf8");
     const parsed = JSON.parse(raw);
     return {
-      data: parsed.map((item) => ({
-        ...item,
-        searchText: [
-          item.name,
-          item.address,
-          item.category,
-          item.categoryDetail,
-          item.region?.sido,
-          item.region?.sigungu,
-          item.region?.eupmyeondong,
-          ...(item.searchTags || []),
-          ...(item.signatureMenus || []),
-          ...(item.mainDishes || []),
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase(),
-      })),
+      data: parsed.map((item) => {
+        const imageUrl = item.imageUrl || item.image_url || item.thumbnail || item.images?.[0] || "";
+        const naverPlaceUrl = item.naverPlaceUrl || item.naver_place_url || "";
+        return {
+          ...item,
+          imageUrl,
+          naverPlaceUrl,
+          image_url: item.image_url || imageUrl,
+          naver_place_url: item.naver_place_url || naverPlaceUrl,
+          searchText: [
+            item.name,
+            item.address,
+            item.category,
+            item.categoryDetail,
+            item.region?.sido,
+            item.region?.sigungu,
+            item.region?.eupmyeondong,
+            ...(item.searchTags || []),
+            ...(item.signatureMenus || []),
+            ...(item.mainDishes || []),
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase(),
+        };
+      }),
       error: null,
     };
   } catch (error) {

@@ -14,38 +14,17 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
 
-const getThumbnail = (item) =>
-  item.imageUrl || item.thumbnail || item.images?.[0] || "";
+const getImageUrl = (item) =>
+  item.imageUrl || item.image_url || item.thumbnail || item.images?.[0] || "";
 
-const getReservationLink = (item) =>
-  item.naverBookingUrl ||
-  item.naverReservationUrl ||
-  item.naverPlaceUrl ||
-  "";
-
-const getReservationLabel = (item) =>
-  item.naverBookingUrl || item.naverReservationUrl
-    ? "네이버 예약"
-    : item.naverPlaceUrl
-      ? "네이버 플레이스"
-      : "예약 링크 없음";
+const getPlaceLink = (item) =>
+  item.naverPlaceUrl || item.naver_place_url || "";
 
 const buildAddress = (item) =>
   item.address ||
   [item.region?.sido, item.region?.sigungu, item.region?.eupmyeondong]
     .filter(Boolean)
     .join(" ");
-
-const getMapLink = (item) => {
-  if (item.naverMapUrl) return item.naverMapUrl;
-  if (item.lat && item.lng) {
-    return `https://map.naver.com/v5/directions?c=${item.lng},${item.lat},15,0,0,0,dh`;
-  }
-  const query = [item.name, buildAddress(item)].filter(Boolean).join(" ");
-  return query ? `https://map.naver.com/v5/search/${encodeURIComponent(query)}` : "";
-};
-
-const getPhoneLink = (item) => (item.phone ? `tel:${item.phone}` : "");
 
 const buildMenuList = (menus) => {
   if (!menus || menus.length === 0) {
@@ -104,9 +83,9 @@ const renderSkeletons = (container, count = 6) => {
   });
 };
 
-const buildMediaFrame = ({ src, alt, aspectRatio }) => {
+const buildMediaFrame = ({ src, alt, aspectRatio, className = "" }) => {
   const frame = document.createElement("div");
-  frame.className = "media-frame";
+  frame.className = `media-frame ${className}`.trim();
   if (aspectRatio) {
     frame.style.setProperty("--media-aspect", aspectRatio);
   }
@@ -173,14 +152,15 @@ const buildRegionLabel = (item) => {
 };
 
 const renderCard = (item) => {
-  const placeLink = item.naverPlaceUrl || "";
+  const placeLink = getPlaceLink(item);
   const card = document.createElement("article");
   card.className = "restaurant-card";
 
   const mediaFrame = buildMediaFrame({
-    src: getThumbnail(item),
+    src: getImageUrl(item),
     alt: `${item.name} 대표 이미지`,
     aspectRatio: "16 / 9",
+    className: "media-card",
   });
 
   const cardBody = document.createElement("div");
@@ -224,7 +204,7 @@ const updateMetaTags = (item) => {
   const title = `${item.name} | 오직미`;
   const description = `${formatValue(item.category)} · ${formatValue(
     item.region?.sido
-  )} ${formatValue(item.region?.sigungu)}의 오직미 인증 매장. 네이버 예약과 길찾기 정보를 확인하세요.`;
+  )} ${formatValue(item.region?.sigungu)}의 오직미 인증 매장. 네이버 플레이스에서 상세 정보를 확인하세요.`;
   document.title = title;
   const descTag = document.querySelector('meta[name="description"]');
   if (descTag) descTag.setAttribute("content", description);
@@ -233,7 +213,7 @@ const updateMetaTags = (item) => {
   const ogDesc = document.querySelector('meta[property="og:description"]');
   if (ogDesc) ogDesc.setAttribute("content", description);
   const ogImage = document.querySelector('meta[property="og:image"]');
-  if (ogImage) ogImage.setAttribute("content", getThumbnail(item) || "/og-placeholder.png");
+  if (ogImage) ogImage.setAttribute("content", getImageUrl(item) || "/og-placeholder.png");
 };
 
 const initRestaurantsPage = async () => {
@@ -280,6 +260,7 @@ const initRestaurantsPage = async () => {
   let lastRequestKey = "";
   let cachedRestaurants = null;
   let observer = null;
+  let sampleLogged = false;
 
   const renderErrorState = (message) => {
     if (!listState) return;
@@ -379,7 +360,7 @@ const initRestaurantsPage = async () => {
     params.set("cursor", String(cursor));
     params.set("limit", String(PAGE_SIZE));
     const response = await fetchJson(`${API_URL}?${params.toString()}`, "API_ERROR");
-    return normalizePayload(response, "API_ERROR");
+    return { ...normalizePayload(response, "API_ERROR"), source: "api" };
   };
 
   const fetchStoresFromJson = async () => {
@@ -397,7 +378,7 @@ const initRestaurantsPage = async () => {
     const items = filtered.slice(cursor, cursor + PAGE_SIZE);
     const nextCursor = cursor + items.length;
     const hasMoreItems = nextCursor < filtered.length;
-    return normalizePayload(
+    return { ...normalizePayload(
       {
         items,
         nextCursor: hasMoreItems ? nextCursor : null,
@@ -406,7 +387,7 @@ const initRestaurantsPage = async () => {
         dataReady: true,
       },
       "DATA_ERROR"
-    );
+    ), source: "json" };
   };
 
   const fetchStores = async (token = requestId) => {
@@ -434,6 +415,10 @@ const initRestaurantsPage = async () => {
       }
 
       const items = payload.items || [];
+      if (payload.source === "api" && items[0] && !sampleLogged) {
+        console.log("[stores] API sample item", items[0]);
+        sampleLogged = true;
+      }
       totalCount = payload.totalCount ?? totalCount;
       if (cursor === 0) {
         grid.innerHTML = "";
@@ -538,15 +523,12 @@ const initRestaurantDetail = async () => {
 
     updateMetaTags(item);
 
-    const reserveLink = getReservationLink(item);
-    const reserveLabel = getReservationLabel(item);
-    const mapLink = getMapLink(item);
-    const phoneLink = getPhoneLink(item);
+    const placeLink = getPlaceLink(item);
 
     if (detailHero) {
       detailHero.innerHTML = "";
       const frame = buildMediaFrame({
-        src: getThumbnail(item),
+        src: getImageUrl(item),
         alt: `${item.name} 대표 이미지`,
       });
       const titleWrap = document.createElement("div");
@@ -564,34 +546,24 @@ const initRestaurantDetail = async () => {
         "가격대 미등록"
       )}</p>
         <p class="card-meta">대표 메뉴: ${buildMenuList(item.signatureMenus)}</p>
-        <p class="cta-hint">예약: ${reserveLabel}</p>
       `;
 
       const actions = document.createElement("div");
-      actions.className = "card-actions";
+      actions.className = "card-actions is-single";
       actions.appendChild(
-        reserveLink
+        placeLink
           ? buildActionButton({
-              label: "예약",
-              href: reserveLink,
+              label: "더 알아보기",
+              href: placeLink,
               primary: true,
               external: true,
             })
           : buildActionButton({
-              label: "예약",
+              label: "링크 없음",
               primary: true,
               disabled: true,
             })
       );
-      if (mapLink) {
-        actions.appendChild(
-          buildActionButton({
-            label: "길찾기",
-            href: mapLink,
-            external: true,
-          })
-        );
-      }
 
       titleWrap.appendChild(actions);
       detailHero.append(frame, titleWrap);
@@ -621,24 +593,13 @@ const initRestaurantDetail = async () => {
     }
 
     if (detailInfo) {
-      const reserveLinkLabel = reserveLink ? reserveLabel : "예약 준비중";
       detailInfo.innerHTML = `
         <div class="info-card">
-          <h3>예약 & 길찾기</h3>
+          <h3>네이버 플레이스</h3>
           <div class="info-list">
-            <span>예약 링크: ${
-              reserveLink
-                ? `<a class="link" href="${reserveLink}" target="_blank" rel="noopener">${reserveLinkLabel}</a>`
-                : reserveLinkLabel
-            }</span>
-            <span>지도 링크: ${
-              mapLink
-                ? `<a class="link" href="${mapLink}" target="_blank" rel="noopener">지도 열기</a>`
-                : "미등록"
-            }</span>
-            <span>전화: ${
-              phoneLink
-                ? `<a class="link" href="${phoneLink}">${item.phone}</a>`
+            <span>플레이스 링크: ${
+              placeLink
+                ? `<a class="link" href="${placeLink}" target="_blank" rel="noopener">네이버 플레이스 열기</a>`
                 : "미등록"
             }</span>
           </div>
@@ -677,22 +638,18 @@ const initRestaurantDetail = async () => {
     }
 
     if (stickyCta) {
-      const mapAction = mapLink
-        ? `<a class="btn btn-ghost" href="${mapLink}" target="_blank" rel="noopener">길찾기</a>`
-        : `<span class="btn btn-ghost btn-static">길찾기 준비중</span>`;
-      const reserveAction = reserveLink
-        ? `<a class="btn btn-primary" href="${reserveLink}" target="_blank" rel="noopener">예약</a>`
-        : `<span class="btn btn-primary btn-static">예약 준비중</span>`;
+      const placeAction = placeLink
+        ? `<a class="btn btn-primary" href="${placeLink}" target="_blank" rel="noopener">더 알아보기</a>`
+        : `<span class="btn btn-primary btn-static">링크 없음</span>`;
 
       stickyCta.innerHTML = `
         <div class="cta-content">
           <div>
             <strong>${item.name}</strong>
-            <p class="card-meta">예약: ${reserveLabel}</p>
+            <p class="card-meta">네이버 플레이스</p>
           </div>
           <div class="cta-actions">
-            ${mapAction}
-            ${reserveAction}
+            ${placeAction}
           </div>
         </div>
       `;
