@@ -6,6 +6,23 @@ let cursor = 0;
 const pageSize = 20;
 let isLoading = false;
 let observer = null;
+let debugEnabled = false;
+
+const PLACEHOLDER_IMAGE_URL = new URL("./assets/placeholder-image.svg", document.baseURI).toString();
+const IMAGE_URL_CANDIDATES = [
+  "imageUrl",
+  "image_url",
+  "image",
+  "thumbnail",
+  "thumb",
+  "img",
+  "photo",
+  "images",
+  "imageLinks",
+  "대표이미지",
+  "이미지링크",
+];
+const IMAGE_OBJECT_CANDIDATES = ["url", "src", "imageUrl", "image_url", "image"];
 
 const debugState = {
   lastUrl: "",
@@ -18,6 +35,7 @@ const debugState = {
 };
 
 const ensureDebugPanel = () => {
+  if (!debugEnabled) return null;
   let panel = document.getElementById("debug-panel");
   if (panel) return panel;
 
@@ -72,21 +90,26 @@ const setDebugError = (error) => {
 };
 
 const updateDebugPanel = () => {
+  if (!debugEnabled) return;
   const panel = ensureDebugPanel();
+  if (!panel) return;
   const body = panel.querySelector("#debug-body");
   if (!body) return;
   body.textContent = buildDebugText();
 };
 
-window.addEventListener("error", (event) => {
-  const message = event?.error instanceof Error ? event.error.stack || event.error.message : event.message;
-  setDebugError(message || "UNKNOWN_ERROR");
-});
+const setupDebugHooks = () => {
+  if (!debugEnabled) return;
+  window.addEventListener("error", (event) => {
+    const message = event?.error instanceof Error ? event.error.stack || event.error.message : event.message;
+    setDebugError(message || "UNKNOWN_ERROR");
+  });
 
-window.addEventListener("unhandledrejection", (event) => {
-  const reason = event?.reason instanceof Error ? event.reason.stack || event.reason.message : String(event?.reason);
-  setDebugError(reason || "UNHANDLED_REJECTION");
-});
+  window.addEventListener("unhandledrejection", (event) => {
+    const reason = event?.reason instanceof Error ? event.reason.stack || event.reason.message : String(event?.reason);
+    setDebugError(reason || "UNHANDLED_REJECTION");
+  });
+};
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -100,8 +123,7 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
 
-const getImageUrl = (item) =>
-  item.imageUrl || item.image_url || item.thumbnail || item.images?.[0] || "";
+const getImageUrl = (item) => item?.imageUrl || "";
 
 const getPlaceLink = (item) =>
   item.naverPlaceUrl || item.naver_place_url || "";
@@ -147,6 +169,97 @@ const debounce = (callback, delay = 200) => {
   };
 };
 
+const isNaverPlaceUrl = (value) => {
+  if (!value) return false;
+  return /(^https?:\/\/(map|place)\.naver\.com)|(\.naver\.com\/place)/i.test(value);
+};
+
+const resolveImageUrl = (value) => {
+  if (!value || typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (isNaverPlaceUrl(trimmed)) return "";
+  if (trimmed.startsWith("//")) {
+    return `https:${trimmed}`;
+  }
+  try {
+    return new URL(trimmed, document.baseURI).toString();
+  } catch (error) {
+    return "";
+  }
+};
+
+const pickImageUrl = (value) => {
+  if (!value) return "";
+  if (Array.isArray(value)) {
+    for (const entry of value) {
+      const candidate = pickImageUrl(entry);
+      if (candidate) return candidate;
+    }
+    return "";
+  }
+  if (typeof value === "object") {
+    for (const key of IMAGE_OBJECT_CANDIDATES) {
+      if (value && value[key]) {
+        const candidate = pickImageUrl(value[key]);
+        if (candidate) return candidate;
+      }
+    }
+    return "";
+  }
+  if (typeof value === "string") {
+    return resolveImageUrl(value);
+  }
+  return "";
+};
+
+const normalizeStore = (row, index = 0) => {
+  try {
+    const nameCandidates = ["name", "store_name", "상호", "식당명"];
+    const addressCandidates = ["address", "addr", "도로명주소", "주소"];
+    const placeCandidates = [
+      "naver_place_url",
+      "naverPlaceUrl",
+      "naverPlace",
+      "네이버플레이스",
+      "플레이스링크",
+    ];
+
+    const pickValue = (obj, keys) => {
+      for (const key of keys) {
+        if (obj && obj[key]) return obj[key];
+      }
+      return "";
+    };
+
+    const name = pickValue(row, nameCandidates) || "";
+    const address = pickValue(row, addressCandidates) || buildAddress(row);
+    const naverPlaceUrl = pickValue(row, placeCandidates) || "";
+    const imageValue =
+      IMAGE_URL_CANDIDATES.map((key) => (row ? row[key] : ""))
+        .map((value) => pickImageUrl(value))
+        .find(Boolean) || "";
+    const id = row?.id || row?.store_id || row?.storeId || row?.slug || `store-${index + 1}`;
+
+    return {
+      ...row,
+      id,
+      name,
+      address,
+      naverPlaceUrl,
+      imageUrl: imageValue,
+    };
+  } catch (error) {
+    return {
+      id: `store-${index + 1}`,
+      name: "",
+      address: "",
+      naverPlaceUrl: "",
+      imageUrl: "",
+    };
+  }
+};
+
 const updateKakaoShare = () => {
   const kakaoShare = document.getElementById("kakao-share");
   if (!kakaoShare) return;
@@ -179,23 +292,27 @@ const buildMediaFrame = ({ src, alt, aspectRatio, className = "" }) => {
   placeholder.className = "media-placeholder";
   placeholder.innerHTML = `<span aria-hidden="true">🍚</span><span>이미지 준비중</span>`;
   frame.appendChild(placeholder);
-  if (src) {
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = alt;
-    img.loading = "lazy";
-    img.decoding = "async";
-    img.addEventListener("load", () => {
-      frame.classList.add("media-loaded");
-    });
-    img.addEventListener("error", () => {
-      frame.classList.add("media-error");
-      img.remove();
-    });
-    frame.appendChild(img);
-  } else {
-    frame.classList.add("media-error");
+  const img = document.createElement("img");
+  img.alt = alt;
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.src = src || PLACEHOLDER_IMAGE_URL;
+  if (!src) {
+    img.classList.add("is-fallback");
   }
+  img.addEventListener("load", () => {
+    frame.classList.add("media-loaded");
+  });
+  img.addEventListener("error", () => {
+    if (img.dataset.fallbackApplied === "1") {
+      return;
+    }
+    img.dataset.fallbackApplied = "1";
+    img.src = PLACEHOLDER_IMAGE_URL;
+    img.classList.add("is-fallback");
+    frame.classList.add("media-loaded");
+  });
+  frame.appendChild(img);
   return frame;
 };
 
@@ -402,62 +519,21 @@ const initRestaurantsPage = async () => {
     }
   };
 
-  const normalizeStore = (row, index = 0) => {
-    try {
-      const nameCandidates = ["name", "store_name", "상호", "식당명"];
-      const addressCandidates = ["address", "addr", "도로명주소", "주소"];
-      const placeCandidates = [
-        "naver_place_url",
-        "naverPlaceUrl",
-        "naverPlace",
-        "네이버플레이스",
-        "플레이스링크",
-      ];
-      const imageCandidates = ["image_url", "imageUrl", "image", "thumbnail", "대표이미지", "이미지링크"];
-
-      const pickValue = (obj, keys) => {
-        for (const key of keys) {
-          if (obj && obj[key]) return obj[key];
-        }
-        return "";
-      };
-
-      const name = pickValue(row, nameCandidates) || "";
-      const address = pickValue(row, addressCandidates) || buildAddress(row);
-      const naverPlaceUrl = pickValue(row, placeCandidates) || "";
-      const imageUrl = pickValue(row, imageCandidates) || "";
-      const id = row?.id || row?.store_id || row?.storeId || row?.slug || `store-${index + 1}`;
-
-      return {
-        ...row,
-        id,
-        name,
-        address,
-        naverPlaceUrl,
-        imageUrl,
-      };
-    } catch (error) {
-      return {
-        id: `store-${index + 1}`,
-        name: "",
-        address: "",
-        naverPlaceUrl: "",
-        imageUrl: "",
-      };
-    }
-  };
-
   const loadAllStores = async () => {
     if (dataReady && allStores.length > 0) return allStores;
 
     const url = new URL(DATA_URL, document.baseURI).toString();
-    debugState.lastUrl = url;
-    updateDebugPanel();
+    if (debugEnabled) {
+      debugState.lastUrl = url;
+      updateDebugPanel();
+    }
 
     try {
       const response = await fetchWithTimeout(url);
-      debugState.status = String(response.status);
-      updateDebugPanel();
+      if (debugEnabled) {
+        debugState.status = String(response.status);
+        updateDebugPanel();
+      }
       if (!response.ok) {
         throw new Error(`DATA_ERROR_${response.status}`);
       }
@@ -476,15 +552,19 @@ const initRestaurantsPage = async () => {
       });
 
       dataReady = true;
-      debugState.type = "JSON";
-      debugState.count = allStores.length;
-      debugState.cursor = cursor;
-      setDebugError("");
-      setDebugMessage(`DATA_OK(url=${url}, type=JSON, count=${allStores.length})`);
+      if (debugEnabled) {
+        debugState.type = "JSON";
+        debugState.count = allStores.length;
+        debugState.cursor = cursor;
+        setDebugError("");
+        setDebugMessage(`DATA_OK(url=${url}, type=JSON, count=${allStores.length})`);
+      }
       return allStores;
     } catch (error) {
       const lastError = error instanceof Error ? error.message : String(error);
-      setDebugError(lastError);
+      if (debugEnabled) {
+        setDebugError(lastError);
+      }
       throw error;
     }
   };
@@ -532,8 +612,10 @@ const initRestaurantsPage = async () => {
     });
 
     cursor += next.length;
-    debugState.cursor = cursor;
-    updateDebugPanel();
+    if (debugEnabled) {
+      debugState.cursor = cursor;
+      updateDebugPanel();
+    }
     if (cursor >= filteredStores.length) {
       setListEnd(filteredStores.length > 0 ? "마지막입니다." : "");
     }
@@ -610,7 +692,7 @@ const initRestaurantsPage = async () => {
   loadAndRender();
 };
 
-const initRestaurantDetail = async () => {
+  const initRestaurantDetail = async () => {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
   if (!slug) return;
@@ -624,7 +706,8 @@ const initRestaurantDetail = async () => {
   try {
     const response = await fetch(new URL(DATA_URL, document.baseURI).toString());
     const data = await response.json();
-    const item = data.find((restaurant) => slugify(restaurant.name) === slug);
+    const normalized = data.map((row, index) => normalizeStore(row, index));
+    const item = normalized.find((restaurant) => slugify(restaurant.name) === slug);
 
     if (!item) {
       detailHero.innerHTML = `<h1>식당 정보를 찾을 수 없습니다.</h1>`;
@@ -722,18 +805,18 @@ const initRestaurantDetail = async () => {
         </div>
       `;
 
-      if (item.images?.length) {
+      const galleryImages = Array.isArray(item.images)
+        ? item.images.map((image) => pickImageUrl(image)).filter(Boolean)
+        : [];
+      if (galleryImages.length) {
         const galleryCard = document.createElement("div");
         galleryCard.className = "info-card";
         galleryCard.innerHTML = `
           <h3>갤러리</h3>
           <div class="gallery">
-            ${item.images
+            ${galleryImages
               .slice(0, 6)
-              .map(
-                (src) =>
-                  `<img src="${src}" alt="${item.name} 사진" loading="lazy" />`
-              )
+              .map((src) => `<img src="${src}" alt="${item.name} 사진" loading="lazy" />`)
               .join("")}
           </div>
         `;
@@ -791,6 +874,10 @@ const initShare = () => {
 };
 
 const init = () => {
+  debugEnabled =
+    new URLSearchParams(location.search).get("debug") === "1" ||
+    localStorage.getItem("DEBUG") === "1";
+  setupDebugHooks();
   if (document.getElementById("restaurant-grid")) {
     initRestaurantsPage();
   }

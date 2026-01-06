@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600" role="img" aria-label="이미지 준비중">
+  <rect width="800" height="600" fill="#f1f3f1" />
+  <g fill="#7a847f" font-family="system-ui, -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="28" font-weight="600" text-anchor="middle">
+    <text x="400" y="300">이미지 준비중</text>
+    <text x="400" y="345" font-size="32">🍚</text>
+  </g>
+</svg>
