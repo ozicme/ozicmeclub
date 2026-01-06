@@ -250,6 +250,11 @@ main {
   border-bottom: 1px solid var(--border);
 }
 
+.media-frame.media-card {
+  height: 180px;
+  aspect-ratio: auto;
+}
+
 .media-frame img {
   width: 100%;
   height: 100%;
