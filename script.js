@@ -14,7 +14,13 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "")
     .toLowerCase();
 
-const getThumbnail = (item) => item.thumbnail || item.images?.[0] || "";
+const getImageUrl = (item) =>
+  item.imageUrl || item.image_url || item.thumbnail || item.images?.[0] || "";
+
+const getNaverPlaceUrl = (item) =>
+  item.naverPlaceUrl || item.naver_place_url || "";
+
+const getThumbnail = (item) => getImageUrl(item);
 
 const getReservationLink = (item) =>
   item.naverBookingUrl ||
@@ -106,18 +112,26 @@ const renderSkeletons = (container, count = 6) => {
 const buildMediaFrame = ({ src, alt }) => {
   const frame = document.createElement("div");
   frame.className = "media-frame";
+  const placeholder = document.createElement("div");
+  placeholder.className = "media-placeholder";
+  placeholder.innerHTML = `<span aria-hidden="true">🍚</span><span>이미지 준비중</span>`;
+  frame.appendChild(placeholder);
   if (src) {
     const img = document.createElement("img");
     img.src = src;
     img.alt = alt;
     img.loading = "lazy";
     img.decoding = "async";
+    img.addEventListener("load", () => {
+      frame.classList.add("media-loaded");
+    });
+    img.addEventListener("error", () => {
+      frame.classList.add("media-error");
+      img.remove();
+    });
     frame.appendChild(img);
   } else {
-    const placeholder = document.createElement("div");
-    placeholder.className = "media-placeholder";
-    placeholder.textContent = "OZICME";
-    frame.appendChild(placeholder);
+    frame.classList.add("media-error");
   }
   return frame;
 };
@@ -161,10 +175,14 @@ const buildRegionLabel = (item) => {
 };
 
 const renderCard = (item) => {
-  const reserveLink = getReservationLink(item);
-  const mapLink = getMapLink(item);
+  const placeLink = getNaverPlaceUrl(item);
   const card = document.createElement("article");
   card.className = "restaurant-card";
+
+  const mediaFrame = buildMediaFrame({
+    src: getThumbnail(item),
+    alt: `${item.name} 대표 이미지`,
+  });
 
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
@@ -180,41 +198,26 @@ const renderCard = (item) => {
   `;
 
   const actions = document.createElement("div");
-  actions.className = "card-actions";
+  actions.className = "card-actions is-single";
   actions.appendChild(
-    reserveLink
+    placeLink
       ? buildActionButton({
-          label: "예약",
-          href: reserveLink,
+          label: "더 알아보기",
+          href: placeLink,
           primary: true,
           external: true,
-          ariaLabel: `${item.name} 예약`,
+          ariaLabel: `${item.name} 더 알아보기`,
         })
       : buildActionButton({
-          label: "예약",
+          label: "링크 없음",
           primary: true,
           disabled: true,
-          ariaLabel: `${item.name} 예약 링크 없음`,
-        })
-  );
-
-  actions.appendChild(
-    mapLink
-      ? buildActionButton({
-          label: "길찾기",
-          href: mapLink,
-          external: true,
-          ariaLabel: `${item.name} 길찾기`,
-        })
-      : buildActionButton({
-          label: "길찾기",
-          disabled: true,
-          ariaLabel: `${item.name} 길찾기 링크 없음`,
+          ariaLabel: `${item.name} 링크 없음`,
         })
   );
 
   cardBody.appendChild(actions);
-  card.append(cardBody);
+  card.append(mediaFrame, cardBody);
   return card;
 };
 
@@ -278,6 +281,7 @@ const initRestaurantsPage = async () => {
   let lastRequestKey = "";
   let cachedRestaurants = null;
   let observer = null;
+  let hasLoggedSample = false;
 
   const renderErrorState = (message) => {
     if (!listState) return;
@@ -445,6 +449,10 @@ const initRestaurantsPage = async () => {
       items.forEach((item) => {
         grid.appendChild(renderCard(item));
       });
+      if (!hasLoggedSample && items.length > 0) {
+        console.log("[OZICME] API sample item", items[0]);
+        hasLoggedSample = true;
+      }
 
       cursor = payload.nextCursor ?? cursor + items.length;
       hasMore = payload.hasMore;

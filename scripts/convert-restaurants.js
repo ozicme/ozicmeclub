@@ -4,7 +4,7 @@ const path = require("path");
 const defaultSource = path.resolve(
   __dirname,
   "..",
-  "오직미_식당디렉토리_사이트개발용_최종정비.csv"
+  "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 );
 const defaultOutput = path.resolve(__dirname, "..", "public-restaurants.json");
 
@@ -114,6 +114,17 @@ const headerIndex = Object.fromEntries(
 );
 
 const getValue = (row, key) => row[headerIndex[key]] || "";
+const getValueByKeys = (row, keys) => {
+  for (const key of keys) {
+    if (headerIndex[key] !== undefined) {
+      const value = row[headerIndex[key]];
+      if (value !== undefined && value !== null && String(value).trim() !== "") {
+        return value;
+      }
+    }
+  }
+  return "";
+};
 
 const restaurants = rows
   .slice(1)
@@ -151,6 +162,18 @@ const restaurants = rows
       getValue(row, "네이버예약/플레이스검색링크")
     );
     const reservationLinks = inferReservationLinks(reservationLink);
+    const naverPlaceColumn = normalizeText(
+      getValueByKeys(row, [
+        "naver_place_url",
+        "네이버플레이스",
+        "네이버플레이스링크",
+        "네이버 플레이스",
+      ])
+    );
+    const imageUrl = normalizeText(
+      getValueByKeys(row, ["image_url", "이미지", "이미지URL", "이미지 링크"])
+    );
+    const naverPlaceUrl = naverPlaceColumn || reservationLinks.naverPlaceUrl;
 
     return {
       name,
@@ -166,12 +189,15 @@ const restaurants = rows
       signatureMenus: mainDishes,
       address: normalizeText(getValue(row, "대표주소")),
       naverReservationUrl: reservationLinks.naverReservationUrl,
-      naverPlaceUrl: reservationLinks.naverPlaceUrl,
+      naverPlaceUrl,
       naverMapUrl,
       priceRange: "",
       phone: "",
-      thumbnail: "",
-      images: [],
+      naver_place_url: naverPlaceUrl,
+      image_url: imageUrl,
+      imageUrl,
+      thumbnail: imageUrl,
+      images: imageUrl ? [imageUrl] : [],
       verifiedBadge: true,
       verifiedMonth: "",
     };
