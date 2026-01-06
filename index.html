@@ -54,16 +54,17 @@
 
     <footer class="site-footer">
       <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 리스트.</p>
-      <p class="build-id">BUILD_ID: <span id="build-id">20260106-1</span></p>
+      <p class="build-id">BUILD_ID: <span id="build-id">20260106-2</span></p>
     </footer>
   </div>
 
   <script>
-    const BUILD_ID = "20260106-1";
+    const BUILD_ID = "20260106-2";
     console.info("BUILD_ID:", BUILD_ID);
     const buildIdEl = document.getElementById("build-id");
     if (buildIdEl) buildIdEl.textContent = BUILD_ID;
   </script>
-  <script src="script.js?v=20260106-1" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script src="script.js?v=20260106-2" defer></script>
 </body>
 </html>

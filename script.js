@@ -5,6 +5,88 @@ let allStores = [];
 let cursor = 0;
 const pageSize = 20;
 let isLoading = false;
+let observer = null;
+
+const debugState = {
+  lastUrl: "",
+  status: "",
+  type: "",
+  count: 0,
+  cursor: 0,
+  message: "",
+  error: "",
+};
+
+const ensureDebugPanel = () => {
+  let panel = document.getElementById("debug-panel");
+  if (panel) return panel;
+
+  panel = document.createElement("section");
+  panel.id = "debug-panel";
+  panel.className = "debug-panel";
+  panel.innerHTML = `
+    <div class="debug-header">
+      <strong>Debug</strong>
+      <button type="button" class="btn btn-outline btn-xs" id="debug-copy">Copy debug info</button>
+    </div>
+    <pre class="debug-body" id="debug-body"></pre>
+  `;
+  document.body.appendChild(panel);
+
+  const copyButton = panel.querySelector("#debug-copy");
+  copyButton?.addEventListener("click", async () => {
+    const text = buildDebugText();
+    try {
+      await navigator.clipboard.writeText(text);
+      setDebugMessage("DEBUG_COPIED");
+    } catch (error) {
+      setDebugMessage(`DEBUG_COPY_FAILED: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  });
+
+  return panel;
+};
+
+const buildDebugText = () => {
+  return [
+    debugState.message,
+    `url=${debugState.lastUrl}`,
+    `status=${debugState.status}`,
+    `type=${debugState.type}`,
+    `count=${debugState.count}`,
+    `cursor:${debugState.cursor}`,
+    debugState.error ? `error=${debugState.error}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+};
+
+const setDebugMessage = (message) => {
+  debugState.message = message;
+  updateDebugPanel();
+};
+
+const setDebugError = (error) => {
+  debugState.error = error;
+  updateDebugPanel();
+};
+
+const updateDebugPanel = () => {
+  const panel = ensureDebugPanel();
+  const body = panel.querySelector("#debug-body");
+  if (!body) return;
+  body.textContent = buildDebugText();
+};
+
+window.addEventListener("error", (event) => {
+  const message = event?.error instanceof Error ? event.error.stack || event.error.message : event.message;
+  setDebugError(message || "UNKNOWN_ERROR");
+});
+
+window.addEventListener("unhandledrejection", (event) => {
+  const reason = event?.reason instanceof Error ? event.reason.stack || event.reason.message : String(event?.reason);
+  setDebugError(reason || "UNHANDLED_REJECTION");
+});
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -232,8 +314,6 @@ const initRestaurantsPage = async () => {
 
   if (!grid || !searchInput || !resultCount || !sentinel || !listLoader) return;
 
-  const dataUrl = new URL(DATA_URL, document.baseURI).toString();
-
   const setListState = (message) => {
     if (!listState) return;
     listState.textContent = message || "";
@@ -258,8 +338,8 @@ const initRestaurantsPage = async () => {
   let activeQuery = "";
   let totalCount = 0;
   let errorMessage = "";
-  let observer = null;
   let filteredStores = [];
+  let dataReady = false;
 
   const renderErrorState = (message) => {
     if (!listState) return;
@@ -273,10 +353,10 @@ const initRestaurantsPage = async () => {
       onClick: () => {
         errorMessage = "";
         allStores = [];
+        dataReady = false;
         resetList(true);
         renderSkeletons(grid, 8);
         setResultStatus("매장을 불러오는 중...");
-        resetObserver();
         loadAndRender();
       },
     });
@@ -307,18 +387,14 @@ const initRestaurantsPage = async () => {
     setListEnd("");
   };
 
-  const fetchJson = async (url, errorPrefix) => {
+  const fetchWithTimeout = async (url) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     try {
-      const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok) {
-        throw new Error(`${errorPrefix}_${response.status}`);
-      }
-      return await response.json();
+      return await fetch(url, { signal: controller.signal });
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") {
-        throw new Error(`${errorPrefix}_TIMEOUT`);
+        throw new Error("DATA_ERROR_TIMEOUT");
       }
       throw error;
     } finally {
@@ -326,36 +402,121 @@ const initRestaurantsPage = async () => {
     }
   };
 
-  const normalizeStore = (item) => {
-    const normalizedName = item.name || item.store_name || item.title || "";
-    const normalizedAddress = item.address || item.location || buildAddress(item);
-    const normalizedPlaceLink =
-      item.naver_place_url || item.naverPlaceUrl || item.place_url || item.naverPlaceLink || "";
-    const normalizedImage =
-      item.image_url || item.imageUrl || item.thumbnail || item.images?.[0] || "";
-    return {
-      ...item,
-      name: normalizedName,
-      address: normalizedAddress,
-      naver_place_url: normalizedPlaceLink,
-      image_url: normalizedImage,
-    };
+  const normalizeStore = (row, index = 0) => {
+    try {
+      const nameCandidates = ["name", "store_name", "상호", "식당명"];
+      const addressCandidates = ["address", "addr", "도로명주소", "주소"];
+      const placeCandidates = [
+        "naver_place_url",
+        "naverPlaceUrl",
+        "naverPlace",
+        "네이버플레이스",
+        "플레이스링크",
+      ];
+      const imageCandidates = ["image_url", "imageUrl", "image", "thumbnail", "대표이미지", "이미지링크"];
+
+      const pickValue = (obj, keys) => {
+        for (const key of keys) {
+          if (obj && obj[key]) return obj[key];
+        }
+        return "";
+      };
+
+      const name = pickValue(row, nameCandidates) || "";
+      const address = pickValue(row, addressCandidates) || buildAddress(row);
+      const naverPlaceUrl = pickValue(row, placeCandidates) || "";
+      const imageUrl = pickValue(row, imageCandidates) || "";
+      const id = row?.id || row?.store_id || row?.storeId || row?.slug || `store-${index + 1}`;
+
+      return {
+        ...row,
+        id,
+        name,
+        address,
+        naverPlaceUrl,
+        imageUrl,
+      };
+    } catch (error) {
+      return {
+        id: `store-${index + 1}`,
+        name: "",
+        address: "",
+        naverPlaceUrl: "",
+        imageUrl: "",
+      };
+    }
+  };
+
+  const parseCsvText = (text) => {
+    if (!window.Papa) {
+      throw new Error("CSV_PARSER_MISSING");
+    }
+    const result = window.Papa.parse(text, { header: true, skipEmptyLines: true });
+    if (result?.errors?.length) {
+      throw new Error(`CSV_PARSE_ERROR_${result.errors[0].message || "UNKNOWN"}`);
+    }
+    return result.data || [];
   };
 
   const loadAllStores = async () => {
-    if (allStores.length > 0) return allStores;
-    const data = await fetchJson(dataUrl, "DATA_ERROR");
-    if (!Array.isArray(data)) {
-      throw new Error("DATA_ERROR_INVALID");
+    if (dataReady && allStores.length > 0) return allStores;
+
+    const candidates = ["data/stores.json", "stores.json", "data/stores.csv", "stores.csv"];
+    let lastError = "";
+
+    for (const candidate of candidates) {
+      const url = new URL(candidate, document.baseURI).toString();
+      debugState.lastUrl = url;
+      updateDebugPanel();
+      try {
+        const response = await fetchWithTimeout(url);
+        debugState.status = String(response.status);
+        updateDebugPanel();
+        if (!response.ok) {
+          lastError = `DATA_ERROR_${response.status}`;
+          continue;
+        }
+
+        const contentType = response.headers.get("content-type") || "";
+        const isJson = contentType.includes("application/json") || candidate.endsWith(".json");
+        let rawData;
+        let parseType = "JSON";
+
+        if (isJson) {
+          rawData = await response.json();
+          parseType = "JSON";
+        } else {
+          const csvText = await response.text();
+          rawData = parseCsvText(csvText);
+          parseType = "CSV";
+        }
+
+        if (!Array.isArray(rawData)) {
+          throw new Error("DATA_ERROR_INVALID");
+        }
+
+        allStores = rawData.map((item, index) => {
+          const normalized = normalizeStore(item, index);
+          return {
+            ...normalized,
+            searchText: buildSearchText(normalized),
+          };
+        });
+
+        dataReady = true;
+        debugState.type = parseType;
+        debugState.count = allStores.length;
+        debugState.cursor = cursor;
+        setDebugError("");
+        setDebugMessage(`DATA_OK(url=${url}, type=${parseType}, count=${allStores.length})`);
+        return allStores;
+      } catch (error) {
+        lastError = error instanceof Error ? error.message : String(error);
+        setDebugError(lastError);
+      }
     }
-    allStores = data.map((item) => {
-      const normalized = normalizeStore(item);
-      return {
-        ...normalized,
-        searchText: buildSearchText(normalized),
-      };
-    });
-    return allStores;
+
+    throw new Error(lastError || "DATA_ERROR_NOT_FOUND");
   };
 
   const filterStores = () => {
@@ -375,6 +536,15 @@ const initRestaurantsPage = async () => {
 
   const renderNextPage = () => {
     if (isLoading || errorMessage) return;
+    if (cursor >= filteredStores.length) {
+      if (filteredStores.length > 0) {
+        setListEnd("마지막입니다.");
+      }
+      if (observer && cursor >= allStores.length) {
+        observer.disconnect();
+      }
+      return;
+    }
     isLoading = true;
     setLoading(true);
     const next = filteredStores.slice(cursor, cursor + pageSize);
@@ -392,11 +562,13 @@ const initRestaurantsPage = async () => {
     });
 
     cursor += next.length;
+    debugState.cursor = cursor;
+    updateDebugPanel();
     if (cursor >= filteredStores.length) {
       setListEnd(filteredStores.length > 0 ? "마지막입니다." : "");
-      if (observer) {
-        observer.disconnect();
-      }
+    }
+    if (observer && cursor >= allStores.length) {
+      observer.disconnect();
     }
 
     isLoading = false;
@@ -412,9 +584,9 @@ const initRestaurantsPage = async () => {
     } catch (error) {
       errorMessage = error instanceof Error ? error.message : "UNKNOWN_ERROR";
       grid.innerHTML = "";
-      setResultStatus("목록을 불러오지 못했습니다.");
+      setResultStatus("데이터 로드 실패");
       setListEnd("");
-      renderErrorState("목록을 불러오지 못했습니다. 새로고침 또는 다시 시도해주세요.");
+      renderErrorState("데이터 로드 실패(재시도)");
       return;
     } finally {
       isLoading = false;
@@ -431,7 +603,7 @@ const initRestaurantsPage = async () => {
     setListEnd("");
     renderSkeletons(grid, 8);
     setResultStatus("매장을 불러오는 중...");
-    resetObserver();
+    setupInfiniteScroll();
     filterStores();
     renderNextPage();
   };
@@ -446,25 +618,18 @@ const initRestaurantsPage = async () => {
   }
 
   const setupInfiniteScroll = () => {
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !isLoading && !errorMessage) {
-            renderNextPage();
-          }
-        });
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(sentinel);
-  };
-
-  const resetObserver = () => {
     if (!observer) {
-      setupInfiniteScroll();
-      return;
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isLoading && !errorMessage) {
+              renderNextPage();
+            }
+          });
+        },
+        { rootMargin: "200px" }
+      );
     }
-    observer.disconnect();
     observer.observe(sentinel);
   };
 
