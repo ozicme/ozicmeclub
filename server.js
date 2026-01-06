@@ -5,7 +5,6 @@ const { URL } = require("url");
 
 const PORT = process.env.PORT || 3000;
 const ROOT_DIR = __dirname;
-const DATA_PATH = path.join(ROOT_DIR, "public-restaurants.json");
 
 const CONTENT_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -16,70 +15,6 @@ const CONTENT_TYPES = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
-};
-
-const loadRestaurants = () => {
-  try {
-    const raw = fs.readFileSync(DATA_PATH, "utf8");
-    const parsed = JSON.parse(raw);
-    return {
-      data: parsed.map((item) => {
-        const imageUrl = item.imageUrl || item.image_url || item.thumbnail || item.images?.[0] || "";
-        const naverPlaceUrl = item.naverPlaceUrl || item.naver_place_url || "";
-        return {
-          ...item,
-          imageUrl,
-          naverPlaceUrl,
-          image_url: item.image_url || imageUrl,
-          naver_place_url: item.naver_place_url || naverPlaceUrl,
-          searchText: [
-            item.name,
-            item.address,
-            item.category,
-            item.categoryDetail,
-            item.region?.sido,
-            item.region?.sigungu,
-            item.region?.eupmyeondong,
-            ...(item.searchTags || []),
-            ...(item.signatureMenus || []),
-            ...(item.mainDishes || []),
-          ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase(),
-        };
-      }),
-      error: null,
-    };
-  } catch (error) {
-    console.error("Failed to load restaurant data:", error);
-    return { data: [], error };
-  }
-};
-
-let restaurantCache = [];
-let dataLoadError = null;
-({ data: restaurantCache, error: dataLoadError } = loadRestaurants());
-
-const filterRestaurants = (query) => {
-  if (!query) return restaurantCache;
-  const tokens = query
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean);
-  if (tokens.length === 0) return restaurantCache;
-  return restaurantCache.filter((item) =>
-    tokens.every((token) => item.searchText.includes(token))
-  );
-};
-
-const sendJson = (res, status, payload) => {
-  const body = JSON.stringify(payload);
-  res.writeHead(status, {
-    "Content-Type": "application/json; charset=utf-8",
-    "Content-Length": Buffer.byteLength(body),
-  });
-  res.end(body);
 };
 
 const serveFile = (res, filePath) => {
@@ -98,38 +33,6 @@ const serveFile = (res, filePath) => {
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
-
-  if (url.pathname === "/api/stores") {
-    if (dataLoadError) {
-      sendJson(res, 200, {
-        items: [],
-        nextCursor: null,
-        hasMore: false,
-        totalCount: 0,
-        dataReady: false,
-        error: "DATA_LOAD_FAILED",
-      });
-      return;
-    }
-    const query = url.searchParams.get("query") || "";
-    const cursor = Number.parseInt(url.searchParams.get("cursor") || "0", 10);
-    const limit = Number.parseInt(url.searchParams.get("limit") || "20", 10);
-    const safeCursor = Number.isNaN(cursor) || cursor < 0 ? 0 : cursor;
-    const safeLimit = Number.isNaN(limit) || limit <= 0 ? 20 : Math.min(limit, 50);
-
-    const filtered = filterRestaurants(query);
-    const items = filtered.slice(safeCursor, safeCursor + safeLimit);
-    const nextCursor = safeCursor + items.length;
-    const hasMore = nextCursor < filtered.length;
-
-    sendJson(res, 200, {
-      items,
-      nextCursor: hasMore ? nextCursor : null,
-      hasMore,
-      totalCount: filtered.length,
-    });
-    return;
-  }
 
   let filePath = path.join(ROOT_DIR, url.pathname === "/" ? "index.html" : url.pathname);
   if (!filePath.startsWith(ROOT_DIR)) {
