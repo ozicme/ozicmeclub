@@ -1,9 +1,10 @@
 const DATA_URL = "public-restaurants.json";
-const API_URL = "/api/stores";
 const FETCH_TIMEOUT_MS = 8000;
-const IS_STATIC_HOST = window.location.hostname.endsWith("github.io");
 
-let apiEnabled = !IS_STATIC_HOST;
+let allStores = [];
+let cursor = 0;
+const pageSize = 20;
+let isLoading = false;
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -231,6 +232,8 @@ const initRestaurantsPage = async () => {
 
   if (!grid || !searchInput || !resultCount || !sentinel || !listLoader) return;
 
+  const dataUrl = new URL(DATA_URL, document.baseURI).toString();
+
   const setListState = (message) => {
     if (!listState) return;
     listState.textContent = message || "";
@@ -252,18 +255,11 @@ const initRestaurantsPage = async () => {
     listEnd.textContent = message || "";
   };
 
-  const PAGE_SIZE = 20;
-  let cursor = 0;
-  let hasMore = true;
-  let isLoading = false;
   let activeQuery = "";
   let totalCount = 0;
-  let requestId = 0;
   let errorMessage = "";
-  let lastRequestKey = "";
-  let cachedRestaurants = null;
   let observer = null;
-  let sampleLogged = false;
+  let filteredStores = [];
 
   const renderErrorState = (message) => {
     if (!listState) return;
@@ -275,19 +271,13 @@ const initRestaurantsPage = async () => {
       label: "다시 시도",
       primary: true,
       onClick: () => {
-        requestId += 1;
-        isLoading = false;
-        hasMore = true;
         errorMessage = "";
-        lastRequestKey = "";
-        resetList();
+        allStores = [];
+        resetList(true);
         renderSkeletons(grid, 8);
         setResultStatus("매장을 불러오는 중...");
-        if (observer) {
-          observer.disconnect();
-          observer.observe(sentinel);
-        }
-        fetchStores(requestId);
+        resetObserver();
+        loadAndRender();
       },
     });
     listState.appendChild(text);
@@ -303,13 +293,16 @@ const initRestaurantsPage = async () => {
     }
   };
 
-  const resetList = () => {
+  const resetList = (preserveQuery = false) => {
     grid.innerHTML = "";
-    cursor = 0;
-    hasMore = true;
     totalCount = 0;
     errorMessage = "";
-    lastRequestKey = "";
+    cursor = 0;
+    isLoading = false;
+    filteredStores = [];
+    if (!preserveQuery) {
+      activeQuery = "";
+    }
     setListState("");
     setListEnd("");
   };
@@ -333,149 +326,114 @@ const initRestaurantsPage = async () => {
     }
   };
 
-  const normalizePayload = (payload, sourceLabel) => {
-    if (!payload || !Array.isArray(payload.items)) {
-      throw new Error(`${sourceLabel}_INVALID_PAYLOAD`);
-    }
+  const normalizeStore = (item) => {
+    const normalizedName = item.name || item.store_name || item.title || "";
+    const normalizedAddress = item.address || item.location || buildAddress(item);
+    const normalizedPlaceLink =
+      item.naver_place_url || item.naverPlaceUrl || item.place_url || item.naverPlaceLink || "";
+    const normalizedImage =
+      item.image_url || item.imageUrl || item.thumbnail || item.images?.[0] || "";
     return {
-      items: payload.items,
-      nextCursor: payload.nextCursor ?? null,
-      hasMore: Boolean(payload.hasMore),
-      totalCount: Number.isFinite(payload.totalCount) ? payload.totalCount : payload.items.length,
-      dataReady: payload.dataReady !== false,
-      error: payload.error || "",
+      ...item,
+      name: normalizedName,
+      address: normalizedAddress,
+      naver_place_url: normalizedPlaceLink,
+      image_url: normalizedImage,
     };
   };
 
-  const loadLocalRestaurants = async () => {
-    if (cachedRestaurants) return cachedRestaurants;
-    const data = await fetchJson(DATA_URL, "DATA_ERROR");
-    cachedRestaurants = data.map((item) => ({
-      ...item,
-      searchText: buildSearchText(item),
-    }));
-    return cachedRestaurants;
+  const loadAllStores = async () => {
+    if (allStores.length > 0) return allStores;
+    const data = await fetchJson(dataUrl, "DATA_ERROR");
+    if (!Array.isArray(data)) {
+      throw new Error("DATA_ERROR_INVALID");
+    }
+    allStores = data.map((item) => {
+      const normalized = normalizeStore(item);
+      return {
+        ...normalized,
+        searchText: buildSearchText(normalized),
+      };
+    });
+    return allStores;
   };
 
-  const fetchStoresFromApi = async () => {
-    const params = new URLSearchParams();
-    if (activeQuery) params.set("query", activeQuery);
-    params.set("cursor", String(cursor));
-    params.set("limit", String(PAGE_SIZE));
-    const response = await fetchJson(`${API_URL}?${params.toString()}`, "API_ERROR");
-    return { ...normalizePayload(response, "API_ERROR"), source: "api" };
-  };
-
-  const fetchStoresFromJson = async () => {
-    const restaurants = await loadLocalRestaurants();
+  const filterStores = () => {
     const tokens = activeQuery
       .toLowerCase()
       .split(/\s+/)
       .filter(Boolean);
-    const filtered =
+    filteredStores =
       tokens.length === 0
-        ? restaurants
-        : restaurants.filter((item) =>
+        ? allStores
+        : allStores.filter((item) =>
             tokens.every((token) => item.searchText.includes(token))
           );
-    const items = filtered;
-    return { ...normalizePayload(
-      {
-        items,
-        nextCursor: null,
-        hasMore: false,
-        totalCount: filtered.length,
-        dataReady: true,
-      },
-      "DATA_ERROR"
-    ), source: "json" };
+    totalCount = filteredStores.length;
+    updateResultCount();
   };
 
-  const fetchStores = async (token = requestId) => {
-    if (isLoading || !hasMore || errorMessage) return;
-    const requestKey = `${activeQuery}|${cursor}`;
-    if (requestKey === lastRequestKey) return;
-    lastRequestKey = requestKey;
+  const renderNextPage = () => {
+    if (isLoading || errorMessage) return;
     isLoading = true;
     setLoading(true);
+    const next = filteredStores.slice(cursor, cursor + pageSize);
+    if (cursor === 0) {
+      grid.innerHTML = "";
+    }
+    if (cursor === 0 && next.length === 0) {
+      setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
+    } else {
+      setListState("");
+    }
 
-    try {
-      let payload;
-      if (apiEnabled) {
-        try {
-          payload = await fetchStoresFromApi();
-          if (payload.dataReady === false) {
-            throw new Error(payload.error || "DATA_NOT_READY");
-          }
-        } catch (error) {
-          apiEnabled = false;
-          payload = await fetchStoresFromJson();
-        }
-      } else {
-        payload = await fetchStoresFromJson();
-      }
-      if (token !== requestId) {
-        isLoading = false;
-        setLoading(false);
-        return;
-      }
+    next.forEach((item) => {
+      grid.appendChild(renderCard(item));
+    });
 
-      const items = payload.items || [];
-      if (payload.source === "api" && items[0] && !sampleLogged) {
-        console.log("[stores] API sample item", items[0]);
-        sampleLogged = true;
-      }
-      totalCount = payload.totalCount ?? totalCount;
-      if (cursor === 0) {
-        grid.innerHTML = "";
-      }
-      if (cursor === 0 && items.length === 0) {
-        setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
-      } else {
-        setListState("");
-      }
-
-      items.forEach((item) => {
-        grid.appendChild(renderCard(item));
-      });
-
-      cursor = payload.nextCursor ?? cursor + items.length;
-      hasMore = payload.hasMore;
-      updateResultCount();
-      if (!hasMore && items.length > 0) {
-        setListEnd("마지막입니다.");
-      }
-    } catch (error) {
-      if (token === requestId) {
-        hasMore = false;
-        errorMessage =
-          error instanceof Error ? error.message : "UNKNOWN_ERROR";
-        if (cursor === 0) {
-          grid.innerHTML = "";
-        }
-        setResultStatus("목록을 불러오지 못했습니다.");
-        setListEnd("");
-        renderErrorState("목록을 불러오지 못했습니다. 새로고침 또는 다시 시도해주세요.");
-        if (observer) {
-          observer.disconnect();
-        }
-      }
-    } finally {
-      if (token === requestId) {
-        isLoading = false;
-        setLoading(false);
+    cursor += next.length;
+    if (cursor >= filteredStores.length) {
+      setListEnd(filteredStores.length > 0 ? "마지막입니다." : "");
+      if (observer) {
+        observer.disconnect();
       }
     }
+
+    isLoading = false;
+    setLoading(false);
+  };
+
+  const loadAndRender = async () => {
+    if (isLoading) return;
+    isLoading = true;
+    setLoading(true);
+    try {
+      await loadAllStores();
+    } catch (error) {
+      errorMessage = error instanceof Error ? error.message : "UNKNOWN_ERROR";
+      grid.innerHTML = "";
+      setResultStatus("목록을 불러오지 못했습니다.");
+      setListEnd("");
+      renderErrorState("목록을 불러오지 못했습니다. 새로고침 또는 다시 시도해주세요.");
+      return;
+    } finally {
+      isLoading = false;
+      setLoading(false);
+    }
+    filterStores();
+    renderNextPage();
   };
 
   const applySearch = () => {
     activeQuery = searchInput.value.trim();
-    requestId += 1;
-    isLoading = false;
-    resetList();
+    errorMessage = "";
+    cursor = 0;
+    setListEnd("");
     renderSkeletons(grid, 8);
     setResultStatus("매장을 불러오는 중...");
-    fetchStores(requestId);
+    resetObserver();
+    filterStores();
+    renderNextPage();
   };
 
   const debouncedSearch = debounce(applySearch, 300);
@@ -487,23 +445,35 @@ const initRestaurantsPage = async () => {
     });
   }
 
-  observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && hasMore && !isLoading && !errorMessage) {
-          fetchStores();
-        }
-      });
-    },
-    { rootMargin: "200px" }
-  );
+  const setupInfiniteScroll = () => {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !isLoading && !errorMessage) {
+            renderNextPage();
+          }
+        });
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(sentinel);
+  };
 
-  observer.observe(sentinel);
+  const resetObserver = () => {
+    if (!observer) {
+      setupInfiniteScroll();
+      return;
+    }
+    observer.disconnect();
+    observer.observe(sentinel);
+  };
+
+  setupInfiniteScroll();
 
   renderSkeletons(grid, 8);
   setListState("");
   setResultStatus("매장을 불러오는 중...");
-  fetchStores();
+  loadAndRender();
 };
 
 const initRestaurantDetail = async () => {
@@ -518,7 +488,7 @@ const initRestaurantDetail = async () => {
   const certText = document.getElementById("detail-cert-text");
 
   try {
-    const response = await fetch(DATA_URL);
+    const response = await fetch(new URL(DATA_URL, document.baseURI).toString());
     const data = await response.json();
     const item = data.find((restaurant) => slugify(restaurant.name) === slug);
 
