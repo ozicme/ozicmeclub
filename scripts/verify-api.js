@@ -1,6 +1,7 @@
 const http = require("http");
 
-const targetUrl = process.env.API_URL || "http://localhost:3000/api/stores?limit=1";
+const targetUrl =
+  process.env.DATA_URL || "http://localhost:3000/data/stores.json";
 
 const request = http.get(targetUrl, (res) => {
   let data = "";
@@ -10,25 +11,25 @@ const request = http.get(targetUrl, (res) => {
   });
   res.on("end", () => {
     if (res.statusCode !== 200) {
-      console.error(`API responded with status ${res.statusCode}`);
+      console.error(`Data responded with status ${res.statusCode}`);
       process.exit(1);
     }
     let payload;
     try {
       payload = JSON.parse(data);
     } catch (error) {
-      console.error("API response is not valid JSON.");
+      console.error("Data response is not valid JSON.");
       process.exit(1);
     }
-    if (!Array.isArray(payload.items)) {
-      console.error("API response is missing items array.");
+    if (!Array.isArray(payload)) {
+      console.error("Data response is not an array.");
       process.exit(1);
     }
-    console.log(`API ok: received ${payload.items.length} item(s).`);
+    console.log(`Data ok: received ${payload.length} item(s).`);
   });
 });
 
 request.on("error", (error) => {
-  console.error(`API request failed: ${error.message}`);
+  console.error(`Data request failed: ${error.message}`);
   process.exit(1);
 });
