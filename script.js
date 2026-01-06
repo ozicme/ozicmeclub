@@ -1,6 +1,9 @@
 const DATA_URL = "public-restaurants.json";
 const API_URL = "/api/stores";
 const FETCH_TIMEOUT_MS = 8000;
+const IS_STATIC_HOST = window.location.hostname.endsWith("github.io");
+
+let apiEnabled = !IS_STATIC_HOST;
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -375,14 +378,12 @@ const initRestaurantsPage = async () => {
         : restaurants.filter((item) =>
             tokens.every((token) => item.searchText.includes(token))
           );
-    const items = filtered.slice(cursor, cursor + PAGE_SIZE);
-    const nextCursor = cursor + items.length;
-    const hasMoreItems = nextCursor < filtered.length;
+    const items = filtered;
     return { ...normalizePayload(
       {
         items,
-        nextCursor: hasMoreItems ? nextCursor : null,
-        hasMore: hasMoreItems,
+        nextCursor: null,
+        hasMore: false,
         totalCount: filtered.length,
         dataReady: true,
       },
@@ -400,12 +401,17 @@ const initRestaurantsPage = async () => {
 
     try {
       let payload;
-      try {
-        payload = await fetchStoresFromApi();
-        if (payload.dataReady === false) {
-          throw new Error(payload.error || "DATA_NOT_READY");
+      if (apiEnabled) {
+        try {
+          payload = await fetchStoresFromApi();
+          if (payload.dataReady === false) {
+            throw new Error(payload.error || "DATA_NOT_READY");
+          }
+        } catch (error) {
+          apiEnabled = false;
+          payload = await fetchStoresFromJson();
         }
-      } catch (error) {
+      } else {
         payload = await fetchStoresFromJson();
       }
       if (token !== requestId) {
