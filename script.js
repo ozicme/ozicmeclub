@@ -447,76 +447,46 @@ const initRestaurantsPage = async () => {
     }
   };
 
-  const parseCsvText = (text) => {
-    if (!window.Papa) {
-      throw new Error("CSV_PARSER_MISSING");
-    }
-    const result = window.Papa.parse(text, { header: true, skipEmptyLines: true });
-    if (result?.errors?.length) {
-      throw new Error(`CSV_PARSE_ERROR_${result.errors[0].message || "UNKNOWN"}`);
-    }
-    return result.data || [];
-  };
-
   const loadAllStores = async () => {
     if (dataReady && allStores.length > 0) return allStores;
 
-    const candidates = ["data/stores.json", "stores.json", "data/stores.csv", "stores.csv"];
-    let lastError = "";
+    const url = new URL(DATA_URL, document.baseURI).toString();
+    debugState.lastUrl = url;
+    updateDebugPanel();
 
-    for (const candidate of candidates) {
-      const url = new URL(candidate, document.baseURI).toString();
-      debugState.lastUrl = url;
+    try {
+      const response = await fetchWithTimeout(url);
+      debugState.status = String(response.status);
       updateDebugPanel();
-      try {
-        const response = await fetchWithTimeout(url);
-        debugState.status = String(response.status);
-        updateDebugPanel();
-        if (!response.ok) {
-          lastError = `DATA_ERROR_${response.status}`;
-          continue;
-        }
-
-        const contentType = response.headers.get("content-type") || "";
-        const isJson = contentType.includes("application/json") || candidate.endsWith(".json");
-        let rawData;
-        let parseType = "JSON";
-
-        if (isJson) {
-          rawData = await response.json();
-          parseType = "JSON";
-        } else {
-          const csvText = await response.text();
-          rawData = parseCsvText(csvText);
-          parseType = "CSV";
-        }
-
-        if (!Array.isArray(rawData)) {
-          throw new Error("DATA_ERROR_INVALID");
-        }
-
-        allStores = rawData.map((item, index) => {
-          const normalized = normalizeStore(item, index);
-          return {
-            ...normalized,
-            searchText: buildSearchText(normalized),
-          };
-        });
-
-        dataReady = true;
-        debugState.type = parseType;
-        debugState.count = allStores.length;
-        debugState.cursor = cursor;
-        setDebugError("");
-        setDebugMessage(`DATA_OK(url=${url}, type=${parseType}, count=${allStores.length})`);
-        return allStores;
-      } catch (error) {
-        lastError = error instanceof Error ? error.message : String(error);
-        setDebugError(lastError);
+      if (!response.ok) {
+        throw new Error(`DATA_ERROR_${response.status}`);
       }
-    }
 
-    throw new Error(lastError || "DATA_ERROR_NOT_FOUND");
+      const rawData = await response.json();
+      if (!Array.isArray(rawData)) {
+        throw new Error("DATA_ERROR_INVALID");
+      }
+
+      allStores = rawData.map((item, index) => {
+        const normalized = normalizeStore(item, index);
+        return {
+          ...normalized,
+          searchText: buildSearchText(normalized),
+        };
+      });
+
+      dataReady = true;
+      debugState.type = "JSON";
+      debugState.count = allStores.length;
+      debugState.cursor = cursor;
+      setDebugError("");
+      setDebugMessage(`DATA_OK(url=${url}, type=JSON, count=${allStores.length})`);
+      return allStores;
+    } catch (error) {
+      const lastError = error instanceof Error ? error.message : String(error);
+      setDebugError(lastError);
+      throw error;
+    }
   };
 
   const filterStores = () => {
@@ -583,7 +553,6 @@ const initRestaurantsPage = async () => {
       await loadAllStores();
     } catch (error) {
       errorMessage = error instanceof Error ? error.message : "UNKNOWN_ERROR";
-      grid.innerHTML = "";
       setResultStatus("데이터 로드 실패");
       setListEnd("");
       renderErrorState("데이터 로드 실패(재시도)");
