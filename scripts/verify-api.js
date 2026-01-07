@@ -1,7 +1,7 @@
 const http = require("http");
 
 const targetUrl =
-  process.env.DATA_URL || "http://localhost:3000/data/stores.json";
+  process.env.DATA_URL || "http://localhost:3000/public-restaurants.json";
 
 const request = http.get(targetUrl, (res) => {
   let data = "";

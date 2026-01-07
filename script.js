@@ -1,4 +1,4 @@
-const DATA_URL = "./data/stores.json";
+const DATA_URL = "./public-restaurants.json";
 const FETCH_TIMEOUT_MS = 8000;
 
 let allStores = [];
