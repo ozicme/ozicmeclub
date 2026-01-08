@@ -1,4 +1,4 @@
-const DATA_URL = "./public-restaurants.json";
+const DATA_URL = "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const FETCH_TIMEOUT_MS = 8000;
 
 let allStores = [];
@@ -213,16 +213,39 @@ const pickImageUrl = (value) => {
   return "";
 };
 
+const splitList = (value, delimiterRegex = /[\/,+]/g) =>
+  String(value || "")
+    .split(delimiterRegex)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
 const normalizeStore = (row, index = 0) => {
   try {
-    const nameCandidates = ["name", "store_name", "상호", "식당명"];
-    const addressCandidates = ["address", "addr", "도로명주소", "주소"];
+    const nameCandidates = ["name", "store_name", "상호", "상호명", "식당명"];
+    const addressCandidates = ["address", "addr", "도로명주소", "주소", "대표주소"];
     const placeCandidates = [
       "naver_place_url",
       "naverPlaceUrl",
       "naverPlace",
       "네이버플레이스",
+      "네이버플레이스링크",
+      "네이버 플레이스",
+      "네이버플레이스",
       "플레이스링크",
+    ];
+    const categoryCandidates = ["category", "식당유형_대", "식당유형대", "카테고리"];
+    const categoryDetailCandidates = [
+      "categoryDetail",
+      "category_detail",
+      "식당유형_세부",
+      "식당유형세부",
+    ];
+    const signatureMenuCandidates = [
+      "signatureMenus",
+      "mainDishes",
+      "주요리_대표",
+      "대표메뉴",
+      "메뉴",
     ];
 
     const pickValue = (obj, keys) => {
@@ -232,9 +255,33 @@ const normalizeStore = (row, index = 0) => {
       return "";
     };
 
+    const buildRegion = (obj) => {
+      if (obj?.region) return obj.region;
+      return {
+        sido: obj?.sido || obj?.지역_시도 || obj?.지역시도 || "",
+        sigungu: obj?.sigungu || obj?.지역_시군구 || obj?.지역시군구 || "",
+        eupmyeondong:
+          obj?.eupmyeondong || obj?.지역_읍면동 || obj?.지역읍면동 || "",
+      };
+    };
+
     const name = pickValue(row, nameCandidates) || "";
-    const address = pickValue(row, addressCandidates) || buildAddress(row);
+    const region = buildRegion(row);
+    const address =
+      pickValue(row, addressCandidates) ||
+      buildAddress({
+        ...row,
+        region,
+      });
     const naverPlaceUrl = pickValue(row, placeCandidates) || "";
+    const category = pickValue(row, categoryCandidates) || row?.category || "";
+    const categoryDetail =
+      pickValue(row, categoryDetailCandidates) || row?.categoryDetail || "";
+    const signatureMenusRaw = pickValue(row, signatureMenuCandidates);
+    const signatureMenus =
+      Array.isArray(signatureMenusRaw) && signatureMenusRaw.length > 0
+        ? signatureMenusRaw
+        : splitList(signatureMenusRaw);
     const imageValue =
       IMAGE_URL_CANDIDATES.map((key) => (row ? row[key] : ""))
         .map((value) => pickImageUrl(value))
@@ -245,16 +292,26 @@ const normalizeStore = (row, index = 0) => {
       ...row,
       id,
       name,
+      category,
+      categoryDetail,
+      signatureMenus,
+      mainDishes: row?.mainDishes || signatureMenus,
       address,
       naverPlaceUrl,
+      region,
       imageUrl: imageValue,
     };
   } catch (error) {
     return {
       id: `store-${index + 1}`,
       name: "",
+      category: "",
+      categoryDetail: "",
+      signatureMenus: [],
+      mainDishes: [],
       address: "",
       naverPlaceUrl: "",
+      region: {},
       imageUrl: "",
     };
   }
@@ -504,7 +561,7 @@ const initRestaurantsPage = async () => {
     setListEnd("");
   };
 
-  const fetchWithTimeout = async (url) => {
+const fetchWithTimeout = async (url) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     try {
@@ -517,6 +574,80 @@ const initRestaurantsPage = async () => {
     } finally {
       clearTimeout(timeout);
     }
+  };
+
+  const parseCsv = (content) => {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < content.length; i += 1) {
+      const char = content[i];
+
+      if (inQuotes) {
+        if (char === '"') {
+          const nextChar = content[i + 1];
+          if (nextChar === '"') {
+            field += '"';
+            i += 1;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          field += char;
+        }
+        continue;
+      }
+
+      if (char === '"') {
+        inQuotes = true;
+        continue;
+      }
+
+      if (char === ",") {
+        row.push(field);
+        field = "";
+        continue;
+      }
+
+      if (char === "\n") {
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = "";
+        continue;
+      }
+
+      if (char === "\r") {
+        continue;
+      }
+
+      field += char;
+    }
+
+    if (field.length > 0 || row.length > 0) {
+      row.push(field);
+      rows.push(row);
+    }
+
+    return rows;
+  };
+
+  const parseCsvRows = (content) => {
+    const rows = parseCsv(content);
+    if (rows.length === 0) return [];
+    const headers = rows[0].map((header) => header.trim());
+    return rows
+      .slice(1)
+      .map((row) => {
+        const record = {};
+        headers.forEach((header, index) => {
+          record[header] = row[index] || "";
+        });
+        return record;
+      })
+      .filter((row) => Object.values(row).some((value) => String(value).trim() !== ""));
   };
 
   const loadAllStores = async () => {
@@ -538,7 +669,20 @@ const initRestaurantsPage = async () => {
         throw new Error(`DATA_ERROR_${response.status}`);
       }
 
-      const rawData = await response.json();
+      let rawData;
+      const contentType = response.headers.get("content-type") || "";
+      if (url.endsWith(".csv") || contentType.includes("text/csv")) {
+        const csvText = await response.text();
+        rawData = parseCsvRows(csvText);
+        if (debugEnabled) {
+          debugState.type = "CSV";
+        }
+      } else {
+        rawData = await response.json();
+        if (debugEnabled) {
+          debugState.type = "JSON";
+        }
+      }
       if (!Array.isArray(rawData)) {
         throw new Error("DATA_ERROR_INVALID");
       }
@@ -553,11 +697,13 @@ const initRestaurantsPage = async () => {
 
       dataReady = true;
       if (debugEnabled) {
-        debugState.type = "JSON";
+        debugState.type = debugState.type || "JSON";
         debugState.count = allStores.length;
         debugState.cursor = cursor;
         setDebugError("");
-        setDebugMessage(`DATA_OK(url=${url}, type=JSON, count=${allStores.length})`);
+        setDebugMessage(
+          `DATA_OK(url=${url}, type=${debugState.type || "JSON"}, count=${allStores.length})`
+        );
       }
       return allStores;
     } catch (error) {
