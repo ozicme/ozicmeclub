@@ -1,4 +1,4 @@
-const DATA_URL = "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
+const DATA_URL = "./public-restaurants.json";
 const FETCH_TIMEOUT_MS = 8000;
 
 let allStores = [];
