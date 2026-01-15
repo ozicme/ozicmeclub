@@ -1,4 +1,5 @@
-const DATA_URL = "./public-restaurants.json";
+const DATA_URL =
+  "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const FETCH_TIMEOUT_MS = 8000;
 
 let allStores = [];
@@ -637,7 +638,9 @@ const fetchWithTimeout = async (url) => {
   const parseCsvRows = (content) => {
     const rows = parseCsv(content);
     if (rows.length === 0) return [];
-    const headers = rows[0].map((header) => header.trim());
+    const headers = rows[0].map((header) =>
+      header.replace(/^\uFEFF/, "").trim()
+    );
     return rows
       .slice(1)
       .map((row) => {
@@ -673,7 +676,7 @@ const fetchWithTimeout = async (url) => {
       const contentType = response.headers.get("content-type") || "";
       if (url.endsWith(".csv") || contentType.includes("text/csv")) {
         const csvText = await response.text();
-        rawData = parseCsvRows(csvText);
+        rawData = parseCsvRows(csvText.replace(/^\uFEFF/, ""));
         if (debugEnabled) {
           debugState.type = "CSV";
         }
