@@ -19,6 +19,7 @@ const IMAGE_URL_CANDIDATES = [
   "photo",
   "images",
   "imageLinks",
+  "이미지",
   "대표이미지",
   "이미지링크",
 ];
@@ -598,6 +599,7 @@ const initRestaurantsPage = async () => {
       });
 
       dataReady = true;
+      console.log("allStores", allStores);
       return allStores;
     } catch (error) {
       throw error;
