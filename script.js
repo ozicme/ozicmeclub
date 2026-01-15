@@ -7,7 +7,6 @@ let cursor = 0;
 const pageSize = 20;
 let isLoading = false;
 let observer = null;
-let debugEnabled = false;
 
 const PLACEHOLDER_IMAGE_URL = new URL("./assets/placeholder-image.svg", document.baseURI).toString();
 const IMAGE_URL_CANDIDATES = [
@@ -25,92 +24,6 @@ const IMAGE_URL_CANDIDATES = [
 ];
 const IMAGE_OBJECT_CANDIDATES = ["url", "src", "imageUrl", "image_url", "image"];
 
-const debugState = {
-  lastUrl: "",
-  status: "",
-  type: "",
-  count: 0,
-  cursor: 0,
-  message: "",
-  error: "",
-};
-
-const ensureDebugPanel = () => {
-  if (!debugEnabled) return null;
-  let panel = document.getElementById("debug-panel");
-  if (panel) return panel;
-
-  panel = document.createElement("section");
-  panel.id = "debug-panel";
-  panel.className = "debug-panel";
-  panel.innerHTML = `
-    <div class="debug-header">
-      <strong>Debug</strong>
-      <button type="button" class="btn btn-outline btn-xs" id="debug-copy">Copy debug info</button>
-    </div>
-    <pre class="debug-body" id="debug-body"></pre>
-  `;
-  document.body.appendChild(panel);
-
-  const copyButton = panel.querySelector("#debug-copy");
-  copyButton?.addEventListener("click", async () => {
-    const text = buildDebugText();
-    try {
-      await navigator.clipboard.writeText(text);
-      setDebugMessage("DEBUG_COPIED");
-    } catch (error) {
-      setDebugMessage(`DEBUG_COPY_FAILED: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  });
-
-  return panel;
-};
-
-const buildDebugText = () => {
-  return [
-    debugState.message,
-    `url=${debugState.lastUrl}`,
-    `status=${debugState.status}`,
-    `type=${debugState.type}`,
-    `count=${debugState.count}`,
-    `cursor:${debugState.cursor}`,
-    debugState.error ? `error=${debugState.error}` : "",
-  ]
-    .filter(Boolean)
-    .join("\n");
-};
-
-const setDebugMessage = (message) => {
-  debugState.message = message;
-  updateDebugPanel();
-};
-
-const setDebugError = (error) => {
-  debugState.error = error;
-  updateDebugPanel();
-};
-
-const updateDebugPanel = () => {
-  if (!debugEnabled) return;
-  const panel = ensureDebugPanel();
-  if (!panel) return;
-  const body = panel.querySelector("#debug-body");
-  if (!body) return;
-  body.textContent = buildDebugText();
-};
-
-const setupDebugHooks = () => {
-  if (!debugEnabled) return;
-  window.addEventListener("error", (event) => {
-    const message = event?.error instanceof Error ? event.error.stack || event.error.message : event.message;
-    setDebugError(message || "UNKNOWN_ERROR");
-  });
-
-  window.addEventListener("unhandledrejection", (event) => {
-    const reason = event?.reason instanceof Error ? event.reason.stack || event.reason.message : String(event?.reason);
-    setDebugError(reason || "UNHANDLED_REJECTION");
-  });
-};
 
 const formatValue = (value, fallback = "미등록") =>
   value && String(value).trim().length > 0 ? value : fallback;
@@ -562,7 +475,7 @@ const initRestaurantsPage = async () => {
     setListEnd("");
   };
 
-const fetchWithTimeout = async (url) => {
+  const fetchWithTimeout = async (url) => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
     try {
@@ -657,17 +570,9 @@ const fetchWithTimeout = async (url) => {
     if (dataReady && allStores.length > 0) return allStores;
 
     const url = new URL(DATA_URL, document.baseURI).toString();
-    if (debugEnabled) {
-      debugState.lastUrl = url;
-      updateDebugPanel();
-    }
 
     try {
       const response = await fetchWithTimeout(url);
-      if (debugEnabled) {
-        debugState.status = String(response.status);
-        updateDebugPanel();
-      }
       if (!response.ok) {
         throw new Error(`DATA_ERROR_${response.status}`);
       }
@@ -677,14 +582,8 @@ const fetchWithTimeout = async (url) => {
       if (url.endsWith(".csv") || contentType.includes("text/csv")) {
         const csvText = await response.text();
         rawData = parseCsvRows(csvText.replace(/^\uFEFF/, ""));
-        if (debugEnabled) {
-          debugState.type = "CSV";
-        }
       } else {
         rawData = await response.json();
-        if (debugEnabled) {
-          debugState.type = "JSON";
-        }
       }
       if (!Array.isArray(rawData)) {
         throw new Error("DATA_ERROR_INVALID");
@@ -699,21 +598,8 @@ const fetchWithTimeout = async (url) => {
       });
 
       dataReady = true;
-      if (debugEnabled) {
-        debugState.type = debugState.type || "JSON";
-        debugState.count = allStores.length;
-        debugState.cursor = cursor;
-        setDebugError("");
-        setDebugMessage(
-          `DATA_OK(url=${url}, type=${debugState.type || "JSON"}, count=${allStores.length})`
-        );
-      }
       return allStores;
     } catch (error) {
-      const lastError = error instanceof Error ? error.message : String(error);
-      if (debugEnabled) {
-        setDebugError(lastError);
-      }
       throw error;
     }
   };
@@ -761,10 +647,6 @@ const fetchWithTimeout = async (url) => {
     });
 
     cursor += next.length;
-    if (debugEnabled) {
-      debugState.cursor = cursor;
-      updateDebugPanel();
-    }
     if (cursor >= filteredStores.length) {
       setListEnd(filteredStores.length > 0 ? "마지막입니다." : "");
     }
@@ -841,7 +723,7 @@ const fetchWithTimeout = async (url) => {
   loadAndRender();
 };
 
-  const initRestaurantDetail = async () => {
+const initRestaurantDetail = async () => {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
   if (!slug) return;
@@ -1023,10 +905,6 @@ const initShare = () => {
 };
 
 const init = () => {
-  debugEnabled =
-    new URLSearchParams(location.search).get("debug") === "1" ||
-    localStorage.getItem("DEBUG") === "1";
-  setupDebugHooks();
   if (document.getElementById("restaurant-grid")) {
     initRestaurantsPage();
   }
