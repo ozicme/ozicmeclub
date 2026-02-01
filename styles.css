@@ -149,6 +149,7 @@ main {
 .hero {
   background: var(--surface);
   padding: 64px 0 48px;
+  text-align: center;
 }
 
 .hero-inner {
