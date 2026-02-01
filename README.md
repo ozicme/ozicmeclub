@@ -1,6 +1,6 @@
-# OZICME 소비자용 공개 디렉토리
+# OZICME CLUB 소비자용 공개 디렉토리
 
-오직미(OZICME) 쌀을 사용하는 식당을 발견하고 네이버 예약/플레이스 및 길찾기로 이어지는 정적 사이트입니다. 로그인 없이 누구나 이용할 수 있으며, 개인정보와 거래정보는 공개하지 않습니다.
+오직미(OZICME) 쌀을 사용하는 식당을 지역/유형별로 검색하고 **네이버 예약/플레이스**로 연결되는 정적 사이트입니다. 로그인 없이 누구나 이용할 수 있으며 개인정보/거래정보는 화면에 노출하지 않습니다.
 
 ## 로컬 실행 방법
 
@@ -10,58 +10,52 @@ npm run dev
 
 브라우저에서 `http://localhost:3000`에 접속하세요.
 
-## 데이터 업데이트 (5줄 요약)
+## 데이터 업데이트
 
-1) 최신 엑셀을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체
-2) `npm run seed` 실행
-3) `public-restaurants.json` 갱신 확인 후 배포
+`public-restaurants.json`을 갱신해 배포합니다. 업데이트 시 아래 필드를 유지해주세요.
 
-## 데이터 업데이트 방법 (엑셀 → JSON)
+### 필수 필드
 
-`오직미_식당디렉토리_사이트개발용_최종정비.csv`를 **정본(source of truth)** 으로 사용합니다. 최신 엑셀을 CSV로 저장해 해당 파일을 교체한 뒤, 변환 스크립트를 실행하면 `public-restaurants.json`이 완전히 교체됩니다.
+- `name`: 식당명
+- `region`: 지역 정보
+  - `sido`, `sigungu` (시/도, 시/군/구)
+- `type`: 식당유형/카테고리 (예: 한식, 일식, 분식, 고깃집)
+- `naverReservationUrl`: 네이버 예약 URL (없으면 빈 문자열)
+- `naverPlaceUrl`: 네이버 플레이스 URL (예약 URL이 없을 때 대체)
 
-### 빠른 업데이트 절차
+### 선택 필드 (없어도 UI는 "미등록" 처리)
 
-1. 최신 엑셀 파일을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체합니다.
-2. 변환 스크립트를 실행합니다.
-   ```bash
-   node scripts/convert-restaurants.js
-   ```
-3. `public-restaurants.json`이 갱신되었는지 확인하고 배포합니다.
+- `addressPublic`: 구/동 또는 도로명까지만
+- `signatureMenus`: 대표 메뉴 배열
+- `thumbnail`, `images`: 대표 이미지
+- `naverMapUrl`: 길찾기 링크
 
-### 변환 스크립트 옵션
+> **예약 버튼 규칙**
+> - `naverReservationUrl`이 있으면 해당 링크로 이동
+> - 없으면 `naverPlaceUrl`로 이동
+> - 둘 다 없으면 예약 버튼이 비활성화됩니다.
 
-```bash
-node scripts/convert-restaurants.js [source.csv] [output.json]
-```
-
-### JSON 필드 참고
-
-변환 스크립트는 검색/필터에 필요한 필드를 유지하도록 아래 형태로 출력합니다.
+### JSON 예시
 
 ```json
 {
+  "id": "ozicme-999",
   "name": "오직미 샘플 식당",
-  "region": {"sido": "서울", "sigungu": "강남구", "eupmyeondong": "역삼동"},
-  "category": "한식",
-  "categoryDetail": "백반/정식",
-  "mainDishes": ["백반", "정식"],
-  "searchTags": ["한식", "백반"],
+  "region": {"sido": "서울특별시", "sigungu": "강남구"},
+  "type": "한식",
+  "addressPublic": "서울특별시 강남구 테헤란로",
   "signatureMenus": ["백반", "정식"],
-  "address": "서울특별시 강남구 ...",
-  "naverReservationUrl": "",
-  "naverPlaceUrl": "https://map.naver.com/v5/search/...",
-  "naverMapUrl": "https://map.naver.com/v5/search/...",
-  "priceRange": "",
-  "phone": "",
-  "thumbnail": "",
+  "thumbnail": "https://...",
   "images": [],
-  "verifiedBadge": true,
-  "verifiedMonth": ""
+  "naverReservationUrl": "https://booking.naver.com/booking/6/bizes/123456",
+  "naverPlaceUrl": "https://map.naver.com/v5/search/...",
+  "naverMapUrl": "https://map.naver.com/v5/search/..."
 }
 ```
 
-> 내부 지표(주문수/누적결제금액 등)는 변환 과정에서 제외됩니다.
+### 타입(type) 누락 시
+
+`type`이 없는 데이터는 **자동으로 "기타"** 로 처리됩니다. 추후 태깅을 위해 위 JSON 예시처럼 손쉽게 추가할 수 있도록 유지해주세요.
 
 ## 배포 방법
 

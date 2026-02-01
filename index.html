@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>오직미 | 오직미 쌀 사용 식당 리스트</title>
-  <meta name="description" content="오직미 쌀 사용 식당을 검색하고 네이버 예약/플레이스로 연결되는 공개 디렉토리." />
-  <meta property="og:title" content="오직미 쌀 사용 식당 리스트" />
-  <meta property="og:description" content="오직미 인증 매장을 발견하고 네이버 예약과 길찾기로 이어지세요." />
+  <title>오직미클럽 | 오직미 쌀 사용 식당 리스트</title>
+  <meta name="description" content="오직미 쌀 사용 식당을 지역/유형별로 검색하고 네이버 예약으로 연결되는 공개 디렉토리." />
+  <meta property="og:title" content="오직미클럽 식당 리스트" />
+  <meta property="og:description" content="오직미 인증 매장을 찾고 네이버 예약/플레이스로 연결하세요." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="/og-placeholder.png" />
   <meta name="theme-color" content="#1f6b4e" />
@@ -15,59 +15,65 @@
 <body>
   <div class="page">
     <header class="site-header">
-      <a class="logo" href="index.html">OZICME</a>
-      <a class="btn btn-ghost" href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>
+      <div class="header-left">
+        <a class="logo" href="index.html">오직미클럽</a>
+      </div>
+      <div class="header-center">
+        <p class="header-badge">OZICME CLUB</p>
+        <h1 class="header-title">좋은 쌀로 정성을 다하는 식당을 한눈에</h1>
+        <p class="header-sub">지역/식당유형으로 바로 찾아보고 네이버 예약으로 연결하세요.</p>
+      </div>
+      <div class="header-right">
+        <a class="btn btn-ghost" href="https://ozicme.com" target="_blank" rel="noopener">오직미몰 바로가기</a>
+      </div>
     </header>
 
     <main class="list-page">
-      <section class="hero">
-        <div class="hero-inner">
-          <div class="hero-badge">[ 오직미클럽 ]</div>
-          <h1 class="hero-title">좋은 쌀로 정성을 다하는 식당을 한곳에 모았어요!</h1>
-          <p class="hero-sub">우리 동네의 좋은 쌀 쓰는 식당 검색해보세요!</p>
+      <section class="filter-bar" aria-label="필터">
+        <div class="filter-group">
+          <label for="search-input">식당 검색</label>
+          <input
+            id="search-input"
+            type="search"
+            placeholder="식당명, 메뉴 키워드 검색"
+            autocomplete="off"
+            enterkeyhint="search"
+          />
         </div>
-      </section>
 
-      <section class="list-search">
-        <form class="hero-search" id="search-form" role="search" aria-label="매장 검색">
-          <label class="sr-only" for="search-input">식당 검색</label>
-          <div class="search-bar">
-            <input
-              id="search-input"
-              type="search"
-              placeholder="식당명 / 지역 / 메뉴로 검색"
-              autocomplete="off"
-              enterkeyhint="search"
-            />
+        <div class="filter-group">
+          <label for="sido-select">지역</label>
+          <div class="filter-row">
+            <select id="sido-select" aria-label="시/도"></select>
+            <select id="sigungu-select" aria-label="시/군/구"></select>
           </div>
+        </div>
+
+        <div class="filter-group">
+          <label>식당 유형</label>
+          <div class="type-chips" id="type-chips" role="listbox" aria-label="식당 유형 필터"></div>
+        </div>
+
+        <div class="filter-toggle">
+          <label class="toggle">
+            <input type="checkbox" id="reservable-only" />
+            <span class="toggle-slider" aria-hidden="true"></span>
+            <span>예약 가능한 곳만</span>
+          </label>
           <p class="result-count" id="result-count">매장을 불러오는 중...</p>
-        </form>
+        </div>
       </section>
 
       <section class="list-state" id="list-state" aria-live="polite"></section>
 
-      <section class="restaurant-grid" id="restaurant-grid">
-        <!-- cards -->
-      </section>
-
-      <div class="list-loader" id="list-loader" aria-live="polite"></div>
-      <p class="list-end" id="list-end" aria-live="polite"></p>
-      <div class="scroll-sentinel" id="scroll-sentinel" aria-hidden="true"></div>
-
+      <section class="restaurant-grid" id="restaurant-grid"></section>
     </main>
 
     <footer class="site-footer">
-      <p>© 2024 OZICME. 오직미 쌀 사용 식당 공개 리스트.</p>
-      <p class="build-id">BUILD_ID: <span id="build-id">20260106-1</span></p>
+      <p>© 2024 OZICME CLUB. 오직미 쌀 사용 식당 공개 리스트.</p>
     </footer>
   </div>
 
-  <script>
-    const BUILD_ID = "20260106-1";
-    console.info("BUILD_ID:", BUILD_ID);
-    const buildIdEl = document.getElementById("build-id");
-    if (buildIdEl) buildIdEl.textContent = BUILD_ID;
-  </script>
-  <script src="script.js?v=20260106-1" defer></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
