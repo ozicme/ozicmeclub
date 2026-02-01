@@ -145,34 +145,45 @@ main {
   gap: 20px;
 }
 
-.list-hero {
+/* Hero title redesign (index.html) */
+.hero {
+  background: var(--surface);
+  padding: 64px 0 48px;
+}
+
+.hero-inner {
+  text-align: center;
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  margin: 0 auto;
+  max-width: 880px;
+}
+
+.hero-badge {
+  font-weight: 800;
+  font-size: clamp(1.75rem, 3vw, 2rem);
+  letter-spacing: -0.02em;
+}
+
+.hero-title {
+  margin: 0;
+  font-weight: 900;
+  font-size: clamp(2.5rem, 4.4vw, 2.75rem);
+  letter-spacing: -0.02em;
+}
+
+.hero-sub {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  color: var(--muted);
+}
+
+.list-search {
   display: grid;
   gap: 12px;
   text-align: center;
-  padding: 16px 0 8px;
-}
-
-.hero-intro {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  max-width: 720px;
-}
-
-.hero-headline {
-  margin: 0;
-  font-size: clamp(1.375rem, 4vw, 2.25rem);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-.hero-subcopy {
-  margin: 0;
-  font-size: clamp(0.95rem, 2.2vw, 1.125rem);
-  color: var(--muted);
 }
 
 .hero-search {
@@ -564,11 +575,6 @@ main {
 }
 
 @media (min-width: 768px) {
-  .list-hero {
-    grid-template-columns: 1fr;
-    align-items: center;
-  }
-
   .restaurant-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -595,6 +601,24 @@ main {
   .cta-actions {
     grid-auto-flow: column;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .hero {
+    padding: 56px 0 40px;
+  }
+
+  .hero-badge {
+    font-size: 1.3rem;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+  }
+
+  .hero-sub {
+    font-size: 0.8rem;
   }
 }
 
