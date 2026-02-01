@@ -223,6 +223,23 @@ main {
   min-width: 180px;
 }
 
+.filter-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.filter-row select {
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(28, 38, 32, 0.18);
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 10px 24px rgba(15, 24, 18, 0.06);
+}
+
 .result-count {
   margin: 0;
   font-weight: 600;
