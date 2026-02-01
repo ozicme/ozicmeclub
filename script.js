@@ -2,7 +2,6 @@ const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const FETCH_TIMEOUT_MS = 8000;
 const DEFAULT_SIDO = "서울특별시";
-const DEFAULT_SIGUNGU = "강남구";
 const DEFAULT_SORT = "name_asc";
 
 let allStores = [];
@@ -151,9 +150,6 @@ const normalizeSido = (value) => {
 const normalizeSigungu = (value) => {
   const trimmed = String(value || "").trim();
   if (!trimmed) return "";
-  if (trimmed.startsWith("강남")) {
-    return DEFAULT_SIGUNGU;
-  }
   return trimmed;
 };
 
@@ -655,9 +651,6 @@ const initRestaurantsPage = async () => {
     return true;
   };
 
-  const countByRegion = (sido, sigungu) =>
-    allStores.filter((item) => matchesRegion(item, sido, sigungu)).length;
-
   const sortStoresByName = (stores) => {
     // 기본 정렬: 식당명 가나다순(오름차순).
     stores.sort((a, b) => a.name.localeCompare(b.name, "ko"));
@@ -760,28 +753,12 @@ const initRestaurantsPage = async () => {
   const initializeDefaultFilters = () => {
     if (filtersInitialized) return;
     const params = new URLSearchParams(window.location.search);
-    const urlSido = params.get("sido") || "";
-    const urlSigungu = params.get("sigungu") || "";
     const urlSort = params.get("sort");
 
     filterState.sort = urlSort === DEFAULT_SORT ? DEFAULT_SORT : DEFAULT_SORT;
-
-    if (urlSido || urlSigungu) {
-      filterState.sido = urlSido;
-      filterState.sigungu = urlSigungu;
-    } else {
-      // 데이터 로드 후 기본값(서울특별시/강남구)을 적용하고 0건이면 단계적으로 fallback.
-      if (countByRegion(DEFAULT_SIDO, DEFAULT_SIGUNGU) > 0) {
-        filterState.sido = DEFAULT_SIDO;
-        filterState.sigungu = DEFAULT_SIGUNGU;
-      } else if (countByRegion(DEFAULT_SIDO, "") > 0) {
-        filterState.sido = DEFAULT_SIDO;
-        filterState.sigungu = "";
-      } else {
-        filterState.sido = "";
-        filterState.sigungu = "";
-      }
-    }
+    // URL 파라미터/저장값과 무관하게 첫 로딩 기본값은 서울특별시 + 전체 시/군/구.
+    filterState.sido = DEFAULT_SIDO;
+    filterState.sigungu = "";
 
     filtersInitialized = true;
     syncFilterSelects();
