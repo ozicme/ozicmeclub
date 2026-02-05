@@ -10,75 +10,101 @@ npm run dev
 
 브라우저에서 `http://localhost:3000`에 접속하세요.
 
-## 데이터 업데이트 (5줄 요약)
+---
 
-1) 최신 엑셀을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체
-2) `npm run seed` 실행
-3) `public-restaurants.json` 갱신 확인 후 배포
+## 데이터 파이프라인(기존 + 외부 대량 병합)
 
-## 데이터 업데이트 방법 (엑셀 → JSON)
+정적 사이트는 `JSON`만 배포하므로, 아래 파이프라인이 `input/base.csv` + 외부 출처를 병합해 최종 CSV/JSON을 만듭니다.
 
-`오직미_식당디렉토리_사이트개발용_최종정비.csv`를 **정본(source of truth)** 으로 사용합니다. 최신 엑셀을 CSV로 저장해 해당 파일을 교체한 뒤, 변환 스크립트를 실행하면 `public-restaurants.json`이 완전히 교체됩니다.
+### 디렉터리 구조
 
-### 빠른 업데이트 절차
+```text
+input/
+  base.csv
+  sources/
+    franchise_sources.csv
+    municipality_sources.csv
+output/
+  ozicme_restaurants_merged.csv
+  public-restaurants.json
+```
 
-1. 최신 엑셀 파일을 CSV로 저장해 `오직미_식당디렉토리_사이트개발용_최종정비.csv`로 교체합니다.
-2. 변환 스크립트를 실행합니다.
-   ```bash
-   node scripts/convert-restaurants.js
-   ```
-3. `public-restaurants.json`이 갱신되었는지 확인하고 배포합니다.
+### 1) 준비
 
-### 변환 스크립트 옵션
+1. 기존 정본 CSV를 `input/base.csv`로 둡니다.
+2. 출처 목록을 아래 파일에 입력합니다.
+   - `input/sources/franchise_sources.csv`
+   - `input/sources/municipality_sources.csv`
+
+기본 템플릿은 이미 저장되어 있으며, 행을 추가해 확장하면 됩니다.
+
+### 2) 실행
 
 ```bash
-node scripts/convert-restaurants.js [source.csv] [output.json]
+pip install -r requirements.txt
+npm run merge-data
 ```
 
-### JSON 필드 참고
+실행 스크립트: `scripts/build_restaurant_pipeline.py`
 
-변환 스크립트는 검색/필터에 필요한 필드를 유지하도록 아래 형태로 출력합니다.
+### 3) 파이프라인에서 자동 처리되는 내용
 
-```json
-{
-  "name": "오직미 샘플 식당",
-  "region": {"sido": "서울", "sigungu": "강남구", "eupmyeondong": "역삼동"},
-  "category": "한식",
-  "categoryDetail": "백반/정식",
-  "mainDishes": ["백반", "정식"],
-  "searchTags": ["한식", "백반"],
-  "signatureMenus": ["백반", "정식"],
-  "address": "서울특별시 강남구 ...",
-  "naverReservationUrl": "",
-  "naverPlaceUrl": "https://map.naver.com/v5/search/...",
-  "naverMapUrl": "https://map.naver.com/v5/search/...",
-  "priceRange": "",
-  "phone": "",
-  "thumbnail": "",
-  "images": [],
-  "verifiedBadge": true,
-  "verifiedMonth": ""
-}
+- `input/base.csv` 로드 + `Unnamed*` 컬럼 제거
+- 출처 파일 자동 병합
+- 소스별 파서 분리
+  - HTML 표: BeautifulSoup
+  - PDF: pdfplumber 텍스트 추출(실패 시 `output/pdf_manual_review_queue.csv`로 수동 보완 큐 생성)
+  - Excel/CSV: pandas 로드
+- 공통 정제
+  - 주소 기반 `지역_시도/시군구/읍면동` 자동 파싱
+  - `상호명 + 주소(정규화)` 기준 중복 제거
+  - 룰테이블 기반 `식당유형/주요리/검색태그` 자동 분류
+- 네이버 링크 규칙
+  - `네이버플레이스`가 없으면 `https://map.naver.com/p/search/{상호명+대표주소}` 생성
+  - `네이버예약URL`은 네이버 예약 URL이 있을 때만 그대로 사용, 없으면 네이버 지도 검색 URL 사용
+- 배지/출처 메타데이터
+  - 기존 리스트: `배지=오직미클럽`, `출처유형=ozicme-base`
+  - 외부 추가: `배지=""`
+  - 공통 컬럼: `출처유형`, `근거URL`, `근거문구`, `최종업데이트`
+
+### 4) 산출물
+
+- `output/ozicme_restaurants_merged.csv`
+- `output/public-restaurants.json` (사이트 배포용)
+
+---
+
+## 출처 템플릿 설명
+
+### `input/sources/franchise_sources.csv`
+
+| 컬럼 | 설명 |
+|---|---|
+| source_id | 출처 식별자(고유값 권장) |
+| 브랜드명 | 프랜차이즈명 |
+| 매장리스트URL | 매장 목록 페이지 URL |
+| 매장데이터URL | (선택) CSV/XLS/PDF 등 직접 데이터 URL |
+| 데이터형식 | html / pdf / xls / xlsx / csv |
+| 좋은쌀근거URL | 쌀 관련 홍보/정책 근거 링크 |
+| 좋은쌀근거문구 | 근거 텍스트 |
+
+### `input/sources/municipality_sources.csv`
+
+| 컬럼 | 설명 |
+|---|---|
+| source_id | 출처 식별자(고유값 권장) |
+| 지자체명 | 지자체명 |
+| 리스트URL | 업소 리스트 URL |
+| 형식 | html / pdf / xls / xlsx / csv |
+| 근거문구키워드 | 근거 문구 키워드 |
+
+---
+
+## 기존 단일 CSV → JSON 변환(레거시)
+
+기존 방식은 `오직미_식당디렉토리_사이트개발용_최종정비.csv`만 사용합니다.
+
+```bash
+npm run seed
 ```
 
-> 내부 지표(주문수/누적결제금액 등)는 변환 과정에서 제외됩니다.
-
-## 배포 방법
-
-### GitHub Pages
-
-1. 레포지토리에서 `Settings → Pages`로 이동합니다.
-2. `Branch`를 `main`(또는 사용하는 브랜치)로 설정하고 `/root`를 선택합니다.
-3. 저장 후 제공되는 URL로 접속하면 됩니다.
-
-### Netlify
-
-1. Netlify에 로그인 후 `Add new site → Import an existing project`를 선택합니다.
-2. 레포지토리를 연결한 뒤 빌드 명령 없이 배포합니다.
-3. 출력 디렉토리는 루트(`/`)로 지정합니다.
-
-## 참고 사항
-
-- 로그인/회원가입/관리자 기능은 포함하지 않습니다.
-- 예약 CTA는 네이버 예약/플레이스로만 연결합니다.
-- 지도는 API 키 없이 외부 링크로만 연결합니다.

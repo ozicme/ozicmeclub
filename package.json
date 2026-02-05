@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node server.js",
     "seed": "node scripts/convert-restaurants.js",
-    "verify-api": "node scripts/verify-api.js"
+    "verify-api": "node scripts/verify-api.js",
+    "merge-data": "python scripts/build_restaurant_pipeline.py"
   }
 }
