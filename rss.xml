@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>오직미클럽</title>
+    <link>https://ozicmeclub.com/</link>
+    <description>좋은 쌀을 사용하는 식당 정보</description>
+    <item>
+      <title>오직미클럽 오픈 안내</title>
+      <link>https://ozicmeclub.com/</link>
+      <description>오직미클럽 서비스를 시작했습니다.</description>
+      <pubDate>Wed, 25 Feb 2026 09:00:00 +0900</pubDate>
+      <guid>https://ozicmeclub.com/#open</guid>
+    </item>
+  </channel>
+</rss>
