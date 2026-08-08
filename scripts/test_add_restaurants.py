@@ -1,9 +1,11 @@
 import csv
 import json
+import os
 import tempfile
 import unittest
 from datetime import datetime, timezone
 from pathlib import Path
+from unittest.mock import patch
 
 from scripts.add_restaurants import RegistrationError, register
 
@@ -14,22 +16,50 @@ class AddRestaurantsTest(unittest.TestCase):
         self.root = Path(self.temp_dir.name)
         self.base_csv = self.root / "base.csv"
         self.output = self.root / "admin.json"
+        fieldnames = [
+            "상호명",
+            "대표주소",
+            "네이버플레이스",
+            "이미지",
+            "지역_시도",
+            "지역_시군구",
+            "지역_읍면동",
+            "식당유형_대",
+            "식당유형_세부",
+            "주요리_대표",
+            "검색태그",
+        ]
         with self.base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=["상호명", "대표주소"])
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
             writer.writeheader()
-            writer.writerow({"상호명": "기존식당", "대표주소": "서울 강남구 테헤란로 1"})
+            writer.writerow(
+                {
+                    "상호명": "기존식당",
+                    "대표주소": "서울 강남구 테헤란로 1",
+                    "네이버플레이스": "https://map.naver.com/p/entry/place/1284913565",
+                    "이미지": "https://example.com/existing.jpg",
+                    "지역_시도": "서울특별시",
+                    "지역_시군구": "강남구",
+                    "지역_읍면동": "역삼동",
+                    "식당유형_대": "한식",
+                    "식당유형_세부": "솥밥",
+                    "주요리_대표": "솥밥,제육볶음",
+                    "검색태그": "한식,좋은쌀",
+                }
+            )
         self.output.write_text("[]\n", encoding="utf-8")
         self.now = datetime(2026, 8, 8, tzinfo=timezone.utc)
 
     def tearDown(self):
         self.temp_dir.cleanup()
 
-    def test_adds_single_ozicme_restaurant(self):
+    def test_adds_full_ozicme_restaurant_for_backward_compatibility(self):
         payload = json.dumps(
             {
                 "name": "새식당",
                 "address": "서울 마포구 월드컵로 10",
-                "isOzicmeCustomer": True,
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/999999999",
+                "registrationType": "ozicme",
                 "mainDishes": ["솥밥"],
             },
             ensure_ascii=False,
@@ -41,26 +71,81 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(saved[0]["region"]["sido"], "서울특별시")
         self.assertEqual(saved[0]["badgeLabel"], "오직미클럽")
 
-    def test_skips_duplicate_in_base(self):
+    def test_minimal_record_is_auto_filled_from_catalog(self):
         payload = json.dumps(
             {
-                "name": "기존 식당",
-                "address": "서울특별시 강남구 테헤란로 1",
-                "isOzicmeCustomer": True,
+                "name": "기존식당",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/1284913565?placePath=home",
+                "registrationType": "ozicme",
             },
             ensure_ascii=False,
         )
         result = register(payload, self.base_csv, self.output, now=self.now)
         self.assertEqual(result["added"], 0)
         self.assertEqual(result["skipped"], 1)
+        self.assertEqual(result["details"][0]["lookup"], "catalog")
+        self.assertEqual(result["details"][0]["address"], "서울 강남구 테헤란로 1")
 
-    def test_rejects_non_http_url(self):
+    def test_minimal_new_record_is_auto_filled_from_naver_api(self):
+        payload = json.dumps(
+            {
+                "name": "새로운식당",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/777777777",
+                "imageUrl": "https://example.com/new.jpg",
+                "registrationType": "ozicme",
+            },
+            ensure_ascii=False,
+        )
+
+        def fake_lookup(name, client_id, client_secret):
+            self.assertEqual((name, client_id, client_secret), ("새로운식당", "id", "secret"))
+            return {
+                "title": "<b>새로운식당</b>",
+                "roadAddress": "부산 해운대구 해운대로 2",
+                "category": "음식점>한식",
+                "description": "솥밥 전문점",
+            }
+
+        with patch.dict(
+            os.environ,
+            {"NAVER_CLIENT_ID": "id", "NAVER_CLIENT_SECRET": "secret"},
+        ):
+            result = register(
+                payload,
+                self.base_csv,
+                self.output,
+                now=self.now,
+                naver_lookup=fake_lookup,
+            )
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(result["added"], 1)
+        self.assertEqual(result["details"][0]["lookup"], "naver-api")
+        self.assertEqual(saved[0]["address"], "부산 해운대구 해운대로 2")
+        self.assertEqual(saved[0]["category"], "음식점")
+        self.assertEqual(saved[0]["categoryDetail"], "한식")
+
+    def test_new_minimal_record_requires_naver_secrets(self):
+        payload = json.dumps(
+            {
+                "name": "새로운식당",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/777777777",
+                "registrationType": "ozicme",
+            },
+            ensure_ascii=False,
+        )
+        with patch.dict(
+            os.environ,
+            {"NAVER_CLIENT_ID": "", "NAVER_CLIENT_SECRET": ""},
+        ):
+            with self.assertRaisesRegex(RegistrationError, "NAVER_CLIENT_ID"):
+                register(payload, self.base_csv, self.output, now=self.now)
+
+    def test_rejects_non_naver_url(self):
         payload = json.dumps(
             {
                 "name": "잘못된링크식당",
-                "address": "서울 종로구 종로 1",
-                "naverPlaceUrl": "javascript:alert(1)",
-                "isOzicmeCustomer": True,
+                "naverPlaceUrl": "https://example.com/place/123456",
+                "registrationType": "ozicme",
             },
             ensure_ascii=False,
         )
@@ -72,7 +157,8 @@ class AddRestaurantsTest(unittest.TestCase):
             {
                 "name": "외부식당",
                 "address": "경기 수원시 팔달구 1",
-                "isOzicmeCustomer": False,
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/666666666",
+                "registrationType": "external",
             },
             ensure_ascii=False,
         )
@@ -83,7 +169,8 @@ class AddRestaurantsTest(unittest.TestCase):
         record = {
             "name": "외부좋은쌀식당",
             "address": "부산 해운대구 해운대로 2",
-            "isOzicmeCustomer": False,
+            "naverPlaceUrl": "https://map.naver.com/p/entry/place/555555555",
+            "registrationType": "external",
             "evidenceUrl": "https://example.com/evidence",
             "evidenceText": "단일품종 쌀 사용",
         }

@@ -11,19 +11,23 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import html
 import json
 import os
 import re
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
-from urllib.parse import quote
+from typing import Any, Callable
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote, urlencode, urlparse
+from urllib.request import Request, urlopen
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "admin-restaurants.json"
+NAVER_LOCAL_SEARCH_URL = "https://openapi.naver.com/v1/search/local.json"
 
 SIDO_ALIASES = {
     "서울": "서울특별시",
@@ -62,6 +66,39 @@ def clean_url(value: Any, label: str) -> str:
     if url and not re.match(r"^https?://", url, re.IGNORECASE):
         raise RegistrationError(f"{label}은 http:// 또는 https:// 주소여야 합니다.")
     return url
+
+
+def clean_naver_place_url(value: Any) -> str:
+    url = clean_url(value, "네이버 플레이스 URL")
+    if not url:
+        return ""
+    hostname = (urlparse(url).hostname or "").lower()
+    if hostname != "naver.me" and hostname != "naver.com" and not hostname.endswith(
+        ".naver.com"
+    ):
+        raise RegistrationError("네이버 플레이스 URL은 naver.com 또는 naver.me 주소여야 합니다.")
+    return url
+
+
+def canonical_url(value: Any) -> str:
+    url = clean_text(value)
+    try:
+        parsed = urlparse(url)
+        return f"{(parsed.hostname or '').lower()}{parsed.path.rstrip('/')}"
+    except ValueError:
+        return re.sub(r"[?#].*$", "", url).rstrip("/")
+
+
+def place_id_from_url(value: Any) -> str:
+    url = clean_text(value)
+    match = re.search(r"/(?:entry/)?place/(\d+)", url, re.IGNORECASE)
+    if not match:
+        match = re.search(r"/(\d{5,})(?:/|$|[?#])", url)
+    return match.group(1) if match else ""
+
+
+def strip_markup(value: Any) -> str:
+    return html.unescape(re.sub(r"<[^>]+>", "", str(value or ""))).strip()
 
 
 def first_value(record: dict[str, Any], *keys: str) -> Any:
@@ -134,6 +171,184 @@ def infer_region(address: str, supplied: dict[str, Any]) -> dict[str, str]:
     return {"sido": sido, "sigungu": sigungu, "eupmyeondong": eupmyeondong}
 
 
+def base_row_to_record(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "name": first_value(row, "상호명", "name"),
+        "address": first_value(row, "대표주소", "주소", "address"),
+        "naverPlaceUrl": first_value(
+            row, "네이버플레이스", "네이버플레이스URL", "naverPlaceUrl"
+        ),
+        "imageUrl": first_value(row, "이미지", "이미지URL", "imageUrl"),
+        "region": {
+            "sido": first_value(row, "지역_시도", "시도", "sido"),
+            "sigungu": first_value(row, "지역_시군구", "시군구", "sigungu"),
+            "eupmyeondong": first_value(
+                row, "지역_읍면동", "읍면동", "eupmyeondong"
+            ),
+        },
+        "category": first_value(row, "식당유형_대", "음식점유형", "category"),
+        "categoryDetail": first_value(
+            row, "식당유형_세부", "세부유형", "categoryDetail"
+        ),
+        "mainDishes": first_value(row, "주요리_대표", "대표메뉴", "mainDishes"),
+        "searchTags": first_value(row, "검색태그", "searchTags"),
+    }
+
+
+def load_base_url_indexes(
+    base_csv: Path,
+) -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
+    by_url: dict[str, dict[str, Any]] = {}
+    by_place_id: dict[str, dict[str, Any]] = {}
+    if not base_csv.exists():
+        return by_url, by_place_id
+    with base_csv.open("r", encoding="utf-8-sig", newline="") as handle:
+        for row in csv.DictReader(handle):
+            record = base_row_to_record(row)
+            naver_url = clean_text(record.get("naverPlaceUrl"))
+            if not naver_url:
+                continue
+            by_url[canonical_url(naver_url)] = record
+            place_id = place_id_from_url(naver_url)
+            if place_id:
+                by_place_id[place_id] = record
+    return by_url, by_place_id
+
+
+def normalized_name(value: Any) -> str:
+    return re.sub(r"[^0-9a-z가-힣]", "", strip_markup(value).lower())
+
+
+def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[str, Any]:
+    query = urlencode({"query": name, "display": 5})
+    request = Request(
+        f"{NAVER_LOCAL_SEARCH_URL}?{query}",
+        headers={
+            "X-Naver-Client-Id": client_id,
+            "X-Naver-Client-Secret": client_secret,
+            "User-Agent": "ozicmeclub-admin/1.0",
+        },
+    )
+    try:
+        with urlopen(request, timeout=15) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+    except HTTPError as exc:
+        raise RegistrationError(f"네이버 지역검색 API 오류({exc.code})가 발생했습니다.") from exc
+    except (URLError, TimeoutError, json.JSONDecodeError) as exc:
+        raise RegistrationError("네이버 지역검색 API 응답을 확인할 수 없습니다.") from exc
+
+    items = payload.get("items") if isinstance(payload, dict) else None
+    if not isinstance(items, list) or not items:
+        raise RegistrationError(f"네이버에서 '{name}' 검색 결과를 찾지 못했습니다.")
+
+    exact = [item for item in items if normalized_name(item.get("title")) == normalized_name(name)]
+    if len(exact) == 1:
+        return exact[0]
+    if len(items) == 1:
+        return items[0]
+    candidates = ", ".join(strip_markup(item.get("title")) for item in items[:3])
+    raise RegistrationError(
+        f"'{name}'과 정확히 일치하는 식당을 고르지 못했습니다. "
+        f"상호명을 더 정확히 입력하세요. 검색 결과: {candidates}"
+    )
+
+
+def naver_item_to_record(item: dict[str, Any], submitted_url: str) -> dict[str, Any]:
+    name = strip_markup(item.get("title"))
+    address = clean_text(item.get("roadAddress") or item.get("address"))
+    if not name or not address:
+        raise RegistrationError("네이버 검색 결과에 상호명 또는 주소가 없습니다.")
+    categories = [
+        clean_text(part)
+        for part in re.split(r"[>,]", str(item.get("category") or ""))
+        if clean_text(part)
+    ]
+    description = strip_markup(item.get("description"))
+    tags: list[str] = []
+    for tag in [*categories, description]:
+        if tag and tag not in tags:
+            tags.append(tag)
+    return {
+        "name": name,
+        "address": address,
+        "naverPlaceUrl": submitted_url,
+        "region": infer_region(address, {}),
+        "category": categories[0] if categories else "",
+        "categoryDetail": " > ".join(categories[1:]),
+        "mainDishes": [],
+        "searchTags": tags,
+    }
+
+
+def enrich_source_record(
+    source: dict[str, Any],
+    by_url: dict[str, dict[str, Any]],
+    by_place_id: dict[str, dict[str, Any]],
+    naver_lookup: Callable[[str, str, str], dict[str, Any]],
+) -> tuple[dict[str, Any], str]:
+    name = clean_text(first_value(source, "name", "상호명", "식당명"))
+    if not name:
+        raise RegistrationError("상호명은 필수입니다.")
+
+    existing_address = clean_text(first_value(source, "address", "대표주소", "주소"))
+    submitted_url = clean_naver_place_url(
+        first_value(
+            source,
+            "naverPlaceUrl",
+            "네이버플레이스",
+            "네이버플레이스URL",
+            "네이버플레이스링크",
+        )
+    )
+    if existing_address:
+        return source, "provided"
+    if not submitted_url:
+        raise RegistrationError("네이버 플레이스 URL은 필수입니다.")
+
+    matched = by_url.get(canonical_url(submitted_url))
+    place_id = place_id_from_url(submitted_url)
+    if not matched and place_id:
+        matched = by_place_id.get(place_id)
+    if matched:
+        return {
+            **matched,
+            **source,
+            "name": clean_text(matched.get("name")) or name,
+            "address": matched.get("address"),
+            "naverPlaceUrl": submitted_url,
+            "imageUrl": first_value(source, "imageUrl", "이미지URL", "이미지")
+            or matched.get("imageUrl", ""),
+            "region": matched.get("region", {}),
+            "category": matched.get("category", ""),
+            "categoryDetail": matched.get("categoryDetail", ""),
+            "mainDishes": matched.get("mainDishes", []),
+            "searchTags": matched.get("searchTags", []),
+        }, "catalog"
+
+    client_id = os.environ.get("NAVER_CLIENT_ID", "").strip()
+    client_secret = os.environ.get("NAVER_CLIENT_SECRET", "").strip()
+    if not client_id or not client_secret:
+        raise RegistrationError(
+            "신규 식당 자동 조회에는 GitHub Secrets의 NAVER_CLIENT_ID와 "
+            "NAVER_CLIENT_SECRET 설정이 필요합니다."
+        )
+    item = naver_lookup(name, client_id, client_secret)
+    automatic = naver_item_to_record(item, submitted_url)
+    return {
+        **automatic,
+        **source,
+        "name": automatic["name"],
+        "address": automatic["address"],
+        "naverPlaceUrl": submitted_url,
+        "imageUrl": first_value(source, "imageUrl", "이미지URL", "이미지"),
+        "region": automatic["region"],
+        "category": automatic["category"],
+        "categoryDetail": automatic["categoryDetail"],
+        "mainDishes": automatic["mainDishes"],
+        "searchTags": automatic["searchTags"],
+    }, "naver-api"
+
+
 def restaurant_key(name: str, address: str) -> str:
     normalized_address = clean_text(address)
     canonical_values = set(SIDO_ALIASES.values())
@@ -162,15 +377,25 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
     if not region["sido"]:
         raise RegistrationError(f"'{name}'의 시/도를 확인할 수 없습니다.")
 
-    is_ozicme = as_bool(
-        first_value(
-            record,
-            "isOzicmeCustomer",
-            "verifiedBadge",
-            "오직미거래식당",
-            "오직미클럽배지",
+    registration_type = clean_text(first_value(record, "registrationType", "등록구분"))
+    if registration_type:
+        normalized_type = re.sub(r"\s+", "", registration_type.lower())
+        if normalized_type in {"ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
+            is_ozicme = True
+        elif normalized_type in {"external", "외부", "외부좋은쌀식당"}:
+            is_ozicme = False
+        else:
+            raise RegistrationError(f"'{name}'의 등록 구분을 확인하세요.")
+    else:
+        is_ozicme = as_bool(
+            first_value(
+                record,
+                "isOzicmeCustomer",
+                "verifiedBadge",
+                "오직미거래식당",
+                "오직미클럽배지",
+            )
         )
-    )
     evidence_url = clean_url(first_value(record, "evidenceUrl", "근거URL"), "근거URL")
     evidence_text = clean_text(first_value(record, "evidenceText", "근거문구"))
     if not is_ozicme and (not evidence_url or not evidence_text):
@@ -178,9 +403,14 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
             f"외부 식당 '{name}'은 좋은 쌀 사용 근거URL과 근거문구가 모두 필요합니다."
         )
 
-    naver_url = clean_url(
-        first_value(record, "naverPlaceUrl", "네이버플레이스", "네이버플레이스링크"),
-        "네이버 플레이스 URL",
+    naver_url = clean_naver_place_url(
+        first_value(
+            record,
+            "naverPlaceUrl",
+            "네이버플레이스",
+            "네이버플레이스URL",
+            "네이버플레이스링크",
+        )
     )
     if not naver_url:
         query = quote(f"{name} {address}")
@@ -264,6 +494,7 @@ def register(
     output: Path,
     validate_only: bool = False,
     now: datetime | None = None,
+    naver_lookup: Callable[[str, str, str], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     timestamp = now or datetime.now(timezone.utc)
     submitted = load_json_records(raw)
@@ -272,18 +503,42 @@ def register(
     batch_keys: set[str] = set()
     additions: list[dict[str, Any]] = []
     skipped: list[str] = []
+    details: list[dict[str, str]] = []
+    by_url, by_place_id = load_base_url_indexes(base_csv)
+    lookup = naver_lookup or search_naver_local
 
     for position, source in enumerate(submitted, start=1):
         try:
-            record = normalize_record(source, timestamp)
+            enriched, lookup_source = enrich_source_record(
+                source, by_url, by_place_id, lookup
+            )
+            record = normalize_record(enriched, timestamp)
         except RegistrationError as exc:
             raise RegistrationError(f"{position}번째 식당: {exc}") from exc
         key = restaurant_key(record["name"], record["address"])
         if key in existing_keys or key in batch_keys:
             skipped.append(record["name"])
+            details.append(
+                {
+                    "name": record["name"],
+                    "address": record["address"],
+                    "category": record["category"],
+                    "lookup": lookup_source,
+                    "status": "duplicate",
+                }
+            )
             continue
         batch_keys.add(key)
         additions.append(record)
+        details.append(
+            {
+                "name": record["name"],
+                "address": record["address"],
+                "category": record["category"],
+                "lookup": lookup_source,
+                "status": "added" if not validate_only else "validated",
+            }
+        )
 
     if not validate_only and additions:
         write_json_atomic(output, [*existing_records, *additions])
@@ -293,6 +548,7 @@ def register(
         "added": len(additions),
         "skipped": len(skipped),
         "skippedNames": skipped,
+        "details": details,
         "totalAdminRestaurants": len(existing_records) + len(additions),
         "validateOnly": validate_only,
     }

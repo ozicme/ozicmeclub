@@ -37,6 +37,8 @@ jobs:
       - name: 식당 등록
         env:
           RESTAURANTS_JSON: ${{ inputs.restaurants_json }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
         run: python scripts/add_restaurants.py | tee /tmp/ozicmeclub-registration-result.json
 
       - name: 변경 검증
