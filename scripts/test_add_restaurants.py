@@ -108,7 +108,7 @@ class AddRestaurantsTest(unittest.TestCase):
             return {
                 "title": "<b>새로운식당</b>",
                 "roadAddress": "부산 해운대구 해운대로 2",
-                "category": "음식점>한식",
+                "category": "음식점>한식>솥밥",
                 "description": "솥밥 전문점",
             }
 
@@ -128,7 +128,7 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(result["details"][0]["lookup"], "naver-api")
         self.assertEqual(saved[0]["address"], "부산 해운대구 해운대로 2")
         self.assertEqual(saved[0]["category"], "음식점")
-        self.assertEqual(saved[0]["categoryDetail"], "한식")
+        self.assertEqual(saved[0]["categoryDetail"], "한식 > 솥밥")
 
     def test_naver_lookup_uses_api_hub_endpoint_and_headers(self):
         class FakeResponse:
@@ -193,6 +193,19 @@ class AddRestaurantsTest(unittest.TestCase):
             ensure_ascii=False,
         )
         with self.assertRaises(RegistrationError):
+            register(payload, self.base_csv, self.output, now=self.now)
+
+    def test_rejects_actual_html_tag_in_submitted_name(self):
+        payload = json.dumps(
+            {
+                "name": "<script>잘못된식당</script>",
+                "address": "서울 마포구 월드컵로 10",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/999999999",
+                "registrationType": "ozicme",
+            },
+            ensure_ascii=False,
+        )
+        with self.assertRaisesRegex(RegistrationError, "HTML 태그"):
             register(payload, self.base_csv, self.output, now=self.now)
 
     def test_requires_evidence_for_external_restaurant(self):
