@@ -282,11 +282,15 @@ const mergeRestaurantOverrides = (baseStores, adminStores, overrides) => {
       .filter((item) => item && item.targetKey)
       .map((item) => [String(item.targetKey), item])
   );
+  const occurrences = new Map();
   return [
     ...baseStores.map((item) => ({ ...item, dataSource: "base" })),
     ...adminStores.map((item) => ({ ...item, dataSource: "admin" })),
   ].map((item) => {
-    const targetKey = restaurantTargetKey(item);
+    const baseKey = restaurantTargetKey(item);
+    const occurrence = (occurrences.get(baseKey) || 0) + 1;
+    occurrences.set(baseKey, occurrence);
+    const targetKey = occurrence === 1 ? baseKey : `${baseKey}:duplicate:${occurrence}`;
     const override = overrideMap.get(targetKey);
     if (!override) return { ...item, targetKey };
     return {

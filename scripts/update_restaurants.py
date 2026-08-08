@@ -185,11 +185,19 @@ def load_targets(
     override_output: Path,
 ) -> tuple[dict[str, dict[str, Any]], list[dict[str, Any]]]:
     targets: dict[str, dict[str, Any]] = {}
+    key_occurrences: dict[str, int] = {}
+
+    def unique_key(record: dict[str, Any]) -> str:
+        base_key = target_key(record)
+        occurrence = key_occurrences.get(base_key, 0) + 1
+        key_occurrences[base_key] = occurrence
+        return base_key if occurrence == 1 else f"{base_key}:duplicate:{occurrence}"
+
     if base_csv.exists():
         with base_csv.open("r", encoding="utf-8-sig", newline="") as handle:
             for row in csv.DictReader(handle):
                 record = base_row_to_record(row)
-                key = target_key(record)
+                key = unique_key(record)
                 record["targetKey"] = key
                 targets[key] = record
 
@@ -198,7 +206,7 @@ def load_targets(
         record["registrationType"] = (
             "ozicme" if bool(record.get("verifiedBadge")) else "external"
         )
-        key = target_key(record)
+        key = unique_key(record)
         record["targetKey"] = key
         targets[key] = record
 
@@ -252,8 +260,6 @@ def normalize_update(
     )
     evidence_url = clean_url(first_value(source, "evidenceUrl", "근거URL"), "근거URL")
     evidence_text = clean_text(first_value(source, "evidenceText", "근거문구"))
-    if registration_type == "external" and (not evidence_url or not evidence_text):
-        raise UpdateError("외부 좋은 쌀 식당은 근거URL과 근거문구가 모두 필요합니다.")
 
     is_ozicme = registration_type == "ozicme"
     return {

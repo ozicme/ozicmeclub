@@ -405,10 +405,6 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
         )
     evidence_url = clean_url(first_value(record, "evidenceUrl", "근거URL"), "근거URL")
     evidence_text = clean_text(first_value(record, "evidenceText", "근거문구"))
-    if not is_ozicme and (not evidence_url or not evidence_text):
-        raise RegistrationError(
-            f"외부 식당 '{name}'은 좋은 쌀 사용 근거URL과 근거문구가 모두 필요합니다."
-        )
 
     naver_url = clean_naver_place_url(
         first_value(

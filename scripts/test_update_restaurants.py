@@ -5,7 +5,12 @@ import unittest
 from datetime import datetime, timezone
 from pathlib import Path
 
-from scripts.update_restaurants import UpdateError, target_key, update_restaurants
+from scripts.update_restaurants import (
+    UpdateError,
+    load_targets,
+    target_key,
+    update_restaurants,
+)
 
 
 class UpdateRestaurantsTest(unittest.TestCase):
@@ -151,7 +156,7 @@ class UpdateRestaurantsTest(unittest.TestCase):
         self.assertEqual(saved[0]["source"], "admin")
         self.assertEqual(saved[0]["name"], "관리자추가식당 수정")
 
-    def test_requires_evidence_for_external_restaurant(self):
+    def test_accepts_external_restaurant_without_evidence(self):
         payload = {
             "targetKey": self.base_key,
             "name": "외부식당",
@@ -160,14 +165,18 @@ class UpdateRestaurantsTest(unittest.TestCase):
             "region": {"sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": ""},
             "registrationType": "external",
         }
-        with self.assertRaisesRegex(UpdateError, "근거URL"):
-            update_restaurants(
-                json.dumps(payload, ensure_ascii=False),
-                self.base_csv,
-                self.admin_data,
-                self.output,
-                now=self.now,
-            )
+        result = update_restaurants(
+            json.dumps(payload, ensure_ascii=False),
+            self.base_csv,
+            self.admin_data,
+            self.output,
+            now=self.now,
+        )
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(result["updated"], 1)
+        self.assertFalse(saved[0]["verifiedBadge"])
+        self.assertEqual(saved[0]["evidenceUrl"], "")
+        self.assertEqual(saved[0]["evidenceText"], "")
 
     def test_rejects_unknown_target_and_html(self):
         unknown = {
@@ -216,6 +225,20 @@ class UpdateRestaurantsTest(unittest.TestCase):
             target_key({"name": "URL 없는 식당", "address": "서울 중구 1"}),
             "record:fb0955ba",
         )
+
+    def test_duplicate_targets_receive_stable_occurrence_suffix(self):
+        with self.base_csv.open("r", encoding="utf-8-sig", newline="") as handle:
+            reader = csv.DictReader(handle)
+            fieldnames = reader.fieldnames
+            duplicate = next(reader)
+        with self.base_csv.open("a", encoding="utf-8-sig", newline="") as handle:
+            writer = csv.DictWriter(handle, fieldnames=fieldnames)
+            writer.writerow(duplicate)
+
+        targets, _ = load_targets(self.base_csv, self.admin_data, self.output)
+        self.assertIn(self.base_key, targets)
+        self.assertIn(f"{self.base_key}:duplicate:2", targets)
+        self.assertEqual(len(targets), 3)
 
 
 if __name__ == "__main__":

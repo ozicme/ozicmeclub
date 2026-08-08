@@ -208,7 +208,7 @@ class AddRestaurantsTest(unittest.TestCase):
         with self.assertRaisesRegex(RegistrationError, "HTML 태그"):
             register(payload, self.base_csv, self.output, now=self.now)
 
-    def test_requires_evidence_for_external_restaurant(self):
+    def test_accepts_external_restaurant_without_evidence(self):
         payload = json.dumps(
             {
                 "name": "외부식당",
@@ -218,8 +218,12 @@ class AddRestaurantsTest(unittest.TestCase):
             },
             ensure_ascii=False,
         )
-        with self.assertRaises(RegistrationError):
-            register(payload, self.base_csv, self.output, now=self.now)
+        result = register(payload, self.base_csv, self.output, now=self.now)
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(result["added"], 1)
+        self.assertFalse(saved[0]["verifiedBadge"])
+        self.assertEqual(saved[0]["evidenceUrl"], "")
+        self.assertEqual(saved[0]["evidenceText"], "")
 
     def test_adds_multiple_and_skips_duplicate_in_batch(self):
         record = {
