@@ -28,6 +28,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "admin-restaurants.json"
 NAVER_LOCAL_SEARCH_URL = "https://naverapihub.apigw.ntruss.com/search/v1/local"
+HTML_TAG_PATTERN = re.compile(r"<!--.*?-->|<\s*/?\s*[a-zA-Z][^>]*>", re.DOTALL)
 
 SIDO_ALIASES = {
     "서울": "서울특별시",
@@ -56,7 +57,7 @@ class RegistrationError(ValueError):
 
 def clean_text(value: Any) -> str:
     text = re.sub(r"\s+", " ", str(value or "")).strip()
-    if "<" in text or ">" in text:
+    if HTML_TAG_PATTERN.search(text):
         raise RegistrationError("HTML 태그는 입력할 수 없습니다.")
     return text
 
