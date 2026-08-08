@@ -41,7 +41,13 @@ jobs:
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
         run: |
           set -o pipefail
-          python scripts/add_restaurants.py | tee /tmp/ozicmeclub-registration-result.json
+          if ! python scripts/add_restaurants.py 2>&1 | tee /tmp/ozicmeclub-registration-result.json; then
+            echo "## 오직미클럽 식당 등록 실패" >> "$GITHUB_STEP_SUMMARY"
+            echo '```text' >> "$GITHUB_STEP_SUMMARY"
+            tail -20 /tmp/ozicmeclub-registration-result.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
 
       - name: 변경 검증
         run: |
