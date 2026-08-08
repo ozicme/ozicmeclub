@@ -27,7 +27,7 @@ from urllib.request import Request, urlopen
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "admin-restaurants.json"
-NAVER_LOCAL_SEARCH_URL = "https://openapi.naver.com/v1/search/local.json"
+NAVER_LOCAL_SEARCH_URL = "https://naverapihub.apigw.ntruss.com/search/v1/local"
 
 SIDO_ALIASES = {
     "서울": "서울특별시",
@@ -224,8 +224,8 @@ def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[st
     request = Request(
         f"{NAVER_LOCAL_SEARCH_URL}?{query}",
         headers={
-            "X-Naver-Client-Id": client_id,
-            "X-Naver-Client-Secret": client_secret,
+            "X-NCP-APIGW-API-KEY-ID": client_id,
+            "X-NCP-APIGW-API-KEY": client_secret,
             "User-Agent": "ozicmeclub-admin/1.0",
         },
     )
@@ -233,6 +233,12 @@ def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[st
         with urlopen(request, timeout=15) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
+        if exc.code == 401:
+            raise RegistrationError(
+                "네이버 지역검색 API 인증에 실패했습니다(401). GitHub Secrets에는 "
+                "네이버 개발자센터 키가 아니라 NAVER API HUB의 Client ID와 "
+                "Client Secret을 저장해야 합니다."
+            ) from exc
         raise RegistrationError(f"네이버 지역검색 API 오류({exc.code})가 발생했습니다.") from exc
     except (URLError, TimeoutError, json.JSONDecodeError) as exc:
         raise RegistrationError("네이버 지역검색 API 응답을 확인할 수 없습니다.") from exc
@@ -329,8 +335,8 @@ def enrich_source_record(
     client_secret = os.environ.get("NAVER_CLIENT_SECRET", "").strip()
     if not client_id or not client_secret:
         raise RegistrationError(
-            "신규 식당 자동 조회에는 GitHub Secrets의 NAVER_CLIENT_ID와 "
-            "NAVER_CLIENT_SECRET 설정이 필요합니다."
+            "신규 식당 자동 조회에는 NAVER API HUB에서 발급받은 값을 "
+            "GitHub Secrets의 NAVER_CLIENT_ID와 NAVER_CLIENT_SECRET에 설정해야 합니다."
         )
     item = naver_lookup(name, client_id, client_secret)
     automatic = naver_item_to_record(item, submitted_url)
