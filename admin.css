@@ -1,0 +1,99 @@
+:root {
+  color-scheme: light;
+  --green: #1f6b4e;
+  --green-dark: #154d39;
+  --green-soft: #e9f3ed;
+  --bg: #f5f7f5;
+  --surface: #fff;
+  --text: #1b2820;
+  --muted: #607067;
+  --border: #d9e2dc;
+  --danger: #a33b32;
+  --radius: 18px;
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--text); background: var(--bg); line-height: 1.55; }
+button, input, select, textarea { font: inherit; }
+a { color: inherit; text-decoration: none; }
+
+.admin-header {
+  position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 18px;
+  padding: 14px max(24px, 5vw); background: rgba(255, 255, 255, .96);
+  border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
+}
+.admin-header div { display: grid; }
+.admin-header span { color: var(--muted); font-size: .83rem; }
+.brand { color: var(--green); font-weight: 900; letter-spacing: .16em; }
+
+.admin-main { width: min(1120px, calc(100% - 32px)); margin: 32px auto 72px; display: grid; gap: 22px; }
+.intro-card, .admin-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(22px, 4vw, 40px); }
+.intro-card { background: linear-gradient(135deg, #fff 0%, var(--green-soft) 100%); }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 12px; font-size: clamp(1.8rem, 4vw, 2.8rem); line-height: 1.22; }
+h2 { margin-bottom: 0; font-size: 1.45rem; }
+.eyebrow { margin-bottom: 7px; color: var(--green); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 0; margin: 28px 0 0; list-style: none; }
+.steps li { display: grid; gap: 3px; padding: 16px; background: rgba(255,255,255,.78); border: 1px solid var(--border); border-radius: 13px; }
+.steps span { color: var(--muted); font-size: .86rem; }
+
+.section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 26px; }
+.tabs { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--green-soft); }
+.tab { border: 0; border-radius: 999px; padding: 9px 17px; background: transparent; color: var(--green-dark); font-weight: 700; cursor: pointer; }
+.tab.is-active { background: var(--surface); box-shadow: 0 4px 14px rgba(20, 70, 47, .12); }
+
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.form-grid > label, .evidence-fields label { display: grid; gap: 7px; }
+label > span, legend { font-size: .9rem; font-weight: 700; }
+b { color: #bc493f; }
+.wide { grid-column: 1 / -1; }
+input, select, textarea { width: 100%; border: 1px solid #cbd7cf; border-radius: 11px; padding: 12px 13px; background: #fff; color: var(--text); }
+input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible { outline: 3px solid rgba(31,107,78,.22); border-color: var(--green); }
+
+.store-type { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; border: 0; }
+.store-type legend { grid-column: 1 / -1; margin-bottom: 6px; }
+.radio-card { display: flex; align-items: center; gap: 12px; padding: 15px; border: 1px solid var(--border); border-radius: 12px; cursor: pointer; }
+.radio-card input { width: auto; accent-color: var(--green); }
+.radio-card span { display: grid; }
+.radio-card small { color: var(--muted); font-weight: 400; }
+.evidence-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 16px; border-radius: 12px; background: #fff8e9; border: 1px solid #f1ddb3; }
+
+.form-actions, .publish-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+.batch-nav { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.batch-nav button:disabled { opacity: .45; cursor: not-allowed; }
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 10px 20px; border: 1px solid transparent; border-radius: 999px; font-weight: 800; cursor: pointer; }
+.button.primary { background: var(--green); color: #fff; }
+.button.primary:hover { background: var(--green-dark); }
+.button.secondary { background: #fff; border-color: var(--border); color: var(--green-dark); }
+.button.github { background: #20252b; color: #fff; }
+
+.upload-panel { display: grid; gap: 18px; }
+.file-drop { display: grid; place-items: center; gap: 5px; min-height: 180px; padding: 28px; border: 2px dashed #a9bcb0; border-radius: 14px; background: #fafcfb; cursor: pointer; text-align: center; }
+.file-drop span, .file-status { color: var(--muted); }
+.file-drop input { width: auto; margin-top: 12px; border: 0; padding: 0; }
+
+.count-badge { padding: 7px 13px; border-radius: 999px; background: var(--green-soft); color: var(--green-dark); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; min-width: 760px; }
+th, td { padding: 12px 14px; border-bottom: 1px solid var(--border); text-align: left; font-size: .88rem; }
+th { background: #f7faf8; }
+tr:last-child td { border-bottom: 0; }
+.notice { white-space: pre-line; border-radius: 11px; padding: 13px 15px; }
+.notice.error { margin-bottom: 16px; background: #fff0ee; color: var(--danger); }
+.notice.success { margin-top: 16px; background: var(--green-soft); color: var(--green-dark); }
+.github-guide { margin: 20px 0; padding-left: 22px; }
+.github-guide li { margin-bottom: 8px; }
+#json-output { min-height: 120px; color: var(--muted); font-family: Consolas, monospace; font-size: .78rem; }
+.admin-footer { display: flex; justify-content: space-between; gap: 16px; padding: 26px max(24px, 5vw); border-top: 1px solid var(--border); color: var(--muted); font-size: .85rem; }
+.admin-footer a { color: var(--green); font-weight: 800; }
+
+[hidden] { display: none !important; }
+@media (max-width: 720px) {
+  .steps, .form-grid, .store-type, .evidence-fields { grid-template-columns: 1fr; }
+  .section-heading, .admin-footer { align-items: stretch; flex-direction: column; }
+  .wide, .store-type legend { grid-column: auto; }
+  .tabs { align-self: stretch; }
+  .tab { flex: 1; }
+}

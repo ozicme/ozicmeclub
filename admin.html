@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <title>오직미클럽 관리자 | 식당 등록</title>
+  <meta name="theme-color" content="#1f6b4e" />
+  <link rel="stylesheet" href="admin.css" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+</head>
+<body>
+  <header class="admin-header">
+    <a class="brand" href="index.html">OZICME</a>
+    <div>
+      <strong>오직미클럽 관리자</strong>
+      <span>식당 등록 도구</span>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <section class="intro-card">
+      <p class="eyebrow">안전한 관리자 등록</p>
+      <h1>식당을 1개 또는 여러 개 등록합니다.</h1>
+      <p>
+        이 화면에서는 등록 데이터를 만들고, 실제 반영은 GitHub 관리자 로그인으로 승인합니다.
+        비밀번호나 GitHub 토큰은 이 페이지에 입력하지 않습니다.
+      </p>
+      <ol class="steps">
+        <li><strong>입력</strong><span>단건 입력 또는 CSV 업로드</span></li>
+        <li><strong>검토</strong><span>오류와 등록 내용을 확인</span></li>
+        <li><strong>반영</strong><span>GitHub에서 실행하면 사이트에 자동 추가</span></li>
+      </ol>
+    </section>
+
+    <section class="admin-card" aria-labelledby="registration-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">1단계</p>
+          <h2 id="registration-title">등록 방식 선택</h2>
+        </div>
+        <div class="tabs" role="tablist" aria-label="등록 방식">
+          <button class="tab is-active" id="single-tab" type="button" role="tab" aria-selected="true" aria-controls="single-panel">1개 등록</button>
+          <button class="tab" id="bulk-tab" type="button" role="tab" aria-selected="false" aria-controls="bulk-panel">여러 개 등록</button>
+        </div>
+      </div>
+
+      <div id="single-panel" role="tabpanel" aria-labelledby="single-tab">
+        <form id="single-form" class="form-grid">
+          <label>
+            <span>상호명 <b>*</b></span>
+            <input id="name" name="name" required placeholder="예: 오직미 솥밥집" />
+          </label>
+          <label class="wide">
+            <span>대표주소 <b>*</b></span>
+            <input id="address" name="address" required placeholder="도로명 주소를 입력하세요" />
+          </label>
+          <label>
+            <span>시·도 <b>*</b></span>
+            <select id="sido" name="sido" required>
+              <option value="">선택</option>
+              <option>서울특별시</option><option>부산광역시</option><option>대구광역시</option>
+              <option>인천광역시</option><option>광주광역시</option><option>대전광역시</option>
+              <option>울산광역시</option><option>세종특별자치시</option><option>경기도</option>
+              <option>강원특별자치도</option><option>충청북도</option><option>충청남도</option>
+              <option>전북특별자치도</option><option>전라남도</option><option>경상북도</option>
+              <option>경상남도</option><option>제주특별자치도</option>
+            </select>
+          </label>
+          <label>
+            <span>시·군·구</span>
+            <input id="sigungu" name="sigungu" placeholder="예: 강남구" />
+          </label>
+          <label>
+            <span>읍·면·동</span>
+            <input id="eupmyeondong" name="eupmyeondong" placeholder="예: 역삼동" />
+          </label>
+          <label>
+            <span>음식점 유형</span>
+            <input id="category" name="category" placeholder="예: 한식" />
+          </label>
+          <label>
+            <span>세부 유형</span>
+            <input id="category-detail" name="categoryDetail" placeholder="예: 솥밥/한정식" />
+          </label>
+          <label class="wide">
+            <span>대표 메뉴</span>
+            <input id="main-dishes" name="mainDishes" placeholder="쉼표로 구분: 솥밥, 제육볶음" />
+          </label>
+          <label class="wide">
+            <span>검색 태그</span>
+            <input id="search-tags" name="searchTags" placeholder="쉼표로 구분: 한식, 좋은쌀, 솥밥" />
+          </label>
+          <label class="wide">
+            <span>네이버 플레이스 URL</span>
+            <input id="naver-url" name="naverPlaceUrl" type="url" placeholder="비워두면 상호명과 주소로 검색 링크를 만듭니다" />
+          </label>
+          <label class="wide">
+            <span>대표 이미지 URL</span>
+            <input id="image-url" name="imageUrl" type="url" placeholder="https://..." />
+          </label>
+
+          <fieldset class="wide store-type">
+            <legend>등록 구분 <b>*</b></legend>
+            <label class="radio-card">
+              <input type="radio" name="storeType" value="ozicme" checked />
+              <span><strong>오직미 쌀 거래식당</strong><small>오직미클럽 배지 표시</small></span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="storeType" value="external" />
+              <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·공개 근거 필수</small></span>
+            </label>
+          </fieldset>
+
+          <div class="wide evidence-fields" id="evidence-fields" hidden>
+            <label>
+              <span>좋은 쌀 사용 근거 URL <b>*</b></span>
+              <input id="evidence-url" name="evidenceUrl" type="url" placeholder="공식 홈페이지·기사·지자체 자료 URL" />
+            </label>
+            <label>
+              <span>근거 문구 <b>*</b></span>
+              <input id="evidence-text" name="evidenceText" placeholder="예: 신동진 단일품종 쌀 사용" />
+            </label>
+          </div>
+
+          <div class="wide form-actions">
+            <button class="button primary" type="submit">등록 내용 만들기</button>
+            <button class="button secondary" id="reset-button" type="reset">초기화</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="bulk-panel" role="tabpanel" aria-labelledby="bulk-tab" hidden>
+        <div class="upload-panel">
+          <div>
+            <h3>CSV 파일로 여러 식당 등록</h3>
+            <p>양식을 내려받아 엑셀에서 작성한 뒤 CSV UTF-8 형식으로 저장해 올리세요.</p>
+          </div>
+          <button class="button secondary" id="template-button" type="button">CSV 양식 내려받기</button>
+          <label class="file-drop" for="csv-file">
+            <strong>CSV 파일 선택</strong>
+            <span>또는 이곳에 파일을 끌어 놓으세요.</span>
+            <input id="csv-file" type="file" accept=".csv,text/csv" />
+          </label>
+          <p class="file-status" id="file-status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-card" id="review-card" hidden aria-labelledby="review-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">2단계</p>
+          <h2 id="review-title">등록 내용 검토</h2>
+        </div>
+        <strong class="count-badge" id="review-count">0개</strong>
+      </div>
+      <div class="notice error" id="error-box" hidden></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>상호명</th><th>지역</th><th>유형</th><th>배지</th><th>대표주소</th></tr></thead>
+          <tbody id="preview-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-card" id="publish-card" hidden aria-labelledby="publish-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">3단계</p>
+          <h2 id="publish-title">GitHub 관리자 승인</h2>
+        </div>
+      </div>
+      <div class="publish-grid">
+        <button class="button primary" id="copy-button" type="button">① 등록 데이터 복사</button>
+        <a class="button github" href="https://github.com/ozicme/ozicmeclub/actions/workflows/add-restaurants.yml" target="_blank" rel="noopener">② GitHub 등록 화면 열기</a>
+      </div>
+      <div class="batch-nav" id="batch-nav" hidden>
+        <button class="button secondary" id="previous-batch" type="button">이전 묶음</button>
+        <strong id="batch-info"></strong>
+        <button class="button secondary" id="next-batch" type="button">다음 묶음</button>
+      </div>
+      <ol class="github-guide">
+        <li>GitHub 화면 오른쪽의 <strong>Run workflow</strong>를 누릅니다.</li>
+        <li><strong>등록 데이터</strong> 칸에 복사한 내용을 붙여넣습니다. 대량 등록은 화면에 표시된 묶음별로 반복합니다.</li>
+        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 중복 검사 후 사이트에 반영됩니다.</li>
+      </ol>
+      <p class="notice success" id="copy-status" aria-live="polite"></p>
+      <textarea id="json-output" readonly aria-label="GitHub 등록 데이터"></textarea>
+    </section>
+  </main>
+
+  <footer class="admin-footer">
+    <a href="index.html">오직미클럽으로 돌아가기</a>
+    <span>관리자 등록 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
+  </footer>
+  <script src="admin.js" defer></script>
+</body>
+</html>

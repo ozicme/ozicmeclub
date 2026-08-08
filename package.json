@@ -7,6 +7,7 @@
     "dev": "node server.js",
     "seed": "node scripts/convert-restaurants.js",
     "verify-api": "node scripts/verify-api.js",
-    "merge-data": "python scripts/build_restaurant_pipeline.py"
+    "merge-data": "python scripts/build_restaurant_pipeline.py",
+    "test-admin": "python -m unittest scripts/test_add_restaurants.py"
   }
 }
