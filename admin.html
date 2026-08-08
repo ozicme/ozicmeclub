@@ -135,7 +135,7 @@
       </div>
       <div class="publish-grid">
         <button class="button primary" id="copy-button" type="button">① 등록 데이터 복사</button>
-        <a class="button github" href="https://github.com/ozicme/ozicmeclub/actions/workflows/add-restaurants.yml" target="_blank" rel="noopener">② GitHub 등록 화면 열기</a>
+        <a class="button github is-disabled" id="github-button" href="https://github.com/ozicme/ozicmeclub/actions/workflows/add-restaurants.yml" target="_blank" rel="noopener" aria-disabled="true">② 먼저 등록 데이터를 복사하세요</a>
       </div>
       <div class="batch-nav" id="batch-nav" hidden>
         <button class="button secondary" id="previous-batch" type="button">이전 묶음</button>
@@ -144,10 +144,10 @@
       </div>
       <ol class="github-guide">
         <li>GitHub 화면 오른쪽의 <strong>Run workflow</strong>를 누릅니다.</li>
-        <li><strong>등록 데이터</strong> 칸에 복사한 내용을 붙여넣습니다. 대량 등록은 화면에 표시된 묶음별로 반복합니다.</li>
+        <li><strong>등록 데이터</strong> 칸에 <code>[{</code>로 시작하고 <code>}]</code>로 끝나는 JSON 전체를 붙여넣습니다. 네이버 URL만 붙여넣으면 등록되지 않습니다.</li>
         <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 자동 조회·중복 검사 후 사이트에 반영됩니다.</li>
       </ol>
-      <p class="notice success" id="copy-status" aria-live="polite"></p>
+      <p class="notice success" id="copy-status" hidden aria-live="polite"></p>
       <textarea id="json-output" readonly aria-label="GitHub 등록 데이터"></textarea>
     </section>
   </main>
