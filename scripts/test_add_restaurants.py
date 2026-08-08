@@ -109,7 +109,7 @@ class AddRestaurantsTest(unittest.TestCase):
                 "title": "<b>새로운식당</b>",
                 "roadAddress": "부산 해운대구 해운대로 2",
                 "category": "음식점>한식>솥밥",
-                "description": "솥밥 전문점",
+                "description": "솥밥 전문점.",
             }
 
         with patch.dict(
@@ -127,8 +127,45 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(result["added"], 1)
         self.assertEqual(result["details"][0]["lookup"], "naver-api")
         self.assertEqual(saved[0]["address"], "부산 해운대구 해운대로 2")
-        self.assertEqual(saved[0]["category"], "음식점")
-        self.assertEqual(saved[0]["categoryDetail"], "한식 > 솥밥")
+        self.assertEqual(saved[0]["category"], "한식")
+        self.assertEqual(saved[0]["categoryDetail"], "솥밥")
+        self.assertEqual(saved[0]["mainDishes"], ["솥밥"])
+
+    def test_kazkazhan_category_and_supplied_menus_are_preserved(self):
+        payload = json.dumps(
+            {
+                "name": "카즈카잔",
+                "naverPlaceUrl": "https://map.naver.com/p/search/카즈카잔",
+                "registrationType": "1",
+                "mainDishes": ["돈까스", "모듬초밥", "회덮밥"],
+            },
+            ensure_ascii=False,
+        )
+
+        def fake_lookup(*_args):
+            return {
+                "title": "카즈카잔",
+                "roadAddress": "서울특별시 중구 세종대로 17",
+                "category": "음식점>일식>일식당",
+                "description": "",
+            }
+
+        with patch.dict(
+            os.environ,
+            {"NAVER_CLIENT_ID": "id", "NAVER_CLIENT_SECRET": "secret"},
+        ):
+            result = register(
+                payload,
+                self.base_csv,
+                self.output,
+                now=self.now,
+                naver_lookup=fake_lookup,
+            )
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(result["added"], 1)
+        self.assertEqual(saved[0]["category"], "일식")
+        self.assertEqual(saved[0]["categoryDetail"], "일식당")
+        self.assertEqual(saved[0]["mainDishes"], ["돈까스", "모듬초밥", "회덮밥"])
 
     def test_naver_lookup_uses_api_hub_endpoint_and_headers(self):
         class FakeResponse:
@@ -224,6 +261,21 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertFalse(saved[0]["verifiedBadge"])
         self.assertEqual(saved[0]["evidenceUrl"], "")
         self.assertEqual(saved[0]["evidenceText"], "")
+
+    def test_accepts_numeric_external_registration_type(self):
+        payload = json.dumps(
+            {
+                "name": "숫자외부식당",
+                "address": "경기 수원시 팔달구 2",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/666666667",
+                "registrationType": "2",
+            },
+            ensure_ascii=False,
+        )
+        result = register(payload, self.base_csv, self.output, now=self.now)
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(result["added"], 1)
+        self.assertFalse(saved[0]["verifiedBadge"])
 
     def test_adds_multiple_and_skips_duplicate_in_batch(self):
         record = {

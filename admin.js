@@ -265,7 +265,7 @@ const enrichForPreview = async (record) => {
       region: match.region,
       category: match.category,
       categoryDetail: match.categoryDetail,
-      mainDishes: match.mainDishes,
+      mainDishes: record.mainDishes?.length ? record.mainDishes : match.mainDishes,
       searchTags: match.searchTags,
       lookupStatus: "자동 입력 완료 · 기존 등록 확인",
     };
@@ -279,7 +279,7 @@ const registrationTypeOf = (value) => {
   if (["오직미", "오직미쌀거래식당", "오직미거래식당", "ozicme", "y", "yes", "1"].includes(normalized)) {
     return "ozicme";
   }
-  if (["외부", "외부좋은쌀식당", "external", "n", "no", "0"].includes(normalized)) {
+  if (["외부", "외부좋은쌀식당", "external", "n", "no", "0", "2"].includes(normalized)) {
     return "external";
   }
   return "";
@@ -293,6 +293,7 @@ const normalizeBulkRecord = (row) => {
     name: valueOf(row, "상호명", "식당명", "name"),
     naverPlaceUrl: valueOf(row, "네이버플레이스URL", "네이버플레이스", "naverPlaceUrl"),
     imageUrl: valueOf(row, "대표이미지URL", "이미지URL", "이미지", "imageUrl"),
+    mainDishes: splitList(valueOf(row, "대표메뉴", "주요리_대표", "mainDishes")),
     registrationType,
     isOzicmeCustomer: registrationType === "ozicme",
     evidenceUrl: valueOf(row, "근거URL", "evidenceUrl"),
@@ -325,6 +326,7 @@ const toPayloadRecord = (record) => ({
   name: record.name,
   naverPlaceUrl: record.naverPlaceUrl,
   imageUrl: record.imageUrl || "",
+  mainDishes: record.mainDishes || [],
   registrationType: record.registrationType,
   isOzicmeCustomer: record.registrationType === "ozicme",
   evidenceUrl: record.evidenceUrl || "",
@@ -430,6 +432,7 @@ const collectSingleRecord = () => {
     name: $("#name").value.trim(),
     naverPlaceUrl: $("#naver-url").value.trim(),
     imageUrl: $("#image-url").value.trim(),
+    mainDishes: splitList($("#main-dishes").value),
     registrationType,
     isOzicmeCustomer: registrationType === "ozicme",
     evidenceUrl: $("#evidence-url").value.trim(),
@@ -456,13 +459,15 @@ const updateEvidenceFields = () => {
 
 const downloadTemplate = () => {
   const headers = [
-    "상호명", "네이버플레이스URL", "대표이미지URL", "등록구분", "근거URL", "근거문구",
+    "상호명", "네이버플레이스URL", "대표이미지URL", "대표메뉴", "등록구분", "근거URL", "근거문구",
   ];
-  const example = [
-    "예시식당", "https://map.naver.com/p/entry/place/123456789", "", "오직미", "", "",
+  const examples = [
+    ["예시오직미식당", "https://map.naver.com/p/entry/place/123456789", "", "", "1", "", ""],
+    ["예시외부식당", "https://map.naver.com/p/entry/place/987654321", "", "솥밥, 제육볶음", "2", "", ""],
   ];
   const escape = (value) => `"${String(value).replaceAll('"', '""')}"`;
-  const csv = `\uFEFF${headers.map(escape).join(",")}\r\n${example.map(escape).join(",")}\r\n`;
+  const lines = [headers, ...examples].map((row) => row.map(escape).join(","));
+  const csv = `\uFEFF${lines.join("\r\n")}\r\n`;
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
   const link = document.createElement("a");
   link.href = url;
@@ -509,7 +514,7 @@ const editCsvRow = (record) => {
     payload.categoryDetail,
     payload.mainDishes.join(" | "),
     payload.searchTags.join(" | "),
-    payload.registrationType === "external" ? "외부" : "오직미",
+    payload.registrationType === "external" ? "2" : "1",
     payload.evidenceUrl,
     payload.evidenceText,
   ];
@@ -536,7 +541,9 @@ const downloadFullCatalog = async () => {
     link.download = `오직미클럽_전체식당_수정용_${date}.csv`;
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 0);
-    status.textContent = `${catalog.records.length.toLocaleString()}개 전체 목록을 내려받았습니다. 엑셀에서 수정한 뒤 같은 CSV 파일을 올리세요.`;
+    const ozicmeCount = catalog.records.filter((record) => record.registrationType !== "external").length;
+    const externalCount = catalog.records.length - ozicmeCount;
+    status.textContent = `${catalog.records.length.toLocaleString()}개 전체 목록을 내려받았습니다. 현재 분류: 1(오직미) ${ozicmeCount.toLocaleString()}개, 2(외부) ${externalCount.toLocaleString()}개. 엑셀에서 수정한 뒤 같은 CSV 파일을 올리세요.`;
   } catch (error) {
     status.textContent = error.message;
   } finally {
@@ -710,7 +717,9 @@ const setAdminMode = (mode) => {
       .then((catalog) => {
         $("#edit-catalog-count").textContent = `전체 ${catalog.records.length.toLocaleString()}개 내려받기`;
         $("#edit-catalog-count").disabled = false;
-        $("#edit-file-status").textContent = "전체 목록을 내려받아 수정하거나, 아래에서 1개씩 검색할 수 있습니다.";
+        const externalCount = catalog.records.filter((record) => record.registrationType === "external").length;
+        const ozicmeCount = catalog.records.length - externalCount;
+        $("#edit-file-status").textContent = `현재 분류: 1(오직미) ${ozicmeCount.toLocaleString()}개, 2(외부) ${externalCount.toLocaleString()}개. 전체 목록을 내려받아 수정하거나 아래에서 1개씩 검색하세요.`;
       })
       .catch((error) => {
         $("#edit-catalog-count").textContent = "전체 목록 불러오기 실패";

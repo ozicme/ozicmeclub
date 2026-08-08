@@ -10,14 +10,25 @@
       "sigungu": "중구",
       "eupmyeondong": ""
     },
-    "category": "음식점",
-    "categoryDetail": "일식 > 일식당",
-    "mainDishes": [],
-    "signatureMenus": [],
+    "category": "일식",
+    "categoryDetail": "일식당",
+    "mainDishes": [
+      "돈까스",
+      "모듬초밥",
+      "회덮밥"
+    ],
+    "signatureMenus": [
+      "돈까스",
+      "모듬초밥",
+      "회덮밥"
+    ],
     "searchTags": [
-      "음식점",
       "일식",
-      "일식당"
+      "일식당",
+      "돈까스",
+      "돈카츠",
+      "모듬초밥",
+      "회덮밥"
     ],
     "verifiedBadge": true,
     "badgeLabel": "오직미클럽",

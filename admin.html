@@ -65,6 +65,11 @@
             <span>대표 이미지 URL <small>(선택)</small></span>
             <input id="image-url" name="imageUrl" type="url" inputmode="url" placeholder="https://..." />
           </label>
+          <label class="wide">
+            <span>대표메뉴 <small>(선택·쉼표로 구분)</small></span>
+            <input id="main-dishes" name="mainDishes" placeholder="예: 돈까스, 모듬초밥, 회덮밥" />
+            <small class="field-hint">네이버 자동 조회 결과에 메뉴가 없을 때만 입력하세요. 비워 두면 조회 가능한 정보로 자동 입력합니다.</small>
+          </label>
 
           <fieldset class="wide store-type">
             <legend>등록 구분 <b>*</b></legend>
@@ -101,7 +106,7 @@
         <div class="upload-panel">
           <div>
             <h3>CSV 파일로 여러 식당 등록</h3>
-            <p>최소 양식에 상호명·네이버 URL·대표 이미지 URL·등록 구분만 작성하세요.</p>
+            <p>등록 구분은 숫자로 입력하세요: <strong>1 = 오직미 쌀 거래식당</strong>, <strong>2 = 외부 좋은 쌀 식당</strong>. 대표메뉴와 근거는 선택입니다.</p>
           </div>
           <button class="button secondary" id="template-button" type="button">CSV 양식 내려받기</button>
           <label class="file-drop" for="csv-file">
@@ -169,7 +174,7 @@
       <div class="bulk-edit-panel">
         <div>
           <h3>전체 목록 Excel(CSV) 수정</h3>
-          <p>위의 <strong>전체 목록</strong> 버튼을 눌러 내려받고, 엑셀에서 수정한 뒤 CSV 파일을 다시 올리세요. <strong>수정대상키(수정금지)</strong> 열은 변경하지 마세요.</p>
+          <p>위의 <strong>전체 목록</strong> 버튼을 눌러 내려받고, 엑셀에서 수정한 뒤 CSV 파일을 다시 올리세요. 등록 구분은 <strong>1 = 오직미</strong>, <strong>2 = 외부</strong>이며, <strong>수정대상키(수정금지)</strong> 열은 변경하지 마세요.</p>
         </div>
         <div class="bulk-edit-actions">
           <label class="button secondary bulk-file-label" for="edit-csv-file">수정한 전체 CSV 올리기</label>

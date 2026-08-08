@@ -229,9 +229,9 @@ def normalize_registration_type(value: Any, current: dict[str, Any]) -> str:
     normalized = clean_text(value).lower().replace(" ", "")
     if not normalized:
         return "ozicme" if bool(current.get("verifiedBadge", True)) else "external"
-    if normalized in {"ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
+    if normalized in {"1", "ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
         return "ozicme"
-    if normalized in {"external", "외부", "외부좋은쌀식당"}:
+    if normalized in {"0", "2", "external", "외부", "외부좋은쌀식당"}:
         return "external"
     raise UpdateError("등록 구분을 확인하세요.")
 
