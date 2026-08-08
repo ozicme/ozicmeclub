@@ -14,14 +14,14 @@ npm run dev
 
 ## 관리자 식당 등록
 
-저장소 소유자는 `https://ozicmeclub.com/admin.html`에서 식당을 1개씩 입력하거나 CSV로 여러 개 준비할 수 있습니다. 단건 입력은 **상호명, 네이버 플레이스 URL, 대표 이미지 URL(선택), 등록 구분**만 받습니다. 주소·지역·업종·검색 태그는 자동으로 채웁니다.
+저장소 소유자는 `https://ozicmeclub.com/admin.html`에서 식당을 1개씩 입력하거나 CSV로 여러 개 준비할 수 있습니다. 단건 입력은 **상호명, 네이버 플레이스 URL, 대표 이미지 URL(선택), 대표메뉴(선택), 등록 구분**만 받습니다. 주소·지역·업종·검색 태그는 자동으로 채웁니다. 여러 개 등록 CSV와 전체 수정 CSV의 등록 구분은 **1=오직미 쌀 거래식당, 2=외부 좋은 쌀 식당**으로 입력합니다.
 
 1. 관리자 페이지에서 단건 입력 또는 CSV 업로드
 2. 등록 데이터 복사
 3. GitHub Actions의 **오직미클럽 식당 등록** 실행 화면에서 데이터 붙여넣기
 4. **Run workflow** 실행
 
-기존 정본 CSV에 같은 네이버 플레이스 URL이 있으면 브라우저에서 즉시 자동 입력 결과를 확인할 수 있습니다. 신규 식당은 GitHub Actions에서 **NAVER API HUB 지역검색 API**로 조회합니다. 2026년 7월 31일부터 기존 네이버 개발자센터에서는 검색 API를 신규 신청할 수 없으므로, 반드시 네이버 클라우드 플랫폼의 NAVER API HUB에서 Application을 만들고 검색 API를 선택해야 합니다. 저장소의 **Settings → Secrets and variables → Actions**에 아래 Repository secrets를 등록합니다.
+기존 정본 CSV에 같은 네이버 플레이스 URL이 있으면 브라우저에서 즉시 자동 입력 결과를 확인할 수 있습니다. 신규 식당은 GitHub Actions에서 **NAVER API HUB 지역검색 API**로 조회합니다. `음식점 > 일식 > 일식당`처럼 맨 앞에 붙는 일반 분류 `음식점`은 제외해 업종을 `일식`으로 저장합니다. 지역검색 API에는 별도 메뉴 필드가 없으므로, 설명·세부업종에서 확실한 메뉴만 자동 추출하고 부족할 때는 선택 항목인 대표메뉴에 쉼표로 구분해 입력할 수 있습니다. 2026년 7월 31일부터 기존 네이버 개발자센터에서는 검색 API를 신규 신청할 수 없으므로, 반드시 네이버 클라우드 플랫폼의 NAVER API HUB에서 Application을 만들고 검색 API를 선택해야 합니다. 저장소의 **Settings → Secrets and variables → Actions**에 아래 Repository secrets를 등록합니다.
 
 - `NAVER_CLIENT_ID`: NAVER API HUB Application의 Client ID
 - `NAVER_CLIENT_SECRET`: 같은 HUB Application의 Client Secret

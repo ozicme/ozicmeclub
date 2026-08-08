@@ -68,13 +68,16 @@ const context = vm.createContext({
 const source = `${fs.readFileSync(path.join(root, "admin.js"), "utf8")}
 globalThis.__adminTest = {
   EDIT_CSV_HEADERS,
+  buildBatches,
   buildEditBatches,
   comparableEditPayload,
   csvToObjects,
   fullCatalogCsv,
   loadCatalog,
+  normalizeBulkRecord,
   normalizeEditCsvRow,
   prepareFullCatalogEdits,
+  registrationTypeOf,
   validateEditPayload,
 };`;
 vm.runInContext(source, context, { filename: "admin.js" });
@@ -94,6 +97,23 @@ vm.runInContext(source, context, { filename: "admin.js" });
   const rows = api.csvToObjects(csv);
   assert.equal(rows.length, catalog.records.length);
   assert.deepEqual(Object.keys(rows[0]), Array.from(api.EDIT_CSV_HEADERS));
+  assert.ok(rows.every((row) => row["등록구분"] === "1"), "현재 6,045개는 모두 1(오직미)이어야 합니다.");
+  assert.equal(api.registrationTypeOf("1"), "ozicme");
+  assert.equal(api.registrationTypeOf("2"), "external");
+  const bulkExternal = api.normalizeBulkRecord({
+    상호명: "외부예시",
+    네이버플레이스URL: "https://map.naver.com/p/entry/place/123456789",
+    대표메뉴: "솥밥, 제육볶음",
+    등록구분: "2",
+  });
+  assert.equal(bulkExternal.registrationType, "external");
+  assert.deepEqual(Array.from(bulkExternal.mainDishes), ["솥밥", "제육볶음"]);
+  const registrationBatch = api.buildBatches([bulkExternal]);
+  assert.deepEqual(Array.from(registrationBatch[0][0].mainDishes), ["솥밥", "제육볶음"]);
+  const externalCsvRow = api.csvToObjects(
+    api.fullCatalogCsv([{ ...catalog.records[0], registrationType: "external" }])
+  )[0];
+  assert.equal(externalCsvRow["등록구분"], "2");
 
   const currentByKey = new Map(catalog.records.map((record) => [record.targetKey, record]));
   rows.forEach((row) => {

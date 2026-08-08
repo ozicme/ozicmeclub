@@ -260,19 +260,52 @@ def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[st
     )
 
 
+def split_naver_categories(value: Any) -> list[str]:
+    categories: list[str] = []
+    for part in re.split(r"\s*>\s*", str(value or "")):
+        cleaned = clean_text(part)
+        if cleaned:
+            categories.append(cleaned)
+    if len(categories) > 1 and categories[0] == "음식점":
+        categories = categories[1:]
+    return categories
+
+
+def infer_main_dishes(description: str, categories: list[str]) -> list[str]:
+    """Use only conservative menu hints exposed by the Local Search response."""
+    dishes: list[str] = []
+    for part in re.split(r"[,/|·;]+", description):
+        cleaned = re.sub(r"[.!?。]+$", "", clean_text(part)).strip()
+        candidate = re.sub(r"\s*(?:전문점|전문)\s*$", "", cleaned).strip()
+        if candidate != cleaned and 1 < len(candidate) <= 30 and candidate not in dishes:
+            dishes.append(candidate)
+
+    leaf = categories[-1] if categories else ""
+    non_menu_leafs = {
+        "한식", "중식", "일식", "양식", "아시아음식", "분식", "뷔페",
+        "카페,디저트", "카페", "술집", "일식당", "한식당", "중식당",
+    }
+    if (
+        leaf
+        and leaf not in non_menu_leafs
+        and not re.search(r"(?:식당|음식점|요리|카페)$", leaf)
+        and len(leaf) <= 30
+        and leaf not in dishes
+    ):
+        dishes.append(leaf)
+    return dishes
+
+
 def naver_item_to_record(item: dict[str, Any], submitted_url: str) -> dict[str, Any]:
     name = strip_markup(item.get("title"))
     address = clean_text(item.get("roadAddress") or item.get("address"))
     if not name or not address:
         raise RegistrationError("네이버 검색 결과에 상호명 또는 주소가 없습니다.")
-    categories = [
-        clean_text(part)
-        for part in re.split(r"[>,]", str(item.get("category") or ""))
-        if clean_text(part)
-    ]
+    categories = split_naver_categories(item.get("category"))
     description = strip_markup(item.get("description"))
+    main_dishes = infer_main_dishes(description, categories)
     tags: list[str] = []
-    for tag in [*categories, description]:
+    for tag in [*categories, *main_dishes, description]:
         if tag and tag not in tags:
             tags.append(tag)
     return {
@@ -282,7 +315,7 @@ def naver_item_to_record(item: dict[str, Any], submitted_url: str) -> dict[str, 
         "region": infer_region(address, {}),
         "category": categories[0] if categories else "",
         "categoryDetail": " > ".join(categories[1:]),
-        "mainDishes": [],
+        "mainDishes": main_dishes,
         "searchTags": tags,
     }
 
@@ -296,6 +329,10 @@ def enrich_source_record(
     name = clean_text(first_value(source, "name", "상호명", "식당명"))
     if not name:
         raise RegistrationError("상호명은 필수입니다.")
+
+    supplied_main_dishes = as_list(
+        first_value(source, "mainDishes", "주요리_대표", "대표메뉴")
+    )
 
     existing_address = clean_text(first_value(source, "address", "대표주소", "주소"))
     submitted_url = clean_naver_place_url(
@@ -328,7 +365,7 @@ def enrich_source_record(
             "region": matched.get("region", {}),
             "category": matched.get("category", ""),
             "categoryDetail": matched.get("categoryDetail", ""),
-            "mainDishes": matched.get("mainDishes", []),
+            "mainDishes": supplied_main_dishes or matched.get("mainDishes", []),
             "searchTags": matched.get("searchTags", []),
         }, "catalog"
 
@@ -351,7 +388,7 @@ def enrich_source_record(
         "region": automatic["region"],
         "category": automatic["category"],
         "categoryDetail": automatic["categoryDetail"],
-        "mainDishes": automatic["mainDishes"],
+        "mainDishes": supplied_main_dishes or automatic["mainDishes"],
         "searchTags": automatic["searchTags"],
     }, "naver-api"
 
@@ -387,9 +424,9 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
     registration_type = clean_text(first_value(record, "registrationType", "등록구분"))
     if registration_type:
         normalized_type = re.sub(r"\s+", "", registration_type.lower())
-        if normalized_type in {"ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
+        if normalized_type in {"1", "ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
             is_ozicme = True
-        elif normalized_type in {"external", "외부", "외부좋은쌀식당"}:
+        elif normalized_type in {"0", "2", "external", "외부", "외부좋은쌀식당"}:
             is_ozicme = False
         else:
             raise RegistrationError(f"'{name}'의 등록 구분을 확인하세요.")
@@ -422,6 +459,9 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
     registered_at = today.astimezone(timezone.utc)
     main_dishes = as_list(first_value(record, "mainDishes", "주요리_대표", "대표메뉴"))
     search_tags = as_list(first_value(record, "searchTags", "검색태그"))
+    for dish in main_dishes:
+        if dish not in search_tags:
+            search_tags.append(dish)
 
     return {
         "id": build_id(name, address),
