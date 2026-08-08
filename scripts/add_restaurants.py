@@ -28,6 +28,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "admin-restaurants.json"
 NAVER_LOCAL_SEARCH_URL = "https://naverapihub.apigw.ntruss.com/search/v1/local"
+NAVER_PLACE_DETAIL_URL = "https://pcmap.place.naver.com/restaurant/{place_id}/home"
 HTML_TAG_PATTERN = re.compile(r"<!--.*?-->|<\s*/?\s*[a-zA-Z][^>]*>", re.DOTALL)
 
 SIDO_ALIASES = {
@@ -220,8 +221,123 @@ def normalized_name(value: Any) -> str:
     return re.sub(r"[^0-9a-z가-힣]", "", strip_markup(value).lower())
 
 
-def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[str, Any]:
-    query = urlencode({"query": name, "display": 5})
+def normalized_address(value: Any) -> str:
+    address = clean_text(value)
+    for alias, canonical in SIDO_ALIASES.items():
+        if address.startswith(alias):
+            address = canonical + address[len(alias) :]
+            break
+    return re.sub(r"[^0-9a-z가-힣]", "", address.lower())
+
+
+def addresses_match(left: Any, right: Any) -> bool:
+    left_normalized = normalized_address(left)
+    right_normalized = normalized_address(right)
+    if not left_normalized or not right_normalized:
+        return False
+    if left_normalized == right_normalized:
+        return True
+    shorter, longer = sorted((left_normalized, right_normalized), key=len)
+    return len(shorter) >= 10 and longer.startswith(shorter)
+
+
+def fetch_naver_place(place_id: str) -> dict[str, Any]:
+    """Read the exact public Naver Place identified by the submitted URL."""
+    if not re.fullmatch(r"\d{5,}", place_id):
+        raise RegistrationError("네이버 플레이스 장소 ID를 확인할 수 없습니다.")
+
+    request = Request(
+        NAVER_PLACE_DETAIL_URL.format(place_id=place_id),
+        headers={
+            "Accept-Language": "ko-KR,ko;q=0.9",
+            "Referer": "https://map.naver.com/",
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 Chrome/131.0 Safari/537.36"
+            ),
+        },
+    )
+    try:
+        with urlopen(request, timeout=20) as response:
+            page = response.read().decode("utf-8")
+    except (HTTPError, URLError, TimeoutError, UnicodeDecodeError) as exc:
+        raise RegistrationError("네이버 플레이스 상세 정보를 확인할 수 없습니다.") from exc
+
+    state_match = re.search(
+        r"^\s*window\.__APOLLO_STATE__\s*=\s*(\{.*\})\s*;?\s*$",
+        page,
+        re.MULTILINE,
+    )
+    if not state_match:
+        raise RegistrationError("네이버 플레이스 상세 정보 형식이 변경되었습니다.")
+    try:
+        state = json.loads(state_match.group(1))
+    except json.JSONDecodeError as exc:
+        raise RegistrationError("네이버 플레이스 상세 정보를 읽을 수 없습니다.") from exc
+
+    base = state.get(f"PlaceDetailBase:{place_id}")
+    if not isinstance(base, dict):
+        base = next(
+            (
+                value
+                for value in state.values()
+                if isinstance(value, dict)
+                and str(value.get("id", "")) == place_id
+                and value.get("name")
+                and (value.get("roadAddress") or value.get("address"))
+            ),
+            None,
+        )
+    if not isinstance(base, dict):
+        raise RegistrationError("네이버 플레이스에서 해당 식당을 찾지 못했습니다.")
+
+    menus: list[str] = []
+    menu_prefix = f"Menu:{place_id}_"
+    for key, value in state.items():
+        if not key.startswith(menu_prefix) or not isinstance(value, dict):
+            continue
+        menu = strip_markup(value.get("name"))
+        if menu and menu not in menus:
+            menus.append(menu)
+
+    name = strip_markup(base.get("name"))
+    road_address = clean_text(base.get("roadAddress"))
+    address = clean_text(base.get("address"))
+    if not name or not (road_address or address):
+        raise RegistrationError("네이버 플레이스에 상호명 또는 주소가 없습니다.")
+
+    micro_reviews = base.get("microReviews")
+    description = " ".join(
+        strip_markup(value) for value in micro_reviews or [] if strip_markup(value)
+    )
+    return {
+        "title": name,
+        "roadAddress": road_address,
+        "address": address,
+        "category": clean_text(base.get("category")),
+        "description": description,
+        "placeId": place_id,
+        "mainDishes": menus[:10],
+    }
+
+
+def search_naver_local(
+    name: str,
+    client_id: str,
+    client_secret: str,
+    submitted_url: str = "",
+) -> dict[str, Any]:
+    place_detail: dict[str, Any] | None = None
+    place_id = place_id_from_url(submitted_url)
+    if place_id:
+        try:
+            place_detail = fetch_naver_place(place_id)
+        except RegistrationError:
+            # The official Local Search API remains available as a fallback.
+            place_detail = None
+
+    lookup_name = strip_markup(place_detail.get("title")) if place_detail else name
+    query = urlencode({"query": lookup_name, "display": 5})
     request = Request(
         f"{NAVER_LOCAL_SEARCH_URL}?{query}",
         headers={
@@ -234,6 +350,8 @@ def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[st
         with urlopen(request, timeout=15) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
+        if place_detail:
+            return place_detail
         if exc.code == 401:
             raise RegistrationError(
                 "네이버 지역검색 API 인증에 실패했습니다(401). GitHub Secrets에는 "
@@ -242,18 +360,49 @@ def search_naver_local(name: str, client_id: str, client_secret: str) -> dict[st
             ) from exc
         raise RegistrationError(f"네이버 지역검색 API 오류({exc.code})가 발생했습니다.") from exc
     except (URLError, TimeoutError, json.JSONDecodeError) as exc:
+        if place_detail:
+            return place_detail
         raise RegistrationError("네이버 지역검색 API 응답을 확인할 수 없습니다.") from exc
 
     items = payload.get("items") if isinstance(payload, dict) else None
     if not isinstance(items, list) or not items:
+        if place_detail:
+            return place_detail
         raise RegistrationError(f"네이버에서 '{name}' 검색 결과를 찾지 못했습니다.")
+
+    if place_detail:
+        place_addresses = [
+            place_detail.get("roadAddress"),
+            place_detail.get("address"),
+        ]
+        for item in items:
+            item_addresses = [item.get("roadAddress"), item.get("address")]
+            if any(
+                addresses_match(place_address, item_address)
+                for place_address in place_addresses
+                for item_address in item_addresses
+            ):
+                return {
+                    **item,
+                    "title": place_detail["title"],
+                    "roadAddress": place_detail.get("roadAddress")
+                    or item.get("roadAddress"),
+                    "address": place_detail.get("address") or item.get("address"),
+                    "placeId": place_id,
+                    "mainDishes": place_detail.get("mainDishes", []),
+                }
+        # The URL's place ID is more precise than a same-name keyword result.
+        return place_detail
 
     exact = [item for item in items if normalized_name(item.get("title")) == normalized_name(name)]
     if len(exact) == 1:
         return exact[0]
     if len(items) == 1:
         return items[0]
-    candidates = ", ".join(strip_markup(item.get("title")) for item in items[:3])
+    candidates = "; ".join(
+        f"{strip_markup(item.get('title'))} ({clean_text(item.get('roadAddress') or item.get('address'))})"
+        for item in items[:3]
+    )
     raise RegistrationError(
         f"'{name}'과 정확히 일치하는 식당을 고르지 못했습니다. "
         f"상호명을 더 정확히 입력하세요. 검색 결과: {candidates}"
@@ -303,7 +452,9 @@ def naver_item_to_record(item: dict[str, Any], submitted_url: str) -> dict[str, 
         raise RegistrationError("네이버 검색 결과에 상호명 또는 주소가 없습니다.")
     categories = split_naver_categories(item.get("category"))
     description = strip_markup(item.get("description"))
-    main_dishes = infer_main_dishes(description, categories)
+    main_dishes = as_list(item.get("mainDishes")) or infer_main_dishes(
+        description, categories
+    )
     tags: list[str] = []
     for tag in [*categories, *main_dishes, description]:
         if tag and tag not in tags:
@@ -324,7 +475,7 @@ def enrich_source_record(
     source: dict[str, Any],
     by_url: dict[str, dict[str, Any]],
     by_place_id: dict[str, dict[str, Any]],
-    naver_lookup: Callable[[str, str, str], dict[str, Any]],
+    naver_lookup: Callable[[str, str, str, str], dict[str, Any]],
 ) -> tuple[dict[str, Any], str]:
     name = clean_text(first_value(source, "name", "상호명", "식당명"))
     if not name:
@@ -376,7 +527,7 @@ def enrich_source_record(
             "신규 식당 자동 조회에는 NAVER API HUB에서 발급받은 값을 "
             "GitHub Secrets의 NAVER_CLIENT_ID와 NAVER_CLIENT_SECRET에 설정해야 합니다."
         )
-    item = naver_lookup(name, client_id, client_secret)
+    item = naver_lookup(name, client_id, client_secret, submitted_url)
     automatic = naver_item_to_record(item, submitted_url)
     return {
         **automatic,
@@ -537,7 +688,7 @@ def register(
     output: Path,
     validate_only: bool = False,
     now: datetime | None = None,
-    naver_lookup: Callable[[str, str, str], dict[str, Any]] | None = None,
+    naver_lookup: Callable[[str, str, str, str], dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     timestamp = now or datetime.now(timezone.utc)
     submitted = load_json_records(raw)
