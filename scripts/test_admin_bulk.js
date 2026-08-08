@@ -85,10 +85,13 @@ vm.runInContext(source, context, { filename: "admin.js" });
 (async () => {
   const api = context.__adminTest;
   const catalog = await api.loadCatalog();
-  assert.equal(catalog.records.length, 6045, "전체 목록은 6,045개여야 합니다.");
+  assert.ok(
+    catalog.records.length >= 6045,
+    "기존 6,045개와 관리자 신규 등록 식당이 모두 포함되어야 합니다."
+  );
   assert.equal(
     new Set(catalog.records.map((record) => record.targetKey)).size,
-    6045,
+    catalog.records.length,
     "전체 목록의 수정대상키는 모두 달라야 합니다."
   );
 
@@ -97,7 +100,14 @@ vm.runInContext(source, context, { filename: "admin.js" });
   const rows = api.csvToObjects(csv);
   assert.equal(rows.length, catalog.records.length);
   assert.deepEqual(Object.keys(rows[0]), Array.from(api.EDIT_CSV_HEADERS));
-  assert.ok(rows.every((row) => row["등록구분"] === "1"), "현재 6,045개는 모두 1(오직미)이어야 합니다.");
+  assert.ok(
+    rows.every(
+      (row, index) =>
+        row["등록구분"] ===
+        (catalog.records[index].registrationType === "external" ? "2" : "1")
+    ),
+    "다운로드한 등록구분은 각 식당의 실제 등록구분과 같아야 합니다."
+  );
   assert.equal(api.registrationTypeOf("1"), "ozicme");
   assert.equal(api.registrationTypeOf("2"), "external");
   const bulkExternal = api.normalizeBulkRecord({
@@ -156,7 +166,9 @@ vm.runInContext(source, context, { filename: "admin.js" });
   };
   assert.equal(api.validateEditPayload(externalWithoutEvidence), "");
 
-  console.log("관리자 전체 CSV 테스트 통과: 6,045개, 고유 식별값, 무변경 왕복, 변경 감지");
+  console.log(
+    `관리자 전체 CSV 테스트 통과: ${catalog.records.length.toLocaleString()}개, 고유 식별값, 무변경 왕복, 변경 감지`
+  );
 })().catch((error) => {
   console.error(error);
   process.exitCode = 1;

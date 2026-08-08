@@ -10,7 +10,9 @@ from unittest.mock import patch
 
 from scripts.add_restaurants import (
     NAVER_LOCAL_SEARCH_URL,
+    NAVER_PLACE_DETAIL_URL,
     RegistrationError,
+    fetch_naver_place,
     register,
     search_naver_local,
 )
@@ -103,8 +105,12 @@ class AddRestaurantsTest(unittest.TestCase):
             ensure_ascii=False,
         )
 
-        def fake_lookup(name, client_id, client_secret):
+        def fake_lookup(name, client_id, client_secret, submitted_url):
             self.assertEqual((name, client_id, client_secret), ("새로운식당", "id", "secret"))
+            self.assertEqual(
+                submitted_url,
+                "https://map.naver.com/p/entry/place/777777777",
+            )
             return {
                 "title": "<b>새로운식당</b>",
                 "roadAddress": "부산 해운대구 해운대로 2",
@@ -203,6 +209,106 @@ class AddRestaurantsTest(unittest.TestCase):
         with patch("scripts.add_restaurants.urlopen", side_effect=fake_urlopen):
             item = search_naver_local("카즈카잔", "hub-id", "hub-secret")
         self.assertEqual(item["title"], "카즈카잔")
+
+    def test_exact_place_id_disambiguates_same_name_results(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def read(self):
+                return json.dumps(
+                    {
+                        "items": [
+                            {
+                                "title": "통영바다장어",
+                                "roadAddress": "경남 통영시 산양읍 1",
+                                "address": "경남 통영시 산양읍 10",
+                                "category": "음식점>한식>장어,먹장어요리",
+                            },
+                            {
+                                "title": "통영바다장어",
+                                "roadAddress": "경상북도 안동시 강남로 287",
+                                "address": "경상북도 안동시 정하동 313-4",
+                                "category": "음식점>한식>장어,먹장어요리",
+                            },
+                        ]
+                    },
+                    ensure_ascii=False,
+                ).encode("utf-8")
+
+        place_detail = {
+            "title": "통영바다장어",
+            "roadAddress": "경북 안동시 강남로 287 2층, 3층 통영바다장어",
+            "address": "경북 안동시 정하동 313-4",
+            "category": "장어,먹장어요리",
+            "description": "",
+            "placeId": "15375170",
+            "mainDishes": ["양념구이 (1인분)", "소금구이 (1인분)", "장어국"],
+        }
+        with patch(
+            "scripts.add_restaurants.fetch_naver_place",
+            return_value=place_detail,
+        ), patch("scripts.add_restaurants.urlopen", return_value=FakeResponse()):
+            item = search_naver_local(
+                "통영바다장어",
+                "hub-id",
+                "hub-secret",
+                "https://map.naver.com/p/entry/place/15375170",
+            )
+        self.assertEqual(item["address"], "경북 안동시 정하동 313-4")
+        self.assertEqual(item["category"], "음식점>한식>장어,먹장어요리")
+        self.assertEqual(item["mainDishes"][0], "양념구이 (1인분)")
+
+    def test_fetch_naver_place_reads_exact_address_and_real_menus(self):
+        state = {
+            "PlaceDetailBase:15375170": {
+                "id": "15375170",
+                "name": "통영바다장어",
+                "roadAddress": "경북 안동시 강남로 287",
+                "address": "경북 안동시 정하동 313-4",
+                "category": "장어,먹장어요리",
+                "microReviews": ["가성비 최고의 소금구이 세트"],
+            },
+            "Menu:15375170_0": {
+                "id": "15375170_0",
+                "name": "양념구이 (1인분)",
+            },
+            "Menu:15375170_1": {
+                "id": "15375170_1",
+                "name": "장어국",
+            },
+        }
+
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def read(self):
+                return (
+                    "<script>\nwindow.__APOLLO_STATE__ = "
+                    + json.dumps(state, ensure_ascii=False)
+                    + ";\n</script>"
+                ).encode("utf-8")
+
+        def fake_urlopen(request, timeout):
+            self.assertEqual(timeout, 20)
+            self.assertEqual(
+                request.full_url,
+                NAVER_PLACE_DETAIL_URL.format(place_id="15375170"),
+            )
+            return FakeResponse()
+
+        with patch("scripts.add_restaurants.urlopen", side_effect=fake_urlopen):
+            item = fetch_naver_place("15375170")
+        self.assertEqual(item["title"], "통영바다장어")
+        self.assertEqual(item["address"], "경북 안동시 정하동 313-4")
+        self.assertEqual(item["mainDishes"], ["양념구이 (1인분)", "장어국"])
 
     def test_new_minimal_record_requires_naver_secrets(self):
         payload = json.dumps(
