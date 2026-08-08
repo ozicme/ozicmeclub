@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex,nofollow" />
-  <title>오직미클럽 관리자 | 식당 등록</title>
+  <title>오직미클럽 관리자 | 식당 등록·수정</title>
   <meta name="theme-color" content="#1f6b4e" />
-  <link rel="stylesheet" href="admin.css?v=20260808-2" />
+  <link rel="stylesheet" href="admin.css?v=20260808-3" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
@@ -14,26 +14,31 @@
     <a class="brand" href="index.html">OZICME</a>
     <div>
       <strong>오직미클럽 관리자</strong>
-      <span>식당 등록 도구</span>
+      <span>식당 등록·수정 도구</span>
     </div>
   </header>
 
   <main class="admin-main">
     <section class="intro-card">
-      <p class="eyebrow">안전한 관리자 등록</p>
-      <h1>식당을 1개 또는 여러 개 등록합니다.</h1>
+      <p class="eyebrow">안전한 관리자 관리</p>
+      <h1>식당을 새로 등록하거나 기존 정보를 수정합니다.</h1>
       <p>
         이 화면에서는 등록 데이터를 만들고, 실제 반영은 GitHub 관리자 로그인으로 승인합니다.
         비밀번호나 GitHub 토큰은 이 페이지에 입력하지 않습니다.
       </p>
       <ol class="steps">
-        <li><strong>입력</strong><span>단건 입력 또는 CSV 업로드</span></li>
+        <li><strong>선택</strong><span>신규 등록 또는 기존 식당 검색</span></li>
         <li><strong>검토</strong><span>오류와 등록 내용을 확인</span></li>
-        <li><strong>반영</strong><span>GitHub에서 실행하면 사이트에 자동 추가</span></li>
+        <li><strong>반영</strong><span>GitHub에서 실행하면 사이트에 자동 반영</span></li>
       </ol>
     </section>
 
-    <section class="admin-card" aria-labelledby="registration-title">
+    <nav class="mode-switch" aria-label="관리 작업 선택">
+      <button class="mode-button is-active" id="register-mode-button" type="button" aria-pressed="true">신규 식당 등록</button>
+      <button class="mode-button" id="edit-mode-button" type="button" aria-pressed="false">기존 식당 수정</button>
+    </nav>
+
+    <section class="admin-card register-section" aria-labelledby="registration-title">
       <div class="section-heading">
         <div>
           <p class="eyebrow">1단계</p>
@@ -109,7 +114,7 @@
       </div>
     </section>
 
-    <section class="admin-card" id="review-card" hidden aria-labelledby="review-title">
+    <section class="admin-card register-section" id="review-card" hidden aria-labelledby="review-title">
       <div class="section-heading">
         <div>
           <p class="eyebrow">2단계</p>
@@ -126,7 +131,7 @@
       </div>
     </section>
 
-    <section class="admin-card" id="publish-card" hidden aria-labelledby="publish-title">
+    <section class="admin-card register-section" id="publish-card" hidden aria-labelledby="publish-title">
       <div class="section-heading">
         <div>
           <p class="eyebrow">3단계</p>
@@ -150,12 +155,132 @@
       <p class="notice success" id="copy-status" hidden aria-live="polite"></p>
       <textarea id="json-output" readonly aria-label="GitHub 등록 데이터"></textarea>
     </section>
+
+    <section class="admin-card edit-section" id="edit-card" hidden aria-labelledby="edit-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">1단계</p>
+          <h2 id="edit-title">기존 식당 검색</h2>
+        </div>
+        <strong class="count-badge" id="edit-catalog-count">전체 6천여 개</strong>
+      </div>
+      <p class="edit-help">6,044개 원본 목록은 그대로 보호하고, 선택한 식당의 수정 내용만 별도로 저장합니다.</p>
+      <form class="search-form" id="edit-search-form">
+        <label>
+          <span>상호명 또는 주소</span>
+          <input id="edit-search-input" required minlength="2" placeholder="예: 서윤식당 또는 춘천시" />
+        </label>
+        <button class="button primary" type="submit">검색</button>
+      </form>
+      <p class="file-status" id="edit-search-status" aria-live="polite"></p>
+      <div class="search-results" id="edit-search-results"></div>
+
+      <form class="form-grid edit-form" id="edit-form" hidden>
+        <input id="edit-target-key" type="hidden" />
+        <input id="edit-source" type="hidden" />
+        <div class="wide selected-record" id="selected-record"></div>
+        <label>
+          <span>상호명 <b>*</b></span>
+          <input id="edit-name" required />
+        </label>
+        <label>
+          <span>대표주소 <b>*</b></span>
+          <input id="edit-address" required />
+        </label>
+        <label class="wide">
+          <span>네이버 플레이스 URL</span>
+          <input id="edit-naver-url" type="url" inputmode="url" />
+        </label>
+        <label class="wide">
+          <span>대표 이미지 URL</span>
+          <input id="edit-image-url" type="url" inputmode="url" />
+        </label>
+        <label>
+          <span>시/도</span>
+          <input id="edit-sido" />
+        </label>
+        <label>
+          <span>시/군/구</span>
+          <input id="edit-sigungu" />
+        </label>
+        <label>
+          <span>읍/면/동</span>
+          <input id="edit-eupmyeondong" />
+        </label>
+        <label>
+          <span>업종</span>
+          <input id="edit-category" placeholder="예: 한식" />
+        </label>
+        <label class="wide">
+          <span>세부 업종</span>
+          <input id="edit-category-detail" placeholder="예: 한식 > 솥밥" />
+        </label>
+        <label class="wide">
+          <span>대표 메뉴 <small>(쉼표로 구분)</small></span>
+          <textarea id="edit-main-dishes" rows="3"></textarea>
+        </label>
+        <label class="wide">
+          <span>검색 태그 <small>(쉼표로 구분)</small></span>
+          <input id="edit-search-tags" />
+        </label>
+
+        <fieldset class="wide store-type">
+          <legend>등록 구분 <b>*</b></legend>
+          <label class="radio-card">
+            <input type="radio" name="editStoreType" value="ozicme" checked />
+            <span><strong>오직미 쌀 거래식당</strong><small>오직미클럽 배지 표시</small></span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="editStoreType" value="external" />
+            <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·공개 근거 필수</small></span>
+          </label>
+        </fieldset>
+
+        <div class="wide evidence-fields" id="edit-evidence-fields" hidden>
+          <label>
+            <span>좋은 쌀 사용 근거 URL <b>*</b></span>
+            <input id="edit-evidence-url" type="url" />
+          </label>
+          <label>
+            <span>근거 문구 <b>*</b></span>
+            <input id="edit-evidence-text" />
+          </label>
+        </div>
+
+        <div class="wide form-actions">
+          <button class="button primary" type="submit">수정 내용 검토</button>
+          <button class="button secondary" id="edit-cancel-button" type="button">다른 식당 선택</button>
+        </div>
+        <p class="wide lookup-message" id="edit-form-message" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="admin-card edit-section" id="edit-publish-card" hidden aria-labelledby="edit-publish-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">2단계</p>
+          <h2 id="edit-publish-title">수정 내용 확인 및 반영</h2>
+        </div>
+      </div>
+      <div class="edit-summary" id="edit-summary"></div>
+      <div class="publish-grid">
+        <button class="button primary" id="edit-copy-button" type="button">① 수정 데이터 복사</button>
+        <a class="button github is-disabled" id="edit-github-button" href="https://github.com/ozicme/ozicmeclub/actions/workflows/update-restaurants.yml" target="_blank" rel="noopener" aria-disabled="true">② 먼저 수정 데이터를 복사하세요</a>
+      </div>
+      <ol class="github-guide">
+        <li>GitHub 화면 오른쪽의 <strong>Run workflow</strong>를 누릅니다.</li>
+        <li><strong>수정 데이터</strong> 칸에 복사한 JSON 전체를 붙여넣습니다.</li>
+        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 기존 식당 정보가 수정됩니다.</li>
+      </ol>
+      <p class="notice success" id="edit-copy-status" hidden aria-live="polite"></p>
+      <textarea id="edit-json-output" readonly aria-label="GitHub 수정 데이터"></textarea>
+    </section>
   </main>
 
   <footer class="admin-footer">
     <a href="index.html">오직미클럽으로 돌아가기</a>
-    <span>관리자 등록 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
+    <span>관리자 등록·수정 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
   </footer>
-  <script src="admin.js?v=20260808-2" defer></script>
+  <script src="admin.js?v=20260808-3" defer></script>
 </body>
 </html>
