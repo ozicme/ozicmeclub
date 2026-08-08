@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "targetKey": "place:38514734:19dc23cb",
+    "source": "base",
+    "originalName": "찜마을",
+    "originalAddress": "서울 영등포구 여의대방로 115",
+    "name": "찜마을",
+    "address": "서울 영등포구 여의대방로 115",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/38514734",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMzEwMjZfMTU0%2FMDAxNjk4Mjk3MDI4MDYy.Sqorzip5fHQp2cLX4cs9ruccGDai_09BRXglFEeYxNAg.RJs7uyM9D27-BazSnTqKjw8t95h3Q011JFSmElInZ0Yg.JPEG%2Fupload_a6b4dde9bd53f4a2d2c210a9fb6a3994.jpg",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "영등포구",
+      "eupmyeondong": ""
+    },
+    "category": "한식",
+    "categoryDetail": "국밥/탕",
+    "mainDishes": [
+      "시래기생선찜(소)",
+      "돼지주물럭",
+      "묵은지김치찌개",
+      "대구뽈탕",
+      "코다리탕",
+      "코다리찜(대)",
+      "코다리찜(중)",
+      "코다리찜(소)",
+      "간장새우정식",
+      "시래기생선찜 대"
+    ],
+    "signatureMenus": [
+      "시래기생선찜(소)",
+      "돼지주물럭",
+      "묵은지김치찌개",
+      "대구뽈탕",
+      "코다리탕",
+      "코다리찜(대)",
+      "코다리찜(중)",
+      "코다리찜(소)",
+      "간장새우정식",
+      "시래기생선찜 대"
+    ],
+    "searchTags": [
+      "한식",
+      "탕",
+      "국밥"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-08",
+    "updateSource": "github-admin-edit"
+  }
+]
