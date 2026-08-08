@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       restaurants_json:
-        description: "admin.html에서 복사한 등록 데이터"
+        description: "admin.html에서 복사한 JSON 전체 ([{...}]) — URL만 입력하지 마세요"
         required: true
         type: string
 
@@ -39,7 +39,9 @@ jobs:
           RESTAURANTS_JSON: ${{ inputs.restaurants_json }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
-        run: python scripts/add_restaurants.py | tee /tmp/ozicmeclub-registration-result.json
+        run: |
+          set -o pipefail
+          python scripts/add_restaurants.py | tee /tmp/ozicmeclub-registration-result.json
 
       - name: 변경 검증
         run: |
