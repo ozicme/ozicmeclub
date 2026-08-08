@@ -21,12 +21,12 @@ npm run dev
 3. GitHub Actions의 **오직미클럽 식당 등록** 실행 화면에서 데이터 붙여넣기
 4. **Run workflow** 실행
 
-기존 정본 CSV에 같은 네이버 플레이스 URL이 있으면 브라우저에서 즉시 자동 입력 결과를 확인할 수 있습니다. 신규 식당은 GitHub Actions에서 네이버 지역검색 API로 조회합니다. 저장소의 **Settings → Secrets and variables → Actions**에 아래 Repository secrets를 한 번 등록해야 합니다.
+기존 정본 CSV에 같은 네이버 플레이스 URL이 있으면 브라우저에서 즉시 자동 입력 결과를 확인할 수 있습니다. 신규 식당은 GitHub Actions에서 **NAVER API HUB 지역검색 API**로 조회합니다. 2026년 7월 31일부터 기존 네이버 개발자센터에서는 검색 API를 신규 신청할 수 없으므로, 반드시 네이버 클라우드 플랫폼의 NAVER API HUB에서 Application을 만들고 검색 API를 선택해야 합니다. 저장소의 **Settings → Secrets and variables → Actions**에 아래 Repository secrets를 등록합니다.
 
-- `NAVER_CLIENT_ID`: 네이버 개발자센터 애플리케이션 Client ID
-- `NAVER_CLIENT_SECRET`: 같은 애플리케이션의 Client Secret
+- `NAVER_CLIENT_ID`: NAVER API HUB Application의 Client ID
+- `NAVER_CLIENT_SECRET`: 같은 HUB Application의 Client Secret
 
-애플리케이션에는 네이버 **검색 API**를 추가합니다. Secret 값은 관리자 페이지나 등록 JSON에 포함하지 않습니다.
+기존 네이버 개발자센터에서 발급받은 값은 사용할 수 없습니다. 이미 같은 이름의 GitHub Secret이 있다면 HUB에서 발급받은 새 값으로 각각 업데이트합니다. Secret 값은 관리자 페이지나 등록 JSON에 포함하지 않습니다.
 
 실제 등록은 GitHub 저장소 소유자만 실행할 수 있습니다. 공개 페이지에는 GitHub 토큰이나 관리자 비밀번호를 저장하지 않습니다.
 
