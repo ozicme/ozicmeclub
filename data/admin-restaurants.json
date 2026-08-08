@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "id": "admin-f1d5b9ddac16",
+    "name": "카즈카잔",
+    "address": "서울특별시 중구 세종대로 17 wise타워 지하1층",
+    "naverPlaceUrl": "https://map.naver.com/p/search/%EC%B9%B4%EC%A6%88%EC%B9%B4%EC%9E%94?c=14.00,0,0,0,dh&placePath=%2Fphoto%3FfromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608082026%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EC%B9%B4%EC%A6%88%EC%B9%B4%EC%9E%94",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjAzMjFfMjcz%2FMDAxNzc0MDk0MDAzOTM1.T8DSTQwXZjrDHsYgjWyKiGZTbtHU4ODXGrQgvKeMrZIg.zh3tDXnRNiyWypoX9_2He0qf1ORO9CHT-bQEo1i_9Akg.JPEG%2F1000027288.jpg.jpg",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "category": "음식점",
+    "categoryDetail": "일식 > 일식당",
+    "mainDishes": [],
+    "signatureMenus": [],
+    "searchTags": [
+      "음식점",
+      "일식",
+      "일식당"
+    ],
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "verifiedMonth": "2026-08",
+    "sourceType": "ozicme-admin",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "registrationSource": "github-admin",
+    "updatedAt": "2026-08-08"
+  }
+]
