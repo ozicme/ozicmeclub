@@ -1,4 +1,5 @@
 import csv
+import io
 import json
 import os
 import tempfile
@@ -7,7 +8,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts.add_restaurants import RegistrationError, register
+from scripts.add_restaurants import (
+    NAVER_LOCAL_SEARCH_URL,
+    RegistrationError,
+    register,
+    search_naver_local,
+)
 
 
 class AddRestaurantsTest(unittest.TestCase):
@@ -123,6 +129,43 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(saved[0]["address"], "부산 해운대구 해운대로 2")
         self.assertEqual(saved[0]["category"], "음식점")
         self.assertEqual(saved[0]["categoryDetail"], "한식")
+
+    def test_naver_lookup_uses_api_hub_endpoint_and_headers(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def read(self):
+                return io.BytesIO(
+                    json.dumps(
+                        {
+                            "items": [
+                                {
+                                    "title": "카즈카잔",
+                                    "roadAddress": "서울 마포구 월드컵로 10",
+                                    "category": "음식점>아시아음식",
+                                }
+                            ]
+                        },
+                        ensure_ascii=False,
+                    ).encode("utf-8")
+                ).read()
+
+        def fake_urlopen(request, timeout):
+            self.assertEqual(timeout, 15)
+            self.assertTrue(request.full_url.startswith(f"{NAVER_LOCAL_SEARCH_URL}?"))
+            headers = {key.lower(): value for key, value in request.header_items()}
+            self.assertEqual(headers["x-ncp-apigw-api-key-id"], "hub-id")
+            self.assertEqual(headers["x-ncp-apigw-api-key"], "hub-secret")
+            self.assertNotIn("x-naver-client-id", headers)
+            return FakeResponse()
+
+        with patch("scripts.add_restaurants.urlopen", side_effect=fake_urlopen):
+            item = search_naver_local("카즈카잔", "hub-id", "hub-secret")
+        self.assertEqual(item["title"], "카즈카잔")
 
     def test_new_minimal_record_requires_naver_secrets(self):
         payload = json.dumps(
