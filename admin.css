@@ -72,6 +72,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 .button.primary:hover { background: var(--green-dark); }
 .button.secondary { background: #fff; border-color: var(--border); color: var(--green-dark); }
 .button.github { background: #20252b; color: #fff; }
+.button.is-disabled { opacity: .45; pointer-events: none; }
 
 .upload-panel { display: grid; gap: 18px; }
 .file-drop { display: grid; place-items: center; gap: 5px; min-height: 180px; padding: 28px; border: 2px dashed #a9bcb0; border-radius: 14px; background: #fafcfb; cursor: pointer; text-align: center; }
