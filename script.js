@@ -1,5 +1,6 @@
 const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
+const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const FETCH_TIMEOUT_MS = 8000;
 const DEFAULT_SIDO = "서울특별시";
 const DEFAULT_SORT = "name_asc";
@@ -366,7 +367,11 @@ const renderCard = (item) => {
 
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
+  const badgeMarkup = item.verifiedBadge
+    ? `<span class="badge">${item.badgeLabel || "오직미클럽"}</span>`
+    : "";
   cardBody.innerHTML = `
+    ${badgeMarkup}
     <h3 class="card-title">${item.name}</h3>
     <p class="card-meta">${formatValue(item.category)} · ${buildMenuList(
     item.signatureMenus || item.mainDishes
@@ -604,33 +609,47 @@ const initRestaurantsPage = async () => {
   const loadAllStores = async () => {
     if (dataReady && allStores.length > 0) return allStores;
 
-    const url = new URL(DATA_URL, document.baseURI).toString();
-
     try {
-      const response = await fetchWithTimeout(url);
-      if (!response.ok) {
-        throw new Error(`DATA_ERROR_${response.status}`);
-      }
+      const loadSource = async (sourceUrl, optional = false) => {
+        const url = new URL(sourceUrl, document.baseURI).toString();
+        const response = await fetchWithTimeout(url);
+        if (!response.ok) {
+          if (optional && response.status === 404) return [];
+          throw new Error(`DATA_ERROR_${response.status}`);
+        }
 
-      let rawData;
-      const contentType = response.headers.get("content-type") || "";
-      if (url.endsWith(".csv") || contentType.includes("text/csv")) {
-        const csvText = await response.text();
-        rawData = parseCsvRows(csvText.replace(/^\uFEFF/, ""));
-      } else {
-        rawData = await response.json();
-      }
-      if (!Array.isArray(rawData)) {
-        throw new Error("DATA_ERROR_INVALID");
-      }
+        const contentType = response.headers.get("content-type") || "";
+        const sourceData =
+          url.endsWith(".csv") || contentType.includes("text/csv")
+            ? parseCsvRows((await response.text()).replace(/^\uFEFF/, ""))
+            : await response.json();
+        if (!Array.isArray(sourceData)) {
+          throw new Error("DATA_ERROR_INVALID");
+        }
+        return sourceData;
+      };
 
-      allStores = rawData.map((item, index) => {
-        const normalized = normalizeStore(item, index);
-        return {
-          ...normalized,
-          searchText: buildSearchText(normalized),
-        };
-      });
+      const [baseStores, adminStores] = await Promise.all([
+        loadSource(DATA_URL),
+        loadSource(ADMIN_DATA_URL, true),
+      ]);
+      const seen = new Set();
+      allStores = [...baseStores, ...adminStores]
+        .map((item, index) => {
+          const normalized = normalizeStore(item, index);
+          return {
+            ...normalized,
+            searchText: buildSearchText(normalized),
+          };
+        })
+        .filter((item) => {
+          const key = `${item.name}|${item.address}`
+            .replace(/\s+/g, "")
+            .toLowerCase();
+          if (!item.name || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        });
 
       dataReady = true;
       console.log("allStores", allStores);

@@ -1,0 +1,72 @@
+name: 오직미클럽 식당 등록
+
+on:
+  workflow_dispatch:
+    inputs:
+      restaurants_json:
+        description: "admin.html에서 복사한 등록 데이터"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-registration
+  cancel-in-progress: false
+
+jobs:
+  add-restaurants:
+    name: 식당 검증 및 반영
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 등록 로직 테스트
+        run: python -m unittest scripts/test_add_restaurants.py
+
+      - name: 식당 등록
+        env:
+          RESTAURANTS_JSON: ${{ inputs.restaurants_json }}
+        run: python scripts/add_restaurants.py | tee /tmp/ozicmeclub-registration-result.json
+
+      - name: 변경 검증
+        run: |
+          python -m json.tool data/admin-restaurants.json > /dev/null
+          git diff --check
+
+      - name: 사이트 데이터 반영
+        id: commit
+        run: |
+          if git diff --quiet -- data/admin-restaurants.json; then
+            echo "등록할 새 식당이 없습니다. 기존 식당과 중복되었는지 확인하세요."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/admin-restaurants.json
+          git commit -m "관리자 식당 등록"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: 실행 결과 요약
+        run: |
+          echo "## 오직미클럽 식당 등록 결과" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/ozicmeclub-registration-result.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ steps.commit.outputs.changed }}" = "true" ]; then
+            echo "사이트 데이터에 반영했습니다." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "중복으로 인해 새로 반영된 식당이 없습니다." >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -2,6 +2,8 @@
 
 오직미(OZICME) 쌀을 사용하는 식당을 발견하고 네이버 예약/플레이스 및 길찾기로 이어지는 정적 사이트입니다. 로그인 없이 누구나 이용할 수 있으며, 개인정보와 거래정보는 공개하지 않습니다.
 
+현재 정본 CSV에는 전국 6,044개 식당이 있으며, 첫 접속 시 서울특별시 필터가 적용되어 1,652개가 표시됩니다.
+
 ## 로컬 실행 방법
 
 ```bash
@@ -10,11 +12,37 @@ npm run dev
 
 브라우저에서 `http://localhost:3000`에 접속하세요.
 
+## 관리자 식당 등록
+
+저장소 소유자는 `https://ozicmeclub.com/admin.html`에서 식당을 1개씩 입력하거나 CSV로 여러 개 준비할 수 있습니다.
+
+1. 관리자 페이지에서 단건 입력 또는 CSV 업로드
+2. 등록 데이터 복사
+3. GitHub Actions의 **오직미클럽 식당 등록** 실행 화면에서 데이터 붙여넣기
+4. **Run workflow** 실행
+
+실제 등록은 GitHub 저장소 소유자만 실행할 수 있습니다. 공개 페이지에는 GitHub 토큰이나 관리자 비밀번호를 저장하지 않습니다.
+
+- 관리자 추가 데이터: `data/admin-restaurants.json`
+- 검증·중복 제거: `scripts/add_restaurants.py`
+- 자동 반영: `.github/workflows/add-restaurants.yml`
+- 중복 기준: 공백·기호를 제거한 `상호명 + 대표주소`
+- 오직미 쌀 거래식당: `오직미클럽` 배지 표시
+- 외부 좋은 쌀 식당: 배지 미표시, 근거URL·근거문구 필수
+
+검증 명령:
+
+```bash
+npm run test-admin
+node --check admin.js
+node --check script.js
+```
+
 ---
 
 ## 데이터 파이프라인(기존 + 외부 대량 병합)
 
-정적 사이트는 `JSON`만 배포하므로, 아래 파이프라인이 `input/base.csv` + 외부 출처를 병합해 최종 CSV/JSON을 만듭니다.
+정적 사이트는 기존 정본 CSV와 관리자 추가 JSON을 함께 읽습니다. 아래 파이프라인은 `input/base.csv` + 외부 출처를 병합해 최종 CSV/JSON을 만듭니다.
 
 ### 디렉터리 구조
 
@@ -107,4 +135,3 @@ npm run merge-data
 ```bash
 npm run seed
 ```
-

@@ -1,0 +1,328 @@
+#!/usr/bin/env python3
+"""Validate and append administrator-supplied restaurants.
+
+The public site keeps the large historical CSV untouched. New administrator
+registrations are stored in data/admin-restaurants.json and merged in the
+browser. The GitHub Actions workflow is the intended production entrypoint.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import os
+import re
+import tempfile
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+from urllib.parse import quote
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
+DEFAULT_OUTPUT = REPO_ROOT / "data" / "admin-restaurants.json"
+
+SIDO_ALIASES = {
+    "서울": "서울특별시",
+    "부산": "부산광역시",
+    "대구": "대구광역시",
+    "인천": "인천광역시",
+    "광주": "광주광역시",
+    "대전": "대전광역시",
+    "울산": "울산광역시",
+    "세종": "세종특별자치시",
+    "경기": "경기도",
+    "강원": "강원특별자치도",
+    "충북": "충청북도",
+    "충남": "충청남도",
+    "전북": "전북특별자치도",
+    "전남": "전라남도",
+    "경북": "경상북도",
+    "경남": "경상남도",
+    "제주": "제주특별자치도",
+}
+
+
+class RegistrationError(ValueError):
+    """Raised when submitted restaurant data is invalid."""
+
+
+def clean_text(value: Any) -> str:
+    text = re.sub(r"\s+", " ", str(value or "")).strip()
+    if "<" in text or ">" in text:
+        raise RegistrationError("HTML 태그는 입력할 수 없습니다.")
+    return text
+
+
+def clean_url(value: Any, label: str) -> str:
+    url = clean_text(value)
+    if url and not re.match(r"^https?://", url, re.IGNORECASE):
+        raise RegistrationError(f"{label}은 http:// 또는 https:// 주소여야 합니다.")
+    return url
+
+
+def first_value(record: dict[str, Any], *keys: str) -> Any:
+    for key in keys:
+        value = record.get(key)
+        if value is not None and str(value).strip() != "":
+            return value
+    return ""
+
+
+def as_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return clean_text(value).lower() in {
+        "1",
+        "true",
+        "y",
+        "yes",
+        "예",
+        "네",
+        "오직미",
+        "오직미거래식당",
+    }
+
+
+def as_list(value: Any) -> list[str]:
+    if isinstance(value, list):
+        items = value
+    else:
+        items = re.split(r"[,\n]+", str(value or ""))
+    result: list[str] = []
+    for item in items:
+        cleaned = clean_text(item)
+        if cleaned and cleaned not in result:
+            result.append(cleaned)
+    return result
+
+
+def canonical_sido(value: str) -> str:
+    cleaned = clean_text(value)
+    if not cleaned:
+        return ""
+    for alias, canonical in SIDO_ALIASES.items():
+        if cleaned == alias or cleaned.startswith(alias):
+            return canonical
+    return cleaned
+
+
+def infer_region(address: str, supplied: dict[str, Any]) -> dict[str, str]:
+    tokens = address.split()
+    sido = canonical_sido(
+        first_value(supplied, "sido", "지역_시도", "시도")
+        or (tokens[0] if tokens else "")
+    )
+    sigungu = clean_text(first_value(supplied, "sigungu", "지역_시군구", "시군구"))
+    eupmyeondong = clean_text(
+        first_value(supplied, "eupmyeondong", "지역_읍면동", "읍면동")
+    )
+
+    if not sigungu:
+        sigungu = next(
+            (token for token in tokens[1:4] if re.search(r"(시|군|구)$", token)),
+            "",
+        )
+    if not eupmyeondong:
+        eupmyeondong = next(
+            (token for token in tokens[1:6] if re.search(r"(읍|면|동)$", token)),
+            "",
+        )
+    return {"sido": sido, "sigungu": sigungu, "eupmyeondong": eupmyeondong}
+
+
+def restaurant_key(name: str, address: str) -> str:
+    normalized_address = clean_text(address)
+    canonical_values = set(SIDO_ALIASES.values())
+    if not any(normalized_address.startswith(value) for value in canonical_values):
+        for alias, canonical in SIDO_ALIASES.items():
+            if normalized_address.startswith(alias):
+                normalized_address = canonical + normalized_address[len(alias) :]
+                break
+    return re.sub(r"[^0-9a-z가-힣]", "", f"{name}|{normalized_address}".lower())
+
+
+def build_id(name: str, address: str) -> str:
+    digest = hashlib.sha1(restaurant_key(name, address).encode("utf-8")).hexdigest()[:12]
+    return f"admin-{digest}"
+
+
+def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
+    name = clean_text(first_value(record, "name", "상호명", "식당명"))
+    address = clean_text(first_value(record, "address", "대표주소", "주소"))
+    if not name or not address:
+        raise RegistrationError("상호명과 대표주소는 필수입니다.")
+
+    region_value = record.get("region") if isinstance(record.get("region"), dict) else {}
+    region_input = {**record, **region_value}
+    region = infer_region(address, region_input)
+    if not region["sido"]:
+        raise RegistrationError(f"'{name}'의 시/도를 확인할 수 없습니다.")
+
+    is_ozicme = as_bool(
+        first_value(
+            record,
+            "isOzicmeCustomer",
+            "verifiedBadge",
+            "오직미거래식당",
+            "오직미클럽배지",
+        )
+    )
+    evidence_url = clean_url(first_value(record, "evidenceUrl", "근거URL"), "근거URL")
+    evidence_text = clean_text(first_value(record, "evidenceText", "근거문구"))
+    if not is_ozicme and (not evidence_url or not evidence_text):
+        raise RegistrationError(
+            f"외부 식당 '{name}'은 좋은 쌀 사용 근거URL과 근거문구가 모두 필요합니다."
+        )
+
+    naver_url = clean_url(
+        first_value(record, "naverPlaceUrl", "네이버플레이스", "네이버플레이스링크"),
+        "네이버 플레이스 URL",
+    )
+    if not naver_url:
+        query = quote(f"{name} {address}")
+        naver_url = f"https://map.naver.com/p/search/{query}"
+
+    registered_at = today.astimezone(timezone.utc)
+    main_dishes = as_list(first_value(record, "mainDishes", "주요리_대표", "대표메뉴"))
+    search_tags = as_list(first_value(record, "searchTags", "검색태그"))
+
+    return {
+        "id": build_id(name, address),
+        "name": name,
+        "address": address,
+        "naverPlaceUrl": naver_url,
+        "imageUrl": clean_url(
+            first_value(record, "imageUrl", "이미지", "이미지URL"), "이미지 URL"
+        ),
+        "region": region,
+        "category": clean_text(first_value(record, "category", "식당유형_대", "카테고리")),
+        "categoryDetail": clean_text(
+            first_value(record, "categoryDetail", "식당유형_세부", "세부업종")
+        ),
+        "mainDishes": main_dishes,
+        "signatureMenus": main_dishes,
+        "searchTags": search_tags,
+        "verifiedBadge": is_ozicme,
+        "badgeLabel": "오직미클럽" if is_ozicme else "",
+        "verifiedMonth": registered_at.strftime("%Y-%m") if is_ozicme else "",
+        "sourceType": "ozicme-admin" if is_ozicme else "external-admin",
+        "evidenceUrl": evidence_url,
+        "evidenceText": evidence_text,
+        "registrationSource": "github-admin",
+        "updatedAt": registered_at.date().isoformat(),
+    }
+
+
+def load_json_records(raw: str) -> list[dict[str, Any]]:
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        raise RegistrationError(f"등록 데이터가 올바른 JSON이 아닙니다: {exc}") from exc
+    if isinstance(payload, dict):
+        payload = [payload]
+    if not isinstance(payload, list) or not payload:
+        raise RegistrationError("식당 데이터는 1개 이상의 JSON 배열이어야 합니다.")
+    if not all(isinstance(item, dict) for item in payload):
+        raise RegistrationError("각 식당 데이터는 객체 형식이어야 합니다.")
+    return payload
+
+
+def load_existing_keys(base_csv: Path, admin_output: Path) -> set[str]:
+    keys: set[str] = set()
+    if base_csv.exists():
+        with base_csv.open("r", encoding="utf-8-sig", newline="") as handle:
+            for row in csv.DictReader(handle):
+                name = clean_text(first_value(row, "상호명", "name"))
+                address = clean_text(first_value(row, "대표주소", "address"))
+                if name and address:
+                    keys.add(restaurant_key(name, address))
+    if admin_output.exists():
+        existing = json.loads(admin_output.read_text(encoding="utf-8"))
+        for row in existing:
+            keys.add(restaurant_key(clean_text(row.get("name")), clean_text(row.get("address"))))
+    return keys
+
+
+def write_json_atomic(path: Path, records: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False, suffix=".tmp"
+    ) as handle:
+        json.dump(records, handle, ensure_ascii=False, indent=2)
+        handle.write("\n")
+        temp_path = Path(handle.name)
+    temp_path.replace(path)
+
+
+def register(
+    raw: str,
+    base_csv: Path,
+    output: Path,
+    validate_only: bool = False,
+    now: datetime | None = None,
+) -> dict[str, Any]:
+    timestamp = now or datetime.now(timezone.utc)
+    submitted = load_json_records(raw)
+    existing_records = json.loads(output.read_text(encoding="utf-8")) if output.exists() else []
+    existing_keys = load_existing_keys(base_csv, output)
+    batch_keys: set[str] = set()
+    additions: list[dict[str, Any]] = []
+    skipped: list[str] = []
+
+    for position, source in enumerate(submitted, start=1):
+        try:
+            record = normalize_record(source, timestamp)
+        except RegistrationError as exc:
+            raise RegistrationError(f"{position}번째 식당: {exc}") from exc
+        key = restaurant_key(record["name"], record["address"])
+        if key in existing_keys or key in batch_keys:
+            skipped.append(record["name"])
+            continue
+        batch_keys.add(key)
+        additions.append(record)
+
+    if not validate_only and additions:
+        write_json_atomic(output, [*existing_records, *additions])
+
+    return {
+        "submitted": len(submitted),
+        "added": len(additions),
+        "skipped": len(skipped),
+        "skippedNames": skipped,
+        "totalAdminRestaurants": len(existing_records) + len(additions),
+        "validateOnly": validate_only,
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="오직미클럽 관리자 식당 등록")
+    parser.add_argument("--input-file", type=Path, help="등록 JSON 파일")
+    parser.add_argument("--base-csv", type=Path, default=DEFAULT_BASE_CSV)
+    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--validate-only", action="store_true")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    raw = (
+        args.input_file.read_text(encoding="utf-8")
+        if args.input_file
+        else os.environ.get("RESTAURANTS_JSON", "")
+    )
+    if not raw.strip():
+        raise SystemExit("RESTAURANTS_JSON 또는 --input-file이 필요합니다.")
+    try:
+        result = register(raw, args.base_csv, args.output, args.validate_only)
+    except RegistrationError as exc:
+        raise SystemExit(str(exc)) from exc
+    print(json.dumps(result, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
