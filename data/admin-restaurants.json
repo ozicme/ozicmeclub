@@ -38,5 +38,37 @@
     "evidenceText": "",
     "registrationSource": "github-admin",
     "updatedAt": "2026-08-08"
+  },
+  {
+    "id": "admin-a69b06fb5106",
+    "name": "가마솥용형순대국",
+    "address": "경기도 수원시 장안구 정자천로173번길 17",
+    "naverPlaceUrl": "https://map.naver.com/p/search/%EC%9A%A9%ED%98%95%EC%88%9C%EB%8C%80%EA%B5%AD/place/31794120?c=15.00,0,0,0,dh&placePath=%2Fhome%3Fbk_query%3D%EC%9A%A9%ED%98%95%EC%88%9C%EB%8C%80%EA%B5%AD%26entry%3Dbmp%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202608082259%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EC%9A%A9%ED%98%95%EC%88%9C%EB%8C%80%EA%B5%AD",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20181207_62%2F1544164920418jXr2N_PNG%2F7RdGgwBgQOu9JDw505dS292b.png",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시",
+      "eupmyeondong": ""
+    },
+    "category": "한식",
+    "categoryDetail": "순대,순댓국",
+    "mainDishes": [
+      "순대,순댓국"
+    ],
+    "signatureMenus": [
+      "순대,순댓국"
+    ],
+    "searchTags": [
+      "한식",
+      "순대,순댓국"
+    ],
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "verifiedMonth": "2026-08",
+    "sourceType": "ozicme-admin",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "registrationSource": "github-admin",
+    "updatedAt": "2026-08-08"
   }
 ]
