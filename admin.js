@@ -7,10 +7,29 @@ const BASE_DATA_URL =
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
+const EDIT_CSV_HEADERS = [
+  "수정대상키(수정금지)",
+  "상호명",
+  "대표주소",
+  "네이버플레이스URL",
+  "대표이미지URL",
+  "시도",
+  "시군구",
+  "읍면동",
+  "업종",
+  "세부업종",
+  "대표메뉴",
+  "검색태그",
+  "등록구분",
+  "근거URL",
+  "근거문구",
+];
 
 let preparedRecords = [];
 let preparedBatches = [];
 let activeBatch = 0;
+let preparedEditBatches = [];
+let activeEditBatch = 0;
 let catalogPromise;
 let selectedEditRecord;
 
@@ -18,7 +37,7 @@ const $ = (selector) => document.querySelector(selector);
 
 const splitList = (value) =>
   String(value || "")
-    .split(/[,/\n]+/)
+    .split(/[,/|\n]+/)
     .map((item) => item.trim())
     .filter(Boolean);
 
@@ -122,6 +141,19 @@ const recordTargetKey = (record) => {
   return `record:${fingerprint}`;
 };
 
+const assignUniqueTargetKeys = (records) => {
+  const occurrences = new Map();
+  return records.map((record) => {
+    const baseKey = recordTargetKey(record);
+    const occurrence = (occurrences.get(baseKey) || 0) + 1;
+    occurrences.set(baseKey, occurrence);
+    return {
+      ...record,
+      targetKey: occurrence === 1 ? baseKey : `${baseKey}:duplicate:${occurrence}`,
+    };
+  });
+};
+
 const isNaverPlaceUrl = (value) => {
   try {
     const hostname = new URL(value).hostname.toLowerCase();
@@ -183,10 +215,10 @@ const loadCatalog = () => {
             .filter((item) => item && item.targetKey)
             .map((item) => [String(item.targetKey), item])
         );
-        const records = [
+        const records = assignUniqueTargetKeys([
           ...csvToObjects(content).map((row) => catalogRecord(row, "base")),
           ...adminRows.map((row) => catalogRecord(row, "admin")),
-        ].map((record) => {
+        ]).map((record) => {
           const override = overrideMap.get(record.targetKey);
           if (!override) return record;
           return {
@@ -280,9 +312,6 @@ const validateRecords = (records) => {
       errors.push(`${label}: 네이버 플레이스 URL을 확인하세요.`);
     }
     if (!record.registrationType) errors.push(`${label}: 등록 구분이 없습니다.`);
-    if (record.registrationType === "external" && (!record.evidenceUrl || !record.evidenceText)) {
-      errors.push(`${label}: 외부 식당은 근거URL과 근거문구가 모두 필요합니다.`);
-    }
     const key = placeIdFromUrl(record.naverPlaceUrl)
       || canonicalUrl(record.naverPlaceUrl)
       || record.name.replace(/\s+/g, "").toLowerCase();
@@ -421,8 +450,8 @@ const setActiveTab = (mode) => {
 const updateEvidenceFields = () => {
   const isExternal = $("input[name='storeType']:checked").value === "external";
   $("#evidence-fields").hidden = !isExternal;
-  $("#evidence-url").required = isExternal;
-  $("#evidence-text").required = isExternal;
+  $("#evidence-url").required = false;
+  $("#evidence-text").required = false;
 };
 
 const downloadTemplate = () => {
@@ -442,6 +471,224 @@ const downloadTemplate = () => {
   URL.revokeObjectURL(url);
 };
 
+const csvEscape = (value) => `"${String(value ?? "").replaceAll('"', '""')}"`;
+
+const editPayloadFromRecord = (record) => ({
+  targetKey: String(record.targetKey || ""),
+  source: String(record.source || "base"),
+  name: String(record.name || "").trim(),
+  address: String(record.address || "").trim(),
+  naverPlaceUrl: String(record.naverPlaceUrl || "").trim(),
+  imageUrl: String(record.imageUrl || "").trim(),
+  region: {
+    sido: String(record.region?.sido || "").trim(),
+    sigungu: String(record.region?.sigungu || "").trim(),
+    eupmyeondong: String(record.region?.eupmyeondong || "").trim(),
+  },
+  category: String(record.category || "").trim(),
+  categoryDetail: String(record.categoryDetail || "").trim(),
+  mainDishes: (record.mainDishes || []).map((item) => String(item).trim()).filter(Boolean),
+  searchTags: (record.searchTags || []).map((item) => String(item).trim()).filter(Boolean),
+  registrationType: record.registrationType === "external" ? "external" : "ozicme",
+  evidenceUrl: String(record.evidenceUrl || "").trim(),
+  evidenceText: String(record.evidenceText || "").trim(),
+});
+
+const editCsvRow = (record) => {
+  const payload = editPayloadFromRecord(record);
+  return [
+    payload.targetKey,
+    payload.name,
+    payload.address,
+    payload.naverPlaceUrl,
+    payload.imageUrl,
+    payload.region.sido,
+    payload.region.sigungu,
+    payload.region.eupmyeondong,
+    payload.category,
+    payload.categoryDetail,
+    payload.mainDishes.join(" | "),
+    payload.searchTags.join(" | "),
+    payload.registrationType === "external" ? "외부" : "오직미",
+    payload.evidenceUrl,
+    payload.evidenceText,
+  ];
+};
+
+const fullCatalogCsv = (records) => {
+  const lines = [EDIT_CSV_HEADERS.map(csvEscape).join(",")];
+  records.forEach((record) => lines.push(editCsvRow(record).map(csvEscape).join(",")));
+  return `\uFEFF${lines.join("\r\n")}\r\n`;
+};
+
+const downloadFullCatalog = async () => {
+  const button = $("#edit-catalog-count");
+  const status = $("#edit-file-status");
+  button.disabled = true;
+  status.textContent = "전체 식당 목록을 내려받을 파일로 만드는 중입니다...";
+  try {
+    const catalog = await loadCatalog();
+    const csv = fullCatalogCsv(catalog.records);
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+    const link = document.createElement("a");
+    const date = new Date().toISOString().slice(0, 10);
+    link.href = url;
+    link.download = `오직미클럽_전체식당_수정용_${date}.csv`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+    status.textContent = `${catalog.records.length.toLocaleString()}개 전체 목록을 내려받았습니다. 엑셀에서 수정한 뒤 같은 CSV 파일을 올리세요.`;
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+};
+
+const normalizeEditCsvRow = (row, current) => {
+  const registrationType = registrationTypeOf(valueOf(row, "등록구분", "registrationType"));
+  return {
+    targetKey: valueOf(row, "수정대상키(수정금지)", "수정대상키", "targetKey"),
+    source: current.source,
+    name: valueOf(row, "상호명", "name"),
+    address: valueOf(row, "대표주소", "주소", "address"),
+    naverPlaceUrl: valueOf(row, "네이버플레이스URL", "네이버플레이스", "naverPlaceUrl"),
+    imageUrl: valueOf(row, "대표이미지URL", "이미지URL", "이미지", "imageUrl"),
+    region: {
+      sido: valueOf(row, "시도", "지역_시도", "sido"),
+      sigungu: valueOf(row, "시군구", "지역_시군구", "sigungu"),
+      eupmyeondong: valueOf(row, "읍면동", "지역_읍면동", "eupmyeondong"),
+    },
+    category: valueOf(row, "업종", "식당유형_대", "category"),
+    categoryDetail: valueOf(row, "세부업종", "식당유형_세부", "categoryDetail"),
+    mainDishes: splitList(valueOf(row, "대표메뉴", "주요리_대표", "mainDishes")),
+    searchTags: splitList(valueOf(row, "검색태그", "searchTags")),
+    registrationType,
+    evidenceUrl: valueOf(row, "근거URL", "evidenceUrl"),
+    evidenceText: valueOf(row, "근거문구", "evidenceText"),
+  };
+};
+
+const comparableEditPayload = (record) => JSON.stringify(editPayloadFromRecord(record));
+
+const buildEditBatches = (records) => {
+  const batches = [];
+  let current = [];
+  const payloadSize = (value) => new TextEncoder().encode(JSON.stringify(value)).length;
+  records.forEach((record) => {
+    const candidate = [...current, record];
+    if (payloadSize(candidate) > MAX_WORKFLOW_INPUT_LENGTH && current.length) {
+      batches.push(current);
+      current = [record];
+    } else {
+      current = candidate;
+    }
+    if (payloadSize(current) > MAX_WORKFLOW_INPUT_LENGTH) {
+      throw new Error(`'${record.name}'의 수정 내용이 너무 깁니다.`);
+    }
+  });
+  if (current.length) batches.push(current);
+  return batches;
+};
+
+const updateEditBatchOutput = () => {
+  const hasMultiple = preparedEditBatches.length > 1;
+  $("#edit-batch-nav").hidden = !hasMultiple;
+  $("#edit-previous-batch").disabled = activeEditBatch === 0;
+  $("#edit-next-batch").disabled = activeEditBatch >= preparedEditBatches.length - 1;
+  $("#edit-batch-info").textContent = hasMultiple
+    ? `${activeEditBatch + 1} / ${preparedEditBatches.length} 묶음`
+    : "";
+  $("#edit-json-output").value = preparedEditBatches.length
+    ? JSON.stringify(preparedEditBatches[activeEditBatch])
+    : "";
+  $("#edit-copy-button").textContent = hasMultiple
+    ? `① ${activeEditBatch + 1}/${preparedEditBatches.length} 묶음 복사`
+    : "① 수정 데이터 복사";
+  $("#edit-copy-status").hidden = true;
+  setEditGitHubButtonReady(false);
+};
+
+const showPreparedEdits = (records, summary) => {
+  preparedEditBatches = buildEditBatches(records);
+  activeEditBatch = 0;
+  $("#edit-summary").textContent = summary;
+  $("#edit-publish-card").hidden = false;
+  updateEditBatchOutput();
+  $("#edit-publish-card").scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+const prepareFullCatalogEdits = async (file) => {
+  const status = $("#edit-file-status");
+  status.textContent = `${file.name} 읽는 중...`;
+  const content = await file.text();
+  const parsed = parseCsv(content.replace(/^\uFEFF/, ""));
+  const headers = (parsed[0] || []).map((header) => String(header).trim());
+  const missingHeaders = EDIT_CSV_HEADERS.filter((header) => !headers.includes(header));
+  if (missingHeaders.length) {
+    throw new Error(`전체 수정용 CSV가 아닙니다. 없는 열: ${missingHeaders.join(", ")}`);
+  }
+
+  const rows = csvToObjects(content);
+  const catalog = await loadCatalog();
+  if (rows.length !== catalog.records.length) {
+    throw new Error(`행 수가 맞지 않습니다. 현재 전체 ${catalog.records.length.toLocaleString()}개를 새로 내려받아 수정해 주세요. 업로드 파일: ${rows.length.toLocaleString()}개`);
+  }
+
+  const currentByKey = new Map(catalog.records.map((record) => [record.targetKey, record]));
+  const seen = new Set();
+  const changed = [];
+  const errors = [];
+
+  rows.forEach((row, index) => {
+    const rowNumber = index + 2;
+    const key = valueOf(row, "수정대상키(수정금지)", "수정대상키", "targetKey");
+    if (!key) {
+      errors.push(`${rowNumber}행: 수정대상키가 없습니다.`);
+      return;
+    }
+    if (seen.has(key)) {
+      errors.push(`${rowNumber}행: 수정대상키가 중복되었습니다.`);
+      return;
+    }
+    seen.add(key);
+    const current = currentByKey.get(key);
+    if (!current) {
+      errors.push(`${rowNumber}행: 현재 목록에 없는 수정대상키입니다.`);
+      return;
+    }
+    const payload = normalizeEditCsvRow(row, current);
+    if (comparableEditPayload(payload) === comparableEditPayload(current)) return;
+    const error = validateEditPayload(payload);
+    if (error) {
+      errors.push(`${rowNumber}행(${payload.name || current.name}): ${error}`);
+      return;
+    }
+    changed.push(payload);
+  });
+
+  const missingKeys = catalog.records.filter((record) => !seen.has(record.targetKey));
+  if (missingKeys.length) {
+    errors.push(`현재 목록의 식당 ${missingKeys.length.toLocaleString()}개가 파일에서 빠졌습니다.`);
+  }
+  if (errors.length) {
+    const shown = errors.slice(0, 10);
+    const remainder = errors.length - shown.length;
+    throw new Error(`${shown.join("\n")}${remainder ? `\n외 ${remainder.toLocaleString()}개 오류` : ""}`);
+  }
+  if (!changed.length) {
+    preparedEditBatches = [];
+    $("#edit-publish-card").hidden = true;
+    status.textContent = `${rows.length.toLocaleString()}개를 확인했습니다. 바뀐 내용이 없습니다.`;
+    return;
+  }
+
+  showPreparedEdits(
+    changed,
+    `전체 ${rows.length.toLocaleString()}개를 비교해 변경된 식당 ${changed.length.toLocaleString()}개를 찾았습니다.\n${buildEditBatches(changed).length > 1 ? "아래 묶음을 순서대로 모두 GitHub에서 실행하세요." : "수정 데이터를 GitHub에서 한 번 실행하세요."}`
+  );
+  status.textContent = `${rows.length.toLocaleString()}개를 확인했습니다. 변경된 ${changed.length.toLocaleString()}개만 반영 준비했습니다.`;
+};
+
 const setAdminMode = (mode) => {
   const editing = mode === "edit";
   document.querySelectorAll(".register-section").forEach((section) =>
@@ -458,12 +705,16 @@ const setAdminMode = (mode) => {
     $("#edit-card").hidden = false;
     $("#edit-search-status").textContent = "상호명이나 주소를 2글자 이상 입력하세요.";
     $("#edit-search-input").focus();
+    $("#edit-catalog-count").disabled = true;
     loadCatalog()
       .then((catalog) => {
-        $("#edit-catalog-count").textContent = `전체 ${catalog.records.length.toLocaleString()}개`;
+        $("#edit-catalog-count").textContent = `전체 ${catalog.records.length.toLocaleString()}개 내려받기`;
+        $("#edit-catalog-count").disabled = false;
+        $("#edit-file-status").textContent = "전체 목록을 내려받아 수정하거나, 아래에서 1개씩 검색할 수 있습니다.";
       })
-      .catch(() => {
-        $("#edit-catalog-count").textContent = "전체 목록";
+      .catch((error) => {
+        $("#edit-catalog-count").textContent = "전체 목록 불러오기 실패";
+        $("#edit-file-status").textContent = error.message;
       });
   }
 };
@@ -480,8 +731,8 @@ const setEditGitHubButtonReady = (ready) => {
 const updateEditEvidenceFields = () => {
   const isExternal = $("input[name='editStoreType']:checked").value === "external";
   $("#edit-evidence-fields").hidden = !isExternal;
-  $("#edit-evidence-url").required = isExternal;
-  $("#edit-evidence-text").required = isExternal;
+  $("#edit-evidence-url").required = false;
+  $("#edit-evidence-text").required = false;
 };
 
 const editSearchText = (record) =>
@@ -547,7 +798,7 @@ const renderEditSearchResults = (records) => {
 
 const splitEditList = (value) =>
   String(value || "")
-    .split(/[,\n]+/)
+    .split(/[,|\n]+/)
     .map((item) => item.trim())
     .filter(Boolean);
 
@@ -583,9 +834,6 @@ const validateEditPayload = (record) => {
   }
   if (record.imageUrl && !/^https?:\/\//i.test(record.imageUrl)) {
     return "대표 이미지 URL을 확인하세요.";
-  }
-  if (record.registrationType === "external" && (!record.evidenceUrl || !record.evidenceText)) {
-    return "외부 좋은 쌀 식당은 근거URL과 근거문구가 모두 필요합니다.";
   }
   return "";
 };
@@ -632,12 +880,10 @@ $("#edit-form").addEventListener("submit", (event) => {
     $("#edit-form-message").textContent = error;
     return;
   }
-  $("#edit-json-output").value = JSON.stringify([payload]);
-  $("#edit-summary").textContent = `${selectedEditRecord.name} → ${payload.name}\n${payload.address}\n${payload.category || "업종 미등록"}${payload.categoryDetail ? ` · ${payload.categoryDetail}` : ""}`;
-  $("#edit-copy-status").hidden = true;
-  $("#edit-publish-card").hidden = false;
-  setEditGitHubButtonReady(false);
-  $("#edit-publish-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  showPreparedEdits(
+    [payload],
+    `${selectedEditRecord.name} → ${payload.name}\n${payload.address}\n${payload.category || "업종 미등록"}${payload.categoryDetail ? ` · ${payload.categoryDetail}` : ""}`
+  );
 });
 
 $("#edit-cancel-button").addEventListener("click", () => {
@@ -661,6 +907,33 @@ $("#edit-copy-button").addEventListener("click", async () => {
   }
   $("#edit-copy-status").hidden = false;
   setEditGitHubButtonReady(true);
+});
+
+$("#edit-catalog-count").addEventListener("click", downloadFullCatalog);
+$("#edit-csv-file").addEventListener("change", async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    await prepareFullCatalogEdits(file);
+  } catch (error) {
+    preparedEditBatches = [];
+    $("#edit-publish-card").hidden = true;
+    $("#edit-file-status").textContent = error.message;
+  } finally {
+    event.target.value = "";
+  }
+});
+
+$("#edit-previous-batch").addEventListener("click", () => {
+  if (activeEditBatch === 0) return;
+  activeEditBatch -= 1;
+  updateEditBatchOutput();
+});
+
+$("#edit-next-batch").addEventListener("click", () => {
+  if (activeEditBatch >= preparedEditBatches.length - 1) return;
+  activeEditBatch += 1;
+  updateEditBatchOutput();
 });
 
 $("#single-form").addEventListener("submit", async (event) => {

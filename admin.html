@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>오직미클럽 관리자 | 식당 등록·수정</title>
   <meta name="theme-color" content="#1f6b4e" />
-  <link rel="stylesheet" href="admin.css?v=20260808-3" />
+  <link rel="stylesheet" href="admin.css?v=20260808-4" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
@@ -74,17 +74,17 @@
             </label>
             <label class="radio-card">
               <input type="radio" name="storeType" value="external" />
-              <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·공개 근거 필수</small></span>
+              <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·근거가 있으면 입력</small></span>
             </label>
           </fieldset>
 
           <div class="wide evidence-fields" id="evidence-fields" hidden>
             <label>
-              <span>좋은 쌀 사용 근거 URL <b>*</b></span>
+              <span>좋은 쌀 사용 근거 URL <small>(선택)</small></span>
               <input id="evidence-url" name="evidenceUrl" type="url" placeholder="공식 홈페이지·기사·지자체 자료 URL" />
             </label>
             <label>
-              <span>근거 문구 <b>*</b></span>
+              <span>근거 문구 <small>(선택)</small></span>
               <input id="evidence-text" name="evidenceText" placeholder="예: 신동진 단일품종 쌀 사용" />
             </label>
           </div>
@@ -162,9 +162,23 @@
           <p class="eyebrow">1단계</p>
           <h2 id="edit-title">기존 식당 검색</h2>
         </div>
-        <strong class="count-badge" id="edit-catalog-count">전체 6천여 개</strong>
+        <button class="count-badge download-count" id="edit-catalog-count" type="button" disabled>전체 목록 준비 중</button>
       </div>
-      <p class="edit-help">6,044개 원본 목록은 그대로 보호하고, 선택한 식당의 수정 내용만 별도로 저장합니다.</p>
+      <p class="edit-help">전체 목록을 CSV로 내려받아 엑셀에서 수정한 뒤 다시 올리거나, 식당을 검색해 1개씩 수정할 수 있습니다. 원본 목록은 보호하고 변경한 식당만 별도로 저장합니다.</p>
+
+      <div class="bulk-edit-panel">
+        <div>
+          <h3>전체 목록 Excel(CSV) 수정</h3>
+          <p>위의 <strong>전체 목록</strong> 버튼을 눌러 내려받고, 엑셀에서 수정한 뒤 CSV 파일을 다시 올리세요. <strong>수정대상키(수정금지)</strong> 열은 변경하지 마세요.</p>
+        </div>
+        <div class="bulk-edit-actions">
+          <label class="button secondary bulk-file-label" for="edit-csv-file">수정한 전체 CSV 올리기</label>
+          <input id="edit-csv-file" class="visually-hidden" type="file" accept=".csv,text/csv" />
+        </div>
+        <p class="file-status" id="edit-file-status" aria-live="polite">전체 목록을 불러오는 중입니다.</p>
+      </div>
+
+      <div class="search-divider"><span>또는 1개씩 검색해 수정</span></div>
       <form class="search-form" id="edit-search-form">
         <label>
           <span>상호명 또는 주소</span>
@@ -232,17 +246,17 @@
           </label>
           <label class="radio-card">
             <input type="radio" name="editStoreType" value="external" />
-            <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·공개 근거 필수</small></span>
+            <span><strong>외부 좋은 쌀 식당</strong><small>배지 없음·근거가 있으면 입력</small></span>
           </label>
         </fieldset>
 
         <div class="wide evidence-fields" id="edit-evidence-fields" hidden>
           <label>
-            <span>좋은 쌀 사용 근거 URL <b>*</b></span>
+            <span>좋은 쌀 사용 근거 URL <small>(선택)</small></span>
             <input id="edit-evidence-url" type="url" />
           </label>
           <label>
-            <span>근거 문구 <b>*</b></span>
+            <span>근거 문구 <small>(선택)</small></span>
             <input id="edit-evidence-text" />
           </label>
         </div>
@@ -267,10 +281,15 @@
         <button class="button primary" id="edit-copy-button" type="button">① 수정 데이터 복사</button>
         <a class="button github is-disabled" id="edit-github-button" href="https://github.com/ozicme/ozicmeclub/actions/workflows/update-restaurants.yml" target="_blank" rel="noopener" aria-disabled="true">② 먼저 수정 데이터를 복사하세요</a>
       </div>
+      <div class="batch-nav" id="edit-batch-nav" hidden>
+        <button class="button secondary" id="edit-previous-batch" type="button">이전 묶음</button>
+        <strong id="edit-batch-info"></strong>
+        <button class="button secondary" id="edit-next-batch" type="button">다음 묶음</button>
+      </div>
       <ol class="github-guide">
         <li>GitHub 화면 오른쪽의 <strong>Run workflow</strong>를 누릅니다.</li>
         <li><strong>수정 데이터</strong> 칸에 복사한 JSON 전체를 붙여넣습니다.</li>
-        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 기존 식당 정보가 수정됩니다.</li>
+        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 기존 식당 정보가 수정됩니다. 여러 묶음이면 묶음별로 이 과정을 반복합니다.</li>
       </ol>
       <p class="notice success" id="edit-copy-status" hidden aria-live="polite"></p>
       <textarea id="edit-json-output" readonly aria-label="GitHub 수정 데이터"></textarea>
@@ -281,6 +300,6 @@
     <a href="index.html">오직미클럽으로 돌아가기</a>
     <span>관리자 등록·수정 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
   </footer>
-  <script src="admin.js?v=20260808-3" defer></script>
+  <script src="admin.js?v=20260808-4" defer></script>
 </body>
 </html>
