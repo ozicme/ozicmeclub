@@ -267,6 +267,15 @@ const updateBatchOutput = () => {
     : "① 등록 데이터 복사";
 };
 
+const setGitHubButtonReady = (ready) => {
+  const button = $("#github-button");
+  button.classList.toggle("is-disabled", !ready);
+  button.setAttribute("aria-disabled", String(!ready));
+  button.textContent = ready
+    ? "② GitHub 등록 화면 열기"
+    : "② 먼저 등록 데이터를 복사하세요";
+};
+
 const showPreparedRecords = (records) => {
   const errors = validateRecords(records);
   const reviewCard = $("#review-card");
@@ -309,6 +318,9 @@ const showPreparedRecords = (records) => {
   }
   activeBatch = 0;
   updateBatchOutput();
+  $("#copy-status").hidden = true;
+  $("#copy-status").textContent = "";
+  setGitHubButtonReady(false);
   reviewCard.scrollIntoView({ behavior: "smooth", block: "start" });
 };
 
@@ -418,11 +430,16 @@ $("#copy-button").addEventListener("click", async () => {
   const payload = JSON.stringify(preparedBatches[activeBatch]);
   try {
     await navigator.clipboard.writeText(payload);
-    $("#copy-status").textContent = "등록 데이터를 복사했습니다. 이제 GitHub 등록 화면을 여세요.";
+    $("#copy-button").textContent = "✓ 등록 데이터 복사 완료";
+    $("#copy-status").hidden = false;
+    $("#copy-status").textContent = "JSON 전체를 복사했습니다. 이제 ② GitHub 등록 화면 열기를 누르세요.";
+    setGitHubButtonReady(true);
   } catch (error) {
     $("#json-output").focus();
     $("#json-output").select();
-    $("#copy-status").textContent = "자동 복사가 제한되었습니다. 아래 내용을 직접 복사하세요.";
+    $("#copy-status").hidden = false;
+    $("#copy-status").textContent = "자동 복사가 제한되었습니다. 선택된 JSON 전체를 Ctrl+C로 복사한 뒤 ②를 누르세요.";
+    setGitHubButtonReady(true);
   }
 });
 
@@ -438,5 +455,6 @@ $("#next-batch").addEventListener("click", () => {
   updateBatchOutput();
 });
 
-document.querySelector("a.github").href = WORKFLOW_URL;
+$("#github-button").href = WORKFLOW_URL;
+setGitHubButtonReady(false);
 updateEvidenceFields();
