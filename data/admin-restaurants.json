@@ -70,5 +70,47 @@
     "evidenceText": "",
     "registrationSource": "github-admin",
     "updatedAt": "2026-08-08"
+  },
+  {
+    "id": "admin-686b2082707c",
+    "name": "통영바다장어",
+    "address": "경북 안동시 강남로 287 2층, 3층 통영바다장어",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/15375170?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608090830%26locale%3Dko%26svcName%3Dmap_pcv5",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDAyMjhfMTQz%2FMDAxNzA5MTE2MTE2NDE0.DGbe29mmcSZeDva6sU24NlH6r6EWVSnYtn_jXxj9tUkg.lb2PSsfQEpMzyUiGNK3tdhJZuxiSVSldsgGWVlhomXEg.JPEG%2F20240228_184602.jpg.jpg",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "안동시",
+      "eupmyeondong": ""
+    },
+    "category": "한식",
+    "categoryDetail": "장어,먹장어요리",
+    "mainDishes": [
+      "양념구이 (1인분)",
+      "소금구이 (1인분)",
+      "장어국",
+      "소금/양념구이(1인분) + 장어국"
+    ],
+    "signatureMenus": [
+      "양념구이 (1인분)",
+      "소금구이 (1인분)",
+      "장어국",
+      "소금/양념구이(1인분) + 장어국"
+    ],
+    "searchTags": [
+      "한식",
+      "장어,먹장어요리",
+      "양념구이 (1인분)",
+      "소금구이 (1인분)",
+      "장어국",
+      "소금/양념구이(1인분) + 장어국"
+    ],
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "verifiedMonth": "2026-08",
+    "sourceType": "ozicme-admin",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "registrationSource": "github-admin",
+    "updatedAt": "2026-08-08"
   }
 ]
