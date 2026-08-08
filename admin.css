@@ -47,10 +47,14 @@ h2 { margin-bottom: 0; font-size: 1.45rem; }
 .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .form-grid > label, .evidence-fields label { display: grid; gap: 7px; }
 label > span, legend { font-size: .9rem; font-weight: 700; }
+label > span small { color: var(--muted); font-weight: 500; }
 b { color: #bc493f; }
 .wide { grid-column: 1 / -1; }
 input, select, textarea { width: 100%; border: 1px solid #cbd7cf; border-radius: 11px; padding: 12px 13px; background: #fff; color: var(--text); }
 input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible { outline: 3px solid rgba(31,107,78,.22); border-color: var(--green); }
+.field-hint { color: var(--muted); font-size: .82rem; font-weight: 400; }
+.lookup-message { min-height: 1.4em; margin: -6px 0 0; color: var(--green-dark); font-size: .88rem; font-weight: 700; }
+.button:disabled { opacity: .58; cursor: wait; }
 
 .store-type { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; border: 0; }
 .store-type legend { grid-column: 1 / -1; margin-bottom: 6px; }

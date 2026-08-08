@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>오직미클럽 관리자 | 식당 등록</title>
   <meta name="theme-color" content="#1f6b4e" />
-  <link rel="stylesheet" href="admin.css" />
+  <link rel="stylesheet" href="admin.css?v=20260808-2" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
@@ -49,55 +49,16 @@
         <form id="single-form" class="form-grid">
           <label>
             <span>상호명 <b>*</b></span>
-            <input id="name" name="name" required placeholder="예: 오직미 솥밥집" />
+            <input id="name" name="name" required autocomplete="organization" placeholder="네이버 플레이스에 표시된 정확한 상호명" />
           </label>
           <label class="wide">
-            <span>대표주소 <b>*</b></span>
-            <input id="address" name="address" required placeholder="도로명 주소를 입력하세요" />
-          </label>
-          <label>
-            <span>시·도 <b>*</b></span>
-            <select id="sido" name="sido" required>
-              <option value="">선택</option>
-              <option>서울특별시</option><option>부산광역시</option><option>대구광역시</option>
-              <option>인천광역시</option><option>광주광역시</option><option>대전광역시</option>
-              <option>울산광역시</option><option>세종특별자치시</option><option>경기도</option>
-              <option>강원특별자치도</option><option>충청북도</option><option>충청남도</option>
-              <option>전북특별자치도</option><option>전라남도</option><option>경상북도</option>
-              <option>경상남도</option><option>제주특별자치도</option>
-            </select>
-          </label>
-          <label>
-            <span>시·군·구</span>
-            <input id="sigungu" name="sigungu" placeholder="예: 강남구" />
-          </label>
-          <label>
-            <span>읍·면·동</span>
-            <input id="eupmyeondong" name="eupmyeondong" placeholder="예: 역삼동" />
-          </label>
-          <label>
-            <span>음식점 유형</span>
-            <input id="category" name="category" placeholder="예: 한식" />
-          </label>
-          <label>
-            <span>세부 유형</span>
-            <input id="category-detail" name="categoryDetail" placeholder="예: 솥밥/한정식" />
+            <span>네이버 플레이스 URL <b>*</b></span>
+            <input id="naver-url" name="naverPlaceUrl" type="url" required inputmode="url" placeholder="https://map.naver.com/p/entry/place/..." />
+            <small class="field-hint">주소·지역·업종·메뉴·검색 태그는 이 URL과 상호명으로 자동 입력합니다.</small>
           </label>
           <label class="wide">
-            <span>대표 메뉴</span>
-            <input id="main-dishes" name="mainDishes" placeholder="쉼표로 구분: 솥밥, 제육볶음" />
-          </label>
-          <label class="wide">
-            <span>검색 태그</span>
-            <input id="search-tags" name="searchTags" placeholder="쉼표로 구분: 한식, 좋은쌀, 솥밥" />
-          </label>
-          <label class="wide">
-            <span>네이버 플레이스 URL</span>
-            <input id="naver-url" name="naverPlaceUrl" type="url" placeholder="비워두면 상호명과 주소로 검색 링크를 만듭니다" />
-          </label>
-          <label class="wide">
-            <span>대표 이미지 URL</span>
-            <input id="image-url" name="imageUrl" type="url" placeholder="https://..." />
+            <span>대표 이미지 URL <small>(선택)</small></span>
+            <input id="image-url" name="imageUrl" type="url" inputmode="url" placeholder="https://..." />
           </label>
 
           <fieldset class="wide store-type">
@@ -124,9 +85,10 @@
           </div>
 
           <div class="wide form-actions">
-            <button class="button primary" type="submit">등록 내용 만들기</button>
+            <button class="button primary" id="lookup-button" type="submit">자동 정보 불러오기</button>
             <button class="button secondary" id="reset-button" type="reset">초기화</button>
           </div>
+          <p class="wide lookup-message" id="lookup-message" aria-live="polite"></p>
         </form>
       </div>
 
@@ -134,7 +96,7 @@
         <div class="upload-panel">
           <div>
             <h3>CSV 파일로 여러 식당 등록</h3>
-            <p>양식을 내려받아 엑셀에서 작성한 뒤 CSV UTF-8 형식으로 저장해 올리세요.</p>
+            <p>최소 양식에 상호명·네이버 URL·대표 이미지 URL·등록 구분만 작성하세요.</p>
           </div>
           <button class="button secondary" id="template-button" type="button">CSV 양식 내려받기</button>
           <label class="file-drop" for="csv-file">
@@ -158,7 +120,7 @@
       <div class="notice error" id="error-box" hidden></div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>상호명</th><th>지역</th><th>유형</th><th>배지</th><th>대표주소</th></tr></thead>
+          <thead><tr><th>상호명</th><th>자동조회</th><th>대표주소</th><th>업종</th><th>등록 구분</th></tr></thead>
           <tbody id="preview-body"></tbody>
         </table>
       </div>
@@ -183,7 +145,7 @@
       <ol class="github-guide">
         <li>GitHub 화면 오른쪽의 <strong>Run workflow</strong>를 누릅니다.</li>
         <li><strong>등록 데이터</strong> 칸에 복사한 내용을 붙여넣습니다. 대량 등록은 화면에 표시된 묶음별로 반복합니다.</li>
-        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 중복 검사 후 사이트에 반영됩니다.</li>
+        <li>초록색 <strong>Run workflow</strong> 버튼을 누르면 자동 조회·중복 검사 후 사이트에 반영됩니다.</li>
       </ol>
       <p class="notice success" id="copy-status" aria-live="polite"></p>
       <textarea id="json-output" readonly aria-label="GitHub 등록 데이터"></textarea>
@@ -194,6 +156,6 @@
     <a href="index.html">오직미클럽으로 돌아가기</a>
     <span>관리자 등록 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
   </footer>
-  <script src="admin.js" defer></script>
+  <script src="admin.js?v=20260808-2" defer></script>
 </body>
 </html>

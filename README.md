@@ -14,12 +14,19 @@ npm run dev
 
 ## 관리자 식당 등록
 
-저장소 소유자는 `https://ozicmeclub.com/admin.html`에서 식당을 1개씩 입력하거나 CSV로 여러 개 준비할 수 있습니다.
+저장소 소유자는 `https://ozicmeclub.com/admin.html`에서 식당을 1개씩 입력하거나 CSV로 여러 개 준비할 수 있습니다. 단건 입력은 **상호명, 네이버 플레이스 URL, 대표 이미지 URL(선택), 등록 구분**만 받습니다. 주소·지역·업종·검색 태그는 자동으로 채웁니다.
 
 1. 관리자 페이지에서 단건 입력 또는 CSV 업로드
 2. 등록 데이터 복사
 3. GitHub Actions의 **오직미클럽 식당 등록** 실행 화면에서 데이터 붙여넣기
 4. **Run workflow** 실행
+
+기존 정본 CSV에 같은 네이버 플레이스 URL이 있으면 브라우저에서 즉시 자동 입력 결과를 확인할 수 있습니다. 신규 식당은 GitHub Actions에서 네이버 지역검색 API로 조회합니다. 저장소의 **Settings → Secrets and variables → Actions**에 아래 Repository secrets를 한 번 등록해야 합니다.
+
+- `NAVER_CLIENT_ID`: 네이버 개발자센터 애플리케이션 Client ID
+- `NAVER_CLIENT_SECRET`: 같은 애플리케이션의 Client Secret
+
+애플리케이션에는 네이버 **검색 API**를 추가합니다. Secret 값은 관리자 페이지나 등록 JSON에 포함하지 않습니다.
 
 실제 등록은 GitHub 저장소 소유자만 실행할 수 있습니다. 공개 페이지에는 GitHub 토큰이나 관리자 비밀번호를 저장하지 않습니다.
 
