@@ -1,13 +1,18 @@
 const WORKFLOW_URL =
   "https://github.com/ozicme/ozicmeclub/actions/workflows/add-restaurants.yml";
+const UPDATE_WORKFLOW_URL =
+  "https://github.com/ozicme/ozicmeclub/actions/workflows/update-restaurants.yml";
 const BASE_DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
+const ADMIN_DATA_URL = "./data/admin-restaurants.json";
+const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
 
 let preparedRecords = [];
 let preparedBatches = [];
 let activeBatch = 0;
 let catalogPromise;
+let selectedEditRecord;
 
 const $ = (selector) => document.querySelector(selector);
 
@@ -94,6 +99,29 @@ const placeIdFromUrl = (value) => {
   return match ? match[1] : "";
 };
 
+const recordFingerprint = (name, address) => {
+  const normalized = `${name || ""}|${address || ""}`
+    .replace(/[^0-9a-z가-힣]/gi, "")
+    .toLowerCase();
+  let value = 0x811c9dc5;
+  for (const character of normalized) {
+    value ^= character.codePointAt(0);
+    value = Math.imul(value, 0x01000193) >>> 0;
+  }
+  return value.toString(16).padStart(8, "0");
+};
+
+const recordTargetKey = (record) => {
+  if (record.targetKey) return String(record.targetKey);
+  if (record.id) return `id:${record.id}`;
+  const fingerprint = recordFingerprint(record.name, record.address);
+  const placeId = placeIdFromUrl(record.naverPlaceUrl);
+  if (placeId) return `place:${placeId}:${fingerprint}`;
+  const canonical = canonicalUrl(record.naverPlaceUrl);
+  if (canonical) return `url:${canonical}:${fingerprint}`;
+  return `record:${fingerprint}`;
+};
+
 const isNaverPlaceUrl = (value) => {
   try {
     const hostname = new URL(value).hostname.toLowerCase();
@@ -103,39 +131,82 @@ const isNaverPlaceUrl = (value) => {
   }
 };
 
-const catalogRecord = (row) => ({
-  name: valueOf(row, "상호명", "name"),
-  address: valueOf(row, "대표주소", "주소", "address"),
-  naverPlaceUrl: valueOf(row, "네이버플레이스", "네이버플레이스URL", "naverPlaceUrl"),
-  imageUrl: valueOf(row, "이미지", "이미지URL", "imageUrl"),
-  region: {
-    sido: valueOf(row, "지역_시도", "시도", "sido"),
-    sigungu: valueOf(row, "지역_시군구", "시군구", "sigungu"),
-    eupmyeondong: valueOf(row, "지역_읍면동", "읍면동", "eupmyeondong"),
-  },
-  category: valueOf(row, "식당유형_대", "음식점유형", "category"),
-  categoryDetail: valueOf(row, "식당유형_세부", "세부유형", "categoryDetail"),
-  mainDishes: splitList(valueOf(row, "주요리_대표", "대표메뉴", "mainDishes")),
-  searchTags: splitList(valueOf(row, "검색태그", "searchTags")),
-});
+const catalogRecord = (row, source = "base") => {
+  const regionValue = row.region && typeof row.region === "object" ? row.region : {};
+  const registrationType = row.registrationType
+    || (source === "base" || row.verifiedBadge !== false ? "ozicme" : "external");
+  const record = {
+    id: valueOf(row, "id"),
+    source,
+    name: valueOf(row, "상호명", "name"),
+    address: valueOf(row, "대표주소", "주소", "address"),
+    naverPlaceUrl: valueOf(row, "네이버플레이스", "네이버플레이스URL", "naverPlaceUrl"),
+    imageUrl: valueOf(row, "이미지", "이미지URL", "imageUrl"),
+    region: {
+      sido: valueOf(regionValue, "sido", "지역_시도") || valueOf(row, "지역_시도", "시도", "sido"),
+      sigungu: valueOf(regionValue, "sigungu", "지역_시군구") || valueOf(row, "지역_시군구", "시군구", "sigungu"),
+      eupmyeondong: valueOf(regionValue, "eupmyeondong", "지역_읍면동") || valueOf(row, "지역_읍면동", "읍면동", "eupmyeondong"),
+    },
+    category: valueOf(row, "식당유형_대", "음식점유형", "category"),
+    categoryDetail: valueOf(row, "식당유형_세부", "세부유형", "categoryDetail"),
+    mainDishes: splitList(valueOf(row, "주요리_대표", "대표메뉴", "mainDishes", "signatureMenus")),
+    searchTags: splitList(valueOf(row, "검색태그", "searchTags")),
+    registrationType,
+    isOzicmeCustomer: registrationType === "ozicme",
+    evidenceUrl: valueOf(row, "근거URL", "evidenceUrl"),
+    evidenceText: valueOf(row, "근거문구", "evidenceText"),
+  };
+  record.targetKey = recordTargetKey(record);
+  return record;
+};
+
+const loadOptionalJson = async (url) => {
+  const response = await fetch(url, { cache: "no-cache" });
+  if (response.status === 404) return [];
+  if (!response.ok) throw new Error("추가 식당 자료를 불러오지 못했습니다.");
+  const value = await response.json();
+  return Array.isArray(value) ? value : [];
+};
 
 const loadCatalog = () => {
   if (!catalogPromise) {
-    catalogPromise = fetch(BASE_DATA_URL, { cache: "force-cache" })
-      .then((response) => {
+    catalogPromise = Promise.all([
+      fetch(BASE_DATA_URL, { cache: "force-cache" }).then((response) => {
         if (!response.ok) throw new Error("기존 식당 자료를 불러오지 못했습니다.");
         return response.text();
-      })
-      .then((content) => {
+      }),
+      loadOptionalJson(ADMIN_DATA_URL),
+      loadOptionalJson(OVERRIDE_DATA_URL),
+    ]).then(([content, adminRows, overrides]) => {
+        const overrideMap = new Map(
+          overrides
+            .filter((item) => item && item.targetKey)
+            .map((item) => [String(item.targetKey), item])
+        );
+        const records = [
+          ...csvToObjects(content).map((row) => catalogRecord(row, "base")),
+          ...adminRows.map((row) => catalogRecord(row, "admin")),
+        ].map((record) => {
+          const override = overrideMap.get(record.targetKey);
+          if (!override) return record;
+          return {
+            ...record,
+            ...override,
+            id: record.id,
+            source: record.source,
+            targetKey: record.targetKey,
+            region: { ...record.region, ...(override.region || {}) },
+          };
+        });
         const byUrl = new Map();
         const byPlaceId = new Map();
-        csvToObjects(content).map(catalogRecord).forEach((record) => {
+        records.forEach((record) => {
           if (!record.naverPlaceUrl) return;
           byUrl.set(canonicalUrl(record.naverPlaceUrl), record);
           const placeId = placeIdFromUrl(record.naverPlaceUrl);
           if (placeId) byPlaceId.set(placeId, record);
         });
-        return { byUrl, byPlaceId };
+        return { records, byUrl, byPlaceId };
       });
   }
   return catalogPromise;
@@ -371,11 +442,226 @@ const downloadTemplate = () => {
   URL.revokeObjectURL(url);
 };
 
+const setAdminMode = (mode) => {
+  const editing = mode === "edit";
+  document.querySelectorAll(".register-section").forEach((section) =>
+    section.classList.toggle("mode-hidden", editing)
+  );
+  document.querySelectorAll(".edit-section").forEach((section) =>
+    section.classList.toggle("mode-hidden", !editing)
+  );
+  $("#register-mode-button").classList.toggle("is-active", !editing);
+  $("#edit-mode-button").classList.toggle("is-active", editing);
+  $("#register-mode-button").setAttribute("aria-pressed", String(!editing));
+  $("#edit-mode-button").setAttribute("aria-pressed", String(editing));
+  if (editing) {
+    $("#edit-card").hidden = false;
+    $("#edit-search-status").textContent = "상호명이나 주소를 2글자 이상 입력하세요.";
+    $("#edit-search-input").focus();
+    loadCatalog()
+      .then((catalog) => {
+        $("#edit-catalog-count").textContent = `전체 ${catalog.records.length.toLocaleString()}개`;
+      })
+      .catch(() => {
+        $("#edit-catalog-count").textContent = "전체 목록";
+      });
+  }
+};
+
+const setEditGitHubButtonReady = (ready) => {
+  const button = $("#edit-github-button");
+  button.classList.toggle("is-disabled", !ready);
+  button.setAttribute("aria-disabled", String(!ready));
+  button.textContent = ready
+    ? "② GitHub 수정 화면 열기"
+    : "② 먼저 수정 데이터를 복사하세요";
+};
+
+const updateEditEvidenceFields = () => {
+  const isExternal = $("input[name='editStoreType']:checked").value === "external";
+  $("#edit-evidence-fields").hidden = !isExternal;
+  $("#edit-evidence-url").required = isExternal;
+  $("#edit-evidence-text").required = isExternal;
+};
+
+const editSearchText = (record) =>
+  [
+    record.name,
+    record.address,
+    record.naverPlaceUrl,
+    record.region?.sido,
+    record.region?.sigungu,
+    record.region?.eupmyeondong,
+    record.category,
+    record.categoryDetail,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+const fillEditForm = (record) => {
+  selectedEditRecord = record;
+  $("#edit-target-key").value = record.targetKey;
+  $("#edit-source").value = record.source;
+  $("#edit-name").value = record.name || "";
+  $("#edit-address").value = record.address || "";
+  $("#edit-naver-url").value = record.naverPlaceUrl || "";
+  $("#edit-image-url").value = record.imageUrl || "";
+  $("#edit-sido").value = record.region?.sido || "";
+  $("#edit-sigungu").value = record.region?.sigungu || "";
+  $("#edit-eupmyeondong").value = record.region?.eupmyeondong || "";
+  $("#edit-category").value = record.category || "";
+  $("#edit-category-detail").value = record.categoryDetail || "";
+  $("#edit-main-dishes").value = (record.mainDishes || []).join(", ");
+  $("#edit-search-tags").value = (record.searchTags || []).join(", ");
+  $("#edit-evidence-url").value = record.evidenceUrl || "";
+  $("#edit-evidence-text").value = record.evidenceText || "";
+  const registrationType = record.registrationType === "external" ? "external" : "ozicme";
+  $(`input[name='editStoreType'][value='${registrationType}']`).checked = true;
+  $("#selected-record").textContent = `선택: ${record.name} · ${record.address}`;
+  $("#edit-form-message").textContent = "수정할 항목만 고친 뒤 ‘수정 내용 검토’를 누르세요.";
+  $("#edit-form").hidden = false;
+  $("#edit-publish-card").hidden = true;
+  updateEditEvidenceFields();
+  $("#edit-form").scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+const renderEditSearchResults = (records) => {
+  const container = $("#edit-search-results");
+  container.replaceChildren();
+  records.forEach((record) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "search-result-item";
+    const title = document.createElement("strong");
+    title.textContent = record.name;
+    const address = document.createElement("span");
+    address.textContent = record.address || "주소 미등록";
+    const detail = document.createElement("small");
+    detail.textContent = [record.category, record.categoryDetail].filter(Boolean).join(" · ") || "업종 미등록";
+    button.append(title, address, detail);
+    button.addEventListener("click", () => fillEditForm(record));
+    container.appendChild(button);
+  });
+};
+
+const splitEditList = (value) =>
+  String(value || "")
+    .split(/[,\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+const collectEditPayload = () => {
+  const registrationType = $("input[name='editStoreType']:checked").value;
+  return {
+    targetKey: $("#edit-target-key").value,
+    source: $("#edit-source").value,
+    name: $("#edit-name").value.trim(),
+    address: $("#edit-address").value.trim(),
+    naverPlaceUrl: $("#edit-naver-url").value.trim(),
+    imageUrl: $("#edit-image-url").value.trim(),
+    region: {
+      sido: $("#edit-sido").value.trim(),
+      sigungu: $("#edit-sigungu").value.trim(),
+      eupmyeondong: $("#edit-eupmyeondong").value.trim(),
+    },
+    category: $("#edit-category").value.trim(),
+    categoryDetail: $("#edit-category-detail").value.trim(),
+    mainDishes: splitEditList($("#edit-main-dishes").value),
+    searchTags: splitEditList($("#edit-search-tags").value),
+    registrationType,
+    evidenceUrl: $("#edit-evidence-url").value.trim(),
+    evidenceText: $("#edit-evidence-text").value.trim(),
+  };
+};
+
+const validateEditPayload = (record) => {
+  if (!record.targetKey) return "수정할 기존 식당을 다시 선택하세요.";
+  if (!record.name || !record.address) return "상호명과 대표주소는 필수입니다.";
+  if (record.naverPlaceUrl && !isNaverPlaceUrl(record.naverPlaceUrl)) {
+    return "네이버 플레이스 URL을 확인하세요.";
+  }
+  if (record.imageUrl && !/^https?:\/\//i.test(record.imageUrl)) {
+    return "대표 이미지 URL을 확인하세요.";
+  }
+  if (record.registrationType === "external" && (!record.evidenceUrl || !record.evidenceText)) {
+    return "외부 좋은 쌀 식당은 근거URL과 근거문구가 모두 필요합니다.";
+  }
+  return "";
+};
+
 $("#single-tab").addEventListener("click", () => setActiveTab("single"));
 $("#bulk-tab").addEventListener("click", () => setActiveTab("bulk"));
+$("#register-mode-button").addEventListener("click", () => setAdminMode("register"));
+$("#edit-mode-button").addEventListener("click", () => setAdminMode("edit"));
 document.querySelectorAll("input[name='storeType']").forEach((radio) =>
   radio.addEventListener("change", updateEvidenceFields)
 );
+document.querySelectorAll("input[name='editStoreType']").forEach((radio) =>
+  radio.addEventListener("change", updateEditEvidenceFields)
+);
+
+$("#edit-search-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const query = $("#edit-search-input").value.trim().toLowerCase();
+  if (query.length < 2) return;
+  $("#edit-search-status").textContent = "전체 식당 목록을 검색하고 있습니다...";
+  $("#edit-search-results").replaceChildren();
+  try {
+    const catalog = await loadCatalog();
+    const tokens = query.split(/\s+/).filter(Boolean);
+    const allMatches = catalog.records.filter((record) => {
+        const text = editSearchText(record);
+        return tokens.every((token) => text.includes(token));
+      });
+    const matches = allMatches.slice(0, 30);
+    $("#edit-search-status").textContent = allMatches.length
+      ? `${allMatches.length.toLocaleString()}개 중 최대 30개를 표시합니다. 수정할 식당을 선택하세요.`
+      : "일치하는 식당이 없습니다. 상호명이나 주소를 줄여서 검색해 보세요.";
+    renderEditSearchResults(matches);
+  } catch (error) {
+    $("#edit-search-status").textContent = error.message;
+  }
+});
+
+$("#edit-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  const payload = collectEditPayload();
+  const error = validateEditPayload(payload);
+  if (error) {
+    $("#edit-form-message").textContent = error;
+    return;
+  }
+  $("#edit-json-output").value = JSON.stringify([payload]);
+  $("#edit-summary").textContent = `${selectedEditRecord.name} → ${payload.name}\n${payload.address}\n${payload.category || "업종 미등록"}${payload.categoryDetail ? ` · ${payload.categoryDetail}` : ""}`;
+  $("#edit-copy-status").hidden = true;
+  $("#edit-publish-card").hidden = false;
+  setEditGitHubButtonReady(false);
+  $("#edit-publish-card").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+$("#edit-cancel-button").addEventListener("click", () => {
+  selectedEditRecord = undefined;
+  $("#edit-form").hidden = true;
+  $("#edit-publish-card").hidden = true;
+  $("#edit-search-input").focus();
+});
+
+$("#edit-copy-button").addEventListener("click", async () => {
+  const payload = $("#edit-json-output").value;
+  if (!payload) return;
+  try {
+    await navigator.clipboard.writeText(payload);
+    $("#edit-copy-button").textContent = "✓ 수정 데이터 복사 완료";
+    $("#edit-copy-status").textContent = "JSON 전체를 복사했습니다. 이제 ② GitHub 수정 화면 열기를 누르세요.";
+  } catch (error) {
+    $("#edit-json-output").focus();
+    $("#edit-json-output").select();
+    $("#edit-copy-status").textContent = "자동 복사가 제한되었습니다. 선택된 JSON 전체를 Ctrl+C로 복사하세요.";
+  }
+  $("#edit-copy-status").hidden = false;
+  setEditGitHubButtonReady(true);
+});
 
 $("#single-form").addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -456,5 +742,8 @@ $("#next-batch").addEventListener("click", () => {
 });
 
 $("#github-button").href = WORKFLOW_URL;
+$("#edit-github-button").href = UPDATE_WORKFLOW_URL;
 setGitHubButtonReady(false);
+setEditGitHubButtonReady(false);
 updateEvidenceFields();
+updateEditEvidenceFields();

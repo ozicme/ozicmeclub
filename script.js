@@ -1,6 +1,7 @@
 const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
+const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
 const FETCH_TIMEOUT_MS = 8000;
 const DEFAULT_SIDO = "서울특별시";
 const DEFAULT_SORT = "name_asc";
@@ -138,6 +139,175 @@ const splitList = (value, delimiterRegex = /[\/,+]/g) =>
     .split(delimiterRegex)
     .map((item) => item.trim())
     .filter(Boolean);
+
+const rawValueOf = (record, keys) => {
+  for (const key of keys) {
+    const value = record?.[key];
+    if (value !== undefined && value !== null && String(value).trim() !== "") {
+      return String(value).trim();
+    }
+  }
+  return "";
+};
+
+const canonicalRestaurantUrl = (value) => {
+  try {
+    const url = new URL(String(value || "").trim());
+    return `${url.hostname.toLowerCase()}${url.pathname.replace(/\/+$/, "")}`;
+  } catch (error) {
+    return String(value || "").trim().replace(/[?#].*$/, "").replace(/\/+$/, "");
+  }
+};
+
+const restaurantPlaceId = (value) => {
+  const text = String(value || "");
+  const match = text.match(/\/(?:entry\/)?place\/(\d+)/i)
+    || text.match(/\/(\d{5,})(?:\/|$|[?#])/);
+  return match ? match[1] : "";
+};
+
+const restaurantFingerprint = (name, address) => {
+  const normalized = `${name || ""}|${address || ""}`
+    .replace(/[^0-9a-z가-힣]/gi, "")
+    .toLowerCase();
+  let value = 0x811c9dc5;
+  for (const character of normalized) {
+    value ^= character.codePointAt(0);
+    value = Math.imul(value, 0x01000193) >>> 0;
+  }
+  return value.toString(16).padStart(8, "0");
+};
+
+const restaurantTargetKey = (record) => {
+  if (record?.targetKey) return String(record.targetKey);
+  if (record?.id) return `id:${record.id}`;
+  const naverUrl = rawValueOf(record, [
+    "naverPlaceUrl",
+    "naver_place_url",
+    "네이버플레이스",
+    "네이버플레이스URL",
+    "네이버플레이스링크",
+  ]);
+  const name = rawValueOf(record, ["name", "상호명", "식당명"]);
+  const address = rawValueOf(record, ["address", "대표주소", "주소"]);
+  const fingerprint = restaurantFingerprint(name, address);
+  const placeId = restaurantPlaceId(naverUrl);
+  if (placeId) return `place:${placeId}:${fingerprint}`;
+  const canonical = canonicalRestaurantUrl(naverUrl);
+  if (canonical) return `url:${canonical}:${fingerprint}`;
+  return `record:${fingerprint}`;
+};
+
+const parseRestaurantCsv = (content) => {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  const text = String(content || "").replace(/^\uFEFF/, "");
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (quoted) {
+      if (char === '"') {
+        if (text[index + 1] === '"') {
+          field += '"';
+          index += 1;
+        } else {
+          quoted = false;
+        }
+      } else {
+        field += char;
+      }
+    } else if (char === '"') {
+      quoted = true;
+    } else if (char === ",") {
+      row.push(field);
+      field = "";
+    } else if (char === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else if (char !== "\r") {
+      field += char;
+    }
+  }
+  if (field || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
+  if (!rows.length) return [];
+  const headers = rows[0].map((header) => header.trim());
+  return rows
+    .slice(1)
+    .filter((values) => values.some((value) => String(value).trim()))
+    .map((values) =>
+      Object.fromEntries(headers.map((header, index) => [header, values[index] || ""]))
+    );
+};
+
+const loadRestaurantSource = async (sourceUrl, optional = false) => {
+  const url = new URL(sourceUrl, document.baseURI);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  let response;
+  try {
+    response = await fetch(url.toString(), {
+      signal: controller.signal,
+      cache: url.pathname.endsWith(".csv") ? "force-cache" : "no-cache",
+    });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error("DATA_ERROR_TIMEOUT");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+  if (!response.ok) {
+    if (optional && response.status === 404) return [];
+    throw new Error(`DATA_ERROR_${response.status}`);
+  }
+  const contentType = response.headers.get("content-type") || "";
+  const value =
+    url.pathname.endsWith(".csv") || contentType.includes("text/csv")
+      ? parseRestaurantCsv(await response.text())
+      : await response.json();
+  if (!Array.isArray(value)) throw new Error("DATA_ERROR_INVALID");
+  return value;
+};
+
+const mergeRestaurantOverrides = (baseStores, adminStores, overrides) => {
+  const overrideMap = new Map(
+    overrides
+      .filter((item) => item && item.targetKey)
+      .map((item) => [String(item.targetKey), item])
+  );
+  return [
+    ...baseStores.map((item) => ({ ...item, dataSource: "base" })),
+    ...adminStores.map((item) => ({ ...item, dataSource: "admin" })),
+  ].map((item) => {
+    const targetKey = restaurantTargetKey(item);
+    const override = overrideMap.get(targetKey);
+    if (!override) return { ...item, targetKey };
+    return {
+      ...item,
+      ...override,
+      id: item.id || override.id,
+      targetKey,
+      dataSource: item.dataSource,
+      region: { ...(item.region || {}), ...(override.region || {}) },
+    };
+  });
+};
+
+const loadMergedRestaurantRows = async () => {
+  const [baseStores, adminStores, overrides] = await Promise.all([
+    loadRestaurantSource(DATA_URL),
+    loadRestaurantSource(ADMIN_DATA_URL, true),
+    loadRestaurantSource(OVERRIDE_DATA_URL, true),
+  ]);
+  return mergeRestaurantOverrides(baseStores, adminStores, overrides);
+};
 
 const normalizeSido = (value) => {
   const trimmed = String(value || "").trim();
@@ -515,126 +685,13 @@ const initRestaurantsPage = async () => {
     setListEnd("");
   };
 
-  const fetchWithTimeout = async (url) => {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-    try {
-      return await fetch(url, { signal: controller.signal });
-    } catch (error) {
-      if (error instanceof DOMException && error.name === "AbortError") {
-        throw new Error("DATA_ERROR_TIMEOUT");
-      }
-      throw error;
-    } finally {
-      clearTimeout(timeout);
-    }
-  };
-
-  const parseCsv = (content) => {
-    const rows = [];
-    let row = [];
-    let field = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < content.length; i += 1) {
-      const char = content[i];
-
-      if (inQuotes) {
-        if (char === '"') {
-          const nextChar = content[i + 1];
-          if (nextChar === '"') {
-            field += '"';
-            i += 1;
-          } else {
-            inQuotes = false;
-          }
-        } else {
-          field += char;
-        }
-        continue;
-      }
-
-      if (char === '"') {
-        inQuotes = true;
-        continue;
-      }
-
-      if (char === ",") {
-        row.push(field);
-        field = "";
-        continue;
-      }
-
-      if (char === "\n") {
-        row.push(field);
-        rows.push(row);
-        row = [];
-        field = "";
-        continue;
-      }
-
-      if (char === "\r") {
-        continue;
-      }
-
-      field += char;
-    }
-
-    if (field.length > 0 || row.length > 0) {
-      row.push(field);
-      rows.push(row);
-    }
-
-    return rows;
-  };
-
-  const parseCsvRows = (content) => {
-    const rows = parseCsv(content);
-    if (rows.length === 0) return [];
-    const headers = rows[0].map((header) =>
-      header.replace(/^\uFEFF/, "").trim()
-    );
-    return rows
-      .slice(1)
-      .map((row) => {
-        const record = {};
-        headers.forEach((header, index) => {
-          record[header] = row[index] || "";
-        });
-        return record;
-      })
-      .filter((row) => Object.values(row).some((value) => String(value).trim() !== ""));
-  };
-
   const loadAllStores = async () => {
     if (dataReady && allStores.length > 0) return allStores;
 
     try {
-      const loadSource = async (sourceUrl, optional = false) => {
-        const url = new URL(sourceUrl, document.baseURI).toString();
-        const response = await fetchWithTimeout(url);
-        if (!response.ok) {
-          if (optional && response.status === 404) return [];
-          throw new Error(`DATA_ERROR_${response.status}`);
-        }
-
-        const contentType = response.headers.get("content-type") || "";
-        const sourceData =
-          url.endsWith(".csv") || contentType.includes("text/csv")
-            ? parseCsvRows((await response.text()).replace(/^\uFEFF/, ""))
-            : await response.json();
-        if (!Array.isArray(sourceData)) {
-          throw new Error("DATA_ERROR_INVALID");
-        }
-        return sourceData;
-      };
-
-      const [baseStores, adminStores] = await Promise.all([
-        loadSource(DATA_URL),
-        loadSource(ADMIN_DATA_URL, true),
-      ]);
+      const mergedStores = await loadMergedRestaurantRows();
       const seen = new Set();
-      allStores = [...baseStores, ...adminStores]
+      allStores = mergedStores
         .map((item, index) => {
           const normalized = normalizeStore(item, index);
           return {
@@ -934,8 +991,7 @@ const initRestaurantDetail = async () => {
   const certText = document.getElementById("detail-cert-text");
 
   try {
-    const response = await fetch(new URL(DATA_URL, document.baseURI).toString());
-    const data = await response.json();
+    const data = await loadMergedRestaurantRows();
     const normalized = data.map((row, index) => normalizeStore(row, index));
     const item = normalized.find((restaurant) => slugify(restaurant.name) === slug);
 
