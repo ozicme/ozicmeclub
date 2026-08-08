@@ -1,0 +1,73 @@
+name: 오직미클럽 기존 식당 수정
+
+on:
+  workflow_dispatch:
+    inputs:
+      updates_json:
+        description: "admin.html에서 복사한 수정 JSON 전체 ([{...}])"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-data-write
+  cancel-in-progress: false
+
+jobs:
+  update-restaurants:
+    name: 기존 식당 검증 및 수정
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 수정 로직 테스트
+        run: python -m unittest scripts/test_update_restaurants.py
+
+      - name: 기존 식당 수정
+        env:
+          UPDATES_JSON: ${{ inputs.updates_json }}
+        run: |
+          set -o pipefail
+          if ! python scripts/update_restaurants.py 2>&1 | tee /tmp/ozicmeclub-update-result.json; then
+            echo "## 오직미클럽 기존 식당 수정 실패" >> "$GITHUB_STEP_SUMMARY"
+            echo '```text' >> "$GITHUB_STEP_SUMMARY"
+            tail -20 /tmp/ozicmeclub-update-result.json >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+      - name: 변경 검증
+        run: |
+          python -m json.tool data/restaurant-overrides.json > /dev/null
+          git diff --check
+
+      - name: 사이트 수정사항 반영
+        run: |
+          if git diff --quiet -- data/restaurant-overrides.json; then
+            echo "새로운 수정사항이 없습니다."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/restaurant-overrides.json
+          git commit -m "관리자 기존 식당 정보 수정"
+          git push origin HEAD:main
+
+      - name: 실행 결과 요약
+        run: |
+          echo "## 오직미클럽 기존 식당 수정 결과" >> "$GITHUB_STEP_SUMMARY"
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/ozicmeclub-update-result.json >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          echo "사이트 수정 데이터에 반영했습니다." >> "$GITHUB_STEP_SUMMARY"
