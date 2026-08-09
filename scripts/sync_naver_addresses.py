@@ -242,6 +242,15 @@ def select_shard(
     return [record for index, record in enumerate(records) if index % shard_count == shard_index]
 
 
+def select_unverified(records: Iterable[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return records without a previously verified Naver-address override."""
+    return [
+        record
+        for record in records
+        if clean_text(record.get("updateSource")) != "github-naver-address-sync"
+    ]
+
+
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -286,11 +295,33 @@ def report_payload(
 def load_reports(paths: Iterable[Path]) -> list[dict[str, Any]]:
     combined: list[dict[str, Any]] = []
     seen: set[str] = set()
+    shard_count: int | None = None
+    shard_indices: set[int] = set()
     for path in paths:
         value = json.loads(path.read_text(encoding="utf-8"))
         results = value.get("results") if isinstance(value, dict) else None
         if not isinstance(results, list):
             raise SyncError(f"{path}: results 배열이 없습니다.")
+        current_count = value.get("shardCount")
+        current_index = value.get("shardIndex")
+        if (
+            not isinstance(current_count, int)
+            or current_count < 1
+            or not isinstance(current_index, int)
+            or current_index < 0
+            or current_index >= current_count
+        ):
+            raise SyncError(f"{path}: 분할 정보가 올바르지 않습니다.")
+        if shard_count is None:
+            shard_count = current_count
+        elif current_count != shard_count:
+            raise SyncError(f"{path}: 분할 개수가 다른 보고서가 섞였습니다.")
+        if current_index in shard_indices:
+            raise SyncError(f"{path}: {current_index}번 분할 보고서가 중복되었습니다.")
+        shard_indices.add(current_index)
+        summary = value.get("summary")
+        if not isinstance(summary, dict) or summary.get("total") != len(results):
+            raise SyncError(f"{path}: 분할 결과 수가 보고서 요약과 다릅니다.")
         for result in results:
             if not isinstance(result, dict):
                 raise SyncError(f"{path}: 잘못된 결과 항목이 있습니다.")
@@ -299,6 +330,9 @@ def load_reports(paths: Iterable[Path]) -> list[dict[str, Any]]:
                 raise SyncError(f"{path}: 중복되거나 비어 있는 대상 키가 있습니다: {key}")
             seen.add(key)
             combined.append(result)
+    if shard_count is None or shard_indices != set(range(shard_count)):
+        missing = sorted(set(range(shard_count or 0)) - shard_indices)
+        raise SyncError(f"분할 보고서가 완전하지 않습니다. 누락: {missing}")
     return combined
 
 
@@ -477,6 +511,11 @@ def parse_args() -> argparse.Namespace:
     collect_parser.add_argument("--attempts", type=int, default=2)
     collect_parser.add_argument("--retry-wait", type=float, default=1.2)
     collect_parser.add_argument("--names", default="")
+    collect_parser.add_argument(
+        "--unverified-only",
+        action="store_true",
+        help="이전에 네이버 주소가 검증되지 않은 식당만 재확인",
+    )
 
     apply_parser = subparsers.add_parser("apply", help="검증 결과 반영")
     apply_parser.add_argument("--reports", type=Path, nargs="+", required=True)
@@ -494,6 +533,8 @@ def main() -> int:
     if args.command == "collect":
         targets, _ = load_targets(args.base_csv, args.admin_data, args.overrides)
         records = list(targets.values())
+        if args.unverified_only:
+            records = select_unverified(records)
         names = {clean_text(value) for value in args.names.split(",") if clean_text(value)}
         if names:
             records = [record for record in records if clean_text(record.get("name")) in names]
