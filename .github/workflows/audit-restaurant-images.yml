@@ -1,0 +1,88 @@
+name: 오직미클럽 대표 이미지 점검
+
+on:
+  pull_request:
+    paths:
+      - "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
+      - "data/admin-restaurants.json"
+      - "data/restaurant-overrides.json"
+      - "image-url-utils.js"
+      - "script.js"
+      - "admin.js"
+      - "scripts/image_urls.py"
+      - "scripts/audit_image_urls.py"
+      - ".github/workflows/audit-restaurant-images.yml"
+  push:
+    branches: [main]
+    paths:
+      - "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
+      - "data/admin-restaurants.json"
+      - "data/restaurant-overrides.json"
+      - "image-url-utils.js"
+      - "script.js"
+      - "admin.js"
+      - "scripts/image_urls.py"
+      - "scripts/audit_image_urls.py"
+  schedule:
+    - cron: "30 18 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-image-urls:
+    name: 이미지 URL 구조 검증
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 전체 이미지 URL 구조 검사
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
+        run: python scripts/audit_image_urls.py --json-output /tmp/restaurant-image-structure.json
+
+      - name: 구조 점검 보고서 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restaurant-image-structure
+          path: /tmp/restaurant-image-structure.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  load-test-images:
+    name: 전체 이미지 실제 로딩 점검
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 전체 이미지 실제 로딩 검사
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
+        run: >-
+          python scripts/audit_image_urls.py
+          --network
+          --workers 24
+          --timeout 8
+          --json-output /tmp/restaurant-image-health.json
+
+      - name: 점검 보고서 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restaurant-image-health
+          path: /tmp/restaurant-image-health.json
+          if-no-files-found: warn
+          retention-days: 30

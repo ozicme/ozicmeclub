@@ -28,6 +28,7 @@ const IMAGE_URL_CANDIDATES = [
   "이미지링크",
 ];
 const IMAGE_OBJECT_CANDIDATES = ["url", "src", "imageUrl", "image_url", "image"];
+const imageUrlTools = globalThis.OzicmeImageUrls;
 
 
 const formatValue = (value, fallback = "미등록") =>
@@ -96,19 +97,12 @@ const isNaverPlaceUrl = (value) => {
 };
 
 const resolveImageUrl = (value) => {
-  if (!value || typeof value !== "string") return "";
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (isNaverPlaceUrl(trimmed)) return "";
-  if (trimmed.startsWith("//")) {
-    return `https:${trimmed}`;
-  }
-  try {
-    return new URL(trimmed, document.baseURI).toString();
-  } catch (error) {
-    return "";
-  }
+  if (!value || typeof value !== "string" || !imageUrlTools) return "";
+  return imageUrlTools.normalize(value, document.baseURI);
 };
+
+const imageCandidateUrls = (value) =>
+  imageUrlTools ? imageUrlTools.candidateUrls(value, document.baseURI) : [];
 
 const pickImageUrl = (value) => {
   if (!value) return "";
@@ -469,10 +463,23 @@ const buildMediaFrame = ({ src, alt, aspectRatio, className = "" }) => {
   img.alt = alt;
   img.loading = "lazy";
   img.decoding = "async";
-  img.src = src || PLACEHOLDER_IMAGE_URL;
-  if (!src) {
+  img.referrerPolicy = "no-referrer";
+  const candidates = imageCandidateUrls(src);
+  let candidateIndex = 0;
+  const applyFallback = () => {
+    img.dataset.fallbackApplied = "1";
+    img.src = PLACEHOLDER_IMAGE_URL;
     img.classList.add("is-fallback");
-  }
+    frame.classList.add("media-loaded");
+  };
+  const tryNextCandidate = () => {
+    if (candidateIndex >= candidates.length) {
+      applyFallback();
+      return;
+    }
+    img.src = candidates[candidateIndex];
+    candidateIndex += 1;
+  };
   img.addEventListener("load", () => {
     frame.classList.add("media-loaded");
   });
@@ -480,11 +487,9 @@ const buildMediaFrame = ({ src, alt, aspectRatio, className = "" }) => {
     if (img.dataset.fallbackApplied === "1") {
       return;
     }
-    img.dataset.fallbackApplied = "1";
-    img.src = PLACEHOLDER_IMAGE_URL;
-    img.classList.add("is-fallback");
-    frame.classList.add("media-loaded");
+    tryNextCandidate();
   });
+  tryNextCandidate();
   frame.appendChild(img);
   return frame;
 };

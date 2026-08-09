@@ -23,6 +23,11 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode, urlparse
 from urllib.request import Request, urlopen
 
+try:
+    from scripts.image_urls import ImageUrlError, normalize_image_url
+except ModuleNotFoundError:  # direct `python scripts/add_restaurants.py` execution
+    from image_urls import ImageUrlError, normalize_image_url
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
@@ -68,6 +73,13 @@ def clean_url(value: Any, label: str) -> str:
     if url and not re.match(r"^https?://", url, re.IGNORECASE):
         raise RegistrationError(f"{label}은 http:// 또는 https:// 주소여야 합니다.")
     return url
+
+
+def clean_image_url(value: Any) -> str:
+    try:
+        return normalize_image_url(clean_text(value))
+    except ImageUrlError as exc:
+        raise RegistrationError(str(exc)) from exc
 
 
 def clean_naver_place_url(value: Any) -> str:
@@ -619,8 +631,8 @@ def normalize_record(record: dict[str, Any], today: datetime) -> dict[str, Any]:
         "name": name,
         "address": address,
         "naverPlaceUrl": naver_url,
-        "imageUrl": clean_url(
-            first_value(record, "imageUrl", "이미지", "이미지URL"), "이미지 URL"
+        "imageUrl": clean_image_url(
+            first_value(record, "imageUrl", "이미지", "이미지URL")
         ),
         "region": region,
         "category": clean_text(first_value(record, "category", "식당유형_대", "카테고리")),

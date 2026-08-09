@@ -209,6 +209,22 @@ class UpdateRestaurantsTest(unittest.TestCase):
                 now=self.now,
             )
 
+        broken_image = {
+            "targetKey": self.base_key,
+            "name": "기존식당",
+            "address": "서울 강남구 테헤란로 1",
+            "imageUrl": "https://search.pstatic.net/common/?autoRotate=true…thumb.jpg",
+            "registrationType": "ozicme",
+        }
+        with self.assertRaisesRegex(UpdateError, "잘렸습니다"):
+            update_restaurants(
+                json.dumps(broken_image, ensure_ascii=False),
+                self.base_csv,
+                self.admin_data,
+                self.output,
+                now=self.now,
+            )
+
     def test_target_key_prefers_admin_id_then_place_id(self):
         self.assertEqual(target_key({"id": "admin-1", "naverPlaceUrl": "https://map.naver.com/p/entry/place/1"}), "id:admin-1")
         self.assertEqual(
