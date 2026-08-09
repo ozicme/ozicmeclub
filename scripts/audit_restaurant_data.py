@@ -45,7 +45,7 @@ try:
         split_naver_categories,
         strip_markup,
     )
-    from scripts.image_urls import ImageUrlError, normalize_image_url
+    from scripts.image_urls import ImageUrlError, image_candidate_urls, normalize_image_url
     from scripts.update_restaurants import (
         DEFAULT_ADMIN_DATA,
         DEFAULT_BASE_CSV,
@@ -69,7 +69,7 @@ except ModuleNotFoundError:  # direct script execution
         split_naver_categories,
         strip_markup,
     )
-    from image_urls import ImageUrlError, normalize_image_url  # type: ignore
+    from image_urls import ImageUrlError, image_candidate_urls, normalize_image_url  # type: ignore
     from update_restaurants import (  # type: ignore
         DEFAULT_ADMIN_DATA,
         DEFAULT_BASE_CSV,
@@ -134,6 +134,17 @@ class LocationHint:
 
 def normalized_token(value: Any) -> str:
     return re.sub(r"[^0-9a-z가-힣]", "", clean_text(value).lower())
+
+
+def expanded_values(values: Any) -> list[str]:
+    source = values if isinstance(values, list) else [values]
+    result: list[str] = []
+    for value in source:
+        for item in re.split(r"[,/\n]+", str(value or "")):
+            cleaned = clean_text(item)
+            if cleaned and cleaned not in result:
+                result.append(cleaned)
+    return result
 
 
 def local_search_items(
@@ -334,8 +345,8 @@ def record_update_payload(record: dict[str, Any], changes: dict[str, Any]) -> di
         "region": changes.get("region", record.get("region", {})),
         "category": changes.get("category", record.get("category", "")),
         "categoryDetail": changes.get("categoryDetail", record.get("categoryDetail", "")),
-        "mainDishes": changes.get("mainDishes", record.get("mainDishes", [])),
-        "searchTags": changes.get("searchTags", record.get("searchTags", [])),
+        "mainDishes": changes.get("mainDishes", expanded_values(record.get("mainDishes", []))),
+        "searchTags": changes.get("searchTags", expanded_values(record.get("searchTags", []))),
         "registrationType": registration_type,
         "evidenceUrl": record.get("evidenceUrl", ""),
         "evidenceText": record.get("evidenceText", ""),
@@ -442,8 +453,6 @@ def audit_one(
             changes["naverPlaceUrl"] = replacement_url
             result["issues"].append("naver_url_mismatch")
             result["recommendedNaverPlaceUrl"] = replacement_url
-        if clean_text(record.get("imageUrl")):
-            result["warnings"].append("image_identity_requires_review")
         if record.get("mainDishes") and not detail_verified:
             result["warnings"].append("menus_require_place-detail-review")
     elif not region_equal(record.get("region") or {}, candidate_region):
@@ -463,7 +472,7 @@ def audit_one(
                 changes["categoryDetail"] = detail_category
             result["issues"].append("category_generic")
 
-    dishes = [clean_text(value) for value in record.get("mainDishes") or [] if clean_text(value)]
+    dishes = expanded_values(record.get("mainDishes") or [])
     if detail_verified and detail is not None and dishes:
         detail_dishes = [
             clean_text(value)
@@ -502,6 +511,26 @@ def audit_one(
             normalize_image_url(image_url)
         except ImageUrlError:
             result["warnings"].append("image_url_invalid")
+        if detail_verified and detail is not None:
+            detail_images = list(detail.get("imageUrls") or [])
+            if detail_images:
+                current_candidates = set(image_candidate_urls(image_url))
+                detail_candidates = {
+                    candidate
+                    for value in detail_images
+                    for candidate in image_candidate_urls(value)
+                }
+                image_matched = bool(current_candidates & detail_candidates)
+                result["doubleCheck"]["image"] = {
+                    "matched": image_matched,
+                    "placeDetailCandidates": len(detail_candidates),
+                }
+                if not image_matched:
+                    result["warnings"].append("image_mismatch")
+            else:
+                result["warnings"].append("image_identity_requires_review")
+        else:
+            result["warnings"].append("image_identity_requires_review")
 
     result["changes"] = changes
     result["status"] = "fix-ready" if changes else "verified"
