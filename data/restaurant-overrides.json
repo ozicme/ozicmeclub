@@ -212,11 +212,34 @@
     "source": "base",
     "originalName": "모티 일산점",
     "originalAddress": "울산 동구 방어진순환도로 899 지하1층",
-    "name": "모티 일산점",
-    "address": "울산 동구 방어진순환도로 899 지하1층",
-    "imageUrl": "",
+    "name": "봄날스시&이자카야",
+    "address": "경남 양산시 물금읍 백호2길 71 1층",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/1183904899?c=15.00,0,0,0,dh&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608091103%26locale%3Dko%26svcName%3Dmap_pcv5",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20210120_160%2F1611074881454UoLXw_JPEG%2FvlMDUJEiH2p3t2Cv_L8qeB1z.jpeg.jpg",
+    "region": {
+      "sido": "",
+      "sigungu": "",
+      "eupmyeondong": ""
+    },
+    "category": "",
+    "categoryDetail": "",
+    "mainDishes": [],
+    "signatureMenus": [],
+    "searchTags": [
+      "백반",
+      "정식",
+      "육류",
+      "고기요리",
+      "갈비"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
     "updatedAt": "2026-08-09",
-    "updateSource": "image-url-repair"
+    "updateSource": "github-admin-edit"
   },
   {
     "targetKey": "place:1000460920:1cc6947b",
