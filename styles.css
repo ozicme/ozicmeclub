@@ -17,6 +17,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   font-family: "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
@@ -145,25 +149,33 @@ main {
   gap: 20px;
 }
 
-/* Hero title redesign (index.html) */
+/* Homepage introduction and in-store marker guide */
 .hero {
   background: var(--surface);
-  padding: 64px 0 48px;
-  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  overflow: hidden;
+  padding: 32px 20px 24px;
 }
 
 .hero-inner {
-  text-align: center;
   display: grid;
-  gap: 16px;
+  gap: 22px;
   justify-items: center;
   margin: 0 auto;
-  max-width: 880px;
+  max-width: 1120px;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  text-align: center;
 }
 
 .hero-badge {
   font-weight: 800;
-  font-size: clamp(2.1rem, 3.4vw, 2rem);
+  font-size: clamp(1.4rem, 3.4vw, 2rem);
   letter-spacing: -0.02em;
   color: #2B6534;
 }
@@ -171,8 +183,9 @@ main {
 .hero-title {
   margin: 0;
   font-weight: 900;
-  font-size: clamp(2.5rem, 4.4vw, 2.75rem);
+  font-size: clamp(1.2rem, 3.2vw, 2.2rem);
   letter-spacing: -0.02em;
+  line-height: 1.45;
 }
 
 .hero-sub {
@@ -182,10 +195,50 @@ main {
   color: var(--muted);
 }
 
+.hero-cta {
+  margin-top: 2px;
+}
+
+.hero-visual {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--green-soft);
+  box-shadow: 0 18px 38px rgba(20, 48, 32, 0.16);
+}
+
+.hero-visual img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-visual figcaption {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: rgba(16, 52, 38, 0.86);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
 .list-search {
   display: grid;
   gap: 12px;
   text-align: center;
+}
+
+#search-form,
+#restaurant-grid {
+  scroll-margin-top: 84px;
 }
 
 .hero-search {
@@ -193,8 +246,68 @@ main {
   gap: 12px;
   align-items: center;
   justify-items: stretch;
+  width: 100%;
   max-width: 640px;
   margin: 0 auto;
+}
+
+.club-marker-guide {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 18px;
+  border: 1px solid rgba(31, 107, 78, 0.2);
+  border-radius: 22px;
+  background: linear-gradient(135deg, #eef7f1 0%, #fff 68%);
+  box-shadow: var(--shadow);
+}
+
+.club-marker-guide > img {
+  width: 76px;
+  height: 76px;
+  border-radius: 18px;
+}
+
+.club-marker-copy {
+  min-width: 0;
+}
+
+.club-marker-copy p,
+.club-marker-copy h2 {
+  margin: 0;
+}
+
+.club-marker-copy h2 {
+  margin-top: 2px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.club-marker-copy > p:not(.club-marker-eyebrow):not(.club-marker-note) {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.club-marker-eyebrow {
+  color: var(--green);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.club-marker-note {
+  margin-top: 7px !important;
+  color: #6d5b38;
+  font-size: 0.74rem;
+}
+
+.club-marker-link {
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .search-bar {
@@ -625,11 +738,16 @@ main {
 
 @media (max-width: 520px) {
   .hero {
-    padding: 56px 0 40px;
+    padding: 26px 16px 20px;
+    border-radius: 22px;
+  }
+
+  .hero-inner {
+    gap: 18px;
   }
 
   .hero-badge {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
   }
 
   .hero-title {
@@ -638,6 +756,66 @@ main {
 
   .hero-sub {
     font-size: 0.8rem;
+  }
+
+  .hero-cta {
+    width: 100%;
+  }
+
+  .hero-visual {
+    max-width: 280px;
+    border-radius: 18px;
+  }
+
+  .hero-visual figcaption {
+    right: 8px;
+    bottom: 8px;
+    left: 8px;
+    padding: 6px 8px;
+    font-size: 0.68rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero {
+    padding: 34px 40px;
+  }
+
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 460px);
+    align-items: center;
+    gap: 48px;
+  }
+
+  .hero-copy {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .hero-visual {
+    max-width: 460px;
+  }
+
+  .club-marker-guide {
+    grid-template-columns: 96px minmax(0, 1fr) auto;
+    gap: 20px;
+    padding: 20px 24px;
+  }
+
+  .club-marker-guide > img {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+  }
+
+  .club-marker-copy h2 {
+    font-size: 1.2rem;
+  }
+
+  .club-marker-link {
+    grid-column: auto;
+    width: auto;
+    white-space: nowrap;
   }
 }
 
