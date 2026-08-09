@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/audit-restaurant-data.yml"
+      - "scripts/add_restaurants.py"
+      - "scripts/audit_restaurant_data.py"
+      - "scripts/test_add_restaurants.py"
+      - "scripts/test_audit_restaurant_data.py"
   workflow_dispatch:
     inputs:
       scope:
@@ -88,7 +92,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: restaurant-data-audit-${{ inputs.scope }}
+          name: restaurant-data-audit-${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'samples' }}
           path: |
             /tmp/restaurant-data-audit.json
             /tmp/restaurant-data-audit.csv
