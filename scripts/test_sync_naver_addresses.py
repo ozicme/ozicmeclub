@@ -60,7 +60,7 @@ class SyncNaverAddressesTest(unittest.TestCase):
 
     def test_failed_direct_lookup_uses_only_double_checked_search(self):
         candidate = {
-            "title": "테스트식당 강남점",
+            "title": "<b>테스트식당 강남점</b>",
             "roadAddress": "서울 강남구 올바른로 10 1층",
             "address": "서울 강남구 역삼동 10",
         }

@@ -26,6 +26,7 @@ try:
         fetch_naver_place,
         normalized_name,
         place_id_from_url,
+        strip_markup,
     )
     from scripts.audit_restaurant_data import (
         AuditError,
@@ -51,6 +52,7 @@ except ModuleNotFoundError:  # direct ``python scripts/...`` execution
         fetch_naver_place,
         normalized_name,
         place_id_from_url,
+        strip_markup,
     )
     from audit_restaurant_data import (  # type: ignore
         AuditError,
@@ -149,7 +151,7 @@ def result_from_place(
     source: str,
 ) -> dict[str, Any]:
     result = base_result(record)
-    title = clean_text(detail.get("title"))
+    title = clean_text(strip_markup(detail.get("title")))
     road_address = clean_text(detail.get("roadAddress"))
     jibun_address = clean_text(detail.get("address"))
     address = road_address or jibun_address
