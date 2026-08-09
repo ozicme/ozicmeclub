@@ -52,5 +52,39 @@
     "evidenceText": "",
     "updatedAt": "2026-08-08",
     "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "place:18734516:1dcd1a16",
+    "source": "base",
+    "originalName": "별미분식",
+    "originalAddress": "전라남도 순천시 중앙로 270 샤브로 21",
+    "name": "별미분식",
+    "address": "서울 관악구 남현2길 46 별미분식",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/18734516?placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202601061444&locale=ko&svcName=map_pcv5&c=15.00,0,0,0,dh",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250501_5%2F1746064470047pinqI_PNG%2F%25BB%25EF%25B0%25E3%25BB%25EC%25B1%25E8%25B9%25E4_%25285%2529.png",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "관악구",
+      "eupmyeondong": "남현동"
+    },
+    "category": "분식",
+    "categoryDetail": "분식",
+    "mainDishes": [
+      "분식"
+    ],
+    "signatureMenus": [
+      "분식"
+    ],
+    "searchTags": [
+      "분식"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "github-admin-edit"
   }
 ]
