@@ -152,9 +152,60 @@
     "originalAddress": "울산 동구 방어진순환도로 652 테라스파크 E동 201호",
     "name": "금상첨화",
     "address": "울산 동구 방어진순환도로 652 테라스파크 E동 201호",
-    "imageUrl": "",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/13459967",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200222_245%2F15823211178554l3uA_JPEG%2FDqBXR87BkJqXURHP-K3yWkdD.jpg",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "동구",
+      "eupmyeondong": "E동"
+    },
+    "category": "육류,고기요리",
+    "categoryDetail": "정식/백반",
+    "mainDishes": [
+      "수제양념뼈갈비(뼈삼겹)",
+      "수제양념돼지갈비(목살",
+      "마구리살)",
+      "생삼겹살",
+      "수제 항정살",
+      "소고기된장짜글이 (밥2+라면사리)",
+      "갈비살",
+      "살치살",
+      "갈비살 + 살치살",
+      "안창살(예약일주일전문의)",
+      "육회 中 (180g)"
+    ],
+    "signatureMenus": [
+      "수제양념뼈갈비(뼈삼겹)",
+      "수제양념돼지갈비(목살",
+      "마구리살)",
+      "생삼겹살",
+      "수제 항정살",
+      "소고기된장짜글이 (밥2+라면사리)",
+      "갈비살",
+      "살치살",
+      "갈비살 + 살치살",
+      "안창살(예약일주일전문의)",
+      "육회 中 (180g)"
+    ],
+    "searchTags": [
+      "회",
+      "면",
+      "백반",
+      "정식",
+      "한우",
+      "육류",
+      "고기요리",
+      "삼겹살",
+      "갈비"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
     "updatedAt": "2026-08-09",
-    "updateSource": "image-url-repair"
+    "updateSource": "github-admin-edit"
   },
   {
     "targetKey": "place:1311897749:6f0d218b",
