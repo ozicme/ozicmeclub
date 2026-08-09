@@ -25,9 +25,9 @@ from urllib.parse import quote, urlencode, urlparse
 from urllib.request import Request, urlopen
 
 try:
-    from scripts.image_urls import ImageUrlError, normalize_image_url
+    from scripts.image_urls import ImageUrlError, image_candidate_urls, normalize_image_url
 except ModuleNotFoundError:  # direct `python scripts/add_restaurants.py` execution
-    from image_urls import ImageUrlError, normalize_image_url
+    from image_urls import ImageUrlError, image_candidate_urls, normalize_image_url
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -255,6 +255,44 @@ def addresses_match(left: Any, right: Any) -> bool:
     return len(shorter) >= 10 and longer.startswith(shorter)
 
 
+def extract_place_image_urls(base: dict[str, Any]) -> list[str]:
+    """Extract only image-looking URLs from known Place detail image fields."""
+
+    image_fields = (
+        "imageUrl",
+        "imageURL",
+        "imageUrls",
+        "imageURLs",
+        "images",
+        "representativeImage",
+        "representativeImageUrl",
+        "thumbnailUrl",
+        "photoUrl",
+    )
+    url_fields = ("url", "src", "imageUrl", "imageURL", "thumbnailUrl")
+    found: list[str] = []
+
+    def add(value: Any) -> None:
+        if isinstance(value, str):
+            for candidate in image_candidate_urls(value):
+                if candidate not in found:
+                    found.append(candidate)
+            return
+        if isinstance(value, list):
+            for item in value:
+                add(item)
+            return
+        if isinstance(value, dict):
+            for key in url_fields:
+                if key in value:
+                    add(value.get(key))
+
+    for field in image_fields:
+        if field in base:
+            add(base.get(field))
+    return found[:10]
+
+
 def fetch_naver_place(place_id: str) -> dict[str, Any]:
     """Read the exact public Naver Place identified by the submitted URL."""
     if not re.fullmatch(r"\d{5,}", place_id):
@@ -344,6 +382,7 @@ def fetch_naver_place(place_id: str) -> dict[str, Any]:
         "description": description,
         "placeId": place_id,
         "mainDishes": menus[:10],
+        "imageUrls": extract_place_image_urls(base),
     }
 
 
