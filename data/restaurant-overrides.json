@@ -144,5 +144,38 @@
     "evidenceText": "",
     "updatedAt": "2026-08-09",
     "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "place:13459967:84339e40",
+    "source": "base",
+    "originalName": "금상첨화",
+    "originalAddress": "울산 동구 방어진순환도로 652 테라스파크 E동 201호",
+    "name": "금상첨화",
+    "address": "울산 동구 방어진순환도로 652 테라스파크 E동 201호",
+    "imageUrl": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "image-url-repair"
+  },
+  {
+    "targetKey": "place:1311897749:6f0d218b",
+    "source": "base",
+    "originalName": "모티 일산점",
+    "originalAddress": "울산 동구 방어진순환도로 899 지하1층",
+    "name": "모티 일산점",
+    "address": "울산 동구 방어진순환도로 899 지하1층",
+    "imageUrl": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "image-url-repair"
+  },
+  {
+    "targetKey": "place:1000460920:1cc6947b",
+    "source": "base",
+    "originalName": "예향정 인천청라점",
+    "originalAddress": "인천 서구 신석로 64",
+    "name": "예향정 인천청라점",
+    "address": "인천 서구 신석로 64",
+    "imageUrl": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "image-url-repair"
   }
 ]
