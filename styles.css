@@ -253,9 +253,9 @@ main {
 
 .club-marker-guide {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr);
+  grid-template-columns: clamp(104px, 27vw, 132px) minmax(0, 1fr);
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   width: 100%;
   max-width: 1000px;
   margin: 0 auto;
@@ -267,13 +267,18 @@ main {
 }
 
 .club-marker-guide > img {
-  width: 76px;
-  height: 76px;
-  border-radius: 18px;
+  width: 100%;
+  height: auto;
+  align-self: center;
+  border-radius: 26px;
 }
 
 .club-marker-copy {
+  display: grid;
+  align-content: center;
+  gap: 7px;
   min-width: 0;
+  text-align: center;
 }
 
 .club-marker-copy p {
@@ -281,7 +286,6 @@ main {
 }
 
 .club-marker-title {
-  grid-column: 1 / -1;
   margin: 0;
   color: var(--green-dark);
   font-size: clamp(1.35rem, 3vw, 1.75rem);
@@ -291,7 +295,6 @@ main {
 }
 
 .club-marker-copy > p:not(.club-marker-eyebrow) {
-  margin-top: 6px;
   color: var(--muted);
   font-size: 0.88rem;
 }
@@ -807,15 +810,9 @@ main {
   }
 
   .club-marker-guide {
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 20px;
-    padding: 20px 24px;
-  }
-
-  .club-marker-guide > img {
-    width: 96px;
-    height: 96px;
-    border-radius: 22px;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 26px;
+    padding: 24px 32px;
   }
 
   .club-marker-title {

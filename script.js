@@ -858,15 +858,13 @@ const initRestaurantsPage = async () => {
   };
 
   const getUniqueCategoryOptions = () => {
-    const counts = new Map();
+    const categories = new Set();
     allStores.forEach((item) => {
       const value = String(item.category || "").trim();
       if (!value) return;
-      counts.set(value, (counts.get(value) || 0) + 1);
+      categories.add(value);
     });
-    return Array.from(counts.entries())
-      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
-      .map(([category]) => category);
+    return Array.from(categories).sort((a, b) => a.localeCompare(b, "ko"));
   };
 
   const populateCategoryOptions = () => {
