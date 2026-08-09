@@ -66,9 +66,7 @@ jobs:
         env:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
-          # One-time full catalogue run for the 2026-08-09 integrity review.
-          # This is restored to samples after the full report is collected.
-          AUDIT_SCOPE: ${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'all' }}
+          AUDIT_SCOPE: ${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'samples' }}
           APPLY_CHANGES: ${{ github.event_name == 'workflow_dispatch' && inputs.apply_changes }}
           CHECK_PLACE_DETAIL: ${{ github.event_name != 'workflow_dispatch' || inputs.check_place_detail }}
         run: |
@@ -94,7 +92,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: restaurant-data-audit-${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'all' }}
+          name: restaurant-data-audit-${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'samples' }}
           path: |
             /tmp/restaurant-data-audit.json
             /tmp/restaurant-data-audit.csv
