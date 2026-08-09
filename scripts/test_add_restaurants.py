@@ -345,6 +345,9 @@ class AddRestaurantsTest(unittest.TestCase):
                 "address": "경북 안동시 정하동 313-4",
                 "category": "장어,먹장어요리",
                 "microReviews": ["가성비 최고의 소금구이 세트"],
+                "imageUrls": [
+                    {"url": "https://ldb-phinf.pstatic.net/20260809/restaurant.jpg"}
+                ],
             },
             "Menu:15375170_0": {
                 "id": "15375170_0",
@@ -383,6 +386,7 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(item["title"], "통영바다장어")
         self.assertEqual(item["address"], "경북 안동시 정하동 313-4")
         self.assertEqual(item["mainDishes"], ["양념구이 (1인분)", "장어국"])
+        self.assertIn("restaurant.jpg", item["imageUrls"][0])
 
     def test_new_minimal_record_requires_naver_secrets(self):
         payload = json.dumps(

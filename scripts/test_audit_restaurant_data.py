@@ -3,6 +3,7 @@ import unittest
 from scripts.audit_restaurant_data import (
     LocationHint,
     audit_one,
+    expanded_values,
     infer_precise_region,
     unique_exact_candidate,
 )
@@ -24,6 +25,12 @@ def local_item(
 
 
 class RestaurantDataAuditTest(unittest.TestCase):
+    def test_csv_slash_separated_menus_are_compared_individually(self):
+        self.assertEqual(
+            expanded_values(["편백찜 정식/우사골순대국밥/얼큰 순대국밥"]),
+            ["편백찜 정식", "우사골순대국밥", "얼큰 순대국밥"],
+        )
+
     def test_precise_region_keeps_composite_city_district(self):
         self.assertEqual(
             infer_precise_region(
