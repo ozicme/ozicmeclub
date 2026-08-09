@@ -86,5 +86,63 @@
     "evidenceText": "",
     "updatedAt": "2026-08-09",
     "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "id:admin-1ae1f0a68369",
+    "source": "admin",
+    "originalName": "장어명가풍천민물장어직판장",
+    "originalAddress": "경기 용인시 처인구 남사읍 처인성로 591",
+    "name": "장어명가풍천민물장어직판장",
+    "address": "경기 용인시 처인구 남사읍 처인성로 591",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/1682608465?c=14.00,0,0,0,dh&placePath=%2Fhome%3FfromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608090859%26locale%3Dko%26svcName%3Dmap_pcv5",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20190531_17%2F1559310397159uOk5T_JPEG%2F9bgqXyo3Bpq3ZRyPE6ebD-hV.jpg",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시",
+      "eupmyeondong": "남사읍"
+    },
+    "category": "장어,먹장어요리",
+    "categoryDetail": "",
+    "mainDishes": [
+      "숯불장어구이",
+      "장어소금구이",
+      "양념. 소금 숯불닭갈비",
+      "인삼(10개)",
+      "장어탕",
+      "막국수",
+      "된장찌개",
+      "계란찜"
+    ],
+    "signatureMenus": [
+      "숯불장어구이",
+      "장어소금구이",
+      "양념. 소금 숯불닭갈비",
+      "인삼(10개)",
+      "장어탕",
+      "막국수",
+      "된장찌개",
+      "계란찜"
+    ],
+    "searchTags": [
+      "장어",
+      "먹장어요리",
+      "숯불장어구이",
+      "장어소금구이",
+      "양념. 소금 숯불닭갈비",
+      "인삼(10개)",
+      "장어탕",
+      "막국수",
+      "된장찌개",
+      "계란찜",
+      "닭갈비와 장어의 환상 조합"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "github-admin-edit"
   }
 ]
