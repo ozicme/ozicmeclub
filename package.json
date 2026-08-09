@@ -8,6 +8,6 @@
     "seed": "node scripts/convert-restaurants.js",
     "verify-api": "node scripts/verify-api.js",
     "merge-data": "python scripts/build_restaurant_pipeline.py",
-    "test-admin": "python -m unittest scripts/test_image_urls.py scripts/test_add_restaurants.py scripts/test_update_restaurants.py && node scripts/test_image_urls.js && node scripts/test_admin_bulk.js"
+    "test-admin": "python -m unittest scripts/test_image_urls.py scripts/test_add_restaurants.py scripts/test_update_restaurants.py scripts/test_audit_restaurant_data.py && node scripts/test_image_urls.js && node scripts/test_admin_bulk.js"
   }
 }
