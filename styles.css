@@ -287,7 +287,7 @@ main {
   line-height: 1.35;
 }
 
-.club-marker-copy > p:not(.club-marker-eyebrow):not(.club-marker-note) {
+.club-marker-copy > p:not(.club-marker-eyebrow) {
   margin-top: 6px;
   color: var(--muted);
   font-size: 0.88rem;
@@ -297,17 +297,6 @@ main {
   color: var(--green);
   font-size: 0.76rem;
   font-weight: 800;
-}
-
-.club-marker-note {
-  margin-top: 7px !important;
-  color: #6d5b38;
-  font-size: 0.74rem;
-}
-
-.club-marker-link {
-  grid-column: 1 / -1;
-  width: 100%;
 }
 
 .search-bar {
@@ -797,7 +786,7 @@ main {
   }
 
   .club-marker-guide {
-    grid-template-columns: 96px minmax(0, 1fr) auto;
+    grid-template-columns: 96px minmax(0, 1fr);
     gap: 20px;
     padding: 20px 24px;
   }
@@ -812,11 +801,6 @@ main {
     font-size: 1.2rem;
   }
 
-  .club-marker-link {
-    grid-column: auto;
-    width: auto;
-    white-space: nowrap;
-  }
 }
 
 @media (min-width: 960px) {
