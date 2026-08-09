@@ -1,6 +1,10 @@
 name: 오직미클럽 전체 식당 데이터 교차 점검
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/audit-restaurant-data.yml"
   workflow_dispatch:
     inputs:
       scope:
@@ -58,9 +62,9 @@ jobs:
         env:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
-          AUDIT_SCOPE: ${{ inputs.scope }}
-          APPLY_CHANGES: ${{ inputs.apply_changes }}
-          CHECK_PLACE_DETAIL: ${{ inputs.check_place_detail }}
+          AUDIT_SCOPE: ${{ github.event_name == 'workflow_dispatch' && inputs.scope || 'samples' }}
+          APPLY_CHANGES: ${{ github.event_name == 'workflow_dispatch' && inputs.apply_changes }}
+          CHECK_PLACE_DETAIL: ${{ github.event_name != 'workflow_dispatch' || inputs.check_place_detail }}
         run: |
           args=(
             --json-output /tmp/restaurant-data-audit.json
@@ -93,7 +97,7 @@ jobs:
           retention-days: 30
 
       - name: 검증된 수정 반영
-        if: inputs.apply_changes
+        if: github.event_name == 'workflow_dispatch' && inputs.apply_changes
         run: |
           python -m json.tool data/restaurant-overrides.json > /dev/null
           git diff --check
