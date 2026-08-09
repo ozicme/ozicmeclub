@@ -34,7 +34,6 @@ try:
         hint_matches_candidate,
         infer_precise_region,
         local_search_items,
-        record_update_payload,
         same_candidate,
         unique_exact_candidate,
     )
@@ -42,8 +41,9 @@ try:
         DEFAULT_ADMIN_DATA,
         DEFAULT_BASE_CSV,
         DEFAULT_OUTPUT,
+        load_json_list,
         load_targets,
-        update_restaurants,
+        write_json_atomic,
     )
 except ModuleNotFoundError:  # direct ``python scripts/...`` execution
     from add_restaurants import (  # type: ignore
@@ -60,7 +60,6 @@ except ModuleNotFoundError:  # direct ``python scripts/...`` execution
         hint_matches_candidate,
         infer_precise_region,
         local_search_items,
-        record_update_payload,
         same_candidate,
         unique_exact_candidate,
     )
@@ -68,8 +67,9 @@ except ModuleNotFoundError:  # direct ``python scripts/...`` execution
         DEFAULT_ADMIN_DATA,
         DEFAULT_BASE_CSV,
         DEFAULT_OUTPUT,
+        load_json_list,
         load_targets,
-        update_restaurants,
+        write_json_atomic,
     )
 
 
@@ -302,6 +302,62 @@ def load_reports(paths: Iterable[Path]) -> list[dict[str, Any]]:
     return combined
 
 
+def upsert_address_overrides(
+    updates: list[dict[str, Any]], output: Path
+) -> dict[str, Any]:
+    """Store address-only overrides without revalidating unrelated legacy data.
+
+    Some historical records contain menu text that predates the administrator
+    input validator. An address sync must not fail on, normalize, or rewrite
+    those unrelated fields. Partial overrides are supported by both catalogue
+    merge implementations used by the site and administrator page.
+    """
+    existing = load_json_list(output)
+    by_key = {
+        clean_text(item.get("targetKey")): dict(item)
+        for item in existing
+        if clean_text(item.get("targetKey"))
+    }
+    order = [
+        clean_text(item.get("targetKey"))
+        for item in existing
+        if clean_text(item.get("targetKey"))
+    ]
+    updated_names: list[str] = []
+    updated_at = datetime.now(timezone.utc).date().isoformat()
+
+    for update in updates:
+        key = clean_text(update.get("targetKey"))
+        if not key:
+            raise SyncError("주소 수정 대상 식별값이 없습니다.")
+        override = by_key.get(key, {})
+        if key not in by_key:
+            order.append(key)
+        override.update(
+            {
+                "targetKey": key,
+                "source": clean_text(update.get("source")) or "base",
+                "originalName": clean_text(update.get("originalName")),
+                "originalAddress": clean_text(update.get("originalAddress")),
+                "address": clean_text(update.get("address")),
+                "region": dict(update.get("region") or {}),
+                "updatedAt": updated_at,
+                "updateSource": "github-naver-address-sync",
+            }
+        )
+        by_key[key] = override
+        updated_names.append(clean_text(update.get("name")))
+
+    records = [by_key[key] for key in order]
+    write_json_atomic(output, records)
+    return {
+        "submitted": len(updates),
+        "updated": len(updated_names),
+        "updatedNames": updated_names,
+        "totalOverrides": len(records),
+    }
+
+
 def apply_verified_results(
     results: list[dict[str, Any]],
     *,
@@ -341,7 +397,18 @@ def apply_verified_results(
             continue
         if address == clean_text(current.get("address")) and region == (current.get("region") or {}):
             continue
-        updates.append(record_update_payload(current, {"address": address, "region": region}))
+        updates.append(
+            {
+                "targetKey": key,
+                "source": current.get("source", "base"),
+                "originalName": current.get("originalName") or current.get("name", ""),
+                "originalAddress": current.get("originalAddress")
+                or current.get("address", ""),
+                "name": current.get("name", ""),
+                "address": address,
+                "region": region,
+            }
+        )
 
     update_result = {
         "submitted": 0,
@@ -350,9 +417,7 @@ def apply_verified_results(
         "totalOverrides": len(json.loads(output.read_text(encoding="utf-8"))) if output.exists() else 0,
     }
     if updates:
-        update_result = update_restaurants(
-            json.dumps(updates, ensure_ascii=False), base_csv, admin_data, output
-        )
+        update_result = upsert_address_overrides(updates, output)
 
     status_counts = Counter(result.get("status", "review") for result in results)
     issue_counts = Counter(
