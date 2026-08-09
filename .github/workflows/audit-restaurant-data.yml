@@ -1,0 +1,108 @@
+name: 오직미클럽 전체 식당 데이터 교차 점검
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "점검 범위"
+        required: true
+        default: samples
+        type: choice
+        options:
+          - samples
+          - all
+      apply_changes:
+        description: "두 번 일치 확인된 수정만 사이트에 반영"
+        required: true
+        default: false
+        type: boolean
+      check_place_detail:
+        description: "현재 장소 ID의 상세 정보까지 재확인(느림)"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-data-write
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: 상호·주소·URL·지역·업종·메뉴·이미지 교차 점검
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 점검 로직 테스트
+        run: >-
+          python -m unittest
+          scripts/test_image_urls.py
+          scripts/test_add_restaurants.py
+          scripts/test_update_restaurants.py
+          scripts/test_audit_restaurant_data.py
+
+      - name: 전체 데이터 교차 점검
+        env:
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          AUDIT_SCOPE: ${{ inputs.scope }}
+          APPLY_CHANGES: ${{ inputs.apply_changes }}
+          CHECK_PLACE_DETAIL: ${{ inputs.check_place_detail }}
+        run: |
+          args=(
+            --json-output /tmp/restaurant-data-audit.json
+            --csv-output /tmp/restaurant-data-audit.csv
+            --summary-output /tmp/restaurant-data-audit-summary.md
+            --workers 6
+          )
+          if [ "$AUDIT_SCOPE" = "samples" ]; then
+            args+=(--names "가마솥순대국밥 강릉교동점,가마솥순대국밥 강릉포남점")
+          fi
+          if [ "$APPLY_CHANGES" = "true" ]; then
+            args+=(--apply)
+          fi
+          if [ "$CHECK_PLACE_DETAIL" = "true" ]; then
+            args+=(--check-detail)
+          fi
+          python scripts/audit_restaurant_data.py "${args[@]}"
+          cat /tmp/restaurant-data-audit-summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 보고서 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restaurant-data-audit-${{ inputs.scope }}
+          path: |
+            /tmp/restaurant-data-audit.json
+            /tmp/restaurant-data-audit.csv
+            /tmp/restaurant-data-audit-summary.md
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: 검증된 수정 반영
+        if: inputs.apply_changes
+        run: |
+          python -m json.tool data/restaurant-overrides.json > /dev/null
+          git diff --check
+          if git diff --quiet -- data/restaurant-overrides.json; then
+            echo "두 번 일치 확인된 수정사항이 없습니다." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/restaurant-overrides.json
+          git commit -m "네이버 교차 검증 식당 정보 수정"
+          git push origin HEAD:main

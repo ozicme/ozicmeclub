@@ -262,6 +262,71 @@ class AddRestaurantsTest(unittest.TestCase):
         self.assertEqual(item["category"], "음식점>한식>장어,먹장어요리")
         self.assertEqual(item["mainDishes"][0], "양념구이 (1인분)")
 
+    def test_rejects_place_id_whose_real_business_name_differs(self):
+        wrong_place = {
+            "title": "전혀다른식당",
+            "roadAddress": "서울 송파구 오금로 544",
+            "address": "서울 송파구 거여동 1",
+            "category": "한식",
+            "description": "",
+            "placeId": "1874772103",
+            "mainDishes": [],
+        }
+        with patch(
+            "scripts.add_restaurants.fetch_naver_place",
+            return_value=wrong_place,
+        ):
+            with self.assertRaisesRegex(RegistrationError, "실제 상호명"):
+                search_naver_local(
+                    "가마솥순대국밥 강릉교동점",
+                    "hub-id",
+                    "hub-secret",
+                    "https://map.naver.com/p/entry/place/1874772103",
+                )
+
+    def test_rejects_place_id_when_second_address_check_conflicts(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+            def read(self):
+                return json.dumps(
+                    {
+                        "items": [
+                            {
+                                "title": "같은상호",
+                                "roadAddress": "강원 강릉시 교동 2",
+                                "address": "강원 강릉시 교동 20",
+                            }
+                        ]
+                    },
+                    ensure_ascii=False,
+                ).encode("utf-8")
+
+        place_detail = {
+            "title": "같은상호",
+            "roadAddress": "서울 송파구 오금로 544",
+            "address": "서울 송파구 거여동 1",
+            "category": "한식",
+            "description": "",
+            "placeId": "1874772103",
+            "mainDishes": [],
+        }
+        with patch(
+            "scripts.add_restaurants.fetch_naver_place",
+            return_value=place_detail,
+        ), patch("scripts.add_restaurants.urlopen", return_value=FakeResponse()):
+            with self.assertRaisesRegex(RegistrationError, "주소가 일치하지"):
+                search_naver_local(
+                    "같은상호",
+                    "hub-id",
+                    "hub-secret",
+                    "https://map.naver.com/p/entry/place/1874772103",
+                )
+
     def test_fetch_naver_place_reads_exact_address_and_real_menus(self):
         state = {
             "PlaceDetailBase:15375170": {

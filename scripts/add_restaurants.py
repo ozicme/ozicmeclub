@@ -16,6 +16,7 @@ import json
 import os
 import re
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
@@ -269,11 +270,23 @@ def fetch_naver_place(place_id: str) -> dict[str, Any]:
             ),
         },
     )
-    try:
-        with urlopen(request, timeout=20) as response:
-            page = response.read().decode("utf-8")
-    except (HTTPError, URLError, TimeoutError, UnicodeDecodeError) as exc:
-        raise RegistrationError("네이버 플레이스 상세 정보를 확인할 수 없습니다.") from exc
+    page = ""
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            with urlopen(request, timeout=20) as response:
+                page = response.read().decode("utf-8")
+            break
+        except HTTPError as exc:
+            last_error = exc
+            if exc.code not in {429, 500, 502, 503, 504}:
+                break
+        except (URLError, TimeoutError, UnicodeDecodeError) as exc:
+            last_error = exc
+        if attempt < 2:
+            time.sleep(0.8 * (2**attempt))
+    if not page:
+        raise RegistrationError("네이버 플레이스 상세 정보를 확인할 수 없습니다.") from last_error
 
     state_match = re.search(
         r"^\s*window\.__APOLLO_STATE__\s*=\s*(\{.*\})\s*;?\s*$",
@@ -344,12 +357,16 @@ def search_naver_local(
     if place_id:
         try:
             place_detail = fetch_naver_place(place_id)
-        except RegistrationError:
-            # The official Local Search API remains available as a fallback.
-            place_detail = None
+        except RegistrationError as exc:
+            raise RegistrationError(
+                "입력한 네이버 장소 ID의 실제 식당을 확인하지 못했습니다. 잠시 후 다시 실행하세요."
+            ) from exc
+        if normalized_name(place_detail.get("title")) != normalized_name(name):
+            raise RegistrationError(
+                "입력한 네이버 플레이스 URL의 실제 상호명과 입력한 상호명이 다릅니다."
+            )
 
-    lookup_name = strip_markup(place_detail.get("title")) if place_detail else name
-    query = urlencode({"query": lookup_name, "display": 5})
+    query = urlencode({"query": name, "display": 5})
     request = Request(
         f"{NAVER_LOCAL_SEARCH_URL}?{query}",
         headers={
@@ -362,8 +379,6 @@ def search_naver_local(
         with urlopen(request, timeout=15) as response:
             payload = json.loads(response.read().decode("utf-8"))
     except HTTPError as exc:
-        if place_detail:
-            return place_detail
         if exc.code == 401:
             raise RegistrationError(
                 "네이버 지역검색 API 인증에 실패했습니다(401). GitHub Secrets에는 "
@@ -372,14 +387,10 @@ def search_naver_local(
             ) from exc
         raise RegistrationError(f"네이버 지역검색 API 오류({exc.code})가 발생했습니다.") from exc
     except (URLError, TimeoutError, json.JSONDecodeError) as exc:
-        if place_detail:
-            return place_detail
         raise RegistrationError("네이버 지역검색 API 응답을 확인할 수 없습니다.") from exc
 
     items = payload.get("items") if isinstance(payload, dict) else None
     if not isinstance(items, list) or not items:
-        if place_detail:
-            return place_detail
         raise RegistrationError(f"네이버에서 '{name}' 검색 결과를 찾지 못했습니다.")
 
     if place_detail:
@@ -388,6 +399,8 @@ def search_naver_local(
             place_detail.get("address"),
         ]
         for item in items:
+            if normalized_name(item.get("title")) != normalized_name(name):
+                continue
             item_addresses = [item.get("roadAddress"), item.get("address")]
             if any(
                 addresses_match(place_address, item_address)
@@ -403,8 +416,9 @@ def search_naver_local(
                     "placeId": place_id,
                     "mainDishes": place_detail.get("mainDishes", []),
                 }
-        # The URL's place ID is more precise than a same-name keyword result.
-        return place_detail
+        raise RegistrationError(
+            "입력한 네이버 장소 ID와 상호명으로 다시 검색한 주소가 일치하지 않습니다."
+        )
 
     exact = [item for item in items if normalized_name(item.get("title")) == normalized_name(name)]
     if len(exact) == 1:
