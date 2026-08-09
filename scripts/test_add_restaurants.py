@@ -351,6 +351,20 @@ class AddRestaurantsTest(unittest.TestCase):
         with self.assertRaisesRegex(RegistrationError, "HTML 태그"):
             register(payload, self.base_csv, self.output, now=self.now)
 
+    def test_rejects_cut_representative_image_url(self):
+        payload = json.dumps(
+            {
+                "name": "잘린이미지식당",
+                "address": "서울 마포구 월드컵로 11",
+                "naverPlaceUrl": "https://map.naver.com/p/entry/place/999999998",
+                "imageUrl": "https://search.pstatic.net/common/?autoRotate=true…thumb.jpg",
+                "registrationType": "ozicme",
+            },
+            ensure_ascii=False,
+        )
+        with self.assertRaisesRegex(RegistrationError, "잘렸습니다"):
+            register(payload, self.base_csv, self.output, now=self.now)
+
     def test_accepts_external_restaurant_without_evidence(self):
         payload = json.dumps(
             {

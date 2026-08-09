@@ -7,6 +7,7 @@ const BASE_DATA_URL =
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
+const imageUrlTools = globalThis.OzicmeImageUrls;
 const EDIT_CSV_HEADERS = [
   "수정대상키(수정금지)",
   "상호명",
@@ -163,6 +164,12 @@ const isNaverPlaceUrl = (value) => {
   }
 };
 
+const imageUrlError = (value) => {
+  if (!value) return "";
+  if (!imageUrlTools) return "대표 이미지 URL 검사 기능을 불러오지 못했습니다.";
+  return imageUrlTools.invalidReason(value, document.baseURI);
+};
+
 const catalogRecord = (row, source = "base") => {
   const regionValue = row.region && typeof row.region === "object" ? row.region : {};
   const registrationType = row.registrationType
@@ -313,6 +320,8 @@ const validateRecords = (records) => {
       errors.push(`${label}: 네이버 플레이스 URL을 확인하세요.`);
     }
     if (!record.registrationType) errors.push(`${label}: 등록 구분이 없습니다.`);
+    const imageError = imageUrlError(record.imageUrl);
+    if (imageError) errors.push(`${label}: ${imageError}`);
     const key = placeIdFromUrl(record.naverPlaceUrl)
       || canonicalUrl(record.naverPlaceUrl)
       || record.name.replace(/\s+/g, "").toLowerCase();
@@ -841,9 +850,8 @@ const validateEditPayload = (record) => {
   if (record.naverPlaceUrl && !isNaverPlaceUrl(record.naverPlaceUrl)) {
     return "네이버 플레이스 URL을 확인하세요.";
   }
-  if (record.imageUrl && !/^https?:\/\//i.test(record.imageUrl)) {
-    return "대표 이미지 URL을 확인하세요.";
-  }
+  const imageError = imageUrlError(record.imageUrl);
+  if (imageError) return imageError;
   return "";
 };
 

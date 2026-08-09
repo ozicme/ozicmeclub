@@ -60,7 +60,21 @@ npm run dev
 npm run test-admin
 node --check admin.js
 node --check script.js
+python scripts/audit_image_urls.py
 ```
+
+## 대표 이미지 안정성
+
+대표 이미지는 정본 CSV·관리자 추가 데이터·수정 데이터의 URL을 사용하며, 화면에서는 다음 순서로 로딩합니다.
+
+1. 저장된 네이버 이미지 프록시 URL
+2. 프록시의 `src`에 들어 있는 원본 정지 이미지 URL
+3. 원본으로 다시 만든 네이버 이미지 프록시 URL
+4. 모두 실패하거나 URL이 비어 있으면 오직미 기본 이미지
+
+`video-phinf.pstatic.net` 주소라도 확장자가 JPG·PNG 등인 영상 썸네일은 정상 이미지로 허용합니다. 반대로 MP4·WebM·M3U8 등 실제 동영상 파일, `…`로 잘린 주소, URL 앞부분이 중복된 주소, 네이버 플레이스 페이지 주소를 이미지 칸에 넣는 것은 관리자 화면과 GitHub Actions에서 모두 차단합니다.
+
+전체 URL 구조 검사는 식당 등록·수정 테스트에 포함되며, `.github/workflows/audit-restaurant-images.yml`이 매주 월요일 오전 3시 30분(KST)에 모든 대표 이미지의 실제 응답도 점검합니다. 실패 목록과 재시도 내역은 Actions 실행 요약 및 `restaurant-image-health` 보고서에 남습니다.
 
 ---
 

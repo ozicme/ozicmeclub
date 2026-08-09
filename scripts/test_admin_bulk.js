@@ -65,7 +65,8 @@ const context = vm.createContext({
   },
 });
 
-const source = `${fs.readFileSync(path.join(root, "admin.js"), "utf8")}
+const source = `${fs.readFileSync(path.join(root, "image-url-utils.js"), "utf8")}
+${fs.readFileSync(path.join(root, "admin.js"), "utf8")}
 globalThis.__adminTest = {
   EDIT_CSV_HEADERS,
   buildBatches,
@@ -73,6 +74,7 @@ globalThis.__adminTest = {
   comparableEditPayload,
   csvToObjects,
   fullCatalogCsv,
+  imageUrlError,
   loadCatalog,
   normalizeBulkRecord,
   normalizeEditCsvRow,
@@ -110,6 +112,23 @@ vm.runInContext(source, context, { filename: "admin.js" });
   );
   assert.equal(api.registrationTypeOf("1"), "ozicme");
   assert.equal(api.registrationTypeOf("2"), "external");
+  assert.equal(
+    api.imageUrlError(
+      "https://search.pstatic.net/common/?src=https%3A%2F%2Fvideo-phinf.pstatic.net%2Fthumb.jpg"
+    ),
+    "",
+    "video-phinf의 JPG 썸네일은 정상 이미지로 허용해야 합니다."
+  );
+  assert.match(
+    api.imageUrlError("https://search.pstatic.net/common/?autoRotate=true…thumb.jpg"),
+    /잘렸습니다/,
+    "중간이 잘린 이미지 URL은 관리자 화면에서 차단해야 합니다."
+  );
+  assert.match(
+    api.imageUrlError("https://example.com/menu.mp4"),
+    /동영상/,
+    "실제 동영상 파일은 대표 이미지로 등록할 수 없어야 합니다."
+  );
   const bulkExternal = api.normalizeBulkRecord({
     상호명: "외부예시",
     네이버플레이스URL: "https://map.naver.com/p/entry/place/123456789",

@@ -32,7 +32,7 @@ jobs:
           python-version: "3.12"
 
       - name: 수정 로직 테스트
-        run: python -m unittest scripts/test_update_restaurants.py
+        run: python -m unittest scripts/test_image_urls.py scripts/test_update_restaurants.py
 
       - name: 기존 식당 수정
         env:
