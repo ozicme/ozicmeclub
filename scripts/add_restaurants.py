@@ -236,10 +236,11 @@ def normalized_name(value: Any) -> str:
 
 def normalized_address(value: Any) -> str:
     address = clean_text(value)
-    for alias, canonical in SIDO_ALIASES.items():
-        if address.startswith(alias):
-            address = canonical + address[len(alias) :]
-            break
+    if not any(address.startswith(canonical) for canonical in SIDO_ALIASES.values()):
+        for alias, canonical in SIDO_ALIASES.items():
+            if address == alias or address.startswith(f"{alias} "):
+                address = canonical + address[len(alias) :]
+                break
     return re.sub(r"[^0-9a-z가-힣]", "", address.lower())
 
 
