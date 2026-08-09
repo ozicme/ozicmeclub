@@ -10,7 +10,7 @@ from scripts.sync_naver_addresses import (
     select_shard,
     sync_one,
 )
-from scripts.update_restaurants import target_key
+from scripts.update_restaurants import load_targets, target_key
 
 
 class SyncNaverAddressesTest(unittest.TestCase):
@@ -140,11 +140,76 @@ class SyncNaverAddressesTest(unittest.TestCase):
                 output=overrides, expected_total=1,
             )
             saved = json.loads(overrides.read_text(encoding="utf-8"))[0]
+            merged, _ = load_targets(base_csv, admin_data, overrides)
+            merged_record = merged[key]
             self.assertEqual(summary["applied"], 1)
             self.assertEqual(saved["address"], result["naverAddress"])
-            self.assertEqual(saved["imageUrl"], row["이미지"])
-            self.assertEqual(saved["category"], "한식")
-            self.assertEqual(saved["mainDishes"], ["쌀밥", "제육볶음"])
+            self.assertNotIn("imageUrl", saved)
+            self.assertEqual(merged_record["imageUrl"], row["이미지"])
+            self.assertEqual(merged_record["category"], "한식")
+            self.assertEqual(merged_record["mainDishes"], ["쌀밥", "제육볶음"])
+
+    def test_apply_does_not_revalidate_unrelated_legacy_menu_text(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base_csv = root / "base.csv"
+            admin_data = root / "admin.json"
+            overrides = root / "overrides.json"
+            fields = ["상호명", "대표주소", "네이버플레이스", "주요리_대표"]
+            row = {
+                "상호명": "레거시식당",
+                "대표주소": "서울 강남구 이전로 1",
+                "네이버플레이스": "https://map.naver.com/p/entry/place/987654321",
+                "주요리_대표": "동파육 솥밥/안키모 솥밥 <feat.달고기>",
+            }
+            with base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow(row)
+            admin_data.write_text("[]\n", encoding="utf-8")
+            overrides.write_text("[]\n", encoding="utf-8")
+            key = target_key(
+                {
+                    "name": row["상호명"],
+                    "address": row["대표주소"],
+                    "naverPlaceUrl": row["네이버플레이스"],
+                }
+            )
+            result = {
+                "targetKey": key,
+                "name": row["상호명"],
+                "placeId": "987654321",
+                "currentAddress": row["대표주소"],
+                "naverTitle": row["상호명"],
+                "naverAddress": "서울 강남구 올바른로 10",
+                "naverRegion": {
+                    "sido": "서울특별시",
+                    "sigungu": "강남구",
+                    "eupmyeondong": "역삼동",
+                },
+                "source": "direct",
+                "status": "ready-direct",
+                "issue": "",
+            }
+
+            summary = apply_verified_results(
+                [result],
+                base_csv=base_csv,
+                admin_data=admin_data,
+                output=overrides,
+                expected_total=1,
+            )
+
+            saved = json.loads(overrides.read_text(encoding="utf-8"))[0]
+            merged, _ = load_targets(base_csv, admin_data, overrides)
+            self.assertEqual(summary["applied"], 1)
+            self.assertNotIn("mainDishes", saved)
+            self.assertEqual(
+                merged[key]["mainDishes"], [row["주요리_대표"]]
+            )
+            self.assertEqual(
+                merged[key]["address"], result["naverAddress"]
+            )
 
 
 if __name__ == "__main__":
