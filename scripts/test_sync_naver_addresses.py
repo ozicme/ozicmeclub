@@ -7,7 +7,9 @@ from pathlib import Path
 from scripts.add_restaurants import RegistrationError
 from scripts.sync_naver_addresses import (
     apply_verified_results,
+    load_reports,
     select_shard,
+    select_unverified,
     sync_one,
 )
 from scripts.update_restaurants import load_targets, target_key
@@ -93,6 +95,34 @@ class SyncNaverAddressesTest(unittest.TestCase):
         self.assertEqual(
             sorted(int(item["targetKey"]) for item in selected), list(range(17))
         )
+
+    def test_unverified_filter_excludes_only_naver_synced_records(self):
+        records = [
+            {"targetKey": "new"},
+            {"targetKey": "admin", "updateSource": "github-admin-edit"},
+            {"targetKey": "done", "updateSource": "github-naver-address-sync"},
+        ]
+        self.assertEqual(
+            [record["targetKey"] for record in select_unverified(records)],
+            ["new", "admin"],
+        )
+
+    def test_load_reports_rejects_missing_shard(self):
+        with tempfile.TemporaryDirectory() as temp:
+            report = Path(temp) / "shard-0.json"
+            report.write_text(
+                json.dumps(
+                    {
+                        "shardIndex": 0,
+                        "shardCount": 2,
+                        "summary": {"total": 1},
+                        "results": [{"targetKey": "first"}],
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(Exception, "완전하지 않습니다"):
+                load_reports([report])
 
     def test_apply_preserves_non_address_fields(self):
         with tempfile.TemporaryDirectory() as temp:
