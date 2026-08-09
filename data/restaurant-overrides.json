@@ -281,5 +281,63 @@
     "evidenceText": "",
     "updatedAt": "2026-08-09",
     "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "place:1164257068:02aab51c",
+    "source": "base",
+    "originalName": "249광양불고기 가산점",
+    "originalAddress": "서울 구로구 새말로 18-49 지하 1층",
+    "name": "249광양불고기 가산점",
+    "address": "서울 구로구 새말로 18-49 지하 1층",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/1164257068",
+    "imageUrl": "https://search.pstatic.net/common/?src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA3MTNfMzMg%2FMDAxNzgzOTE2MzMxOTgz.Vxw6FMVLVZWKW_EWEttJ2WBGx9gE4jxU0edw63jsacgg.X2FhYKk6C0afd4B2ByL8gaQH1J39FCv_85_nPj9qwygg.JPEG%2F%EA%B0%80%EC%82%B0%EC%A0%90%EC%8B%AC_01.jpg%2F2250x3000",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "구로구",
+      "eupmyeondong": ""
+    },
+    "category": "육류,고기요리",
+    "categoryDetail": "고기/구이",
+    "mainDishes": [
+      "소갈기살150g (양념)",
+      "소갈비살(생)150g",
+      "1++한우광양불고기(150g)",
+      "1++한우육회(150g)",
+      "1++한우차돌(150g)",
+      "양념돼지숯불왕갈비(300g)",
+      "(점심특선)소불고기+솥밥(2인이상)",
+      "(점심특선)코다리조림+솥밥(2인이상)",
+      "(점심특선)1++한우 육회비빔+솥밥",
+      "점심특선)1++한우얼큰국+솥밥"
+    ],
+    "signatureMenus": [
+      "소갈기살150g (양념)",
+      "소갈비살(생)150g",
+      "1++한우광양불고기(150g)",
+      "1++한우육회(150g)",
+      "1++한우차돌(150g)",
+      "양념돼지숯불왕갈비(300g)",
+      "(점심특선)소불고기+솥밥(2인이상)",
+      "(점심특선)코다리조림+솥밥(2인이상)",
+      "(점심특선)1++한우 육회비빔+솥밥",
+      "점심특선)1++한우얼큰국+솥밥"
+    ],
+    "searchTags": [
+      "회",
+      "한우",
+      "육류",
+      "고기요리",
+      "갈비",
+      "고기",
+      "구이"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "github-admin-edit"
   }
 ]
