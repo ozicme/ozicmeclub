@@ -12,6 +12,7 @@ from scripts.add_restaurants import (
     NAVER_LOCAL_SEARCH_URL,
     NAVER_PLACE_DETAIL_URL,
     RegistrationError,
+    addresses_match,
     fetch_naver_place,
     register,
     search_naver_local,
@@ -209,6 +210,14 @@ class AddRestaurantsTest(unittest.TestCase):
         with patch("scripts.add_restaurants.urlopen", side_effect=fake_urlopen):
             item = search_naver_local("카즈카잔", "hub-id", "hub-secret")
         self.assertEqual(item["title"], "카즈카잔")
+
+    def test_full_province_name_and_short_alias_match(self):
+        self.assertTrue(
+            addresses_match(
+                "강원특별자치도 강릉시 솔올로5번길 18-4",
+                "강원 강릉시 솔올로5번길 18-4",
+            )
+        )
 
     def test_exact_place_id_disambiguates_same_name_results(self):
         class FakeResponse:
