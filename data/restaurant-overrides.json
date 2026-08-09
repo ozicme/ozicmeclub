@@ -339,5 +339,115 @@
     "evidenceText": "",
     "updatedAt": "2026-08-09",
     "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "place:1874772103:ce5e4bf7",
+    "source": "base",
+    "originalName": "가마솥순대국밥 강릉교동점",
+    "originalAddress": "서울 송파구 오금로 544",
+    "name": "가마솥순대국밥 강릉교동점",
+    "address": "강원특별자치도 강릉시 솔올로5번길 18-4",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/1874772103",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250712_210%2F1752280051623bMMKS_JPEG%2FKakaoTalk_20250709_090029842_02.jpg",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "강릉시",
+      "eupmyeondong": "교동"
+    },
+    "category": "순대,순댓국",
+    "categoryDetail": "국밥/탕",
+    "mainDishes": [
+      "편백찜 정식",
+      "우사골순대국밥",
+      "양지육수 순대국밥",
+      "얼큰 순대국밥",
+      "우사골 수육국밥",
+      "양지육수 수육국밥",
+      "얼큰 수육국밥",
+      "함박스테이크 정식",
+      "직화 오징어볶음",
+      "편백 수육찜"
+    ],
+    "signatureMenus": [
+      "편백찜 정식",
+      "우사골순대국밥",
+      "양지육수 순대국밥",
+      "얼큰 순대국밥",
+      "우사골 수육국밥",
+      "양지육수 수육국밥",
+      "얼큰 수육국밥",
+      "함박스테이크 정식",
+      "직화 오징어볶음",
+      "편백 수육찜"
+    ],
+    "searchTags": [
+      "순대",
+      "순댓국",
+      "국밥",
+      "탕"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "github-admin-edit"
+  },
+  {
+    "targetKey": "place:1799465580:0dcb1c6a",
+    "source": "base",
+    "originalName": "가마솥순대국밥 강릉포남점",
+    "originalAddress": "경기 수원시 영통구 센트럴타운로 107 2층",
+    "name": "가마솥순대국밥 강릉포남점",
+    "address": "강원특별자치도 강릉시 하평1길 20",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/1799465580",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240123_252%2F1705969421107vYDk0_PNG%2F%25B0%25A1%25B8%25B6%25BC%25DC%25BC%25F8%25B4%25EB%25B1%25B9%25B9%25E4_%25B3%25D7%25C0%25CC%25B9%25F6%25C7%25C3%25B7%25B9%25C0%25CC%25BD%25BA_%25B0%25F8%25C5%25EB_%25C0%25CC%25B9%25CC%25C1%25F6.png",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "강릉시",
+      "eupmyeondong": "포남동"
+    },
+    "category": "순대,순댓국",
+    "categoryDetail": "국밥/탕",
+    "mainDishes": [
+      "편백찜정식",
+      "편백찜 솥밥 정식",
+      "우사골 순대국밥",
+      "양지육수 순대국밥",
+      "얼큰 순대국밥",
+      "우사골 수육국밥",
+      "양지육수 수육국밥",
+      "얼큰 수육국밥",
+      "함박스테이크 정식",
+      "직화 오징어볶음"
+    ],
+    "signatureMenus": [
+      "편백찜정식",
+      "편백찜 솥밥 정식",
+      "우사골 순대국밥",
+      "양지육수 순대국밥",
+      "얼큰 순대국밥",
+      "우사골 수육국밥",
+      "양지육수 수육국밥",
+      "얼큰 수육국밥",
+      "함박스테이크 정식",
+      "직화 오징어볶음"
+    ],
+    "searchTags": [
+      "순대",
+      "순댓국",
+      "국밥",
+      "탕"
+    ],
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-08-09",
+    "updateSource": "github-admin-edit"
   }
 ]
