@@ -3,7 +3,7 @@ const DATA_URL =
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
 const FETCH_TIMEOUT_MS = 8000;
-const DEFAULT_SIDO = "서울특별시";
+const SEOUL_SIDO = "서울특별시";
 const DEFAULT_SORT = "name_asc";
 
 let allStores = [];
@@ -64,25 +64,6 @@ const buildMenuList = (menus) => {
 const getBadgeLabel = (item) =>
   item.verifiedBadge ? "오직미 인증" : "인증 확인중";
 
-const buildSearchText = (item) =>
-  [
-    item.name,
-    item.address,
-    item.category,
-    item.categoryDetail,
-    item.region?.sido,
-    item.region?.sigungu,
-    item.region?.eupmyeondong,
-    item.normalizedRegion?.sido,
-    item.normalizedRegion?.sigungu,
-    ...(item.searchTags || []),
-    ...(item.signatureMenus || []),
-    ...(item.mainDishes || []),
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase();
-
 const debounce = (callback, delay = 200) => {
   let timer;
   return (...args) => {
@@ -133,6 +114,27 @@ const splitList = (value, delimiterRegex = /[\/,+]/g) =>
     .split(delimiterRegex)
     .map((item) => item.trim())
     .filter(Boolean);
+
+const normalizeSearchText = (value) =>
+  String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+const tokenizeSearchQuery = (value) =>
+  normalizeSearchText(value).split(/\s+/).filter(Boolean);
+
+const buildNameSearchText = (item) => normalizeSearchText(item?.name);
+
+const buildMenuSearchText = (item) => {
+  const signatureMenus = Array.isArray(item?.signatureMenus)
+    ? item.signatureMenus
+    : splitList(item?.signatureMenus);
+  const mainDishes = Array.isArray(item?.mainDishes)
+    ? item.mainDishes
+    : splitList(item?.mainDishes);
+  return normalizeSearchText([...signatureMenus, ...mainDishes].join(" "));
+};
 
 const rawValueOf = (record, keys) => {
   for (const key of keys) {
@@ -311,7 +313,7 @@ const normalizeSido = (value) => {
   const trimmed = String(value || "").trim();
   if (!trimmed) return "";
   if (trimmed.includes("서울")) {
-    return DEFAULT_SIDO;
+    return SEOUL_SIDO;
   }
   return trimmed;
 };
@@ -603,8 +605,10 @@ const updateMetaTags = (item) => {
 
 const initRestaurantsPage = async () => {
   const searchInput = document.getElementById("search-input");
+  const menuSearchInput = document.getElementById("menu-search-input");
   const sidoSelect = document.getElementById("sido-select");
   const sigunguSelect = document.getElementById("sigungu-select");
+  const categorySelect = document.getElementById("category-select");
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
@@ -613,7 +617,14 @@ const initRestaurantsPage = async () => {
   const sentinel = document.getElementById("scroll-sentinel");
   const searchForm = document.getElementById("search-form");
 
-  if (!grid || !searchInput || !resultCount || !sentinel || !listLoader) return;
+  if (
+    !grid ||
+    !searchInput ||
+    !menuSearchInput ||
+    !resultCount ||
+    !sentinel ||
+    !listLoader
+  ) return;
 
   const setListState = (message) => {
     if (!listState) return;
@@ -636,7 +647,8 @@ const initRestaurantsPage = async () => {
     listEnd.textContent = message || "";
   };
 
-  let activeQuery = "";
+  let activeNameQuery = "";
+  let activeMenuQuery = "";
   let totalCount = 0;
   let errorMessage = "";
   let filteredStores = [];
@@ -645,6 +657,7 @@ const initRestaurantsPage = async () => {
   const filterState = {
     sido: "",
     sigungu: "",
+    category: "",
     sort: DEFAULT_SORT,
   };
 
@@ -673,7 +686,14 @@ const initRestaurantsPage = async () => {
 
   const updateResultCount = () => {
     if (!resultCount) return;
-    if (activeQuery) {
+    const hasActiveFilter = Boolean(
+      activeNameQuery ||
+      activeMenuQuery ||
+      filterState.sido ||
+      filterState.sigungu ||
+      filterState.category
+    );
+    if (hasActiveFilter) {
       resultCount.textContent = `검색 결과 ${totalCount.toLocaleString()}개`;
     } else {
       resultCount.textContent = `전체 ${totalCount.toLocaleString()}개 매장`;
@@ -688,7 +708,8 @@ const initRestaurantsPage = async () => {
     isLoading = false;
     filteredStores = [];
     if (!preserveQuery) {
-      activeQuery = "";
+      activeNameQuery = "";
+      activeMenuQuery = "";
     }
     setListState("");
     setListEnd("");
@@ -705,7 +726,8 @@ const initRestaurantsPage = async () => {
           const normalized = normalizeStore(item, index);
           return {
             ...normalized,
-            searchText: buildSearchText(normalized),
+            nameSearchText: buildNameSearchText(normalized),
+            menuSearchText: buildMenuSearchText(normalized),
           };
         })
         .filter((item) => {
@@ -736,26 +758,27 @@ const initRestaurantsPage = async () => {
     return true;
   };
 
+  const matchesCategory = (item, category) => {
+    const selectedCategory = String(category || "").trim();
+    if (!selectedCategory) return true;
+    return String(item.category || "").trim() === selectedCategory;
+  };
+
   const sortStoresByName = (stores) => {
     // 기본 정렬: 식당명 가나다순(오름차순).
     stores.sort((a, b) => a.name.localeCompare(b.name, "ko"));
   };
 
   const filterStores = () => {
-    const tokens = activeQuery
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
-    filteredStores =
-      tokens.length === 0
-        ? allStores.filter((item) =>
-            matchesRegion(item, filterState.sido, filterState.sigungu)
-          )
-        : allStores.filter(
-            (item) =>
-              matchesRegion(item, filterState.sido, filterState.sigungu) &&
-              tokens.every((token) => item.searchText.includes(token))
-          );
+    const nameTokens = tokenizeSearchQuery(activeNameQuery);
+    const menuTokens = tokenizeSearchQuery(activeMenuQuery);
+    filteredStores = allStores.filter(
+      (item) =>
+        matchesRegion(item, filterState.sido, filterState.sigungu) &&
+        matchesCategory(item, filterState.category) &&
+        nameTokens.every((token) => item.nameSearchText.includes(token)) &&
+        menuTokens.every((token) => item.menuSearchText.includes(token))
+    );
     sortStoresByName(filteredStores);
     totalCount = filteredStores.length;
     updateResultCount();
@@ -773,7 +796,16 @@ const initRestaurantsPage = async () => {
     } else {
       params.delete("sigungu");
     }
-    params.set("sort", filterState.sort);
+    if (filterState.category) {
+      params.set("category", filterState.category);
+    } else {
+      params.delete("category");
+    }
+    if (filterState.sort !== DEFAULT_SORT) {
+      params.set("sort", filterState.sort);
+    } else {
+      params.delete("sort");
+    }
     const query = params.toString();
     const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
     window.history.replaceState(null, "", nextUrl);
@@ -825,6 +857,27 @@ const initRestaurantsPage = async () => {
     });
   };
 
+  const getUniqueCategoryOptions = () => {
+    const counts = new Map();
+    allStores.forEach((item) => {
+      const value = String(item.category || "").trim();
+      if (!value) return;
+      counts.set(value, (counts.get(value) || 0) + 1);
+    });
+    return Array.from(counts.entries())
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ko"))
+      .map(([category]) => category);
+  };
+
+  const populateCategoryOptions = () => {
+    if (!categorySelect) return;
+    categorySelect.innerHTML = "";
+    categorySelect.appendChild(buildSelectOption("", "전체 업종"));
+    getUniqueCategoryOptions().forEach((category) => {
+      categorySelect.appendChild(buildSelectOption(category, category));
+    });
+  };
+
   const syncFilterSelects = () => {
     if (sidoSelect) {
       sidoSelect.value = filterState.sido || "";
@@ -832,6 +885,9 @@ const initRestaurantsPage = async () => {
     populateSigunguOptions(filterState.sido);
     if (sigunguSelect) {
       sigunguSelect.value = filterState.sigungu || "";
+    }
+    if (categorySelect) {
+      categorySelect.value = filterState.category || "";
     }
   };
 
@@ -841,9 +897,10 @@ const initRestaurantsPage = async () => {
     const urlSort = params.get("sort");
 
     filterState.sort = urlSort === DEFAULT_SORT ? DEFAULT_SORT : DEFAULT_SORT;
-    // URL 파라미터/저장값과 무관하게 첫 로딩 기본값은 서울특별시 + 전체 시/군/구.
-    filterState.sido = DEFAULT_SIDO;
+    // 첫 접속은 전체 시/도 + 전체 시/군/구 + 전체 업종으로 시작합니다.
+    filterState.sido = "";
     filterState.sigungu = "";
+    filterState.category = "";
 
     filtersInitialized = true;
     syncFilterSelects();
@@ -906,13 +963,15 @@ const initRestaurantsPage = async () => {
       setLoading(false);
     }
     populateSidoOptions();
+    populateCategoryOptions();
     initializeDefaultFilters();
     filterStores();
     renderNextPage();
   };
 
   const applySearch = () => {
-    activeQuery = searchInput.value.trim();
+    activeNameQuery = searchInput.value.trim();
+    activeMenuQuery = menuSearchInput.value.trim();
     errorMessage = "";
     cursor = 0;
     setListEnd("");
@@ -936,6 +995,7 @@ const initRestaurantsPage = async () => {
 
   const debouncedSearch = debounce(applySearch, 300);
   searchInput.addEventListener("input", debouncedSearch);
+  menuSearchInput.addEventListener("input", debouncedSearch);
   if (searchForm) {
     searchForm.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -959,6 +1019,14 @@ const initRestaurantsPage = async () => {
   if (sigunguSelect) {
     sigunguSelect.addEventListener("change", () => {
       filterState.sigungu = sigunguSelect.value;
+      updateUrlState();
+      applyFilters();
+    });
+  }
+
+  if (categorySelect) {
+    categorySelect.addEventListener("change", () => {
+      filterState.category = categorySelect.value;
       updateUrlState();
       applyFilters();
     });
