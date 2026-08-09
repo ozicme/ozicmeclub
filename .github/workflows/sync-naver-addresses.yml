@@ -34,15 +34,15 @@ jobs:
           scripts/test_sync_naver_addresses.py
 
   collect:
-    name: 네이버 주소 확인 (${{ matrix.shard }}/8)
+    name: 네이버 주소 확인 (${{ matrix.shard }}/16)
     needs: test
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 16
       matrix:
-        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     steps:
       - uses: actions/checkout@v5
         with:
@@ -57,7 +57,7 @@ jobs:
         run: >-
           python scripts/sync_naver_addresses.py collect
           --shard-index ${{ matrix.shard }}
-          --shard-count 8
+          --shard-count 16
           --delay 0.25
           --attempts 2
           --output /tmp/naver-address-shard-${{ matrix.shard }}.json
