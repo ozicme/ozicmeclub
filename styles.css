@@ -252,12 +252,12 @@ main {
 }
 
 .club-marker-guide {
-  display: grid;
-  grid-template-columns: clamp(92px, 24vw, 112px) minmax(0, 1fr);
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
-  width: 100%;
-  max-width: 1000px;
+  width: fit-content;
+  max-width: 100%;
   margin: 0 auto;
   padding: 12px;
   border: 1px solid rgba(31, 107, 78, 0.2);
@@ -267,7 +267,8 @@ main {
 }
 
 .club-marker-guide > img {
-  width: 100%;
+  flex: 0 0 clamp(92px, 24vw, 112px);
+  width: clamp(92px, 24vw, 112px);
   height: auto;
   align-self: center;
   border-radius: 0;
@@ -275,14 +276,19 @@ main {
 
 .club-marker-copy {
   display: grid;
+  flex: 0 1 auto;
   align-content: center;
   gap: 6px;
+  width: max-content;
+  max-width: 720px;
   min-width: 0;
   text-align: center;
 }
 
 .club-marker-copy p {
   margin: 0;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .club-marker-title {
@@ -292,6 +298,8 @@ main {
   font-weight: 900;
   line-height: 1.15;
   text-align: center;
+  overflow-wrap: break-word;
+  word-break: keep-all;
 }
 
 .club-marker-copy > p:not(.club-marker-eyebrow) {
@@ -789,6 +797,38 @@ main {
     padding: 6px 8px;
     font-size: 0.68rem;
   }
+
+  .club-marker-guide {
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .club-marker-guide > img {
+    flex-basis: 82px;
+    width: 82px;
+  }
+
+  .club-marker-copy {
+    flex: 1 1 0;
+    width: auto;
+    max-width: none;
+    gap: 5px;
+  }
+
+  .club-marker-title {
+    font-size: clamp(1.05rem, 4.8vw, 1.2rem);
+    line-height: 1.25;
+  }
+
+  .club-marker-eyebrow {
+    font-size: 0.7rem;
+  }
+
+  .club-marker-copy > p:not(.club-marker-eyebrow) {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
 }
 
 @media (min-width: 900px) {
@@ -812,9 +852,14 @@ main {
   }
 
   .club-marker-guide {
-    grid-template-columns: 134px minmax(0, 1fr);
+    width: fit-content;
     gap: 8px;
     padding: 12px;
+  }
+
+  .club-marker-guide > img {
+    flex-basis: 134px;
+    width: 134px;
   }
 
   .club-marker-title {
