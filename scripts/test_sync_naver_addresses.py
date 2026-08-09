@@ -158,8 +158,12 @@ class SyncNaverAddressesTest(unittest.TestCase):
                 "name": row["상호명"],
                 "placeId": "123456789",
                 "currentAddress": row["대표주소"],
+                "currentRegion": {
+                    "sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": ""
+                },
                 "naverTitle": row["상호명"],
                 "naverAddress": "서울 강남구 올바른로 10 1층",
+                "naverJibunAddress": "서울 강남구 역삼동 10",
                 "naverRegion": {"sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": "역삼동"},
                 "source": "direct",
                 "status": "ready-direct",
@@ -210,8 +214,10 @@ class SyncNaverAddressesTest(unittest.TestCase):
                 "name": row["상호명"],
                 "placeId": "987654321",
                 "currentAddress": row["대표주소"],
+                "currentRegion": {"sido": "", "sigungu": "", "eupmyeondong": ""},
                 "naverTitle": row["상호명"],
                 "naverAddress": "서울 강남구 올바른로 10",
+                "naverJibunAddress": "서울 강남구 역삼동 10",
                 "naverRegion": {
                     "sido": "서울특별시",
                     "sigungu": "강남구",
@@ -240,6 +246,123 @@ class SyncNaverAddressesTest(unittest.TestCase):
             self.assertEqual(
                 merged[key]["address"], result["naverAddress"]
             )
+
+    def test_apply_rejects_place_id_shared_by_multiple_targets(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base_csv = root / "base.csv"
+            admin_data = root / "admin.json"
+            overrides = root / "overrides.json"
+            fields = ["상호명", "대표주소", "네이버플레이스"]
+            rows = [
+                {
+                    "상호명": "같은이름 서울점",
+                    "대표주소": "서울 강남구 이전로 1",
+                    "네이버플레이스": "https://map.naver.com/p/entry/place/123456789",
+                },
+                {
+                    "상호명": "같은이름 부산점",
+                    "대표주소": "부산 해운대구 이전로 2",
+                    "네이버플레이스": "https://map.naver.com/p/entry/place/123456789",
+                },
+            ]
+            with base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields)
+                writer.writeheader()
+                writer.writerows(rows)
+            admin_data.write_text("[]\n", encoding="utf-8")
+            overrides.write_text("[]\n", encoding="utf-8")
+            targets, _ = load_targets(base_csv, admin_data, overrides)
+            key = next(key for key, record in targets.items() if record["name"] == rows[0]["상호명"])
+            result = {
+                "targetKey": key,
+                "name": rows[0]["상호명"],
+                "placeId": "123456789",
+                "currentAddress": rows[0]["대표주소"],
+                "currentRegion": {},
+                "naverTitle": rows[0]["상호명"],
+                "naverAddress": "서울 강남구 올바른로 10",
+                "naverJibunAddress": "서울 강남구 역삼동 10",
+                "naverRegion": {
+                    "sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": "역삼동"
+                },
+                "source": "direct",
+                "status": "ready-direct",
+                "issue": "",
+            }
+            summary = apply_verified_results(
+                [result], base_csv=base_csv, admin_data=admin_data,
+                output=overrides, expected_total=1,
+            )
+            self.assertEqual(summary["applied"], 0)
+            self.assertEqual(
+                summary["rejected"][0]["reason"],
+                "place-id-shared-by-multiple-targets",
+            )
+
+    def test_apply_rejects_stale_current_record(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base_csv = root / "base.csv"
+            admin_data = root / "admin.json"
+            overrides = root / "overrides.json"
+            row = {
+                "상호명": "테스트식당",
+                "대표주소": "서울 강남구 현재로 1",
+                "네이버플레이스": "https://map.naver.com/p/entry/place/123456789",
+            }
+            with base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=row.keys())
+                writer.writeheader()
+                writer.writerow(row)
+            admin_data.write_text("[]\n", encoding="utf-8")
+            overrides.write_text("[]\n", encoding="utf-8")
+            key = next(iter(load_targets(base_csv, admin_data, overrides)[0]))
+            result = {
+                "targetKey": key,
+                "name": row["상호명"],
+                "placeId": "123456789",
+                "currentAddress": "서울 강남구 오래된로 1",
+                "currentRegion": {},
+                "naverTitle": row["상호명"],
+                "naverAddress": "서울 강남구 올바른로 10",
+                "naverJibunAddress": "서울 강남구 역삼동 10",
+                "naverRegion": {
+                    "sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": "역삼동"
+                },
+                "source": "direct",
+                "status": "ready-direct",
+                "issue": "",
+            }
+            summary = apply_verified_results(
+                [result], base_csv=base_csv, admin_data=admin_data,
+                output=overrides, expected_total=1,
+            )
+            self.assertEqual(summary["applied"], 0)
+            self.assertEqual(summary["rejected"][0]["reason"], "current-record-changed")
+
+    def test_apply_requires_complete_current_unverified_scope(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base_csv = root / "base.csv"
+            admin_data = root / "admin.json"
+            overrides = root / "overrides.json"
+            row = {
+                "상호명": "테스트식당",
+                "대표주소": "서울 강남구 현재로 1",
+                "네이버플레이스": "https://map.naver.com/p/entry/place/123456789",
+            }
+            with base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=row.keys())
+                writer.writeheader()
+                writer.writerow(row)
+            admin_data.write_text("[]\n", encoding="utf-8")
+            overrides.write_text("[]\n", encoding="utf-8")
+            with self.assertRaisesRegex(Exception, "미검증 대상"):
+                apply_verified_results(
+                    [], base_csv=base_csv, admin_data=admin_data,
+                    output=overrides, unverified_only=True,
+                )
 
 
 if __name__ == "__main__":

@@ -399,6 +399,7 @@ def apply_verified_results(
     admin_data: Path,
     output: Path,
     expected_total: int | None = None,
+    unverified_only: bool = False,
 ) -> dict[str, Any]:
     if expected_total is not None and len(results) != expected_total:
         raise SyncError(
@@ -406,6 +407,26 @@ def apply_verified_results(
         )
 
     targets, _ = load_targets(base_csv, admin_data, output)
+    if unverified_only:
+        expected_keys = {
+            clean_text(record.get("targetKey"))
+            for record in select_unverified(targets.values())
+        }
+        report_keys = {clean_text(result.get("targetKey")) for result in results}
+        if report_keys != expected_keys:
+            missing = sorted(expected_keys - report_keys)
+            unexpected = sorted(report_keys - expected_keys)
+            raise SyncError(
+                "현재 미검증 대상과 분할 보고서가 일치하지 않습니다: "
+                f"누락 {len(missing)}개, 예상 밖 {len(unexpected)}개"
+            )
+
+    place_id_targets: dict[str, list[str]] = {}
+    for key, record in targets.items():
+        place_id = place_id_from_url(record.get("naverPlaceUrl"))
+        if place_id:
+            place_id_targets.setdefault(place_id, []).append(key)
+
     updates: list[dict[str, Any]] = []
     rejected: list[dict[str, str]] = []
     for result in results:
@@ -416,18 +437,39 @@ def apply_verified_results(
         if not current:
             rejected.append({"targetKey": key, "reason": "target-missing"})
             continue
+        if result.get("source") != "direct":
+            rejected.append({"targetKey": key, "reason": "direct-place-proof-missing"})
+            continue
         if normalized_name(current.get("name")) != normalized_name(result.get("naverTitle")):
             rejected.append({"targetKey": key, "reason": "title-changed"})
             continue
         report_place_id = clean_text(result.get("placeId"))
         current_place_id = place_id_from_url(current.get("naverPlaceUrl"))
-        if result.get("source") == "direct" and report_place_id != current_place_id:
+        if report_place_id != current_place_id:
             rejected.append({"targetKey": key, "reason": "place-id-changed"})
+            continue
+        if len(place_id_targets.get(current_place_id, [])) > 1:
+            rejected.append(
+                {"targetKey": key, "reason": "place-id-shared-by-multiple-targets"}
+            )
+            continue
+        if (
+            clean_text(result.get("currentAddress"))
+            != clean_text(current.get("address"))
+            or (result.get("currentRegion") or {}) != (current.get("region") or {})
+        ):
+            rejected.append({"targetKey": key, "reason": "current-record-changed"})
             continue
         address = clean_text(result.get("naverAddress"))
         region = result.get("naverRegion")
         if not address or not isinstance(region, dict):
             rejected.append({"targetKey": key, "reason": "address-or-region-missing"})
+            continue
+        expected_region = infer_precise_region(
+            address, clean_text(result.get("naverJibunAddress"))
+        )
+        if region != expected_region or not clean_text(region.get("sido")):
+            rejected.append({"targetKey": key, "reason": "address-region-mismatch"})
             continue
         if address == clean_text(current.get("address")) and region == (current.get("region") or {}):
             continue
@@ -525,6 +567,11 @@ def parse_args() -> argparse.Namespace:
     apply_parser.add_argument("--summary-output", type=Path, default=DEFAULT_SUMMARY)
     apply_parser.add_argument("--result-output", type=Path, default=DEFAULT_REPORT)
     apply_parser.add_argument("--expected-total", type=int)
+    apply_parser.add_argument(
+        "--unverified-only",
+        action="store_true",
+        help="현재 미검증 대상과 보고서 대상이 정확히 일치할 때만 반영",
+    )
     return parser.parse_args()
 
 
@@ -572,6 +619,7 @@ def main() -> int:
         admin_data=args.admin_data,
         output=args.output,
         expected_total=args.expected_total,
+        unverified_only=args.unverified_only,
     )
     write_json(args.result_output, summary)
     args.summary_output.parent.mkdir(parents=True, exist_ok=True)

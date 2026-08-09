@@ -60,7 +60,7 @@ jobs:
           --shard-count 32
           --unverified-only
           --delay 0.25
-          --attempts 2
+          --attempts 4
           --output /tmp/naver-address-shard-${{ matrix.shard }}.json
       - name: 분할 결과 보관
         if: always()
@@ -91,6 +91,7 @@ jobs:
         run: |
           python scripts/sync_naver_addresses.py apply \
             --reports /tmp/naver-address-sync/naver-address-shard-*.json \
+            --unverified-only \
             --summary-output /tmp/naver-address-sync-summary.md \
             --result-output /tmp/naver-address-sync-result.json
           cat /tmp/naver-address-sync-summary.md >> "$GITHUB_STEP_SUMMARY"
