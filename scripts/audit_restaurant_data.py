@@ -444,7 +444,7 @@ def audit_one(
             result["recommendedNaverPlaceUrl"] = replacement_url
         if clean_text(record.get("imageUrl")):
             result["warnings"].append("image_identity_requires_review")
-        if record.get("mainDishes"):
+        if record.get("mainDishes") and not detail_verified:
             result["warnings"].append("menus_require_place-detail-review")
     elif not region_equal(record.get("region") or {}, candidate_region):
         result["issues"].append("region_mismatch")
@@ -464,6 +464,23 @@ def audit_one(
             result["issues"].append("category_generic")
 
     dishes = [clean_text(value) for value in record.get("mainDishes") or [] if clean_text(value)]
+    if detail_verified and detail is not None and dishes:
+        detail_dishes = [
+            clean_text(value)
+            for value in detail.get("mainDishes") or []
+            if clean_text(value)
+        ]
+        if detail_dishes:
+            current_tokens = {normalized_token(value) for value in dishes}
+            detail_tokens = {normalized_token(value) for value in detail_dishes}
+            menus_matched = bool(current_tokens & detail_tokens)
+            result["doubleCheck"]["menus"] = {
+                "matched": menus_matched,
+                "currentCount": len(dishes),
+                "placeDetailCount": len(detail_dishes),
+            }
+            if not menus_matched:
+                result["warnings"].append("menus_mismatch")
     inferred_dishes = infer_main_dishes(strip_markup(candidate.get("description")), categories)
     if not dishes:
         result["warnings"].append("menus_missing")
