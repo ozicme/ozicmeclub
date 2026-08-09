@@ -53,7 +53,7 @@ class RestaurantDataAuditTest(unittest.TestCase):
         self.assertIsNone(candidate)
         self.assertEqual(state, "ambiguous:2")
 
-    def test_two_matching_queries_prepare_address_and_url_fix(self):
+    def test_two_matching_queries_do_not_mix_fields_when_place_id_disagrees(self):
         candidate = local_item()
         queries = []
 
@@ -89,12 +89,49 @@ class RestaurantDataAuditTest(unittest.TestCase):
         )
 
         self.assertEqual(len(queries), 2)
+        self.assertEqual(result["status"], "review")
+        self.assertEqual(result["changes"], {})
+        self.assertIn("address_mismatch", result["issues"])
+        self.assertIn("naver_place_identity_mismatch", result["issues"])
+        self.assertFalse(result["doubleCheck"]["placeDetail"]["matched"])
+
+    def test_matching_place_id_allows_address_fix_without_touching_other_fields(self):
+        candidate = local_item()
+        record = {
+            "targetKey": "place:1874772103:test",
+            "source": "base",
+            "name": "가마솥순대국밥 강릉교동점",
+            "address": "서울 송파구 오금로 544",
+            "naverPlaceUrl": "https://map.naver.com/p/entry/place/1874772103",
+            "imageUrl": "https://example.com/restaurant.jpg",
+            "region": {"sido": "서울특별시", "sigungu": "송파구", "eupmyeondong": ""},
+            "category": "순대,순댓국",
+            "categoryDetail": "국밥/탕",
+            "mainDishes": ["순대국밥"],
+            "searchTags": ["순대", "국밥"],
+            "registrationType": "ozicme",
+        }
+        place_detail = {
+            "title": candidate["title"],
+            "roadAddress": candidate["roadAddress"],
+            "address": candidate["address"],
+            "mainDishes": ["순대국밥"],
+            "imageUrls": [],
+        }
+        result = audit_one(
+            record,
+            LocationHint("강원", "강릉시", "교동"),
+            lambda _query: [candidate],
+            lambda _place_id: place_detail,
+            check_detail=True,
+        )
+
         self.assertEqual(result["status"], "fix-ready")
         self.assertEqual(result["changes"]["address"], candidate["roadAddress"])
         self.assertEqual(result["changes"]["region"]["sido"], "강원특별자치도")
-        self.assertIn("/p/search/", result["changes"]["naverPlaceUrl"])
-        self.assertIn("address_mismatch", result["issues"])
-        self.assertFalse(result["doubleCheck"]["placeDetail"]["matched"])
+        self.assertNotIn("naverPlaceUrl", result["changes"])
+        self.assertNotIn("mainDishes", result["changes"])
+        self.assertNotIn("imageUrl", result["changes"])
 
     def test_conflicting_second_query_never_changes_record(self):
         first = local_item()
@@ -157,6 +194,38 @@ class RestaurantDataAuditTest(unittest.TestCase):
         )
         self.assertEqual(result["changes"]["category"], "일식")
         self.assertEqual(result["status"], "fix-ready")
+
+    def test_menu_comparison_reports_low_coverage_not_just_one_overlap(self):
+        candidate = local_item()
+        record = {
+            "targetKey": "place:1874772103:menu",
+            "source": "base",
+            "name": candidate["title"],
+            "address": candidate["roadAddress"],
+            "naverPlaceUrl": "https://map.naver.com/p/entry/place/1874772103",
+            "imageUrl": "https://example.com/restaurant.jpg",
+            "region": infer_precise_region(candidate["roadAddress"], candidate["address"]),
+            "category": "순대,순댓국",
+            "mainDishes": ["순대국밥", "초밥", "파스타"],
+            "searchTags": ["순대"],
+        }
+        detail = {
+            "title": candidate["title"],
+            "roadAddress": candidate["roadAddress"],
+            "address": candidate["address"],
+            "mainDishes": ["순대국밥", "수육"],
+            "imageUrls": [],
+        }
+        result = audit_one(
+            record,
+            LocationHint(),
+            lambda _query: [candidate],
+            lambda _place_id: detail,
+            check_detail=True,
+        )
+
+        self.assertEqual(result["doubleCheck"]["menus"]["matchedCount"], 1)
+        self.assertIn("menus_partial_mismatch", result["warnings"])
 
 
 if __name__ == "__main__":

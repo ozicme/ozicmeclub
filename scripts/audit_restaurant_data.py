@@ -442,22 +442,42 @@ def audit_one(
                 "matched": False,
                 "error": str(exc),
             }
+    elif check_detail:
+        result["doubleCheck"]["placeDetail"] = {
+            "placeId": "",
+            "matched": False,
+            "error": "direct-place-id-missing",
+        }
 
     changes: dict[str, Any] = {}
+    identity_review_required = False
     if not address_matches:
         result["issues"].append("address_mismatch")
-        changes["address"] = candidate_address
-        changes["region"] = candidate_region
-        replacement_url = current_url if detail_verified else search_url(name, candidate_address)
-        if replacement_url != current_url:
-            changes["naverPlaceUrl"] = replacement_url
-            result["issues"].append("naver_url_mismatch")
-            result["recommendedNaverPlaceUrl"] = replacement_url
-        if record.get("mainDishes") and not detail_verified:
-            result["warnings"].append("menus_require_place-detail-review")
+        # A name can legitimately exist at several branches.  Never repair an
+        # address unless the *currently linked* direct Place ID independently
+        # proves that the row and the Naver search candidate are the same
+        # restaurant.  This prevents a correct URL/menu/image bundle from being
+        # combined with another branch's address.
+        if detail_verified:
+            changes["address"] = candidate_address
+            changes["region"] = candidate_region
+        else:
+            identity_review_required = True
+            result["warnings"].append("address-fix-requires-place-detail-match")
     elif not region_equal(record.get("region") or {}, candidate_region):
         result["issues"].append("region_mismatch")
         changes["region"] = candidate_region
+
+    if check_detail and not detail_verified:
+        identity_review_required = True
+        if place_id:
+            result["issues"].append("naver_place_identity_mismatch")
+        else:
+            result["issues"].append("naver_place_id_missing")
+        result["recommendedNaverPlaceUrl"] = search_url(name, candidate_address)
+    elif not check_detail and not address_matches:
+        identity_review_required = True
+        result["warnings"].append("naver_place_identity_not_checked")
 
     current_category = clean_text(record.get("category"))
     if not categories_consistent(current_category, categories):
@@ -473,28 +493,43 @@ def audit_one(
             result["issues"].append("category_generic")
 
     dishes = expanded_values(record.get("mainDishes") or [])
-    if detail_verified and detail is not None and dishes:
+    detail_dishes: list[str] = []
+    if detail_verified and detail is not None:
         detail_dishes = [
             clean_text(value)
             for value in detail.get("mainDishes") or []
             if clean_text(value)
         ]
-        if detail_dishes:
+        if detail_dishes and dishes:
             current_tokens = {normalized_token(value) for value in dishes}
             detail_tokens = {normalized_token(value) for value in detail_dishes}
-            menus_matched = bool(current_tokens & detail_tokens)
+            matched_tokens = current_tokens & detail_tokens
+            menus_matched = bool(matched_tokens)
+            current_coverage = (
+                len(matched_tokens) / len(current_tokens) if current_tokens else 0.0
+            )
             result["doubleCheck"]["menus"] = {
                 "matched": menus_matched,
+                "matchedCount": len(matched_tokens),
                 "currentCount": len(dishes),
                 "placeDetailCount": len(detail_dishes),
+                "currentCoverage": round(current_coverage, 3),
             }
             if not menus_matched:
                 result["warnings"].append("menus_mismatch")
+            elif current_coverage < 0.5:
+                result["warnings"].append("menus_partial_mismatch")
+        elif detail_dishes and not dishes:
+            changes["mainDishes"] = detail_dishes[:10]
+            result["issues"].append("menus_missing")
+    elif dishes:
+        result["warnings"].append("menus_require_place-detail-review")
     inferred_dishes = infer_main_dishes(strip_markup(candidate.get("description")), categories)
     if not dishes:
-        result["warnings"].append("menus_missing")
-        if inferred_dishes:
-            changes["mainDishes"] = inferred_dishes
+        if "menus_missing" not in result["issues"]:
+            result["warnings"].append("menus_missing")
+        if not detail_dishes and inferred_dishes:
+            result["warnings"].append("menus_inferred_but_not_applied")
 
     tags = [clean_text(value) for value in record.get("searchTags") or [] if clean_text(value)]
     if not tags:
@@ -504,15 +539,27 @@ def audit_one(
             result["issues"].append("search_tags_missing")
 
     image_url = clean_text(record.get("imageUrl"))
+    detail_images = list(detail.get("imageUrls") or []) if detail_verified and detail else []
     if not image_url:
         result["warnings"].append("image_missing")
+        if detail_images:
+            try:
+                changes["imageUrl"] = normalize_image_url(detail_images[0])
+                result["issues"].append("image_missing")
+            except ImageUrlError:
+                result["warnings"].append("place_detail_image_invalid")
     else:
         try:
             normalize_image_url(image_url)
         except ImageUrlError:
             result["warnings"].append("image_url_invalid")
+            if detail_images:
+                try:
+                    changes["imageUrl"] = normalize_image_url(detail_images[0])
+                    result["issues"].append("image_url_invalid")
+                except ImageUrlError:
+                    result["warnings"].append("place_detail_image_invalid")
         if detail_verified and detail is not None:
-            detail_images = list(detail.get("imageUrls") or [])
             if detail_images:
                 current_candidates = set(image_candidate_urls(image_url))
                 detail_candidates = {
@@ -533,7 +580,13 @@ def audit_one(
             result["warnings"].append("image_identity_requires_review")
 
     result["changes"] = changes
-    result["status"] = "fix-ready" if changes else "verified"
+    if identity_review_required:
+        # Do not leave partially safe changes available to --apply.  The report
+        # still contains the independently observed Naver values for review.
+        result["changes"] = {}
+        result["status"] = "review"
+    else:
+        result["status"] = "fix-ready" if changes else "verified"
     return result
 
 
@@ -722,7 +775,9 @@ def run(args: argparse.Namespace) -> dict[str, int]:
     order = {record["targetKey"]: index for index, record in enumerate(selected)}
     results.sort(key=lambda result: order[result["targetKey"]])
 
-    # A single Naver candidate must never be assigned to multiple catalogue rows.
+    # A single Naver candidate must never silently validate multiple catalogue
+    # rows.  Even if neither row needs a field update, this is a duplicate or a
+    # cross-row identity collision that a human must resolve.
     candidate_rows: defaultdict[str, list[dict[str, Any]]] = defaultdict(list)
     for result in results:
         if result.get("candidateKey"):
@@ -732,10 +787,10 @@ def run(args: argparse.Namespace) -> dict[str, int]:
         if len(unique_targets) <= 1:
             continue
         for result in group:
-            if result["status"] == "fix-ready":
-                result["status"] = "review"
+            result["status"] = "review"
+            if "candidate-used-by-multiple-rows" not in result["issues"]:
                 result["issues"].append("candidate-used-by-multiple-rows")
-                result["changes"] = {}
+            result["changes"] = {}
 
     applied = 0
     if args.apply:
