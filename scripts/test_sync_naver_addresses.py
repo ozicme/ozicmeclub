@@ -50,6 +50,21 @@ class SyncNaverAddressesTest(unittest.TestCase):
         self.assertEqual(result["status"], "review")
         self.assertEqual(result["issue"], "naver-place-title-mismatch")
 
+    def test_disjoint_place_menu_is_never_applied(self):
+        result = sync_one(
+            self.record(mainDishes=["초밥", "파스타"]),
+            lambda _place_id: self.detail(mainDishes=["순대국밥", "수육"]),
+        )
+        self.assertEqual(result["status"], "review")
+        self.assertEqual(result["issue"], "naver-place-menu-mismatch")
+
+    def test_one_matching_place_menu_allows_address_check(self):
+        result = sync_one(
+            self.record(mainDishes=["순대국밥", "파스타"]),
+            lambda _place_id: self.detail(mainDishes=["순대국밥", "수육"]),
+        )
+        self.assertEqual(result["status"], "ready-direct")
+
     def test_raw_naver_address_is_kept_even_when_only_notation_differs(self):
         record = self.record(address="강원특별자치도 춘천시 춘천로 271 1층")
         detail = self.detail(
