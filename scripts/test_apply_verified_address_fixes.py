@@ -30,6 +30,16 @@ PROTECTED_FIELDS = (
 
 
 class ApplyVerifiedAddressFixesTests(unittest.TestCase):
+    def copy_preapply_output(self, output: Path) -> None:
+        manifest = json.loads(DEFAULT_FIXES.read_text(encoding="utf-8"))
+        fix_keys = {item["targetKey"] for item in manifest["fixes"]}
+        overrides = json.loads(DEFAULT_OUTPUT.read_text(encoding="utf-8"))
+        preapply = [item for item in overrides if item.get("targetKey") not in fix_keys]
+        output.write_text(
+            json.dumps(preapply, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
     def test_manifest_updates_only_22_addresses_and_regions(self) -> None:
         manifest = json.loads(DEFAULT_FIXES.read_text(encoding="utf-8"))
         fix_by_key = {item["targetKey"]: item for item in manifest["fixes"]}
@@ -37,7 +47,7 @@ class ApplyVerifiedAddressFixesTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "restaurant-overrides.json"
-            shutil.copyfile(DEFAULT_OUTPUT, output)
+            self.copy_preapply_output(output)
             before, _ = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, output)
 
             result = apply_manifest(DEFAULT_FIXES, output=output)
@@ -62,7 +72,7 @@ class ApplyVerifiedAddressFixesTests(unittest.TestCase):
             directory_path = Path(directory)
             output = directory_path / "restaurant-overrides.json"
             fixes = directory_path / "verified-address-fixes.json"
-            shutil.copyfile(DEFAULT_OUTPUT, output)
+            self.copy_preapply_output(output)
             manifest = json.loads(DEFAULT_FIXES.read_text(encoding="utf-8"))
             manifest["fixes"][0]["currentAddress"] = "감사 이후 바뀐 주소"
             fixes.write_text(
@@ -74,6 +84,17 @@ class ApplyVerifiedAddressFixesTests(unittest.TestCase):
             with self.assertRaisesRegex(SyncError, "현재 주소가 감사 이후 변경"):
                 apply_manifest(fixes, output=output)
 
+            self.assertEqual(original, output.read_bytes())
+
+    def test_manifest_is_a_noop_after_all_fixes_are_applied(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "restaurant-overrides.json"
+            shutil.copyfile(DEFAULT_OUTPUT, output)
+            original = output.read_bytes()
+
+            result = apply_manifest(DEFAULT_FIXES, output=output)
+
+            self.assertEqual(0, result["updated"])
             self.assertEqual(original, output.read_bytes())
 
 
