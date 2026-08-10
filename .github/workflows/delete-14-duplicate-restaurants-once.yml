@@ -1,0 +1,106 @@
+name: 중복 식당 14건 일회성 삭제
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/delete-14-duplicate-restaurants-once.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-delete-14-duplicates-once
+  cancel-in-progress: false
+
+jobs:
+  delete-duplicates:
+    name: 중복 레코드 14건 삭제 및 검증
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 중복 레코드 14건 삭제 표시
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path("data/naver-place-cleanup-2026-08-10.json")
+          data = json.loads(path.read_text(encoding="utf-8"))
+
+          targets = [
+              ("place:1044588978:a68b05da", "한옥집숯불갈비"),
+              ("place:13152081:b0a23e18", "전주식당"),
+              ("place:1340433602:c095916c", "유성삼계탕"),
+              ("place:15584316:f89a3761", "철원영양돌솥밥"),
+              ("place:1077408803:ab63059a", "참솥벨라시타점"),
+              ("place:37837958:175fa8e0", "야반"),
+              ("place:1453039916:51d885f0", "담터한정식"),
+              ("place:1890301806:d2a81c3d", "김포금쌀밥집 지미재"),
+              ("place:1838768919:0c5a88f2", "양촌시골밥상"),
+              ("place:1342981831:f4dfb0d8", "참솥백석점"),
+              ("place:37817485:88c4a11b", "성원숯불갈비"),
+              ("place:1183904899:782fa362", "봄날스시&이자카야"),
+              ("place:1732086379:890b9a5c", "봄이보리밥"),
+              ("place:17232761:e36a9bde", "아산협동정육점식당"),
+          ]
+
+          entries = {str(item.get("targetKey")): item for item in data if item.get("targetKey")}
+          changed = []
+          for target_key, name in targets:
+              item = entries.get(target_key)
+              if item is None:
+                  item = {"targetKey": target_key}
+                  data.append(item)
+                  entries[target_key] = item
+              if item.get("deleted") is True:
+                  raise SystemExit(f"이미 삭제 처리된 대상입니다: {name} ({target_key})")
+              item["deleted"] = True
+              item["deletionReason"] = "duplicate-name-address"
+              item["updateSource"] = "duplicate-cleanup-2026-08-11"
+              changed.append((target_key, name))
+
+          if len(changed) != 14:
+              raise SystemExit(f"삭제 대상 수가 14건이 아닙니다: {len(changed)}")
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+          print(f"삭제 표시 완료: {len(changed)}건")
+          for target_key, name in changed:
+              print(f"- {name}: {target_key}")
+          PY
+
+      - name: 전체 회귀 테스트
+        run: npm run test-admin
+
+      - name: 변경 검증
+        run: |
+          python -m json.tool data/naver-place-cleanup-2026-08-10.json > /dev/null
+          git diff --check
+          COUNT=$(git diff -- data/naver-place-cleanup-2026-08-10.json | grep -c '^+    "deleted": true' || true)
+          echo "이번 삭제 표시 수: $COUNT"
+          test "$COUNT" -eq 14
+
+      - name: main 반영
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/naver-place-cleanup-2026-08-10.json
+          git commit -m "중복 식당 14건 완전 삭제"
+          git push origin HEAD:main
+
+      - name: 결과 요약
+        run: |
+          echo "## 중복 식당 삭제 결과" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 삭제 대상: 14건" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 각 중복쌍의 기존 1건은 유지" >> "$GITHUB_STEP_SUMMARY"
+          echo "- 예상 최종 유효 식당 수: 5,572개" >> "$GITHUB_STEP_SUMMARY"
