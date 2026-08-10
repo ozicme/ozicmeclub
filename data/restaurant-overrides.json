@@ -988,7 +988,9 @@
       "sigungu": "영등포구",
       "eupmyeondong": "영등포동7가"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:11714450:e8b0e18f",
@@ -1688,7 +1690,9 @@
       "sigungu": "부산진구",
       "eupmyeondong": "부전동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1680783762:eea8d2d6",
@@ -3058,7 +3062,9 @@
       "sigungu": "청주시 서원구",
       "eupmyeondong": "현도면"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1767102388:7ce830f1",
@@ -4458,7 +4464,9 @@
       "sigungu": "광산구",
       "eupmyeondong": "쌍암동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:2062178718:6371fe68",
@@ -4858,7 +4866,9 @@
       "sigungu": "가평군",
       "eupmyeondong": "가평읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1077128004:42b40577",
@@ -6638,7 +6648,9 @@
       "sigungu": "송파구",
       "eupmyeondong": "방이동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:11875445:a804f39a",
@@ -6888,7 +6900,9 @@
       "sigungu": "마포구",
       "eupmyeondong": "도화동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:2022580913:43199b46",
@@ -8198,7 +8212,9 @@
       "sigungu": "송파구",
       "eupmyeondong": "삼전동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1210427533:791fdb1f",
@@ -9088,7 +9104,9 @@
       "sigungu": "북구",
       "eupmyeondong": "용봉동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1796361082:6322a017",
@@ -9508,7 +9526,9 @@
       "sigungu": "평택시",
       "eupmyeondong": "평택동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1653862104:7cf4f249",
@@ -14918,7 +14938,9 @@
       "sigungu": "동구",
       "eupmyeondong": "판암동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:2094142322:5e8b1058",
@@ -15878,7 +15900,9 @@
       "sigungu": "강남구",
       "eupmyeondong": "삼성동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1873308832:b14cf0c6",
@@ -16748,7 +16772,9 @@
       "sigungu": "부평구",
       "eupmyeondong": "삼산동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:37868366:903b18d0",
@@ -17528,7 +17554,9 @@
       "sigungu": "서초구",
       "eupmyeondong": "양재동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:38275235:e70eb861",
@@ -17868,7 +17896,9 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1183252190:f13b31df",
@@ -21668,7 +21698,9 @@
       "sigungu": "의왕시",
       "eupmyeondong": "학의동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1153011795:a1908250",
@@ -23008,7 +23040,9 @@
       "sigungu": "용인시 처인구",
       "eupmyeondong": "남사읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:13573708:529e1adb",
@@ -23098,7 +23132,9 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1806120962:f4cf7134",
@@ -24198,7 +24234,9 @@
       "sigungu": "부평구",
       "eupmyeondong": "부평동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1859125056:5dcd70c1",
@@ -24588,7 +24626,9 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:11568293:60a13ffe",
@@ -24698,7 +24738,9 @@
       "sigungu": "오산시",
       "eupmyeondong": "원동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:31728860:4558df68",
@@ -25008,7 +25050,9 @@
       "sigungu": "서대문구",
       "eupmyeondong": "남가좌동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1994262966:74eb9167",
@@ -26388,7 +26432,9 @@
       "sigungu": "기장군",
       "eupmyeondong": "기장읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:33964569:65a15a1a",
@@ -32208,7 +32254,9 @@
       "sigungu": "수원시 영통구",
       "eupmyeondong": "원천동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1287019126:184250e6",
@@ -34138,7 +34186,9 @@
       "sigungu": "광진구",
       "eupmyeondong": "능동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1403999050:dd48f397",
@@ -34888,7 +34938,9 @@
       "sigungu": "김해시",
       "eupmyeondong": "삼방동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1228759300:4defe3e8",
@@ -35258,7 +35310,9 @@
       "sigungu": "제주시",
       "eupmyeondong": "도두일동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1660976368:993bba29",
@@ -37828,7 +37882,9 @@
       "sigungu": "도봉구",
       "eupmyeondong": "방학동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:37770245:2051f10e",
@@ -40269,8 +40325,9 @@
       "sigungu": "강남구",
       "eupmyeondong": "역삼동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1703616975:1f5a65e4",
@@ -43839,8 +43896,9 @@
       "sigungu": "서귀포시",
       "eupmyeondong": "서귀동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1179271623:850cc657",
@@ -45379,8 +45437,9 @@
       "sigungu": "남구",
       "eupmyeondong": "옥동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1056413023:7cab1abc",
@@ -46345,8 +46404,9 @@
       "sigungu": "중구",
       "eupmyeondong": "종로2가"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1288739179:840a394d",
@@ -51372,7 +51432,8 @@
       "eupmyeondong": "구운동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1253174748:6e1c1c44",
@@ -53192,7 +53253,8 @@
       "eupmyeondong": "구운동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:11862504:ba1d0b1f",
@@ -55810,7 +55872,8 @@
       "eupmyeondong": "연산동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1061829891:25c4bc37",
@@ -56748,7 +56811,8 @@
       "eupmyeondong": "노형동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-image-refresh",
+    "imageUrl": ""
   },
   {
     "targetKey": "place:1562237380:1640aeea",
@@ -60263,5 +60327,11 @@
     },
     "updatedAt": "2026-08-10",
     "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1830823760:a4551c89",
+    "imageUrl": "",
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-image-refresh"
   }
 ]
