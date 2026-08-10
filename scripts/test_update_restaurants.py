@@ -136,6 +136,53 @@ class UpdateRestaurantsTest(unittest.TestCase):
         self.assertEqual(result["totalOverrides"], 1)
         self.assertEqual(saved[0]["name"], "두번째수정")
 
+    def test_load_targets_excludes_deleted_override(self):
+        self.output.write_text(
+            json.dumps(
+                [
+                    {
+                        "targetKey": self.base_key,
+                        "deleted": True,
+                        "updateSource": "github-naver-place-prune",
+                    }
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        targets, _ = load_targets(self.base_csv, self.admin_data, self.output)
+
+        self.assertNotIn(self.base_key, targets)
+        self.assertIn("id:admin-123", targets)
+
+    def test_load_targets_applies_naver_cleanup_file(self):
+        cleanup = self.output.with_name("naver-place-cleanup-2026-08-10.json")
+        cleanup.write_text(
+            json.dumps(
+                [
+                    {
+                        "targetKey": self.base_key,
+                        "address": "서울 강남구 테헤란로 99",
+                        "region": {
+                            "sido": "서울특별시",
+                            "sigungu": "강남구",
+                            "eupmyeondong": "역삼동",
+                        },
+                        "updateSource": "github-naver-address-sync",
+                    },
+                    {"targetKey": "id:admin-123", "deleted": True},
+                ],
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        targets, _ = load_targets(self.base_csv, self.admin_data, self.output)
+
+        self.assertEqual("서울 강남구 테헤란로 99", targets[self.base_key]["address"])
+        self.assertNotIn("id:admin-123", targets)
+
     def test_updates_admin_added_restaurant_by_id(self):
         payload = {
             "targetKey": "id:admin-123",

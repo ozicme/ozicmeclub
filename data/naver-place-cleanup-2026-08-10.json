@@ -1,0 +1,5546 @@
+[
+  {
+    "targetKey": "place:13529631:78b3e995",
+    "address": "서울 광진구 동일로22길 22 1층 대구생태한마리 건대점",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "광진구",
+      "eupmyeondong": "대구생태한마리"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13529631",
+    "naverDetailTitle": "대구생태한마리"
+  },
+  {
+    "targetKey": "place:1047380923:8921decb",
+    "address": "서울 송파구 백제고분로 505",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "송파구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1047380923",
+    "naverDetailTitle": "백제갈비 한성백제역점"
+  },
+  {
+    "targetKey": "place:1368389319:75625afa",
+    "address": "서울 강동구 양재대로89가길 30 키키빌딩 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1368389319",
+    "naverDetailTitle": "쌈밥촌"
+  },
+  {
+    "targetKey": "place:2060893271:266cc845",
+    "address": "서울 강북구 4.19로 55 1층, 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2060893271",
+    "naverDetailTitle": "백년고등어1750 수유본점"
+  },
+  {
+    "targetKey": "place:2085152244:2839ec3e",
+    "address": "서울 강서구 공항대로 165 원그로브 B동 지하1층 EB121호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "eupmyeondong": "B동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2085152244",
+    "naverDetailTitle": "만사부 원그로브점"
+  },
+  {
+    "targetKey": "place:1293245958:308fae72",
+    "address": "서울 강서구 마곡중앙6로 42 마곡 사이언스타 104호, 105호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1293245958",
+    "naverDetailTitle": "솔솥 마곡점"
+  },
+  {
+    "targetKey": "place:38508407:78e69fc9",
+    "address": "서울 양천구 목동동로10길 24 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "양천구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "38508407",
+    "naverDetailTitle": "억조1978목동본점"
+  },
+  {
+    "targetKey": "place:18944617:a23f9598",
+    "address": "서울 강서구 강서로 511 102호 오가네 남원골추어탕",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "18944617",
+    "naverDetailTitle": "오가네 남원골추어탕"
+  },
+  {
+    "targetKey": "place:18759348:18500fbb",
+    "address": "서울 동작구 양녕로22가길 67 2층 동해해물탕",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "동작구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "18759348",
+    "naverDetailTitle": "동해해물탕"
+  },
+  {
+    "targetKey": "place:1670660666:08266c29",
+    "address": "서울 금천구 가산디지털1로 168 A동 B119호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "금천구",
+      "eupmyeondong": "A동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1670660666",
+    "naverDetailTitle": "고기부자집 가산점"
+  },
+  {
+    "targetKey": "place:12068340:94fcb312",
+    "address": "서울 영등포구 가마산로 366-1 1층 민속돌솥설렁탕 본점",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "영등포구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "12068340",
+    "naverDetailTitle": "민속돌솥설렁탕 본점"
+  },
+  {
+    "targetKey": "place:1727721533:69c24a5a",
+    "address": "서울 동대문구 한빛로 28 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "동대문구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1727721533",
+    "naverDetailTitle": "한상차림밥상 신설동"
+  },
+  {
+    "targetKey": "place:1118678263:6af54a8e",
+    "address": "서울 종로구 새문안로5가길 3-10 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1118678263",
+    "naverDetailTitle": "뒷골목 이층집 도화 솥밥"
+  },
+  {
+    "targetKey": "place:2012481754:e1fa5034",
+    "address": "대전 동구 옥천로 148",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2012481754",
+    "naverDetailTitle": "화담추어관 판암점"
+  },
+  {
+    "targetKey": "place:1810616469:8ef1bad9",
+    "address": "대전 동구 대전로448번길 86-21 1층 가래울",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1810616469",
+    "naverDetailTitle": "가오동가래울"
+  },
+  {
+    "targetKey": "place:1613093858:3aa61ec6",
+    "address": "서울 중구 퇴계로16길 34 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1613093858",
+    "naverDetailTitle": "새서울갈비탕 명동본점"
+  },
+  {
+    "targetKey": "place:18247581:2ff9f5cc",
+    "address": "경기 고양시 덕양구 서오릉로 406-21 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 덕양구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "18247581",
+    "naverDetailTitle": "잔치 연 서오릉본점"
+  },
+  {
+    "targetKey": "place:1042956345:4d046acf",
+    "address": "서울 종로구 율곡로 65 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1042956345",
+    "naverDetailTitle": "정성식 안국역점"
+  },
+  {
+    "targetKey": "place:20311673:54afc703",
+    "address": "서울 종로구 인사동길 15-5 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "20311673",
+    "naverDetailTitle": "종가집"
+  },
+  {
+    "targetKey": "place:1921556192:4ed4de71",
+    "address": "울산 남구 삼산로277번길 6-13",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "남구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1921556192",
+    "naverDetailTitle": "더맘가마솥밥"
+  },
+  {
+    "targetKey": "place:2071476308:846155a8",
+    "address": "대구 동구 효신로 27 1층 해양수산",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2071476308",
+    "naverDetailTitle": "해양수산"
+  },
+  {
+    "targetKey": "place:2016181734:4d13284f",
+    "address": "대구 달서구 월배로 232 지하1층",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "달서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2016181734",
+    "naverDetailTitle": "단정 롯데백화점 상인"
+  },
+  {
+    "targetKey": "place:37438940:8c29f9ed",
+    "address": "대구 달서구 앞산순환로 195 2층 애기똥풀 앞산본점",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "달서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37438940",
+    "naverDetailTitle": "애기똥풀 앞산본점"
+  },
+  {
+    "targetKey": "place:2002103307:dc14bc2f",
+    "address": "대구 달서구 구마로 230 상가 115호",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "달서구",
+      "eupmyeondong": "상가"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2002103307",
+    "naverDetailTitle": "죽이야기 대구송현점"
+  },
+  {
+    "targetKey": "place:1663216249:e24d1922",
+    "address": "경기 수원시 팔달구 권광로196번길 43-13 1층 진심한우",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1663216249",
+    "naverDetailTitle": "진심한우 인계점"
+  },
+  {
+    "targetKey": "place:2075443071:c465a4fd",
+    "address": "강원 강릉시 해안로 210 더그로브테이블 S동 104호",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "강릉시",
+      "eupmyeondong": "S동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2075443071",
+    "naverDetailTitle": "피쉬컬쳐"
+  },
+  {
+    "targetKey": "place:36166219:a7ed701e",
+    "address": "대구 남구 두류공원로 25 1층 숯불촌 석기시대",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "남구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36166219",
+    "naverDetailTitle": "숯불촌 석기시대 대명 본점"
+  },
+  {
+    "targetKey": "place:1912329755:385ae718",
+    "address": "인천 영종구 영종대로162번길 20",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "영종구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1912329755",
+    "naverDetailTitle": "영종또와순대국 5호점"
+  },
+  {
+    "targetKey": "place:12918240:4ad8713d",
+    "address": "인천 영종구 공항서로 177",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "영종구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "12918240",
+    "naverDetailTitle": "해송쌈밥"
+  },
+  {
+    "targetKey": "place:11708134:21c02844",
+    "address": "경기 파주시 동서대로 640-4 1층 원조1호공항마을 미도락",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "파주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "11708134",
+    "naverDetailTitle": "원조1호공항마을 미도락"
+  },
+  {
+    "targetKey": "place:2083891289:583ea528",
+    "address": "울산 중구 태화강국가정원길 125-1 1층",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2083891289",
+    "naverDetailTitle": "태화곤드레솥밥.보리밥"
+  },
+  {
+    "targetKey": "place:1318878031:0f02f1d4",
+    "address": "세종 마음로 272-11 301호",
+    "region": {
+      "sido": "세종특별자치시",
+      "sigungu": "",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1318878031",
+    "naverDetailTitle": "함경도 갈비김치찌개, 찜"
+  },
+  {
+    "targetKey": "place:1698175771:f00a1b07",
+    "address": "강원 동해시 감추1길 38 1층",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "동해시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1698175771",
+    "naverDetailTitle": "한섬"
+  },
+  {
+    "targetKey": "place:1504037429:c9ded1ad",
+    "address": "강원 속초시 원암학사평길 128",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "속초시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1504037429",
+    "naverDetailTitle": "하성짬뽕순두부 봉평메밀국수"
+  },
+  {
+    "targetKey": "place:2026719419:4f251cc8",
+    "address": "인천 서해구 가정로 354 1층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2026719419",
+    "naverDetailTitle": "황금빛고등어 루원시티가정본점"
+  },
+  {
+    "targetKey": "place:37936048:c8cbd471",
+    "address": "인천 서해구 청라라임로 85 청라 린스트라우스(후문/남문) 상가 B동 2층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": "상가"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37936048",
+    "naverDetailTitle": "미추홀부대찌개 청라점"
+  },
+  {
+    "targetKey": "place:762192391:ed4a4680",
+    "address": "인천 서해구 담지로104번길 31",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "762192391",
+    "naverDetailTitle": "노란황태 청라점"
+  },
+  {
+    "targetKey": "place:2085692772:67953cf4",
+    "address": "인천 서해구 원적로 132 1층, 2층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2085692772",
+    "naverDetailTitle": "천마골 돼지갈비&산해진미"
+  },
+  {
+    "targetKey": "place:1888615471:ca24c9db",
+    "address": "인천 서해구 염곡로498번안길 5-9 1층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1888615471",
+    "naverDetailTitle": "양반집맛태코다리 본점"
+  },
+  {
+    "targetKey": "place:2069229341:004ae377",
+    "address": "인천 강화군 길상면 장흥로 7 1층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "강화군",
+      "eupmyeondong": "길상면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2069229341",
+    "naverDetailTitle": "장흥코다리 & 가정식 백반"
+  },
+  {
+    "targetKey": "place:21017118:ab0aee8e",
+    "address": "전남광주 동구 문화전당로 37-2",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "21017118",
+    "naverDetailTitle": "1989민속촌"
+  },
+  {
+    "targetKey": "place:1050787276:0417f7f8",
+    "address": "전남광주 동구 동명로 59 1층 중정",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1050787276",
+    "naverDetailTitle": "중정"
+  },
+  {
+    "targetKey": "place:1227543167:77996975",
+    "address": "전남광주 서구 상무시민로 99 1층 초동순두부",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1227543167",
+    "naverDetailTitle": "진초동순두부 상무지구 광주시청점"
+  },
+  {
+    "targetKey": "place:33998498:46cf222a",
+    "address": "전남광주 서구 풍서우로 196",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "33998498",
+    "naverDetailTitle": "행복한임금님"
+  },
+  {
+    "targetKey": "place:1887694403:e974a12e",
+    "address": "전남광주 서구 상무연하로 43 삼복빌딩 1층",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1887694403",
+    "naverDetailTitle": "서우 오마카세"
+  },
+  {
+    "targetKey": "place:1255898105:a289ec78",
+    "address": "전남광주 남구 서문대로 729 1층 112호",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "남구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1255898105",
+    "naverDetailTitle": "진초동순두부 진월동 보이저점"
+  },
+  {
+    "targetKey": "place:1883554619:697d5cdd",
+    "address": "전남광주 남구 회재로 1284 대라수 102동 상가",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "남구",
+      "eupmyeondong": "102동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1883554619",
+    "naverDetailTitle": "진초동순두부 백운동 남구청점"
+  },
+  {
+    "targetKey": "place:1052043685:151da166",
+    "address": "전남광주 서구 천변우하로 381",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1052043685",
+    "naverDetailTitle": "곰작골나주곰탕 광주동천점"
+  },
+  {
+    "targetKey": "place:1604071433:f6721653",
+    "address": "전남광주 광산구 임방울대로826번길 29-24 1층 103호",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "광산구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1604071433",
+    "naverDetailTitle": "솔솥 첨단점"
+  },
+  {
+    "targetKey": "place:32712508:b77c4954",
+    "address": "대전 중구 대흥로 138",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "32712508",
+    "naverDetailTitle": "할머니추어탕"
+  },
+  {
+    "targetKey": "place:33232613:054de9ed",
+    "address": "대전 서구 둔산중로 74 인곡타워 2층",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "33232613",
+    "naverDetailTitle": "마실"
+  },
+  {
+    "targetKey": "place:1305377763:53f61c51",
+    "address": "대전 서구 문정로89번길 32 1층",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1305377763",
+    "naverDetailTitle": "까치돌구이"
+  },
+  {
+    "targetKey": "place:13444885:ff655ded",
+    "address": "제주 서귀포시 이어도로 41 대기정식당",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "서귀포시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13444885",
+    "naverDetailTitle": "제주갈치대기정"
+  },
+  {
+    "targetKey": "place:1562651692:21f3d880",
+    "address": "강원 속초시 관광로 394",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "속초시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1562651692",
+    "naverDetailTitle": "콩서리 순두부"
+  },
+  {
+    "targetKey": "place:34013227:8dd09b3a",
+    "address": "경기 수원시 영통구 봉영로 1377",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 영통구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "34013227",
+    "naverDetailTitle": "우설화 신영통점"
+  },
+  {
+    "targetKey": "place:2088631005:6a7ade31",
+    "address": "경기 성남시 분당구 판교백현로 29 1, 2, 3층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "성남시 분당구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2088631005",
+    "naverDetailTitle": "동해왕코다리 판교점"
+  },
+  {
+    "targetKey": "place:2020913802:c7d454b4",
+    "address": "부산 부산진구 성지로 20 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "부산진구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2020913802",
+    "naverDetailTitle": "호호솥밥"
+  },
+  {
+    "targetKey": "place:2073156975:886e5d5f",
+    "address": "경기 성남시 분당구 판교역로 231",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "성남시 분당구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2073156975",
+    "naverDetailTitle": "본우리반상 판교H스퀘어점"
+  },
+  {
+    "targetKey": "place:15012428:2d2478a4",
+    "address": "경기 광주시 남한산성면 남한산성로792번길 29 남한산성 고구려",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "광주시",
+      "eupmyeondong": "남한산성면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "15012428",
+    "naverDetailTitle": "남한산성 고구려"
+  },
+  {
+    "targetKey": "place:1077408803:1fbed804",
+    "address": "경기 고양시 일산동구 강송로 33 벨라시타 본동 2층 메가박스입구 앞",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": "본동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1077408803",
+    "naverDetailTitle": "참솥 벨라시타점"
+  },
+  {
+    "targetKey": "place:1125576344:e187b849",
+    "address": "경기 고양시 일산동구 풍산로 73 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1125576344",
+    "naverDetailTitle": "청사포화덕생선구이"
+  },
+  {
+    "targetKey": "place:12889355:cd8536f3",
+    "address": "경기 고양시 일산동구 중앙로 1079 백석동 더리브 스타일 2층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": "백석동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "12889355",
+    "naverDetailTitle": "해오름 한정식"
+  },
+  {
+    "targetKey": "place:37360628:a7b8e886",
+    "address": "경기 고양시 일산동구 장항로 12",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37360628",
+    "naverDetailTitle": "태성추어탕"
+  },
+  {
+    "targetKey": "place:1092617712:24551aa3",
+    "address": "경기 고양시 일산동구 고일로 12 2층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1092617712",
+    "naverDetailTitle": "호낙가 더가든 일산본점"
+  },
+  {
+    "targetKey": "place:37281580:5f8ed29c",
+    "address": "경기 고양시 일산서구 원일로 81 해동상가 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산서구",
+      "eupmyeondong": "해동상가"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37281580",
+    "naverDetailTitle": "북창동해장국 즉석누룽지솥밥"
+  },
+  {
+    "targetKey": "place:1378216867:9d5cd751",
+    "address": "강원 양양군 양양읍 해맞이길 95-15",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "양양군",
+      "eupmyeondong": "양양읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1378216867",
+    "naverDetailTitle": "낙산가 강력한 장어들"
+  },
+  {
+    "targetKey": "place:11828179:df002de6",
+    "address": "경기 김포시 하성면 금포로1915번길 53 소쇄원간장게장",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": "하성면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "11828179",
+    "naverDetailTitle": "상궁전 구 소쇄원간장게장"
+  },
+  {
+    "targetKey": "place:1786458447:b3711344",
+    "address": "부산 동구 자성로133번길 31 1층 102호",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1786458447",
+    "naverDetailTitle": "연미가 범일본점"
+  },
+  {
+    "targetKey": "place:2010898858:1a6364fe",
+    "address": "경기 용인시 기흥구 언동로 221 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 기흥구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2010898858",
+    "naverDetailTitle": "동백한옥집 숯불구이 정육식당"
+  },
+  {
+    "targetKey": "place:1247464036:f79af533",
+    "address": "경기 용인시 기흥구 한일로9번길 7-1",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 기흥구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1247464036",
+    "naverDetailTitle": "범골가마솥추어탕 공세점"
+  },
+  {
+    "targetKey": "place:16507230:36b6f0fa",
+    "address": "부산 북구 용당로16번길 22 3층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "16507230",
+    "naverDetailTitle": "왕대구탕&화덕생선 화명본점"
+  },
+  {
+    "targetKey": "place:796808574:83c2eb84",
+    "address": "경기 용인시 기흥구 민속촌로 37 1층 별관 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 기흥구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "796808574",
+    "naverDetailTitle": "남원돌솥추어탕 보라민속촌점"
+  },
+  {
+    "targetKey": "place:1964462769:198699f8",
+    "address": "충북 청주시 상당구 문의면 문의시내1길 7-15 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 상당구",
+      "eupmyeondong": "문의면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1964462769",
+    "naverDetailTitle": "청주솥밥 청남집"
+  },
+  {
+    "targetKey": "place:1330651419:7a23caf8",
+    "address": "충북 청주시 상당구 미원면 단재로 2395 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 상당구",
+      "eupmyeondong": "미원면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1330651419",
+    "naverDetailTitle": "뜨란채순두부 미원점"
+  },
+  {
+    "targetKey": "place:13573713:23534b0a",
+    "address": "경기 용인시 처인구 양지읍 중부대로 2545-3",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 처인구",
+      "eupmyeondong": "양지읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13573713",
+    "naverDetailTitle": "외할머니집"
+  },
+  {
+    "targetKey": "place:1545850586:1e15bfb1",
+    "address": "경기 용인시 처인구 양지읍 한터로 536 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 처인구",
+      "eupmyeondong": "양지읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1545850586",
+    "naverDetailTitle": "자연의밥 로송 본점"
+  },
+  {
+    "targetKey": "place:35657740:4d9f5ecc",
+    "address": "경기 이천시 마장면 서이천로634번길 51",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": "마장면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "35657740",
+    "naverDetailTitle": "이천 진미쌀밥 한정식"
+  },
+  {
+    "targetKey": "place:1751179365:3e757b11",
+    "address": "경기 화성시 동탄구 동탄대로5길 32 루나갤러리 2층 201호~204호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "화성시 동탄구",
+      "eupmyeondong": "루나갤러리"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1751179365",
+    "naverDetailTitle": "한상차림 코다리명가 동탄호수공원점"
+  },
+  {
+    "targetKey": "place:1787112298:1017181e",
+    "address": "충북 청주시 서원구 구룡산로51번다길 4",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 서원구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1787112298",
+    "naverDetailTitle": "대선집"
+  },
+  {
+    "targetKey": "place:17388063:5e1d2ea4",
+    "address": "충북 청주시 서원구 분평로6번길 6-11 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 서원구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "17388063",
+    "naverDetailTitle": "굴세상 본점"
+  },
+  {
+    "targetKey": "place:1850836914:c3dd685d",
+    "address": "경기 부천시 오정구 삼작로396번길 52 2층 한결남원추어탕",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "부천시 오정구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1850836914",
+    "naverDetailTitle": "한결남원추어탕"
+  },
+  {
+    "targetKey": "place:1998801637:836bc1af",
+    "address": "부산 부산진구 부전로20번길 44-1 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "부산진구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1998801637",
+    "naverDetailTitle": "예담골에온고등어 서면본점"
+  },
+  {
+    "targetKey": "place:37403858:b3f9fc5d",
+    "address": "경기 안양시 동안구 관악대로 272 키즈맘센터 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안양시 동안구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37403858",
+    "naverDetailTitle": "한상차림 코다리명가 비산점"
+  },
+  {
+    "targetKey": "place:1536682762:69a93619",
+    "address": "경기 과천시 관문로 92 힐스테이트 102동 B-B110호 동양솥밥",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "과천시",
+      "eupmyeondong": "102동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1536682762",
+    "naverDetailTitle": "동양솥밥 과천점"
+  },
+  {
+    "targetKey": "place:1979168750:a8995d54",
+    "address": "경기 안양시 만안구 오리로 7 지상1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안양시 만안구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1979168750",
+    "naverDetailTitle": "서울토종순대국"
+  },
+  {
+    "targetKey": "place:1359830123:04840693",
+    "address": "경기 평택시 무지개공원4길 12 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "평택시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1359830123",
+    "naverDetailTitle": "차마실길"
+  },
+  {
+    "targetKey": "place:34217384:d981b055",
+    "address": "경기 안산시 상록구 석호로 45 1, 2층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 상록구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "34217384",
+    "naverDetailTitle": "강남동태찜 전국본점"
+  },
+  {
+    "targetKey": "place:36774752:8a26ef21",
+    "address": "부산 동래구 안락로 71",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "동래구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36774752",
+    "naverDetailTitle": "산들바람"
+  },
+  {
+    "targetKey": "place:1414258162:53019f5b",
+    "address": "경기 안산시 단원구 달미로 115 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1414258162",
+    "naverDetailTitle": "솥밥명가"
+  },
+  {
+    "targetKey": "place:1995761340:8e328879",
+    "address": "경기 안산시 단원구 대부황금로 1137 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1995761340",
+    "naverDetailTitle": "올래밥상"
+  },
+  {
+    "targetKey": "place:1576897996:51aa5995",
+    "address": "경기 김포시 풍무2로 11 202호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1576897996",
+    "naverDetailTitle": "불쭈꾸미 오새쭈"
+  },
+  {
+    "targetKey": "place:1582197029:b487f465",
+    "address": "경기 김포시 유현로238번길 31 108호 김가네",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1582197029",
+    "naverDetailTitle": "김가네 풍무역점"
+  },
+  {
+    "targetKey": "place:1890301806:e0396528",
+    "address": "경기 김포시 양촌읍 석모로73번길 114-10",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": "양촌읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1890301806",
+    "naverDetailTitle": "김포금쌀밥집 지미재"
+  },
+  {
+    "targetKey": "place:2013713000:5fe59413",
+    "address": "경기 광주시 경안천로 33",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "광주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2013713000",
+    "naverDetailTitle": "시래마을"
+  },
+  {
+    "targetKey": "place:37837958:68d53269",
+    "address": "경기 이천시 경충대로 2849",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37837958",
+    "naverDetailTitle": "야반"
+  },
+  {
+    "targetKey": "place:1730269398:5802bf44",
+    "address": "경기 여주시 월평로 53 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "여주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1730269398",
+    "naverDetailTitle": "여주쌀밥상"
+  },
+  {
+    "targetKey": "place:19554964:2052dd80",
+    "address": "대전 대덕구 덕암로 259 굴세상",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "대덕구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "19554964",
+    "naverDetailTitle": "굴세상 덕암점"
+  },
+  {
+    "targetKey": "place:1830823760:a4551c89",
+    "address": "부산 부산진구 서전로67번길 28-1 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "부산진구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1830823760",
+    "naverDetailTitle": "아리랑갈비 전포점"
+  },
+  {
+    "targetKey": "place:1006863153:34a99ac1",
+    "address": "경기 오산시 외삼미로 162-34",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "오산시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1006863153",
+    "naverDetailTitle": "봄설 본점 한정식"
+  },
+  {
+    "targetKey": "place:1543069471:666f3337",
+    "address": "경기 화성시 동탄구 동탄중앙로 220",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "화성시 동탄구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1543069471",
+    "naverDetailTitle": "만사부 타임테라스점"
+  },
+  {
+    "targetKey": "place:1897846950:9cdfe67e",
+    "address": "경기 파주시 시청로 149 와우화로",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "파주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1897846950",
+    "naverDetailTitle": "와우화로 금촌 본점"
+  },
+  {
+    "targetKey": "place:1583793317:333139e4",
+    "address": "경기 의왕시 한직골남로 18",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "의왕시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1583793317",
+    "naverDetailTitle": "백운애꽃 한정식&쌈밥"
+  },
+  {
+    "targetKey": "place:1190525160:4d7342f6",
+    "address": "경기 가평군 가평읍 석봉로 200-5 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "가평군",
+      "eupmyeondong": "가평읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1190525160",
+    "naverDetailTitle": "마린보이동태해물찜코다리1번가 가평점"
+  },
+  {
+    "targetKey": "place:981521822:fdef7cea",
+    "address": "부산 해운대구 송정광어골로 29 화이트듀 빌딩 3층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "해운대구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "981521822",
+    "naverDetailTitle": "다솥맛집 본점"
+  },
+  {
+    "targetKey": "place:31908684:e7b75747",
+    "address": "부산 강서구 명지오션시티8로 26-7",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "강서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "31908684",
+    "naverDetailTitle": "산들밥상"
+  },
+  {
+    "targetKey": "place:12793618:5f20116b",
+    "address": "경남 김해시 김해대로2371번길 12-4 죽이야기",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "김해시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "12793618",
+    "naverDetailTitle": "죽이야기 김해 동부점"
+  },
+  {
+    "targetKey": "place:16870429:5a9d1045",
+    "address": "부산 기장군 기장읍 연화1길 195 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "기장읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "16870429",
+    "naverDetailTitle": "해풍가마솥"
+  },
+  {
+    "targetKey": "place:1268072144:b9a3e3b4",
+    "address": "부산 기장군 일광읍 문오성길 317-4",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "일광읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1268072144",
+    "naverDetailTitle": "정담 솥밥"
+  },
+  {
+    "targetKey": "place:1019478965:42c0a930",
+    "address": "제주 제주시 1100로 3164 1층",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "제주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1019478965",
+    "naverDetailTitle": "담아래"
+  },
+  {
+    "targetKey": "place:1327726911:a3e9f152",
+    "address": "제주 제주시 서천길 16 카카오네비 or 티맵에 제주용담밭담을 검색해 보시면 길 안내가 가능합니다.",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "제주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1327726911",
+    "naverDetailTitle": "용담밭담 본점"
+  },
+  {
+    "targetKey": "place:1038622175:ed7d705e",
+    "address": "경남 김해시 율하6로 52 111호",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "김해시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1038622175",
+    "naverDetailTitle": "25센치꼬치앤오뎅바 김해장유점"
+  },
+  {
+    "targetKey": "place:1720845639:a0a6e18d",
+    "address": "대구 중구 중앙대로81길 13 지상1층",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1720845639",
+    "naverDetailTitle": "25센치꼬치앤오뎅바 대구종로점"
+  },
+  {
+    "targetKey": "place:2005554081:85792924",
+    "address": "충남 천안시 서북구 두정로 227 1층",
+    "region": {
+      "sido": "충청남도",
+      "sigungu": "천안시 서북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2005554081",
+    "naverDetailTitle": "25센치꼬치앤오뎅바 두정역점"
+  },
+  {
+    "targetKey": "place:33856335:ca59e0eb",
+    "address": "경기 부천시 원미구 부일로496번길 18",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "부천시 원미구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "33856335",
+    "naverDetailTitle": "원조 38소갈비살 1관 본점"
+  },
+  {
+    "targetKey": "place:1733634677:698299f2",
+    "address": "경남 창원시 진해구 안골로289번길 9",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "창원시 진해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1733634677",
+    "naverDetailTitle": "거래처"
+  },
+  {
+    "targetKey": "place:1184014683:623c27ab",
+    "address": "충북 청주시 흥덕구 대농로 33 1층 113호, 114호",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 흥덕구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1184014683",
+    "naverDetailTitle": "겐로쿠우동 청주점"
+  },
+  {
+    "targetKey": "place:19779972:c765abb3",
+    "address": "경기 수원시 팔달구 경수대로 567 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "19779972",
+    "naverDetailTitle": "고려왕족발 수원본점"
+  },
+  {
+    "targetKey": "place:1984173101:7f705dda",
+    "address": "충남 공주시 신금2길 31",
+    "region": {
+      "sido": "충청남도",
+      "sigungu": "공주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1984173101",
+    "naverDetailTitle": "광희이모꼬마김밥 본점"
+  },
+  {
+    "targetKey": "place:1981233563:91033133",
+    "address": "경기 수원시 영통구 동수원로537번길 16-14",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 영통구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1981233563",
+    "naverDetailTitle": "찌개엔 국밥생각"
+  },
+  {
+    "targetKey": "place:1044144218:f2020ca8",
+    "address": "경북 칠곡군 약목면 금오대로 11",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "칠곡군",
+      "eupmyeondong": "약목면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1044144218",
+    "naverDetailTitle": "국장수"
+  },
+  {
+    "targetKey": "place:19714755:a214d30c",
+    "address": "인천 강화군 길상면 강화동로 187 금문도",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "강화군",
+      "eupmyeondong": "길상면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "19714755",
+    "naverDetailTitle": "금문도"
+  },
+  {
+    "targetKey": "place:1161513733:732e2717",
+    "address": "전북 순창군 순창읍 장류로 365",
+    "region": {
+      "sido": "전북특별자치도",
+      "sigungu": "순창군",
+      "eupmyeondong": "순창읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1161513733",
+    "naverDetailTitle": "김밥나라 순창점"
+  },
+  {
+    "targetKey": "place:1420476835:5e05d6de",
+    "address": "경기 수원시 팔달구 인계로 154",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1420476835",
+    "naverDetailTitle": "김밥클래스 뉴코아동수원점"
+  },
+  {
+    "targetKey": "place:1611590087:ba6c5e35",
+    "address": "경기 수원시 팔달구 인계로 154",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1611590087",
+    "naverDetailTitle": "나츠미스시 뉴코아동수원점"
+  },
+  {
+    "targetKey": "place:1611828206:56d445cb",
+    "address": "서울 송파구 삼학사로12길 14 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "송파구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1611828206",
+    "naverDetailTitle": "달떡볶이 잠실점"
+  },
+  {
+    "targetKey": "place:1149016428:e4317579",
+    "address": "부산 기장군 정관읍 서편길 4 (달음산 사우나 옆)",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "정관읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1149016428",
+    "naverDetailTitle": "달산식당 정관본점"
+  },
+  {
+    "targetKey": "place:32148933:db303dc7",
+    "address": "부산 기장군 기장읍 연화1길 159 대성장횟집",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "기장읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "32148933",
+    "naverDetailTitle": "대성장횟집 연화리본점"
+  },
+  {
+    "targetKey": "place:1667588133:62d72a80",
+    "address": "충북 청주시 청원구 오창읍 과학산업5로 108-1",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 청원구",
+      "eupmyeondong": "오창읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1667588133",
+    "naverDetailTitle": "더덕솥뚜껑삼겹살 오창점"
+  },
+  {
+    "targetKey": "place:1611466389:cefda858",
+    "address": "부산 수영구 민락로 8-3 101호 돈까스의 정원",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "수영구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1611466389",
+    "naverDetailTitle": "돈까스의정원 광안본점"
+  },
+  {
+    "targetKey": "place:1245633693:9eea0522",
+    "address": "경기 양주시 옥정동로5바길 11 1층 돌하르방식당",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "양주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1245633693",
+    "naverDetailTitle": "돌하르방식당 본점"
+  },
+  {
+    "targetKey": "place:1178409093:c299ca7a",
+    "address": "서울 영등포구 선유로47길 15 1층 104호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "영등포구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1178409093",
+    "naverDetailTitle": "동양솥밥 선유도점"
+  },
+  {
+    "targetKey": "place:35916075:9e66a0e6",
+    "address": "강원 원주시 토지길 31-1",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "원주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "35916075",
+    "naverDetailTitle": "두꺼비식당 원주점"
+  },
+  {
+    "targetKey": "place:30965806:30f22fc5",
+    "address": "경북 울진군 죽변면 울진북로 1130",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "울진군",
+      "eupmyeondong": "죽변면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "30965806",
+    "naverDetailTitle": "두레회식당 울진"
+  },
+  {
+    "targetKey": "place:17954658:6c78724f",
+    "address": "경기 시흥시 오이도로 161 등대횟집",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "시흥시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "17954658",
+    "naverDetailTitle": "등대횟집 오이도본점"
+  },
+  {
+    "targetKey": "place:1431014472:ae1af468",
+    "address": "서울 영등포구 당산로45길 1 1층 로뎅바",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "영등포구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1431014472",
+    "naverDetailTitle": "로뎅바 당산역 본점"
+  },
+  {
+    "targetKey": "place:1153651253:4e98a703",
+    "address": "경남 거제시 수양로 468 102호",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "거제시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1153651253",
+    "naverDetailTitle": "로봇김밥 거제수월점"
+  },
+  {
+    "targetKey": "place:1189003603:3f5954a2",
+    "address": "경기 화성시 효행구 봉담읍 상리2길 55 (상리) 1동 123호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "화성시 효행구",
+      "eupmyeondong": "봉담읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1189003603",
+    "naverDetailTitle": "리틀꼬마김밥 봉담2지구점"
+  },
+  {
+    "targetKey": "place:1990295538:02655638",
+    "address": "전북 진안군 부귀면 부귀로 343 1층",
+    "region": {
+      "sido": "전북특별자치도",
+      "sigungu": "진안군",
+      "eupmyeondong": "부귀면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1990295538",
+    "naverDetailTitle": "마이산 숯불고기 쌈밥"
+  },
+  {
+    "targetKey": "place:1962496019:9f3345c5",
+    "address": "경기 동두천시 하봉암로 43",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "동두천시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1962496019",
+    "naverDetailTitle": "매봉골"
+  },
+  {
+    "targetKey": "place:1195859572:69df732e",
+    "address": "경기 안산시 단원구 화랑로 150",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1195859572",
+    "naverDetailTitle": "무모한초밥 안산초지점"
+  },
+  {
+    "targetKey": "place:1310172373:81dca8d0",
+    "address": "경기 고양시 덕양구 화신로260번길 58 2층 204호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 덕양구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1310172373",
+    "naverDetailTitle": "무쇠쫄갈비 화정본점"
+  },
+  {
+    "targetKey": "place:32149229:15683266",
+    "address": "부산 기장군 일광읍 문오성길 527 칠암무한정횟집",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "일광읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "32149229",
+    "naverDetailTitle": "칠암무한정횟집"
+  },
+  {
+    "targetKey": "place:1026669929:0074c6c4",
+    "address": "서울 성북구 보국문로11길 18-2 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "성북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1026669929",
+    "naverDetailTitle": "바다생협 정릉점"
+  },
+  {
+    "targetKey": "place:38502828:fb406e88",
+    "address": "대전 서구 남선로 49 1층 바다천국",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "38502828",
+    "naverDetailTitle": "바다천국수산"
+  },
+  {
+    "targetKey": "place:1957996128:54d042e7",
+    "address": "부산 남구 석포로 81 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "남구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1957996128",
+    "naverDetailTitle": "바른한돈 대연점"
+  },
+  {
+    "targetKey": "place:1750671185:984ba1a7",
+    "address": "충북 청주시 청원구 내수읍 마산1길 65",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 청원구",
+      "eupmyeondong": "내수읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1750671185",
+    "naverDetailTitle": "백년갈비 청주내수점"
+  },
+  {
+    "targetKey": "place:37868890:2c6178d8",
+    "address": "서울 성북구 보문로40길 46",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "성북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37868890",
+    "naverDetailTitle": "백년감자탕"
+  },
+  {
+    "targetKey": "place:1866488700:c572b729",
+    "address": "경북 칠곡군 북삼읍 북삼로 139 백조칼국수 본점",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "칠곡군",
+      "eupmyeondong": "북삼읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1866488700",
+    "naverDetailTitle": "백조칼국수 본점"
+  },
+  {
+    "targetKey": "place:16522705:ad7e0851",
+    "address": "울산 울주군 서생면 간절곶해안길 83",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "울주군",
+      "eupmyeondong": "서생면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "16522705",
+    "naverDetailTitle": "뱃고동횟집"
+  },
+  {
+    "targetKey": "place:1921773681:f7b4f5f2",
+    "address": "경남 창원시 진해구 여명로 62",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "창원시 진해구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1921773681",
+    "naverDetailTitle": "벚꽃연어스시 여좌점"
+  },
+  {
+    "targetKey": "place:94880009:8ca216b9",
+    "address": "서울 강남구 개포로20길 24-10 광민빌딩 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강남구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "94880009",
+    "naverDetailTitle": "베지그린"
+  },
+  {
+    "targetKey": "place:1934005800:8779d8da",
+    "address": "서울 강북구 노해로11길 9 1층 101호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "강북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1934005800",
+    "naverDetailTitle": "베트남쌀국수Goc Sai Gon"
+  },
+  {
+    "targetKey": "place:38350203:aab82a76",
+    "address": "경기 김포시 장릉로 80",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "38350203",
+    "naverDetailTitle": "보람갈비 김포장릉본점"
+  },
+  {
+    "targetKey": "place:1030929531:7a6b3321",
+    "address": "서울 도봉구 도당로13길 28 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "도봉구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1030929531",
+    "naverDetailTitle": "본죽&비빔밥 방학도깨비시장점"
+  },
+  {
+    "targetKey": "place:1732086379:5d43bc92",
+    "address": "인천 검단구 이음대로 388 ABM타워 315,316,317",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "검단구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1732086379",
+    "naverDetailTitle": "봄이보리밥 검단점"
+  },
+  {
+    "targetKey": "place:1732086379:890b9a5c",
+    "address": "인천 검단구 이음대로 388 ABM타워 315,316,317",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "검단구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1732086379",
+    "naverDetailTitle": "봄이보리밥 검단점"
+  },
+  {
+    "targetKey": "place:1722022085:35072e06",
+    "address": "경기 남양주시 별내중앙로57번길 35 1층 봉갈비",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "남양주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1722022085",
+    "naverDetailTitle": "봉갈비"
+  },
+  {
+    "targetKey": "place:36985520:b6075d6a",
+    "address": "경기 수원시 팔달구 중부대로143번길 15 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36985520",
+    "naverDetailTitle": "부산아지매국밥 동수원점"
+  },
+  {
+    "targetKey": "place:36015635:ffaff3c2",
+    "address": "경북 경주시 원효로 108 빨봉분식 경주점",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "경주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36015635",
+    "naverDetailTitle": "빨봉분식 경주점"
+  },
+  {
+    "targetKey": "place:13065568:a1fab0af",
+    "address": "경기 안양시 만안구 양화로 73",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안양시 만안구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13065568",
+    "naverDetailTitle": "산내골"
+  },
+  {
+    "targetKey": "place:1041739369:8925d37a",
+    "address": "부산 해운대구 좌동로 99-36 삼춘김밥",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "해운대구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1041739369",
+    "naverDetailTitle": "삼춘김밥 본점"
+  },
+  {
+    "targetKey": "place:1397211905:8a5381fb",
+    "address": "서울 중구 을지로 256 1, 2층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1397211905",
+    "naverDetailTitle": "샤오바오우육면 동대문점"
+  },
+  {
+    "targetKey": "place:1369953872:4590a169",
+    "address": "경북 예천군 호명읍 새움3로 6",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "예천군",
+      "eupmyeondong": "호명읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1369953872",
+    "naverDetailTitle": "서서갈비함흥냉면 경북도청점"
+  },
+  {
+    "targetKey": "place:1319247686:694cf2b8",
+    "address": "부산 영도구 동삼로 63 2층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "영도구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1319247686",
+    "naverDetailTitle": "소림마라 부산영도점"
+  },
+  {
+    "targetKey": "place:1595245313:737a8ab6",
+    "address": "부산 서구 송도해변로 85-1 스시로운",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1595245313",
+    "naverDetailTitle": "스시로운 부산송도점"
+  },
+  {
+    "targetKey": "place:1155175292:5e94474c",
+    "address": "서울 마포구 마포대로12길 34 소담빌딩 1층 스시복",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "마포구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1155175292",
+    "naverDetailTitle": "스시복 마포공덕본점"
+  },
+  {
+    "targetKey": "place:1340199116:d3017cca",
+    "address": "경기 용인시 수지구 광교마을로 41 202호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 수지구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1340199116",
+    "naverDetailTitle": "스시스테이션 광교상현점"
+  },
+  {
+    "targetKey": "place:1740045223:eceef496",
+    "address": "부산 중구 해관로 42 1층 스시키쿠",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "중구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1740045223",
+    "naverDetailTitle": "스시키쿠 회전초밥"
+  },
+  {
+    "targetKey": "place:2012827118:9b8a4f74",
+    "address": "전북 전주시 완산구 효자천변1길 25-6 104호",
+    "region": {
+      "sido": "전북특별자치도",
+      "sigungu": "전주시 완산구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2012827118",
+    "naverDetailTitle": "스텔라떡볶이 전주효자점"
+  },
+  {
+    "targetKey": "place:1857205330:40c40f23",
+    "address": "충북 음성군 맹동면 원중로 1438 DS빌딩 108호",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "음성군",
+      "eupmyeondong": "맹동면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1857205330",
+    "naverDetailTitle": "신참떡볶이 충북혁신도시1호점"
+  },
+  {
+    "targetKey": "place:1144548043:17801791",
+    "address": "전남광주 광산구 송도로 150 101호",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "광산구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1144548043",
+    "naverDetailTitle": "아빈스시 광주송정역본점"
+  },
+  {
+    "targetKey": "place:1563310408:b5cd8886",
+    "address": "서울 구로구 공원로8길 59 1층 아이마라마라탕",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "구로구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1563310408",
+    "naverDetailTitle": "아이마라마라탕"
+  },
+  {
+    "targetKey": "place:38724023:950c5097",
+    "address": "경기 고양시 덕양구 화정로 53-1 1층 122호글로리아빌딩",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 덕양구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "38724023",
+    "naverDetailTitle": "얌샘김밥 일산화정역점"
+  },
+  {
+    "targetKey": "place:1293022535:cd24763f",
+    "address": "경기 수원시 팔달구 중부대로 104 1동 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": "1동"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1293022535",
+    "naverDetailTitle": "역전우동0410 성빈센트병원점"
+  },
+  {
+    "targetKey": "place:1499157274:c669ff39",
+    "address": "대전 동구 은어송로 72 3층 연안식당 대전패션아일랜드점",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1499157274",
+    "naverDetailTitle": "연안식당 대전패션아일랜드점"
+  },
+  {
+    "targetKey": "place:1930085759:af3cc92d",
+    "address": "경기 시흥시 월곶중앙로 71 1층 105,106호 영웅이네수산포차",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "시흥시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1930085759",
+    "naverDetailTitle": "영웅이네수산포차 월곶본점"
+  },
+  {
+    "targetKey": "place:1272130360:7de4100c",
+    "address": "경기 포천시 영북면 산정호수로 384 1층 예당 아구찜 코다리",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "포천시",
+      "eupmyeondong": "영북면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1272130360",
+    "naverDetailTitle": "예당 아구찜 코다리"
+  },
+  {
+    "targetKey": "place:13571314:7359ba7f",
+    "address": "울산 중구 먹자거리 9",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "중구",
+      "eupmyeondong": "먹자거리"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13571314",
+    "naverDetailTitle": "오이시라멘 울산성남점"
+  },
+  {
+    "targetKey": "place:38597134:2ef0efbe",
+    "address": "울산 북구 동해안로 1441",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "북구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "38597134",
+    "naverDetailTitle": "왕갈비탕"
+  },
+  {
+    "targetKey": "place:1036182547:927bebc8",
+    "address": "대전 서구 계백로 1135",
+    "region": {
+      "sido": "대전광역시",
+      "sigungu": "서구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1036182547",
+    "naverDetailTitle": "세종종가왕뼈감자탕도안점"
+  },
+  {
+    "targetKey": "place:1461028887:7213cf95",
+    "address": "경북 예천군 호명읍 새움2로 18 110, 111호",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "예천군",
+      "eupmyeondong": "호명읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1461028887",
+    "naverDetailTitle": "우리동네고깃집 경북도청본점"
+  },
+  {
+    "targetKey": "place:31206186:8413aec4",
+    "address": "충북 제천시 장락로 149-1",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "제천시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "31206186",
+    "naverDetailTitle": "울돌목"
+  },
+  {
+    "targetKey": "place:13573715:42c16914",
+    "address": "경기 이천시 대월면 사동로 76-19 이천쌀밥 원이쌀밥",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": "대월면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13573715",
+    "naverDetailTitle": "이천쌀밥 원이쌀밥"
+  },
+  {
+    "targetKey": "place:31927572:c85790b7",
+    "address": "부산 금정구 금정로 59-5 유가네닭갈비",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "금정구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "31927572",
+    "naverDetailTitle": "유가네닭갈비 부산대점"
+  },
+  {
+    "targetKey": "place:1147922867:d61ae30d",
+    "address": "강원 고성군 간성읍 간성로 17",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "고성군",
+      "eupmyeondong": "간성읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1147922867",
+    "naverDetailTitle": "육장갈비 강원고성점"
+  },
+  {
+    "targetKey": "place:19150654:41ba7e0f",
+    "address": "경기 가평군 청평면 잠곡로 33-1",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "가평군",
+      "eupmyeondong": "청평면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "19150654",
+    "naverDetailTitle": "이조참숯갈비정육점"
+  },
+  {
+    "targetKey": "place:18514550:677f1d68",
+    "address": "경기 이천시 마장면 덕평로882번길 2-23 이천쌀밥집",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": "마장면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "18514550",
+    "naverDetailTitle": "민속식당 이천쌀밥집"
+  },
+  {
+    "targetKey": "place:1721266436:39cfbc1b",
+    "address": "서울 용산구 두텁바위로1길 23",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "용산구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1721266436",
+    "naverDetailTitle": "인생아구찜 용산점"
+  },
+  {
+    "targetKey": "place:1373407609:29568ca2",
+    "address": "충북 청주시 흥덕구 비하로 22 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 흥덕구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1373407609",
+    "naverDetailTitle": "일품양평해장국 청주비하점"
+  },
+  {
+    "targetKey": "place:13573733:b9333c35",
+    "address": "경기 이천시 신둔면 경충대로 3134",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": "신둔면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13573733",
+    "naverDetailTitle": "죽기전에 꼭 먹어봐야하는 이천쌀밥 임금님쌀밥집"
+  },
+  {
+    "targetKey": "place:36886619:abc761cb",
+    "address": "부산 수영구 수영성로3번길 7",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "수영구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36886619",
+    "naverDetailTitle": "장수삼"
+  },
+  {
+    "targetKey": "place:37984628:71176a7e",
+    "address": "경기 화성시 만세구 향남읍 3.1만세로 1021 전설의갈비와불쭈꾸미",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "화성시 만세구",
+      "eupmyeondong": "향남읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "37984628",
+    "naverDetailTitle": "전설의갈비와불쭈꾸미 향남본점"
+  },
+  {
+    "targetKey": "place:35609409:da67a115",
+    "address": "충북 충주시 계명대로 24",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "충주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "35609409",
+    "naverDetailTitle": "24시전주명가콩나물국밥 충주칠금점"
+  },
+  {
+    "targetKey": "place:13152081:b0a23e18",
+    "address": "서울 종로구 수표로20길 16-17 전주식당",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "13152081",
+    "naverDetailTitle": "전주식당"
+  },
+  {
+    "targetKey": "place:1497784507:63c26fcf",
+    "address": "경기 고양시 일산동구 장백로 59 1층 101호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산동구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1497784507",
+    "naverDetailTitle": "전주이선생 생선구이"
+  },
+  {
+    "targetKey": "place:1845754019:a4898bb4",
+    "address": "서울 동대문구 망우로 123 휘경메디칼프라자 지하",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "동대문구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1845754019",
+    "naverDetailTitle": "휘경존맛식당"
+  },
+  {
+    "targetKey": "place:35657740:173e115d",
+    "address": "경기 이천시 마장면 서이천로634번길 51",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "이천시",
+      "eupmyeondong": "마장면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "35657740",
+    "naverDetailTitle": "이천 진미쌀밥 한정식"
+  },
+  {
+    "targetKey": "place:33860261:fd04ce5c",
+    "address": "경기 수원시 영통구 아주로 14-5 1층 짚신매운갈비찜",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 영통구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "33860261",
+    "naverDetailTitle": "짚신매운갈비찜 아주대점"
+  },
+  {
+    "targetKey": "place:1071711527:05ac080a",
+    "address": "경기 용인시 수지구 광교마을로 33 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 수지구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1071711527",
+    "naverDetailTitle": "참다운정육식당 광교점"
+  },
+  {
+    "targetKey": "place:1638600010:f2dde1c9",
+    "address": "대구 수성구 상록로 20 1층",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "수성구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1638600010",
+    "naverDetailTitle": "청춘삼겹살 범어본점"
+  },
+  {
+    "targetKey": "place:1242345350:17f17742",
+    "address": "경기 남양주시 순화궁로 339 1층 103호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "남양주시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1242345350",
+    "naverDetailTitle": "춘리마라탕 별내점"
+  },
+  {
+    "targetKey": "place:1997531355:8a33b730",
+    "address": "경기 가평군 설악면 유명로 1609 (신천리) 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "가평군",
+      "eupmyeondong": "설악면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1997531355",
+    "naverDetailTitle": "전주콩나물국밥"
+  },
+  {
+    "targetKey": "place:1984185113:3b61bb0b",
+    "address": "서울 마포구 동교로 187",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "마포구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1984185113",
+    "naverDetailTitle": "키토분식 동교점"
+  },
+  {
+    "targetKey": "place:1053933197:dd23d8bd",
+    "address": "전남광주 진도군 진도읍 남문길 52",
+    "region": {
+      "sido": "전라남도",
+      "sigungu": "진도군",
+      "eupmyeondong": "진도읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1053933197",
+    "naverDetailTitle": "탕화쿵푸마라탕 진도점"
+  },
+  {
+    "targetKey": "place:1176259866:edd40ffc",
+    "address": "경남 양산시 동면 금오16길 100",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "양산시",
+      "eupmyeondong": "동면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1176259866",
+    "naverDetailTitle": "파더스김밥 양산석산점"
+  },
+  {
+    "targetKey": "place:1837818413:e95f44cd",
+    "address": "서울 서초구 방배로 58 1층 101호",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "서초구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1837818413",
+    "naverDetailTitle": "펍앤쿡 방배"
+  },
+  {
+    "targetKey": "place:36655058:dd6fc014",
+    "address": "강원 삼척시 새천년도로 519 풍성한횟집",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "삼척시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "36655058",
+    "naverDetailTitle": "풍성한횟집 삼척"
+  },
+  {
+    "targetKey": "place:1679517716:5ea7d6be",
+    "address": "부산 기장군 정관읍 정관7로 33-3 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "기장군",
+      "eupmyeondong": "정관읍"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1679517716",
+    "naverDetailTitle": "하얼빈샤브샤브 훠궈 양꼬치무한리필"
+  },
+  {
+    "targetKey": "place:1403741180:7e48d989",
+    "address": "강원 원주시 지정면 신지정로 211 201호~205호",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "원주시",
+      "eupmyeondong": "지정면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1403741180",
+    "naverDetailTitle": "한마음정육식당 원주기업도시점"
+  },
+  {
+    "targetKey": "place:1963028090:a109de8d",
+    "address": "서울 동작구 흑석로 115 2층 한신포차",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "동작구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1963028090",
+    "naverDetailTitle": "한신포차 중앙대점"
+  },
+  {
+    "targetKey": "place:1044588978:a68b05da",
+    "address": "서울 금천구 시흥대로141길 71 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "금천구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1044588978",
+    "naverDetailTitle": "한옥집 숯불갈비 서울본점"
+  },
+  {
+    "targetKey": "place:1044588978:a68b05da:duplicate:2",
+    "address": "서울 금천구 시흥대로141길 71 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "금천구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1044588978",
+    "naverDetailTitle": "한옥집 숯불갈비 서울본점"
+  },
+  {
+    "targetKey": "place:35438635:759e145e",
+    "address": "경남 거제시 일운면 지세포해안로 72 1층 해송횟집",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "거제시",
+      "eupmyeondong": "일운면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "35438635",
+    "naverDetailTitle": "거제도해송횟집 지세포본점"
+  },
+  {
+    "targetKey": "place:2036428949:5f77a5e9",
+    "address": "강원 양양군 강현면 해맞이길 42-2 1층",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "양양군",
+      "eupmyeondong": "강현면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "2036428949",
+    "naverDetailTitle": "낙산해신물회"
+  },
+  {
+    "targetKey": "place:1207405592:def4e438",
+    "address": "경북 구미시 인동19길 36-8",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "구미시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1207405592",
+    "naverDetailTitle": "해양산국밥 구미점"
+  },
+  {
+    "targetKey": "place:20101428:309c9c00",
+    "address": "충남 당진시 석문면 석문해안로 128 해오름해물칼국수",
+    "region": {
+      "sido": "충청남도",
+      "sigungu": "당진시",
+      "eupmyeondong": "석문면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "20101428",
+    "naverDetailTitle": "해오름해물칼국수 당진왜목마을본점"
+  },
+  {
+    "targetKey": "place:15533513:a714470a",
+    "address": "경남 진주시 금산면 월아산로 1321",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "진주시",
+      "eupmyeondong": "금산면"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "15533513",
+    "naverDetailTitle": "햇살고운숲"
+  },
+  {
+    "targetKey": "place:1854390204:174f6699",
+    "address": "경기 안산시 단원구 선부광장1로 173 안산라프리모 상가 1동 1층 112호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": "상가"
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1854390204",
+    "naverDetailTitle": "혜화어묵당 안산선부점"
+  },
+  {
+    "targetKey": "place:33158548:36d36955",
+    "address": "경기 안산시 상록구 상록수로 16 103-106호 홍익돈까스",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 상록구",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "33158548",
+    "naverDetailTitle": "홍익돈까스 안산본오점"
+  },
+  {
+    "targetKey": "place:1479645084:5fdbdcf8",
+    "address": "경북 김천시 문당길 92 화화돼지왕갈비",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "김천시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "1479645084",
+    "naverDetailTitle": "화화돼지왕갈비 김천점"
+  },
+  {
+    "targetKey": "id:admin-686b2082707c",
+    "address": "경북 안동시 강남로 287 2층, 3층 통영바다장어",
+    "region": {
+      "sido": "경상북도",
+      "sigungu": "안동시",
+      "eupmyeondong": ""
+    },
+    "updateSource": "github-naver-address-sync",
+    "naverPlaceId": "15375170",
+    "naverDetailTitle": "통영바다장어"
+  },
+  {
+    "targetKey": "id:admin-f1d5b9ddac16",
+    "deleted": true,
+    "deletionReason": "naver-place-id-missing"
+  },
+  {
+    "targetKey": "place:2089807234:30961f15",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2089807234"
+  },
+  {
+    "targetKey": "place:2071931370:26072dc1",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2071931370"
+  },
+  {
+    "targetKey": "place:1559436973:3bf9b3b9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1559436973"
+  },
+  {
+    "targetKey": "place:1426260910:d3a47b5d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1426260910"
+  },
+  {
+    "targetKey": "place:1239506231:f6f80bd8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1239506231"
+  },
+  {
+    "targetKey": "place:20851041:fdda9414",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "20851041"
+  },
+  {
+    "targetKey": "place:66628863:becd08a5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "66628863"
+  },
+  {
+    "targetKey": "place:12004833:8df88df5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "12004833"
+  },
+  {
+    "targetKey": "place:1347637519:8be5b786",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1347637519",
+    "naverDetailTitle": "슈보 카가리"
+  },
+  {
+    "targetKey": "place:11870532:6625e461",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "11870532"
+  },
+  {
+    "targetKey": "place:37290294:66c922f5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "37290294"
+  },
+  {
+    "targetKey": "place:1165137215:5330cd2b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1165137215",
+    "naverDetailTitle": "키친수녹"
+  },
+  {
+    "targetKey": "place:1443919762:5470e4bf",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1443919762"
+  },
+  {
+    "targetKey": "place:1215151657:f0fe7f2c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1215151657",
+    "naverDetailTitle": "고움"
+  },
+  {
+    "targetKey": "place:1127229202:50fe8194",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1127229202"
+  },
+  {
+    "targetKey": "place:2007326152:eb3524f8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2007326152"
+  },
+  {
+    "targetKey": "place:1265204841:2cf39b4d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1265204841"
+  },
+  {
+    "targetKey": "place:1730711062:bd7f10ca",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1730711062"
+  },
+  {
+    "targetKey": "place:1607849727:7c25be15",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1607849727"
+  },
+  {
+    "targetKey": "place:1604136624:c6db5f47",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1604136624",
+    "naverDetailTitle": "두리미가 한식뷔페"
+  },
+  {
+    "targetKey": "place:1023238716:73869120",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1023238716"
+  },
+  {
+    "targetKey": "place:1402116635:992f353a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1402116635"
+  },
+  {
+    "targetKey": "place:18869573:518394de",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "18869573",
+    "naverDetailTitle": "송도갈비 송파가락점"
+  },
+  {
+    "targetKey": "place:35307591:6e242e29",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "35307591"
+  },
+  {
+    "targetKey": "place:1684853841:03162d93",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1684853841"
+  },
+  {
+    "targetKey": "place:1171492340:f8037e62",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1171492340"
+  },
+  {
+    "targetKey": "place:2095094743:53751955",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2095094743",
+    "naverDetailTitle": "죽이야기 천호역점"
+  },
+  {
+    "targetKey": "place:1051499909:a3c89f9b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1051499909"
+  },
+  {
+    "targetKey": "place:1767587751:327c16fe",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1767587751"
+  },
+  {
+    "targetKey": "place:1206024047:a4723c5e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1206024047"
+  },
+  {
+    "targetKey": "place:1476252890:8b1b9f90",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1476252890",
+    "naverDetailTitle": "한상차림 코다리명가 하남미사점"
+  },
+  {
+    "targetKey": "place:1207374158:9fe55270",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1207374158",
+    "naverDetailTitle": "솔솥 미사강변점"
+  },
+  {
+    "targetKey": "place:1838756468:ce060e63",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1838756468",
+    "naverDetailTitle": "바다동태탕솥밥전문점 하남풍산점"
+  },
+  {
+    "targetKey": "place:1839234264:22eb161f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1839234264"
+  },
+  {
+    "targetKey": "place:32190520:b65399e5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "32190520"
+  },
+  {
+    "targetKey": "place:36274717:bac4e4da",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "36274717",
+    "naverDetailTitle": "김가네 대전청사점"
+  },
+  {
+    "targetKey": "place:1788106997:1c6c601b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1788106997"
+  },
+  {
+    "targetKey": "place:1123987425:e3beb657",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1123987425"
+  },
+  {
+    "targetKey": "place:2144091642:1ffb3ff5",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2144091642",
+    "naverDetailTitle": "노란간판 창평국밥"
+  },
+  {
+    "targetKey": "place:1444011125:bc61d02e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1444011125"
+  },
+  {
+    "targetKey": "place:1026147407:b53154ac",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1026147407"
+  },
+  {
+    "targetKey": "place:1954863469:096ab0e6",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1954863469"
+  },
+  {
+    "targetKey": "place:1045896543:6dd9fb56",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1045896543"
+  },
+  {
+    "targetKey": "place:2077268947:63991ee7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2077268947"
+  },
+  {
+    "targetKey": "place:36921036:fcd27356",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "36921036"
+  },
+  {
+    "targetKey": "place:38405256:f0cf36e3",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "38405256"
+  },
+  {
+    "targetKey": "place:1882478660:7ac69d2e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1882478660"
+  },
+  {
+    "targetKey": "place:1663502527:1d26cc41",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1663502527"
+  },
+  {
+    "targetKey": "place:33758079:e5374837",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "33758079",
+    "naverDetailTitle": "뚝섬소금구이"
+  },
+  {
+    "targetKey": "place:11850738:93a7eca6",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "11850738"
+  },
+  {
+    "targetKey": "place:1569566475:cfa50af3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1569566475",
+    "naverDetailTitle": "제주흑돼지"
+  },
+  {
+    "targetKey": "place:1756009890:11c3dc96",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1756009890"
+  },
+  {
+    "targetKey": "place:1303010773:0d15b9fd",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1303010773"
+  },
+  {
+    "targetKey": "place:1543701996:b957d38e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1543701996"
+  },
+  {
+    "targetKey": "place:1367941765:9a10c114",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1367941765"
+  },
+  {
+    "targetKey": "place:1031040819:07c91996",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1031040819"
+  },
+  {
+    "targetKey": "place:1865220506:0403474b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1865220506"
+  },
+  {
+    "targetKey": "place:1657572031:01c8a1ae",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1657572031"
+  },
+  {
+    "targetKey": "place:2043013173:546cd8dc",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2043013173",
+    "naverDetailTitle": "한옥마을 비빔밥&콩나물국밥 뉴코아 광명점"
+  },
+  {
+    "targetKey": "place:30995091:26bc1067",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "30995091",
+    "naverDetailTitle": "돌깨마을맷돌순두부 중계점"
+  },
+  {
+    "targetKey": "place:1697619619:ba0d1af0",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1697619619",
+    "naverDetailTitle": "부산에뜬고등어"
+  },
+  {
+    "targetKey": "place:1168522359:090013bd",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1168522359"
+  },
+  {
+    "targetKey": "place:2061241688:8de3951c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2061241688",
+    "naverDetailTitle": "한옥마을 비빔밥&콩나물국밥 NC 대전유성점"
+  },
+  {
+    "targetKey": "place:18690668:fd32e951",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "18690668"
+  },
+  {
+    "targetKey": "place:1208579269:19c0ed7c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1208579269"
+  },
+  {
+    "targetKey": "place:1467201235:d5cd338c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1467201235",
+    "naverDetailTitle": "갈매숯불꼼장어"
+  },
+  {
+    "targetKey": "place:1456503348:cbd331e6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1456503348",
+    "naverDetailTitle": "바다양푼이동태탕 중화직영점"
+  },
+  {
+    "targetKey": "place:1152993529:7dd59156",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1152993529"
+  },
+  {
+    "targetKey": "place:1490603956:568d1fc9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1490603956"
+  },
+  {
+    "targetKey": "place:1180747020:f95c86da",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1180747020"
+  },
+  {
+    "targetKey": "place:2010645347:08957fb2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2010645347",
+    "naverDetailTitle": "추수"
+  },
+  {
+    "targetKey": "place:1080248132:36070bf6",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1080248132"
+  },
+  {
+    "targetKey": "place:21433628:e112983b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "21433628"
+  },
+  {
+    "targetKey": "place:1363731639:60181574",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1363731639",
+    "naverDetailTitle": "탐라육해 홍대점"
+  },
+  {
+    "targetKey": "place:37486368:0e9523c7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "37486368",
+    "naverDetailTitle": "상암 곱"
+  },
+  {
+    "targetKey": "place:1440839895:1b64cd54",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1440839895"
+  },
+  {
+    "targetKey": "place:19406945:b5f71649",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "19406945"
+  },
+  {
+    "targetKey": "place:37868348:7fce56a3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "37868348",
+    "naverDetailTitle": "도마 서울역점"
+  },
+  {
+    "targetKey": "place:1193015244:16c6ca39",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1193015244",
+    "naverDetailTitle": "원기옥 광화문점"
+  },
+  {
+    "targetKey": "place:2080265956:53252521",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2080265956",
+    "naverDetailTitle": "솔솥 광화문 경복궁 케이트윈점"
+  },
+  {
+    "targetKey": "place:1791880695:5241ff1b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1791880695"
+  },
+  {
+    "targetKey": "place:1256484705:bafbb476",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1256484705",
+    "naverDetailTitle": "이앤김밥&족발 서초본점"
+  },
+  {
+    "targetKey": "place:1925317440:855a4481",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1925317440"
+  },
+  {
+    "targetKey": "place:1121801401:ae320a63",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1121801401",
+    "naverDetailTitle": "사오월 곱창&사오월 간장게장"
+  },
+  {
+    "targetKey": "place:2038143044:cbfb1b1e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2038143044"
+  },
+  {
+    "targetKey": "place:1584826057:08d0cc31",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1584826057"
+  },
+  {
+    "targetKey": "place:1654887334:97515551",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1654887334",
+    "naverDetailTitle": "청와식당"
+  },
+  {
+    "targetKey": "place:2086260466:7913ab66",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2086260466",
+    "naverDetailTitle": "유원솥밥 전민문지점"
+  },
+  {
+    "targetKey": "place:1169151031:848bbe32",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1169151031"
+  },
+  {
+    "targetKey": "place:1749084485:3ca4c613",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1749084485"
+  },
+  {
+    "targetKey": "place:1647714653:a49f2bc4",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1647714653",
+    "naverDetailTitle": "상백"
+  },
+  {
+    "targetKey": "place:1201431167:4188338d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1201431167"
+  },
+  {
+    "targetKey": "place:1154052509:233312b7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1154052509"
+  },
+  {
+    "targetKey": "place:18027322:68873b85",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "18027322",
+    "naverDetailTitle": "참항제주뚝배기"
+  },
+  {
+    "targetKey": "place:11760885:d7ec4728",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "11760885"
+  },
+  {
+    "targetKey": "place:1205011820:8b8d33cb",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1205011820"
+  },
+  {
+    "targetKey": "place:1205741963:a0e6dabf",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1205741963"
+  },
+  {
+    "targetKey": "place:1777859545:1532c17b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1777859545",
+    "naverDetailTitle": "풍로 중문점"
+  },
+  {
+    "targetKey": "place:2001417771:1ae0a88b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2001417771"
+  },
+  {
+    "targetKey": "place:1162351085:ffc6689c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1162351085"
+  },
+  {
+    "targetKey": "place:1261272919:7ee5ab7b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1261272919",
+    "naverDetailTitle": "대장장어 본점"
+  },
+  {
+    "targetKey": "place:1764034445:30481619",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1764034445"
+  },
+  {
+    "targetKey": "place:706630058:85e59f68",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "706630058"
+  },
+  {
+    "targetKey": "place:1072483628:2c997719",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1072483628",
+    "naverDetailTitle": "만장재 IFC"
+  },
+  {
+    "targetKey": "place:1861219502:0fdaabd3",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1861219502"
+  },
+  {
+    "targetKey": "place:1176499812:47c28eeb",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1176499812"
+  },
+  {
+    "targetKey": "place:1490682979:3ee24634",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1490682979",
+    "naverDetailTitle": "여의돈"
+  },
+  {
+    "targetKey": "place:1510824113:6fc8808b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1510824113"
+  },
+  {
+    "targetKey": "place:1566105444:c1fc8bc5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1566105444"
+  },
+  {
+    "targetKey": "place:1024265510:a7fa58de",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1024265510",
+    "naverDetailTitle": "무끼"
+  },
+  {
+    "targetKey": "place:1571809839:e14af8bc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1571809839"
+  },
+  {
+    "targetKey": "place:32389979:620f4659",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "32389979",
+    "naverDetailTitle": "소울갈비 구로점"
+  },
+  {
+    "targetKey": "place:2064112951:bb28da46",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2064112951",
+    "naverDetailTitle": "본우리반상 국회의사당역점"
+  },
+  {
+    "targetKey": "place:1369278994:2eaa10c5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1369278994"
+  },
+  {
+    "targetKey": "place:1022956205:91376d28",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1022956205"
+  },
+  {
+    "targetKey": "place:1136713715:94c3c26d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1136713715"
+  },
+  {
+    "targetKey": "place:2087963117:6db06248",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2087963117"
+  },
+  {
+    "targetKey": "place:1932664335:fe086d50",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1932664335"
+  },
+  {
+    "targetKey": "place:13281717:9e94cd1d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "13281717",
+    "naverDetailTitle": "한숟갈행복"
+  },
+  {
+    "targetKey": "place:1702336413:e98cc200",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1702336413"
+  },
+  {
+    "targetKey": "place:1302313782:c3fd1f1b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1302313782"
+  },
+  {
+    "targetKey": "place:1966616178:8ebcebe9",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1966616178",
+    "naverDetailTitle": "동화고옥 을지로점"
+  },
+  {
+    "targetKey": "place:2011235654:b35b798b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2011235654"
+  },
+  {
+    "targetKey": "place:1220232767:4977a3c7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1220232767",
+    "naverDetailTitle": "스시사카바 논데 종로 을지로점"
+  },
+  {
+    "targetKey": "place:1932058297:acf35440",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1932058297",
+    "naverDetailTitle": "정성자반 신내점본점"
+  },
+  {
+    "targetKey": "place:57519484:938e406a",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "57519484",
+    "naverDetailTitle": "촌놈밥집"
+  },
+  {
+    "targetKey": "place:1941778068:6749d7a1",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1941778068"
+  },
+  {
+    "targetKey": "place:1033542258:cec7dd73",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1033542258"
+  },
+  {
+    "targetKey": "place:1816423664:11c941cc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1816423664"
+  },
+  {
+    "targetKey": "place:1472373613:88037f83",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1472373613",
+    "naverDetailTitle": "모티 신정본점"
+  },
+  {
+    "targetKey": "place:1178699812:45ad0b5c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1178699812"
+  },
+  {
+    "targetKey": "place:34088501:917d9be9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "34088501"
+  },
+  {
+    "targetKey": "place:1384206508:690c0d48",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1384206508"
+  },
+  {
+    "targetKey": "place:1015528800:e2b9f550",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1015528800",
+    "naverDetailTitle": "대구 한식 오마카세 현방"
+  },
+  {
+    "targetKey": "place:1037000702:4878e3af",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1037000702"
+  },
+  {
+    "targetKey": "place:2026000262:19ebec9f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2026000262",
+    "naverDetailTitle": "뜰안집"
+  },
+  {
+    "targetKey": "place:1428394551:da6c4d2f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1428394551",
+    "naverDetailTitle": "향택 본점"
+  },
+  {
+    "targetKey": "place:1347020057:5ab9a48f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1347020057"
+  },
+  {
+    "targetKey": "place:1120498314:358f7430",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1120498314"
+  },
+  {
+    "targetKey": "place:1230594317:fcbfa45f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1230594317"
+  },
+  {
+    "targetKey": "place:1389876569:6760015a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1389876569"
+  },
+  {
+    "targetKey": "place:1588925071:3068833a",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1588925071",
+    "naverDetailTitle": "륜 소중한 인연을 맺는 곳"
+  },
+  {
+    "targetKey": "place:36668253:5b7e83ec",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "36668253",
+    "naverDetailTitle": "동촌 뜨락 개성순두부 & 돌솥밥"
+  },
+  {
+    "targetKey": "place:2082126648:e782c945",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2082126648"
+  },
+  {
+    "targetKey": "place:1388781498:9f74aa1a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1388781498"
+  },
+  {
+    "targetKey": "place:1139930544:cb440fc2",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1139930544"
+  },
+  {
+    "targetKey": "place:1456538327:157ec05d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1456538327",
+    "naverDetailTitle": "아라숯불닭갈비&쭈꾸미 본점"
+  },
+  {
+    "targetKey": "place:1938046385:6bb4dc1a",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1938046385",
+    "naverDetailTitle": "맛찬들왕소금구이 세종새롬점"
+  },
+  {
+    "targetKey": "place:1931449588:53ca7ae4",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1931449588"
+  },
+  {
+    "targetKey": "place:2086211350:78fe2cc6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2086211350",
+    "naverDetailTitle": "바른고기연구소"
+  },
+  {
+    "targetKey": "place:1623940197:09ee39a1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1623940197",
+    "naverDetailTitle": "맛찬들왕소금구이 세종도담점"
+  },
+  {
+    "targetKey": "place:1261505105:78c896cc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1261505105"
+  },
+  {
+    "targetKey": "place:31346715:6c494be6",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "31346715"
+  },
+  {
+    "targetKey": "place:2036704481:45834738",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2036704481"
+  },
+  {
+    "targetKey": "place:1386483676:e440c676",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1386483676"
+  },
+  {
+    "targetKey": "place:1401841486:a431e5ea",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1401841486"
+  },
+  {
+    "targetKey": "place:64507052:c905de7b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "64507052",
+    "naverDetailTitle": "맛또아순대국 3호점"
+  },
+  {
+    "targetKey": "place:1646276827:65100890",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1646276827",
+    "naverDetailTitle": "영종또와 순대국 1호점"
+  },
+  {
+    "targetKey": "place:1424677705:1b2058a3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1424677705",
+    "naverDetailTitle": "모리 해물장"
+  },
+  {
+    "targetKey": "place:1602934108:cb2122fb",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1602934108"
+  },
+  {
+    "targetKey": "place:1344570381:f41728fa",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1344570381",
+    "naverDetailTitle": "하늘정식 구읍뱃터점"
+  },
+  {
+    "targetKey": "place:1316930683:90e67803",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1316930683"
+  },
+  {
+    "targetKey": "place:1877886356:2b94b128",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1877886356"
+  },
+  {
+    "targetKey": "place:2097481542:a72e8647",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2097481542"
+  },
+  {
+    "targetKey": "place:1914176833:f72e88ed",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1914176833"
+  },
+  {
+    "targetKey": "place:1623888599:b7e28807",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1623888599",
+    "naverDetailTitle": "큰맘할매순대국 동암역점"
+  },
+  {
+    "targetKey": "place:1929653206:5343e413",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1929653206"
+  },
+  {
+    "targetKey": "place:2013562547:832f5dd5",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2013562547",
+    "naverDetailTitle": "속초오징어어시장 부천중동현대점"
+  },
+  {
+    "targetKey": "place:1137723396:1c7b9216",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1137723396"
+  },
+  {
+    "targetKey": "place:1065675747:4f0d4c1e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1065675747"
+  },
+  {
+    "targetKey": "place:37468164:bcc09b33",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "37468164",
+    "naverDetailTitle": "동춘옥 일미 동태생태부대찌개"
+  },
+  {
+    "targetKey": "place:37450190:951297ee",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "37450190"
+  },
+  {
+    "targetKey": "place:1413310767:afbe0e4e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1413310767"
+  },
+  {
+    "targetKey": "place:1257478268:9a24e490",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1257478268"
+  },
+  {
+    "targetKey": "place:16535998:4d88cce1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "16535998",
+    "naverDetailTitle": "청어진동태찜동태탕 연수본점"
+  },
+  {
+    "targetKey": "place:1405758047:31ceca9f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1405758047",
+    "naverDetailTitle": "아구담을"
+  },
+  {
+    "targetKey": "place:12020992:23134f93",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "12020992"
+  },
+  {
+    "targetKey": "place:16450637:fa1055c2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "16450637",
+    "naverDetailTitle": "도단가 구월본점"
+  },
+  {
+    "targetKey": "place:1579448159:b8166455",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1579448159"
+  },
+  {
+    "targetKey": "place:1124874875:65798ba8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1124874875"
+  },
+  {
+    "targetKey": "place:1425978809:b9cdbaed",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1425978809"
+  },
+  {
+    "targetKey": "place:13444864:e6fcc2ff",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "13444864"
+  },
+  {
+    "targetKey": "place:1333847300:cae5ddec",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1333847300"
+  },
+  {
+    "targetKey": "place:2063074741:820f36ee",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2063074741"
+  },
+  {
+    "targetKey": "place:1792589404:ea8ea7a7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1792589404",
+    "naverDetailTitle": "500 Internal Server Error"
+  },
+  {
+    "targetKey": "place:32520438:b36ebd59",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "32520438"
+  },
+  {
+    "targetKey": "place:1430652624:938dd524",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1430652624"
+  },
+  {
+    "targetKey": "place:1046132293:81baf11c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1046132293"
+  },
+  {
+    "targetKey": "place:1728734536:3bb6ee40",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1728734536",
+    "naverDetailTitle": "돌담"
+  },
+  {
+    "targetKey": "place:1285967015:4455be9d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1285967015"
+  },
+  {
+    "targetKey": "place:19442736:2d05434e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "19442736"
+  },
+  {
+    "targetKey": "place:1035425052:d776811a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1035425052"
+  },
+  {
+    "targetKey": "place:1398215720:975ba30d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1398215720",
+    "naverDetailTitle": "제주보말 메밀칼국수 수평선본점"
+  },
+  {
+    "targetKey": "place:1912833685:eb249b01",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1912833685",
+    "naverDetailTitle": "최부자 김치 삼겹살"
+  },
+  {
+    "targetKey": "place:1068086906:0bf53423",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1068086906"
+  },
+  {
+    "targetKey": "place:1133314404:6147683b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1133314404"
+  },
+  {
+    "targetKey": "place:1139805341:044e1ba2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1139805341",
+    "naverDetailTitle": "어반가화덕생선구이"
+  },
+  {
+    "targetKey": "place:1272786929:d01a0765",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1272786929",
+    "naverDetailTitle": "몯갈비 함흥냉면"
+  },
+  {
+    "targetKey": "place:1117116347:c5f431ad",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1117116347"
+  },
+  {
+    "targetKey": "place:1496259367:a7bae238",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1496259367",
+    "naverDetailTitle": "대성관 본점"
+  },
+  {
+    "targetKey": "place:1039897199:a230d6ae",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1039897199"
+  },
+  {
+    "targetKey": "place:2031972709:c1b7ad2c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2031972709"
+  },
+  {
+    "targetKey": "place:1079523397:5bc928c8",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1079523397",
+    "naverDetailTitle": "한옥마을 비빔밥&솥밥 롯데몰 수지점"
+  },
+  {
+    "targetKey": "place:1117062478:df806662",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1117062478"
+  },
+  {
+    "targetKey": "place:1731644881:c5337dbc",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1731644881",
+    "naverDetailTitle": "한옥마을 비빔밥&솥밥 동수원뉴코아점"
+  },
+  {
+    "targetKey": "place:1443804619:337e84af",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1443804619",
+    "naverDetailTitle": "화춘연가 호매실본점"
+  },
+  {
+    "targetKey": "place:32971558:1ebc5472",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "32971558"
+  },
+  {
+    "targetKey": "place:11712469:6ccd3c7e",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11712469",
+    "naverDetailTitle": "동명항생선구이"
+  },
+  {
+    "targetKey": "place:1527445060:9dc3fc1f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1527445060",
+    "naverDetailTitle": "온가솥밥 광주상무점"
+  },
+  {
+    "targetKey": "place:1223271424:a841a66c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1223271424"
+  },
+  {
+    "targetKey": "place:2060072696:71fadb25",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2060072696"
+  },
+  {
+    "targetKey": "place:2051175611:10bdb851",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2051175611"
+  },
+  {
+    "targetKey": "place:1548028314:b522f2fe",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1548028314"
+  },
+  {
+    "targetKey": "place:1368533141:7cdfd23b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1368533141",
+    "naverDetailTitle": "추어가명품추어탕"
+  },
+  {
+    "targetKey": "place:1713518705:a1a88ad0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1713518705"
+  },
+  {
+    "targetKey": "place:2072708214:fcfac5e2",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2072708214"
+  },
+  {
+    "targetKey": "place:13014858:09e06a58",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "13014858",
+    "naverDetailTitle": "대광식당"
+  },
+  {
+    "targetKey": "place:1069370912:1e36dad5",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1069370912",
+    "naverDetailTitle": "본앤우480 매월본점"
+  },
+  {
+    "targetKey": "place:1973576011:ad401604",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1973576011"
+  },
+  {
+    "targetKey": "place:1026239614:36ab064d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1026239614",
+    "naverDetailTitle": "뚝배기감자탕 뚝사발 광주본점"
+  },
+  {
+    "targetKey": "place:2027456915:1ad8240c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2027456915"
+  },
+  {
+    "targetKey": "place:37866470:10867ba9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "37866470"
+  },
+  {
+    "targetKey": "place:2051381366:de579f55",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2051381366"
+  },
+  {
+    "targetKey": "place:677321091:49cad4c3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "677321091",
+    "naverDetailTitle": "오늘좋은 본감자탕"
+  },
+  {
+    "targetKey": "place:1792946542:b5eed50c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1792946542"
+  },
+  {
+    "targetKey": "place:2043416173:943acf85",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2043416173"
+  },
+  {
+    "targetKey": "place:1411427488:af6b7f9e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1411427488"
+  },
+  {
+    "targetKey": "place:1092102489:d89b54a3",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1092102489"
+  },
+  {
+    "targetKey": "place:1300411121:57713f8a",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1300411121",
+    "naverDetailTitle": "제주갈치조림 하르방식당"
+  },
+  {
+    "targetKey": "place:1276196415:38c109cc",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1276196415",
+    "naverDetailTitle": "섭섬"
+  },
+  {
+    "targetKey": "place:2087763895:0a19378a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2087763895"
+  },
+  {
+    "targetKey": "place:1548790247:7fdcadd8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1548790247"
+  },
+  {
+    "targetKey": "place:2034423229:572f8094",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2034423229"
+  },
+  {
+    "targetKey": "place:1941010251:ae6c91ed",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1941010251",
+    "naverDetailTitle": "근본있는족발보쌈 둔산시청점"
+  },
+  {
+    "targetKey": "place:1724336802:b00c5d6b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1724336802"
+  },
+  {
+    "targetKey": "place:1397266607:eabe29d7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1397266607"
+  },
+  {
+    "targetKey": "place:1682284021:d576d171",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1682284021"
+  },
+  {
+    "targetKey": "place:1830291310:4c3a1bb1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1830291310",
+    "naverDetailTitle": "숯방한우"
+  },
+  {
+    "targetKey": "place:1110943009:07bb99cc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1110943009"
+  },
+  {
+    "targetKey": "place:1986222720:b10ef044",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1986222720"
+  },
+  {
+    "targetKey": "place:1670007824:1c4ba7b1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1670007824",
+    "naverDetailTitle": "쌈마니 프리미엄 한식뷔페"
+  },
+  {
+    "targetKey": "place:1429516780:ff9c682c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1429516780"
+  },
+  {
+    "targetKey": "place:20144415:c80c5ac2",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "20144415"
+  },
+  {
+    "targetKey": "place:1946610390:bbb8315f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1946610390"
+  },
+  {
+    "targetKey": "place:1674143159:35acdf04",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1674143159"
+  },
+  {
+    "targetKey": "place:1074426004:31af6e3e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1074426004"
+  },
+  {
+    "targetKey": "place:18409276:d818d121",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "18409276",
+    "naverDetailTitle": "이경진우렁쌈밥정식정자점"
+  },
+  {
+    "targetKey": "place:2096750809:a3c5a822",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2096750809",
+    "naverDetailTitle": "샘미솥밥 모란 본점"
+  },
+  {
+    "targetKey": "place:1812180838:055419bc",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1812180838",
+    "naverDetailTitle": "김가네 성남금빛그랑메종점"
+  },
+  {
+    "targetKey": "place:1407535415:f6df98b7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1407535415"
+  },
+  {
+    "targetKey": "place:1631727115:34a073a6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1631727115",
+    "naverDetailTitle": "콩애가 일산본점"
+  },
+  {
+    "targetKey": "place:1134063520:dfa604ca",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1134063520"
+  },
+  {
+    "targetKey": "place:1960918434:bf7c85f1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1960918434",
+    "naverDetailTitle": "신선한추어탕"
+  },
+  {
+    "targetKey": "place:1904707661:bad79ead",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1904707661"
+  },
+  {
+    "targetKey": "place:1064315948:f74fffba",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1064315948",
+    "naverDetailTitle": "목향"
+  },
+  {
+    "targetKey": "place:1133933588:afa09fe3",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1133933588"
+  },
+  {
+    "targetKey": "place:1578125092:9e8ec95d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1578125092"
+  },
+  {
+    "targetKey": "place:1696436629:5f46ca14",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1696436629"
+  },
+  {
+    "targetKey": "place:1792667163:4528ba2b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1792667163"
+  },
+  {
+    "targetKey": "place:1364009997:8c95a3df",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1364009997"
+  },
+  {
+    "targetKey": "place:2064636541:be2caf88",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2064636541"
+  },
+  {
+    "targetKey": "place:1470632498:29dc3f06",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1470632498",
+    "naverDetailTitle": "대대리 잔치국수"
+  },
+  {
+    "targetKey": "place:2056225499:7a6979f3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2056225499",
+    "naverDetailTitle": "황금코다리 일산성사플러스점"
+  },
+  {
+    "targetKey": "place:1353624059:3e0fef48",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1353624059"
+  },
+  {
+    "targetKey": "place:1232733146:dc22933b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1232733146"
+  },
+  {
+    "targetKey": "place:1911713839:6d5810dc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1911713839"
+  },
+  {
+    "targetKey": "place:1647867978:a8819510",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1647867978",
+    "naverDetailTitle": "낙산 바람꽃해녀마을"
+  },
+  {
+    "targetKey": "place:1085789838:87c5d3bf",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1085789838",
+    "naverDetailTitle": "보글보글 이가네"
+  },
+  {
+    "targetKey": "place:2008461394:45f3e857",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2008461394"
+  },
+  {
+    "targetKey": "place:1209058429:d6db5ad3",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1209058429"
+  },
+  {
+    "targetKey": "place:1396088235:dd83cada",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1396088235",
+    "naverDetailTitle": "담원 정육식당 & 장어구이"
+  },
+  {
+    "targetKey": "place:1182583569:eeabf610",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1182583569"
+  },
+  {
+    "targetKey": "place:1179012173:a1dc02ac",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1179012173",
+    "naverDetailTitle": "참한식당"
+  },
+  {
+    "targetKey": "place:1355681841:ae7f3eb4",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1355681841",
+    "naverDetailTitle": "리플렛 솥밥 & 도시락"
+  },
+  {
+    "targetKey": "place:1228133585:08d6bb01",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1228133585"
+  },
+  {
+    "targetKey": "place:1639429570:97b45d4d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1639429570"
+  },
+  {
+    "targetKey": "place:1244789040:13958a8c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1244789040"
+  },
+  {
+    "targetKey": "place:1836833036:8b92b736",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1836833036",
+    "naverDetailTitle": "동천 돌판오리"
+  },
+  {
+    "targetKey": "place:1498955823:2d0e4840",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1498955823"
+  },
+  {
+    "targetKey": "place:97196250:ee133d2b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "97196250"
+  },
+  {
+    "targetKey": "place:1643316931:efa64b67",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1643316931"
+  },
+  {
+    "targetKey": "place:1607860165:0cbd2d81",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1607860165",
+    "naverDetailTitle": "소로리솥밥 문화제조창직영점"
+  },
+  {
+    "targetKey": "place:1794164184:2bb9769a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1794164184"
+  },
+  {
+    "targetKey": "place:2052940391:b3215083",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2052940391",
+    "naverDetailTitle": "양사부양꼬치 용인본점"
+  },
+  {
+    "targetKey": "place:1516720483:cd0b37a7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1516720483"
+  },
+  {
+    "targetKey": "place:1461920470:3e34d2ad",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1461920470",
+    "naverDetailTitle": "제주돔베옥 능동직영점"
+  },
+  {
+    "targetKey": "place:1810479544:6df7b809",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1810479544"
+  },
+  {
+    "targetKey": "place:1247097842:afa5df3d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1247097842"
+  },
+  {
+    "targetKey": "place:1437593726:5e08c924",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1437593726"
+  },
+  {
+    "targetKey": "place:1170469898:4c869550",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1170469898"
+  },
+  {
+    "targetKey": "place:1198481856:6311ea2b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1198481856",
+    "naverDetailTitle": "어보 커넥트현대점"
+  },
+  {
+    "targetKey": "place:2009424421:be715537",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2009424421"
+  },
+  {
+    "targetKey": "place:1193197203:36ab1bac",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1193197203"
+  },
+  {
+    "targetKey": "place:1690739297:9c24b9d6",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1690739297"
+  },
+  {
+    "targetKey": "place:1560437314:b00167b9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1560437314"
+  },
+  {
+    "targetKey": "place:1013462675:a8a0131c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1013462675"
+  },
+  {
+    "targetKey": "place:1580218495:5c5b04bf",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1580218495"
+  },
+  {
+    "targetKey": "place:1807344337:05aa7633",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1807344337",
+    "naverDetailTitle": "본구이캠프"
+  },
+  {
+    "targetKey": "place:21044465:3d5845f5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "21044465"
+  },
+  {
+    "targetKey": "place:1445931617:bea3f079",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1445931617",
+    "naverDetailTitle": "미나리 청주본점"
+  },
+  {
+    "targetKey": "place:1334846593:3df50d11",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1334846593"
+  },
+  {
+    "targetKey": "place:17405172:b390e84f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "17405172"
+  },
+  {
+    "targetKey": "place:1309912638:28655712",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1309912638",
+    "naverDetailTitle": "행복한 참 코다리&철판쭈꾸미&손냉면"
+  },
+  {
+    "targetKey": "place:1758675534:605fcfe2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1758675534",
+    "naverDetailTitle": "밀밭칼국수 오송점"
+  },
+  {
+    "targetKey": "place:1993965768:4bd46689",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1993965768"
+  },
+  {
+    "targetKey": "place:1174398004:2a3c1c69",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1174398004"
+  },
+  {
+    "targetKey": "place:1089279308:9a2ac4ae",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1089279308",
+    "naverDetailTitle": "종가닭칼국수"
+  },
+  {
+    "targetKey": "place:1186106442:a1b44bfd",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1186106442"
+  },
+  {
+    "targetKey": "place:1703840927:609c1500",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1703840927",
+    "naverDetailTitle": "동네생삼겹살"
+  },
+  {
+    "targetKey": "place:1794105529:335fc5d9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1794105529"
+  },
+  {
+    "targetKey": "place:1031466239:70fdbfba",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1031466239"
+  },
+  {
+    "targetKey": "place:1616138329:b4b29bc7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1616138329"
+  },
+  {
+    "targetKey": "place:1555800431:01f12438",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1555800431"
+  },
+  {
+    "targetKey": "place:2030967684:9211a689",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2030967684",
+    "naverDetailTitle": "우몽블랙 안양평촌점"
+  },
+  {
+    "targetKey": "place:1622082322:36e0df7f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1622082322"
+  },
+  {
+    "targetKey": "place:1696221749:d1e8fb47",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1696221749"
+  },
+  {
+    "targetKey": "place:1454039958:75bbf45b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1454039958"
+  },
+  {
+    "targetKey": "place:1306506999:5d8b378e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1306506999"
+  },
+  {
+    "targetKey": "place:1215306366:509a9039",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1215306366"
+  },
+  {
+    "targetKey": "place:1250525157:83886a4b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1250525157",
+    "naverDetailTitle": "장덕풍천장어 서면직영점"
+  },
+  {
+    "targetKey": "place:12793830:da50c861",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "12793830"
+  },
+  {
+    "targetKey": "place:2074187644:70c8e871",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2074187644"
+  },
+  {
+    "targetKey": "place:1406520406:7e03f9fd",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1406520406"
+  },
+  {
+    "targetKey": "place:1008650427:41dad25e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1008650427"
+  },
+  {
+    "targetKey": "place:1161981268:253be4b5",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1161981268",
+    "naverDetailTitle": "신화장어.추어탕"
+  },
+  {
+    "targetKey": "place:38710324:5961bdbe",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "38710324"
+  },
+  {
+    "targetKey": "place:1680544887:03f661ec",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1680544887",
+    "naverDetailTitle": "오늘은 코다리"
+  },
+  {
+    "targetKey": "place:1633349903:345ef0a0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1633349903"
+  },
+  {
+    "targetKey": "place:1865503200:ba0566b4",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1865503200"
+  },
+  {
+    "targetKey": "place:1912424405:bf0863aa",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1912424405"
+  },
+  {
+    "targetKey": "place:1129374722:572e043c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1129374722"
+  },
+  {
+    "targetKey": "place:1654103623:40328af0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1654103623"
+  },
+  {
+    "targetKey": "place:1063898031:3a75614e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1063898031"
+  },
+  {
+    "targetKey": "place:18195856:865561d9",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "18195856",
+    "naverDetailTitle": "진지"
+  },
+  {
+    "targetKey": "place:1769073655:aa6020f7",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1769073655"
+  },
+  {
+    "targetKey": "place:1585446014:a5a36656",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1585446014"
+  },
+  {
+    "targetKey": "place:1266608521:03c8eb51",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1266608521"
+  },
+  {
+    "targetKey": "place:1923062804:798f340e",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1923062804",
+    "naverDetailTitle": "박서방네코다리 양념 제조장"
+  },
+  {
+    "targetKey": "place:1317541698:3e32ee46",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1317541698"
+  },
+  {
+    "targetKey": "place:1049913249:8a9c7230",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1049913249"
+  },
+  {
+    "targetKey": "place:1750908000:956c7f3b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1750908000",
+    "naverDetailTitle": "본뚝집 검단본점"
+  },
+  {
+    "targetKey": "place:1274366402:f98a7464",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1274366402"
+  },
+  {
+    "targetKey": "place:1037628349:0f47e646",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1037628349"
+  },
+  {
+    "targetKey": "place:1447365122:8ba1886f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1447365122"
+  },
+  {
+    "targetKey": "place:1658716743:05891dbb",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1658716743",
+    "naverDetailTitle": "연탄 위에 고등어 이섭"
+  },
+  {
+    "targetKey": "place:1251629175:b87d7681",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1251629175"
+  },
+  {
+    "targetKey": "place:1858416420:d0387ff0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1858416420"
+  },
+  {
+    "targetKey": "place:1375064789:10a1c916",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1375064789"
+  },
+  {
+    "targetKey": "place:1952908927:97f9046d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1952908927"
+  },
+  {
+    "targetKey": "place:38229137:73cbfb8e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "38229137"
+  },
+  {
+    "targetKey": "place:1570861862:d0e28094",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1570861862"
+  },
+  {
+    "targetKey": "place:1394013954:0f2eeb43",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1394013954"
+  },
+  {
+    "targetKey": "place:1581957769:ed48e54a",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1581957769"
+  },
+  {
+    "targetKey": "place:1308592258:cb5b7e6e",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1308592258"
+  },
+  {
+    "targetKey": "place:1476276581:21308409",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1476276581"
+  },
+  {
+    "targetKey": "place:1802422449:ad50c888",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1802422449"
+  },
+  {
+    "targetKey": "place:1205266348:bedcfc3f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1205266348"
+  },
+  {
+    "targetKey": "place:1000986341:44093ff8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1000986341"
+  },
+  {
+    "targetKey": "place:1662190387:56821776",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1662190387"
+  },
+  {
+    "targetKey": "place:1086994976:39e232a5",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1086994976"
+  },
+  {
+    "targetKey": "place:1101718640:0f7e87a2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1101718640",
+    "naverDetailTitle": "돌닭 본점"
+  },
+  {
+    "targetKey": "place:1465338858:467d6a90",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1465338858"
+  },
+  {
+    "targetKey": "place:1468537217:cac7936c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1468537217"
+  },
+  {
+    "targetKey": "place:2059225716:ce867395",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "2059225716"
+  },
+  {
+    "targetKey": "place:1503502402:cba90a53",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1503502402",
+    "naverDetailTitle": "거북이동네 부산수영점"
+  },
+  {
+    "targetKey": "place:1505116767:95b7bb3e",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1505116767",
+    "naverDetailTitle": "1등 뼈해장국 국수 밀면 밥집 술집"
+  },
+  {
+    "targetKey": "place:1909044312:9ce0961d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1909044312"
+  },
+  {
+    "targetKey": "place:1089761140:285fa7c6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1089761140",
+    "naverDetailTitle": "고담현불고기 해운대센텀시티 본점"
+  },
+  {
+    "targetKey": "place:1675819864:e7c31da8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1675819864"
+  },
+  {
+    "targetKey": "place:1800654816:29322dca",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1800654816"
+  },
+  {
+    "targetKey": "place:1990158334:bedf71a2",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1990158334"
+  },
+  {
+    "targetKey": "place:1593525553:f44097bc",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1593525553"
+  },
+  {
+    "targetKey": "place:1996156791:154b5779",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1996156791"
+  },
+  {
+    "targetKey": "place:1868164703:c8fb1c94",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1868164703"
+  },
+  {
+    "targetKey": "place:1080882674:a3dd70b0",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1080882674",
+    "naverDetailTitle": "양반댁 멸치쌈밥/생선구이"
+  },
+  {
+    "targetKey": "place:1149406470:a93897de",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1149406470"
+  },
+  {
+    "targetKey": "place:1023684508:718f1b02",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1023684508"
+  },
+  {
+    "targetKey": "place:1995289862:d25fae90",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1995289862",
+    "naverDetailTitle": "불고기공방 북구청점"
+  },
+  {
+    "targetKey": "place:1248276495:db04c2b9",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1248276495"
+  },
+  {
+    "targetKey": "place:11854024:6aa38ccb",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11854024",
+    "naverDetailTitle": "온당골 별채"
+  },
+  {
+    "targetKey": "place:1527748657:44637510",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1527748657",
+    "naverDetailTitle": "칠암만장 기장본점"
+  },
+  {
+    "targetKey": "place:1709056007:5b93277d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1709056007"
+  },
+  {
+    "targetKey": "place:1033727610:16ba8f1c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1033727610",
+    "naverDetailTitle": "곰내재468"
+  },
+  {
+    "targetKey": "place:1695808935:0afe8205",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1695808935"
+  },
+  {
+    "targetKey": "place:1909650798:19ea054c",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1909650798"
+  },
+  {
+    "targetKey": "place:1379838173:86f7d4d6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1379838173",
+    "naverDetailTitle": "성채숯불구이신탄별관"
+  },
+  {
+    "targetKey": "place:1767053442:1af8bb37",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1767053442"
+  },
+  {
+    "targetKey": "place:1353793709:340403e8",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1353793709"
+  },
+  {
+    "targetKey": "place:1842812272:33a0248f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1842812272",
+    "naverDetailTitle": "가마솥 사골 손칼국수"
+  },
+  {
+    "targetKey": "place:16511669:4828815b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "16511669",
+    "naverDetailTitle": "가원 한우소머리곰탕 해장국"
+  },
+  {
+    "targetKey": "place:33788282:ef6da497",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "33788282",
+    "naverDetailTitle": "가장맛있는족발 안동옥동점"
+  },
+  {
+    "targetKey": "place:36779192:b169bef8",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "36779192",
+    "naverDetailTitle": "가장맛있는족발 경복궁역점"
+  },
+  {
+    "targetKey": "place:1419570387:5cf09640",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1419570387"
+  },
+  {
+    "targetKey": "place:11710588:3d9943fc",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11710588",
+    "naverDetailTitle": "고궁 전주본점"
+  },
+  {
+    "targetKey": "place:38009154:9729a914",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "38009154",
+    "naverDetailTitle": "꾸워"
+  },
+  {
+    "targetKey": "place:16851214:ac98595f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "16851214",
+    "naverDetailTitle": "고향집칼국수"
+  },
+  {
+    "targetKey": "place:1980067074:814b4c95",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1980067074"
+  },
+  {
+    "targetKey": "place:21460605:d4ff9198",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "21460605",
+    "naverDetailTitle": "길손손칼국수"
+  },
+  {
+    "targetKey": "place:1932220406:f8b68a5d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1932220406",
+    "naverDetailTitle": "남해정희선칼국수"
+  },
+  {
+    "targetKey": "place:1891846826:5af07dad",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1891846826"
+  },
+  {
+    "targetKey": "place:1038783370:7dbcca58",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1038783370",
+    "naverDetailTitle": "내담 의정부점"
+  },
+  {
+    "targetKey": "place:1462753321:6b658c2c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1462753321",
+    "naverDetailTitle": "너랑대게랑횟집"
+  },
+  {
+    "targetKey": "place:821605947:7bcfb632",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "821605947",
+    "naverDetailTitle": "다복정식부페"
+  },
+  {
+    "targetKey": "place:19013426:bbdb55f5",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "19013426",
+    "naverDetailTitle": "대부도바지락칼국수"
+  },
+  {
+    "targetKey": "place:1183914201:27c96770",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1183914201",
+    "naverDetailTitle": "도리도리닭도리탕 경주점"
+  },
+  {
+    "targetKey": "place:1584447388:ef7885a7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1584447388",
+    "naverDetailTitle": "둥이네 칼국수"
+  },
+  {
+    "targetKey": "place:1559602117:8810e6fe",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1559602117",
+    "naverDetailTitle": "돼지공탕 하우 성수본점"
+  },
+  {
+    "targetKey": "place:543748786:ab838e40",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "543748786",
+    "naverDetailTitle": "두끼 양산물금점"
+  },
+  {
+    "targetKey": "place:1393994520:0ac92c0b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1393994520",
+    "naverDetailTitle": "두끼 부산화명점"
+  },
+  {
+    "targetKey": "place:1720293609:7f0bbe28",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1720293609",
+    "naverDetailTitle": "등촌샤브칼국수 포남점"
+  },
+  {
+    "targetKey": "place:1153651253:be893032",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1153651253",
+    "naverDetailTitle": "로봇김밥 거제수월점"
+  },
+  {
+    "targetKey": "place:1092551898:cd577c42",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1092551898"
+  },
+  {
+    "targetKey": "place:34268882:f69b8c5f",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "34268882"
+  },
+  {
+    "targetKey": "place:11678336:b24c8363",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11678336",
+    "naverDetailTitle": "THE 방파제"
+  },
+  {
+    "targetKey": "place:11869994:3e765073",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11869994",
+    "naverDetailTitle": "백담폭포송어횟집"
+  },
+  {
+    "targetKey": "place:1631170459:f7c38be1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1631170459",
+    "naverDetailTitle": "범포차"
+  },
+  {
+    "targetKey": "place:1644067676:9281861d",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1644067676"
+  },
+  {
+    "targetKey": "place:1688150224:f014db6a",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1688150224",
+    "naverDetailTitle": "북창동순두부 공덕점"
+  },
+  {
+    "targetKey": "place:11582901:809476ab",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "11582901",
+    "naverDetailTitle": "장충동B&F 용원점"
+  },
+  {
+    "targetKey": "place:1421031931:5de4ec5c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1421031931",
+    "naverDetailTitle": "사쿠라스시 식사점"
+  },
+  {
+    "targetKey": "place:1823823131:971716de",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1823823131"
+  },
+  {
+    "targetKey": "place:1929639355:a1c83925",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1929639355",
+    "naverDetailTitle": "서울왕족발"
+  },
+  {
+    "targetKey": "place:1664078497:289a69d0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1664078497"
+  },
+  {
+    "targetKey": "place:2012132833:efc1fbe7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "2012132833",
+    "naverDetailTitle": "이문면옥"
+  },
+  {
+    "targetKey": "place:1694387587:2914843b",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1694387587",
+    "naverDetailTitle": "스시스테이션 문성 직영본점"
+  },
+  {
+    "targetKey": "place:1323967765:67d0edac",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1323967765"
+  },
+  {
+    "targetKey": "place:1942319559:4cab094b",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1942319559"
+  },
+  {
+    "targetKey": "place:1587015022:6a330c3f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1587015022",
+    "naverDetailTitle": "아리랑명품추어탕"
+  },
+  {
+    "targetKey": "place:1882104293:f3217bea",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1882104293",
+    "naverDetailTitle": "안동장터소고기국밥 안산본점"
+  },
+  {
+    "targetKey": "place:1169773632:75d46cfa",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1169773632"
+  },
+  {
+    "targetKey": "place:15246115:662d27f1",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "15246115",
+    "naverDetailTitle": "용강막썰어회"
+  },
+  {
+    "targetKey": "place:20006013:e3b2ac62",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "20006013",
+    "naverDetailTitle": "우래돼지국밥"
+  },
+  {
+    "targetKey": "place:37663727:ce3140c2",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "37663727",
+    "naverDetailTitle": "일식우마미"
+  },
+  {
+    "targetKey": "place:1267420142:735d97c0",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1267420142"
+  },
+  {
+    "targetKey": "place:1873590222:1ca7471e",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1873590222",
+    "naverDetailTitle": "자담치킨 울산태화점"
+  },
+  {
+    "targetKey": "place:1625602691:0e068bd6",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1625602691",
+    "naverDetailTitle": "최옥선 장금이네"
+  },
+  {
+    "targetKey": "place:1744647384:c8031b76",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1744647384",
+    "naverDetailTitle": "사가네숯불구이"
+  },
+  {
+    "targetKey": "place:15116302:3bb4bdd3",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "15116302",
+    "naverDetailTitle": "선남참숯갈비식당"
+  },
+  {
+    "targetKey": "place:37249235:6bdf994c",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "37249235",
+    "naverDetailTitle": "청록장어"
+  },
+  {
+    "targetKey": "place:1654887334:9c5ccfaa",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1654887334",
+    "naverDetailTitle": "청와식당"
+  },
+  {
+    "targetKey": "place:1427312249:56f87dbb",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1427312249",
+    "naverDetailTitle": "청춘손칼국수"
+  },
+  {
+    "targetKey": "place:1427312249:ca3e3e9d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1427312249",
+    "naverDetailTitle": "청춘손칼국수"
+  },
+  {
+    "targetKey": "place:1099998705:39b186d1",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1099998705"
+  },
+  {
+    "targetKey": "place:13429192:fb325ecf",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "13429192"
+  },
+  {
+    "targetKey": "place:1146331402:18e43799",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1146331402",
+    "naverDetailTitle": "품육 초지점"
+  },
+  {
+    "targetKey": "place:1370918349:faaaf784",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1370918349",
+    "naverDetailTitle": "풍전솥밥&풍전커피"
+  },
+  {
+    "targetKey": "place:1370918349:6328f73f",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1370918349",
+    "naverDetailTitle": "풍전솥밥&풍전커피"
+  },
+  {
+    "targetKey": "place:1113823593:e20fb698",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1113823593",
+    "naverDetailTitle": "우리할매떡볶이 위례점"
+  },
+  {
+    "targetKey": "place:1083696369:7075f924",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1083696369"
+  },
+  {
+    "targetKey": "place:1236943633:1ae5ff85",
+    "deleted": true,
+    "deletionReason": "naver-place-not-found",
+    "naverPlaceId": "1236943633"
+  },
+  {
+    "targetKey": "place:1627914140:9863e06d",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "1627914140",
+    "naverDetailTitle": "화분회집"
+  },
+  {
+    "targetKey": "place:15148170:0fc257b7",
+    "deleted": true,
+    "deletionReason": "naver-place-title-mismatch",
+    "naverPlaceId": "15148170",
+    "naverDetailTitle": "대진어촌계활어회센타"
+  }
+]

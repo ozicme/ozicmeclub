@@ -2,6 +2,7 @@ const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
+const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
 const FETCH_TIMEOUT_MS = 8000;
 const SEOUL_SIDO = "서울특별시";
 const DEFAULT_SORT = "name_asc";
@@ -272,9 +273,9 @@ const loadRestaurantSource = async (sourceUrl, optional = false) => {
   return value;
 };
 
-const mergeRestaurantOverrides = (baseStores, adminStores, overrides) => {
+const mergeRestaurantOverrides = (baseStores, adminStores, overrides, cleanupOverrides = []) => {
   const overrideMap = new Map(
-    overrides
+    [...overrides, ...cleanupOverrides]
       .filter((item) => item && item.targetKey)
       .map((item) => [String(item.targetKey), item])
   );
@@ -282,31 +283,35 @@ const mergeRestaurantOverrides = (baseStores, adminStores, overrides) => {
   return [
     ...baseStores.map((item) => ({ ...item, dataSource: "base" })),
     ...adminStores.map((item) => ({ ...item, dataSource: "admin" })),
-  ].map((item) => {
-    const baseKey = restaurantTargetKey(item);
-    const occurrence = (occurrences.get(baseKey) || 0) + 1;
-    occurrences.set(baseKey, occurrence);
-    const targetKey = occurrence === 1 ? baseKey : `${baseKey}:duplicate:${occurrence}`;
-    const override = overrideMap.get(targetKey);
-    if (!override) return { ...item, targetKey };
-    return {
-      ...item,
-      ...override,
-      id: item.id || override.id,
-      targetKey,
-      dataSource: item.dataSource,
-      region: { ...(item.region || {}), ...(override.region || {}) },
-    };
-  });
+  ]
+    .map((item) => {
+      const baseKey = restaurantTargetKey(item);
+      const occurrence = (occurrences.get(baseKey) || 0) + 1;
+      occurrences.set(baseKey, occurrence);
+      const targetKey = occurrence === 1 ? baseKey : `${baseKey}:duplicate:${occurrence}`;
+      const override = overrideMap.get(targetKey);
+      if (!override) return { ...item, targetKey };
+      if (override.deleted === true) return null;
+      return {
+        ...item,
+        ...override,
+        id: item.id || override.id,
+        targetKey,
+        dataSource: item.dataSource,
+        region: { ...(item.region || {}), ...(override.region || {}) },
+      };
+    })
+    .filter(Boolean);
 };
 
 const loadMergedRestaurantRows = async () => {
-  const [baseStores, adminStores, overrides] = await Promise.all([
+  const [baseStores, adminStores, overrides, cleanupOverrides] = await Promise.all([
     loadRestaurantSource(DATA_URL),
     loadRestaurantSource(ADMIN_DATA_URL, true),
     loadRestaurantSource(OVERRIDE_DATA_URL, true),
+    loadRestaurantSource(CLEANUP_DATA_URL, true),
   ]);
-  return mergeRestaurantOverrides(baseStores, adminStores, overrides);
+  return mergeRestaurantOverrides(baseStores, adminStores, overrides, cleanupOverrides);
 };
 
 const normalizeSido = (value) => {

@@ -28,6 +28,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BASE_CSV = REPO_ROOT / "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
 DEFAULT_ADMIN_DATA = REPO_ROOT / "data" / "admin-restaurants.json"
 DEFAULT_OUTPUT = REPO_ROOT / "data" / "restaurant-overrides.json"
+NAVER_CLEANUP_FILENAME = "naver-place-cleanup-2026-08-10.json"
 HTML_TAG_NAMES = (
     "a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|"
     "button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|"
@@ -223,8 +224,12 @@ def load_targets(
         targets[key] = record
 
     overrides = load_json_list(override_output)
-    for override in overrides:
+
+    def apply_override(override: dict[str, Any]) -> None:
         key = clean_text(override.get("targetKey"))
+        if override.get("deleted") is True:
+            targets.pop(key, None)
+            return
         if key in targets:
             base = targets[key]
             targets[key] = {
@@ -234,6 +239,11 @@ def load_targets(
                 "targetKey": key,
                 "source": override.get("source") or base.get("source"),
             }
+
+    for override in overrides:
+        apply_override(override)
+    for override in load_json_list(override_output.with_name(NAVER_CLEANUP_FILENAME)):
+        apply_override(override)
     return targets, overrides
 
 

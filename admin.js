@@ -6,6 +6,7 @@ const BASE_DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
+const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
 const imageUrlTools = globalThis.OzicmeImageUrls;
 const EDIT_CSV_HEADERS = [
@@ -216,27 +217,31 @@ const loadCatalog = () => {
       }),
       loadOptionalJson(ADMIN_DATA_URL),
       loadOptionalJson(OVERRIDE_DATA_URL),
-    ]).then(([content, adminRows, overrides]) => {
+      loadOptionalJson(CLEANUP_DATA_URL),
+    ]).then(([content, adminRows, overrides, cleanupOverrides]) => {
         const overrideMap = new Map(
-          overrides
+          [...overrides, ...cleanupOverrides]
             .filter((item) => item && item.targetKey)
             .map((item) => [String(item.targetKey), item])
         );
         const records = assignUniqueTargetKeys([
           ...csvToObjects(content).map((row) => catalogRecord(row, "base")),
           ...adminRows.map((row) => catalogRecord(row, "admin")),
-        ]).map((record) => {
-          const override = overrideMap.get(record.targetKey);
-          if (!override) return record;
-          return {
-            ...record,
-            ...override,
-            id: record.id,
-            source: record.source,
-            targetKey: record.targetKey,
-            region: { ...record.region, ...(override.region || {}) },
-          };
-        });
+        ])
+          .map((record) => {
+            const override = overrideMap.get(record.targetKey);
+            if (!override) return record;
+            if (override.deleted === true) return null;
+            return {
+              ...record,
+              ...override,
+              id: record.id,
+              source: record.source,
+              targetKey: record.targetKey,
+              region: { ...record.region, ...(override.region || {}) },
+            };
+          })
+          .filter(Boolean);
         const byUrl = new Map();
         const byPlaceId = new Map();
         records.forEach((record) => {
