@@ -1,0 +1,66 @@
+name: 검증 완료 네이버 주소 반영
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/apply-verified-address-fixes.yml"
+      - "data/verified-address-fixes-2026-08-10.json"
+      - "scripts/apply_verified_address_fixes.py"
+      - "scripts/test_apply_verified_address_fixes.py"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-data-write
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    name: 감사 통과 주소 22건만 반영
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 주소 전용 반영 로직 테스트
+        run: >-
+          python -m unittest
+          scripts/test_image_urls.py
+          scripts/test_add_restaurants.py
+          scripts/test_update_restaurants.py
+          scripts/test_audit_restaurant_data.py
+          scripts/test_sync_naver_addresses.py
+          scripts/test_apply_verified_address_fixes.py
+
+      - name: 검증된 주소와 지역만 반영
+        run: >-
+          python scripts/apply_verified_address_fixes.py
+          --fixes data/verified-address-fixes-2026-08-10.json
+
+      - name: 변경 범위 확인
+        run: |
+          python -m json.tool data/restaurant-overrides.json > /dev/null
+          git diff --check
+          changed_files="$(git diff --name-only)"
+          if [ "$changed_files" != "data/restaurant-overrides.json" ]; then
+            echo "예상 밖 파일이 변경되었습니다: $changed_files" >&2
+            exit 1
+          fi
+
+      - name: 사이트 데이터 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/restaurant-overrides.json
+          git commit -m "전체 감사 통과 네이버 주소 22건 반영"
+          git push origin HEAD:main

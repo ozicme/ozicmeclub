@@ -1,0 +1,539 @@
+{
+  "auditRunId": "31345813442",
+  "auditArtifactId": "9048342577",
+  "auditHeadSha": "e28ce203f8e0b6d9142d4baac405faf2cb0b8658",
+  "generatedAt": "2026-08-10T02:12:12.654033+00:00",
+  "description": "두 번 검색, 동일 Place ID 상세, 상호·주소·메뉴 교차 검증을 통과한 미검증 주소 전용 수정",
+  "fixes": [
+    {
+      "targetKey": "place:1555856692:f9a0aebe",
+      "name": "믿음직화 NC백화점 수원터미널점",
+      "placeId": "1555856692",
+      "currentAddress": "인천 연수구 앵고개로87번길 44-3",
+      "address": "경기도 수원시 권선구 경수대로 270 NC백화점 수원터미널점 5층",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "수원시 권선구",
+        "eupmyeondong": "권선동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "수원시 권선구",
+        "eupmyeondong": "권선동"
+      },
+      "naverDetailTitle": "믿음직화 NC백화점 수원터미널점",
+      "naverDetailAddress": "경기 수원시 권선구 경수대로 270 NC백화점 수원터미널점 5층",
+      "menuMatched": true,
+      "menuCoverage": 0.8,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:37842503:460ab364",
+      "name": "연동대게회타운 연동본점",
+      "placeId": "37842503",
+      "currentAddress": "인천 남동구 논고개로123번길 17 아이플렉스건물 1층 죽이야기",
+      "address": "제주특별자치도 제주시 신대로 125",
+      "region": {
+        "sido": "제주특별자치도",
+        "sigungu": "제주시",
+        "eupmyeondong": "연동"
+      },
+      "auditRegion": {
+        "sido": "제주특별자치도",
+        "sigungu": "제주시",
+        "eupmyeondong": "연동"
+      },
+      "naverDetailTitle": "연동대게회타운 연동본점",
+      "naverDetailAddress": "제주 제주시 신대로 125",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1797565882:15444dbd",
+      "name": "물꽁오리 부평점",
+      "placeId": "1797565882",
+      "currentAddress": "인천 서구 장고개로 319 진주아파트 5단지 상가 1층 금강산추어탕",
+      "address": "인천광역시 부평구 부평북로 339 1층",
+      "region": {
+        "sido": "인천광역시",
+        "sigungu": "부평구",
+        "eupmyeondong": "갈산동"
+      },
+      "auditRegion": {
+        "sido": "인천광역시",
+        "sigungu": "부평구",
+        "eupmyeondong": "갈산동"
+      },
+      "naverDetailTitle": "물꽁오리 부평점",
+      "naverDetailAddress": "인천 부평구 부평북로 339 1층",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1323106458:a2ddda51",
+      "name": "노걸대감자탕 인계점",
+      "placeId": "1323106458",
+      "currentAddress": "인천 계양구 계양문화로59번길 1 유니온프라자 4층 403호",
+      "address": "경기도 수원시 팔달구 인계로124번길 9 1층 102, 103, 104호",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "수원시 팔달구",
+        "eupmyeondong": "인계동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "수원시 팔달구",
+        "eupmyeondong": "인계동"
+      },
+      "naverDetailTitle": "노걸대감자탕 인계점",
+      "naverDetailAddress": "경기 수원시 팔달구 인계로124번길 9 1층 102, 103, 104호",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1821598663:f5811f92",
+      "name": "솥밥예찬 스타필드 수원점",
+      "placeId": "1821598663",
+      "currentAddress": "강원 속초시 법대로 18-1",
+      "address": "경기도 수원시 장안구 수성로 175 7층",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "수원시 장안구",
+        "eupmyeondong": "정자동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "수원시 장안구",
+        "eupmyeondong": "정자동"
+      },
+      "naverDetailTitle": "솥밥예찬 스타필드 수원점",
+      "naverDetailAddress": "경기 수원시 장안구 수성로 175 7층",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1231521788:ac8240ca",
+      "name": "우미남 센텀점",
+      "placeId": "1231521788",
+      "currentAddress": "부산 서구 대청로6번길 33",
+      "address": "부산광역시 해운대구 센텀동로 102 센텀필1 119, 120호 우미남 센텀점",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "해운대구",
+        "eupmyeondong": "재송동"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "해운대구",
+        "eupmyeondong": "재송동"
+      },
+      "naverDetailTitle": "우미남 센텀점",
+      "naverDetailAddress": "부산 해운대구 센텀동로 102 센텀필1 119, 120호 우미남 센텀점",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1550879566:db85d7b6",
+      "name": "홍천장어",
+      "placeId": "1550879566",
+      "currentAddress": "경기 성남시 분당구 서현로257번길 8 1층 대왕코다리실록 서현본점",
+      "address": "강원특별자치도 홍천군 홍천읍 사미정길 7",
+      "region": {
+        "sido": "강원특별자치도",
+        "sigungu": "홍천군",
+        "eupmyeondong": "홍천읍"
+      },
+      "auditRegion": {
+        "sido": "강원특별자치도",
+        "sigungu": "홍천군",
+        "eupmyeondong": "홍천읍"
+      },
+      "naverDetailTitle": "홍천장어",
+      "naverDetailAddress": "강원 홍천군 홍천읍 사미정길 7",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1914669352:8b52840e",
+      "name": "마린보이코다리1번가 정자점",
+      "placeId": "1914669352",
+      "currentAddress": "부산 동래구 여고로25번길 41 A동 지하1층",
+      "address": "경기도 성남시 분당구 불정로77번길 10 1층",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "성남시 분당구",
+        "eupmyeondong": "정자동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "성남시 분당구",
+        "eupmyeondong": "정자동"
+      },
+      "naverDetailTitle": "마린보이코다리1번가 정자점",
+      "naverDetailAddress": "경기 성남시 분당구 불정로77번길 10 1층",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1545638206:23af6992",
+      "name": "봉우리가든 파주야당본점",
+      "placeId": "1545638206",
+      "currentAddress": "강원 인제군 북면 어두원길 25",
+      "address": "경기도 파주시 경의로 1090 2층 207호",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "파주시",
+        "eupmyeondong": "야당동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "파주시",
+        "eupmyeondong": "야당동"
+      },
+      "naverDetailTitle": "봉우리가든 파주야당본점",
+      "naverDetailAddress": "경기 파주시 경의로 1090 2층 207호",
+      "menuMatched": true,
+      "menuCoverage": 0.9,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1033498816:2854e5a1",
+      "name": "뭉텅 운정점",
+      "placeId": "1033498816",
+      "currentAddress": "경기 고양시 일산서구 호수로 817 , 8층",
+      "address": "경기도 파주시 청암로17번길 61 104호, 105호, 122호",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "파주시",
+        "eupmyeondong": "목동동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "파주시",
+        "eupmyeondong": "목동동"
+      },
+      "naverDetailTitle": "뭉텅 운정점",
+      "naverDetailAddress": "경기 파주시 청암로17번길 61 104호, 105호, 122호",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:2017586094:5b21c37a",
+      "name": "솥내음 일산킨텍스점",
+      "placeId": "2017586094",
+      "currentAddress": "경기 고양시 일산서구 원일로 81 해동상가 1층",
+      "address": "경기도 고양시 일산서구 킨텍스로 171 2층",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "고양시 일산서구",
+        "eupmyeondong": "대화동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "고양시 일산서구",
+        "eupmyeondong": "대화동"
+      },
+      "naverDetailTitle": "솥내음 일산킨텍스점",
+      "naverDetailAddress": "경기 고양시 일산서구 킨텍스로 171 2층",
+      "menuMatched": true,
+      "menuCoverage": 0.5,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1598548754:447a6a92",
+      "name": "원일가마솥설렁탕",
+      "placeId": "1598548754",
+      "currentAddress": "충북 청주시 흥덕구 직지대로 649 2층",
+      "address": "경기도 용인시 처인구 중부대로 1112",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "용인시 처인구",
+        "eupmyeondong": "삼가동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "용인시 처인구",
+        "eupmyeondong": "삼가동"
+      },
+      "naverDetailTitle": "원일가마솥설렁탕",
+      "naverDetailAddress": "경기 용인시 처인구 중부대로 1112",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1908192984:c243e2e0",
+      "name": "수안뚝배기순두부",
+      "placeId": "1908192984",
+      "currentAddress": "경기 화성시 동탄치동천로4길 6-44 1층(영천동)",
+      "address": "부산광역시 동래구 명륜로63번길 9 수안뚝배기순두부",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "동래구",
+        "eupmyeondong": "수안동"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "동래구",
+        "eupmyeondong": "수안동"
+      },
+      "naverDetailTitle": "수안뚝배기순두부",
+      "naverDetailAddress": "부산 동래구 명륜로63번길 9 수안뚝배기순두부",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:2097403721:29166a4f",
+      "name": "황금코다리 광주신현점",
+      "placeId": "2097403721",
+      "currentAddress": "경기 화성시 동탄대로 537 1085호",
+      "address": "경기도 광주시 태재로 136 1층 황금코다리 광주신현점",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "광주시",
+        "eupmyeondong": "능평동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "광주시",
+        "eupmyeondong": "능평동"
+      },
+      "naverDetailTitle": "황금코다리 광주신현점",
+      "naverDetailAddress": "경기 광주시 태재로 136 1층 황금코다리 광주신현점",
+      "menuMatched": true,
+      "menuCoverage": 0.8,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1563418703:ae58026c",
+      "name": "백양육식장",
+      "placeId": "1563418703",
+      "currentAddress": "경기 안양시 동안구 동편로27번길 7",
+      "address": "부산광역시 부산진구 전포대로 216-1 1 층 백양 육식장",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "부산진구",
+        "eupmyeondong": "전포동"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "부산진구",
+        "eupmyeondong": "전포동"
+      },
+      "naverDetailTitle": "백양육식장",
+      "naverDetailAddress": "부산 부산진구 전포대로 216-1 1 층 백양 육식장",
+      "menuMatched": true,
+      "menuCoverage": 0.75,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1527859496:b59e0a14",
+      "name": "십년한우실비집 인덕원 동편마을점",
+      "placeId": "1527859496",
+      "currentAddress": "경기 의왕시 안양판교로 119 2층",
+      "address": "경기도 안양시 동안구 동편로20번길 39 파크에비뉴 B타워 1층 105호, 106호",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "안양시 동안구",
+        "eupmyeondong": "관양동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "안양시 동안구",
+        "eupmyeondong": "관양동"
+      },
+      "naverDetailTitle": "십년한우실비집 인덕원 동편마을점",
+      "naverDetailAddress": "경기 안양시 동안구 동편로20번길 39 파크에비뉴 B타워 1층 105호, 106호",
+      "menuMatched": true,
+      "menuCoverage": 0.455,
+      "warnings": [
+        "menus_partial_mismatch",
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1329857646:00599e65",
+      "name": "두부진 본점",
+      "placeId": "1329857646",
+      "currentAddress": "경기 안산시 단원구 광덕3로 178 108, 109, 131호",
+      "address": "경기도 시흥시 동서로811번길 26 1층 두부진",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "시흥시",
+        "eupmyeondong": "물왕동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "시흥시",
+        "eupmyeondong": "물왕동"
+      },
+      "naverDetailTitle": "두부진 본점",
+      "naverDetailAddress": "경기 시흥시 동서로811번길 26 1층 두부진",
+      "menuMatched": true,
+      "menuCoverage": 0.8,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1553312752:859d1e3f",
+      "name": "들밥차반 안산선부점",
+      "placeId": "1553312752",
+      "currentAddress": "경기 화성시 서신면 제부로 603",
+      "address": "경기도 안산시 단원구 선부광장로 77 201호",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "안산시 단원구",
+        "eupmyeondong": "선부동"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "안산시 단원구",
+        "eupmyeondong": "선부동"
+      },
+      "naverDetailTitle": "들밥차반 안산선부점",
+      "naverDetailAddress": "경기 안산시 단원구 선부광장로 77 201호",
+      "menuMatched": true,
+      "menuCoverage": 0.6,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1356607360:74ead0fe",
+      "name": "솥밥양평해장국",
+      "placeId": "1356607360",
+      "currentAddress": "경기 연천군 청산면 청신로 340 황태마루",
+      "address": "경기도 가평군 청평면 경춘로 1234 솥밥양평해장국",
+      "region": {
+        "sido": "경기도",
+        "sigungu": "가평군",
+        "eupmyeondong": "청평면"
+      },
+      "auditRegion": {
+        "sido": "경기도",
+        "sigungu": "가평군",
+        "eupmyeondong": "청평면"
+      },
+      "naverDetailTitle": "솥밥양평해장국",
+      "naverDetailAddress": "경기 가평군 청평면 경춘로 1234 솥밥양평해장국",
+      "menuMatched": true,
+      "menuCoverage": 0.889,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1503658842:a83f1114",
+      "name": "고등어연구소 용호점",
+      "placeId": "1503658842",
+      "currentAddress": "부산 북구 만덕대로 160",
+      "address": "부산광역시 남구 분포로 61 A동 1층 123호,124호",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "남구",
+        "eupmyeondong": "용호동"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "남구",
+        "eupmyeondong": "용호동"
+      },
+      "naverDetailTitle": "고등어연구소 용호점",
+      "naverDetailAddress": "부산 남구 분포로 61 A동 1층 123호,124호",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:1830306244:ceb96d52",
+      "name": "오륙도가마솥밥",
+      "placeId": "1830306244",
+      "currentAddress": "부산 북구 학사로17번길 4 1층",
+      "address": "부산광역시 남구 동명로131번길 35 1층",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "남구",
+        "eupmyeondong": "용호동"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "남구",
+        "eupmyeondong": "용호동"
+      },
+      "naverDetailTitle": "오륙도가마솥밥",
+      "naverDetailAddress": "부산 남구 동명로131번길 35 1층",
+      "menuMatched": true,
+      "menuCoverage": 1.0,
+      "warnings": [
+        "image_identity_requires_review"
+      ]
+    },
+    {
+      "targetKey": "place:2068285427:4a250691",
+      "name": "오적회관 일광점",
+      "placeId": "2068285427",
+      "currentAddress": "부산 기장군 정관읍 방곡5로 22 1층",
+      "address": "부산광역시 기장군 일광읍 해빛6로 61-14 1층",
+      "region": {
+        "sido": "부산광역시",
+        "sigungu": "기장군",
+        "eupmyeondong": "일광읍"
+      },
+      "auditRegion": {
+        "sido": "부산광역시",
+        "sigungu": "기장군",
+        "eupmyeondong": "일광읍"
+      },
+      "naverDetailTitle": "오적회관 일광점",
+      "naverDetailAddress": "부산 기장군 일광읍 해빛6로 61-14 1층",
+      "menuMatched": true,
+      "menuCoverage": 0.4,
+      "warnings": [
+        "menus_partial_mismatch",
+        "image_identity_requires_review"
+      ]
+    }
+  ]
+}
