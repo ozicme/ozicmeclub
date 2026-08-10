@@ -224,6 +224,66 @@ class SyncNaverAddressesTest(unittest.TestCase):
             self.assertEqual(merged_record["category"], "한식")
             self.assertEqual(merged_record["mainDishes"], ["쌀밥", "제육볶음"])
 
+    def test_apply_marks_unchanged_direct_result_as_verified(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            base_csv = root / "base.csv"
+            admin_data = root / "admin.json"
+            overrides = root / "overrides.json"
+            row = {
+                "상호명": "일치식당",
+                "대표주소": "서울 강남구 올바른로 10 1층",
+                "네이버플레이스": "https://map.naver.com/p/entry/place/123456789",
+                "지역_시도": "서울특별시",
+                "지역_시군구": "강남구",
+                "지역_읍면동": "역삼동",
+            }
+            with base_csv.open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=list(row))
+                writer.writeheader()
+                writer.writerow(row)
+            admin_data.write_text("[]\n", encoding="utf-8")
+            overrides.write_text("[]\n", encoding="utf-8")
+            key = target_key(
+                {
+                    "name": row["상호명"],
+                    "address": row["대표주소"],
+                    "naverPlaceUrl": row["네이버플레이스"],
+                }
+            )
+            region = {
+                "sido": "서울특별시",
+                "sigungu": "강남구",
+                "eupmyeondong": "역삼동",
+            }
+            result = {
+                "targetKey": key,
+                "name": row["상호명"],
+                "placeId": "123456789",
+                "currentAddress": row["대표주소"],
+                "currentRegion": region,
+                "naverTitle": row["상호명"],
+                "naverAddress": row["대표주소"],
+                "naverJibunAddress": "서울 강남구 역삼동 10",
+                "naverRegion": region,
+                "source": "direct",
+                "status": "unchanged",
+                "issue": "",
+            }
+
+            summary = apply_verified_results(
+                [result],
+                base_csv=base_csv,
+                admin_data=admin_data,
+                output=overrides,
+                expected_total=1,
+            )
+
+            targets, _ = load_targets(base_csv, admin_data, overrides)
+            self.assertEqual(summary["applied"], 1)
+            self.assertEqual(targets[key]["updateSource"], "github-naver-address-sync")
+            self.assertEqual(select_unverified(targets.values()), [])
+
     def test_apply_does_not_revalidate_unrelated_legacy_menu_text(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
