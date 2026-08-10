@@ -1,0 +1,109 @@
+name: 사진 없는 식당 현황 리포트
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/report-missing-restaurant-images.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-audit-report
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 사진 없는 식당 집계
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from scripts.update_restaurants import (
+              DEFAULT_BASE_CSV,
+              DEFAULT_ADMIN_DATA,
+              DEFAULT_OUTPUT,
+              load_targets,
+          )
+
+          IMAGE_KEYS = [
+              "imageUrl", "image_url", "image", "thumbnail", "thumb", "img",
+              "photo", "images", "imageLinks", "이미지", "대표이미지", "이미지링크",
+          ]
+          IMAGE_OBJECT_KEYS = ["url", "src", "imageUrl", "image_url", "image"]
+
+          def value_has_image(value):
+              if value is None:
+                  return False
+              if isinstance(value, str):
+                  return bool(value.strip())
+              if isinstance(value, list):
+                  return any(value_has_image(item) for item in value)
+              if isinstance(value, dict):
+                  return any(value_has_image(value.get(key)) for key in IMAGE_OBJECT_KEYS)
+              return False
+
+          def has_image(record):
+              return any(value_has_image(record.get(key)) for key in IMAGE_KEYS)
+
+          def esc(value):
+              return str(value or "").replace("|", "\\|").replace("\n", " ").strip()
+
+          targets, _ = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT)
+          records = list(targets.values())
+          missing = sorted(
+              (record for record in records if not has_image(record)),
+              key=lambda record: (
+                  str(record.get("name", "")),
+                  str(record.get("address", "")),
+              ),
+          )
+
+          lines = [
+              "# 사진 없는 식당 현황",
+              "",
+              f"- 현재 통합 식당 수: **{len(records)}**",
+              f"- 사진 없는 식당 수: **{len(missing)}**",
+              "- 기준: 현재 통합 데이터에서 사이트가 사용하는 이미지 후보 필드에 비어 있지 않은 이미지 값이 하나도 없는 식당",
+              "",
+              "| 번호 | 상호명 | 주소 | 데이터소스 |",
+              "|---:|---|---|---|",
+          ]
+          for index, record in enumerate(missing, start=1):
+              lines.append(
+                  f"| {index} | {esc(record.get('name'))} | {esc(record.get('address'))} | "
+                  f"{esc(record.get('source') or record.get('dataSource'))} |"
+              )
+
+          Path("output").mkdir(exist_ok=True)
+          Path("output/missing-image-restaurants.md").write_text(
+              "\n".join(lines) + "\n", encoding="utf-8"
+          )
+          print(f"total={len(records)} missing={len(missing)}")
+          PY
+
+      - name: 보고서 커밋
+        run: |
+          if git diff --quiet -- output/missing-image-restaurants.md; then
+            echo "변경 없음"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/missing-image-restaurants.md
+          git commit -m "사진 없는 식당 현황 리포트 갱신"
+          git push origin HEAD:main
