@@ -227,7 +227,20 @@ def canonical_candidate_key(item: dict[str, Any]) -> str:
 def infer_precise_region(road_address: str, jibun_address: str = "") -> dict[str, str]:
     address = clean_text(road_address or jibun_address)
     tokens = address.split()
-    sido = canonical_sido(tokens[0] if tokens else "")
+    # Naver currently returns both Gwangju and Jeonnam addresses with the
+    # composite first token ``전남광주``.  The following district token is the
+    # only reliable way to distinguish Gwangju's five autonomous districts
+    # from actual Jeonnam cities and counties without rewriting Naver's
+    # representative address.
+    if tokens and tokens[0] == "전남광주":
+        gwangju_districts = {"광산구", "남구", "동구", "북구", "서구"}
+        sido = (
+            "광주광역시"
+            if len(tokens) > 1 and tokens[1] in gwangju_districts
+            else "전라남도"
+        )
+    else:
+        sido = canonical_sido(tokens[0] if tokens else "")
     locality = tokens[1:]
 
     sigungu = ""
@@ -517,6 +530,11 @@ def audit_one(
             }
             if not menus_matched:
                 result["warnings"].append("menus_mismatch")
+                # A matching name and address are insufficient when the row's
+                # menu bundle has no overlap with the exact Place detail.  In
+                # that case the row may contain fields copied from another
+                # restaurant, so no automatic change is safe.
+                identity_review_required = True
             elif current_coverage < 0.5:
                 result["warnings"].append("menus_partial_mismatch")
         elif detail_dishes and not dishes:
