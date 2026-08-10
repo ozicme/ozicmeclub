@@ -59283,5 +59283,677 @@
     },
     "updatedAt": "2026-08-10",
     "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1368223793:036d7876",
+    "source": "base",
+    "originalName": "본앤브레드 인천 파라다이스시티",
+    "originalAddress": "울산 남구 대학로169번길 2",
+    "address": "인천 영종구 영종해안남로321번길 186 2층 H204호",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "영종구",
+      "eupmyeondong": "운서동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:18112491:f965cb11",
+    "source": "base",
+    "originalName": "황토골미꾸라지매운탕추어탕",
+    "originalAddress": "부산 연제구 거제천로 258 월드빌스포츠센터",
+    "address": "경기 안산시 단원구 화정천동로 240",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": "고잔동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:38229581:4bebc94f",
+    "source": "base",
+    "originalName": "북창동순두부 공항신도시점",
+    "originalAddress": "울산 중구 태화강국가정원길 113-1 56번",
+    "address": "인천 영종구 영종대로 100 신성하우스빌",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "영종구",
+      "eupmyeondong": "운서동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:2036716509:dab626d1",
+    "source": "base",
+    "originalName": "한오백년추어탕 고양지축점",
+    "originalAddress": "부산 연제구 월드컵대로 167-1",
+    "address": "경기 고양시 덕양구 지축로 78 109호~114호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 덕양구",
+      "eupmyeondong": "지축동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1613375468:239c5626",
+    "source": "base",
+    "originalName": "목본가숯불갈비",
+    "originalAddress": "강원 강릉시 성덕포남로 53",
+    "address": "인천 연수구 독배로 68 2층 203호",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "연수구",
+      "eupmyeondong": "옥련동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1715338955:c5f9976c",
+    "source": "base",
+    "originalName": "김포 태백산",
+    "originalAddress": "경기 김포시 김포한강9로75번길 98 111~114호(구래동, 제이원 타워)",
+    "address": "경기 김포시 양촌읍 양곡3로1번길 26-5",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "김포시",
+      "eupmyeondong": "양촌읍"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1797345400:ae4806eb",
+    "source": "base",
+    "originalName": "해원펠리스횟집",
+    "originalAddress": "경기 수원시 권선구 금곡로 206 우성메디피아2 106호",
+    "address": "강원 삼척시 새천년도로 97",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "삼척시",
+      "eupmyeondong": "정하동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1223232276:c941324b",
+    "source": "base",
+    "originalName": "고청담 광화문 디타워점",
+    "originalAddress": "서울 중구 충무로 55 1층",
+    "address": "서울 종로구 종로3길 17 D타워 5층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": "청진동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1656175520:61fac7c7",
+    "source": "base",
+    "originalName": "죽이야기 안산 선부점",
+    "originalAddress": "경기 수원시 팔달구 장다리로 272 바다향왕코다리 인계직영점",
+    "address": "경기 안산시 단원구 선부광장1로 179 e편한세상선부역 어반스퀘어 상가동 106호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "안산시 단원구",
+      "eupmyeondong": "선부동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:18154898:10660181",
+    "source": "base",
+    "originalName": "춘향골추어탕",
+    "originalAddress": "경기 수원시 영통구 센트럴타운로 85 광교아브뉴프랑 1층 아띠존 C111",
+    "address": "경기 수원시 팔달구 동말로 99 화서동",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 팔달구",
+      "eupmyeondong": ""
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1854320896:c7f9332a",
+    "source": "base",
+    "originalName": "해광은갈치",
+    "originalAddress": "경기 양평군 옥천면 경강로 1452",
+    "address": "경기 가평군 가평읍 장터2길 12 114호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "가평군",
+      "eupmyeondong": "가평읍"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:2087819423:4ccd28ce",
+    "source": "base",
+    "originalName": "가득담",
+    "originalAddress": "경기 광명시 오리로 105-10",
+    "address": "충북 청주시 상당구 남사로 95 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 상당구",
+      "eupmyeondong": "서문동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:15390512:3bf0983d",
+    "source": "base",
+    "originalName": "뚱보네푸줏간",
+    "originalAddress": "인천 남동구 미래로 13 노빌리안명품 202호",
+    "address": "강원 동해시 샘실1길 94",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "동해시",
+      "eupmyeondong": "천곡동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1993883621:f4d75c2f",
+    "source": "base",
+    "originalName": "만어",
+    "originalAddress": "제주 제주시 1100로 3164 1층",
+    "address": "울산 울주군 서생면 화산발리로 192 1층",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "울주군",
+      "eupmyeondong": "서생면"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1570721948:c3674ace",
+    "source": "base",
+    "originalName": "김가네 을지로3가점",
+    "originalAddress": "서울 종로구 종로14길 32",
+    "address": "서울 중구 을지로 103-1",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "중구",
+      "eupmyeondong": "을지로2가"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1934169712:7c80b9b1",
+    "source": "base",
+    "originalName": "박혜경예담추어명가 청주본점",
+    "originalAddress": "경기 용인시 처인구 중부대로 1017 1층",
+    "address": "충북 청주시 상당구 목련로 236 1층",
+    "region": {
+      "sido": "충청북도",
+      "sigungu": "청주시 상당구",
+      "eupmyeondong": "운동동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1547192478:d86fa17e",
+    "source": "base",
+    "originalName": "황금코다리 의왕점",
+    "originalAddress": "인천 강화군 선원면 선원사지로 67 봄날의 정원 한식당",
+    "address": "경기 의왕시 고고리길 6-2 1층 황금코다리 의왕점",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "의왕시",
+      "eupmyeondong": "고천동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1079700612:2dc23002",
+    "source": "base",
+    "originalName": "정식당",
+    "originalAddress": "부산 북구 덕천2길 71 1층 한우다짐",
+    "address": "부산 수영구 수영로510번길 40 1층",
+    "region": {
+      "sido": "부산광역시",
+      "sigungu": "수영구",
+      "eupmyeondong": "광안동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:35445991:0035f7f4",
+    "source": "base",
+    "originalName": "옛고을순두부",
+    "originalAddress": "경기 부천시 원미구 소향로 203 106호",
+    "address": "강원 속초시 원암학사평길 114",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "속초시",
+      "eupmyeondong": "노학동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:16563671:7e61ab9d",
+    "source": "base",
+    "originalName": "황토옛집",
+    "originalAddress": "광주 동구 동계천로 163-6 1층",
+    "address": "인천 강화군 화도면 해안남로 1139",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "강화군",
+      "eupmyeondong": "화도면"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:16970478:fb76b04b",
+    "source": "base",
+    "originalName": "수진돌솥밥",
+    "originalAddress": "광주 광산구 고봉로58번길 6 1층 죽이야기 광주 흑석점",
+    "address": "제주 서귀포시 중앙로62번길 4 VINE SHOP",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "서귀포시",
+      "eupmyeondong": "서귀동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1411512263:aa54598e",
+    "source": "base",
+    "originalName": "상춘재 현대백화점 킨텍스점",
+    "originalAddress": "경기 파주시 경의로 1090 삼융타워 119호",
+    "address": "경기 고양시 일산서구 호수로 817 8층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "고양시 일산서구",
+      "eupmyeondong": "대화동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1752019596:2e92cd8c",
+    "source": "base",
+    "originalName": "첨단돌솥감자탕 하남점",
+    "originalAddress": "광주 북구 첨단연신로107번길 5-22 1층 103호",
+    "address": "전남광주 광산구 용아로379번길 10 1층",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "광산구",
+      "eupmyeondong": "하남동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:21656751:870c05dc",
+    "source": "base",
+    "originalName": "고미고미",
+    "originalAddress": "부산광역시 부산진구 부전로111번길 15 1층",
+    "address": "경기 성남시 분당구 중앙공원로31번길 42 서현파크프라자 107호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "성남시 분당구",
+      "eupmyeondong": "서현동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:15012498:61be8048",
+    "source": "base",
+    "originalName": "아라리오",
+    "originalAddress": "경기 고양시 일산동구 강송로125번길 7-12 1층 어뜰",
+    "address": "경기 광주시 남한산성면 남한산성로792번길 7",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "광주시",
+      "eupmyeondong": "남한산성면"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1724078576:d2cec702",
+    "source": "base",
+    "originalName": "양촌리 남동점",
+    "originalAddress": "경기 수원시 영통구 매영로345번길 7 트리플렉스 201호",
+    "address": "인천 남동구 하촌로 5 1층",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "남동구",
+      "eupmyeondong": "만수동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:12874461:86d13e22",
+    "source": "base",
+    "originalName": "절라도",
+    "originalAddress": "부산 해운대구 구남로 22 해월프라자 2층 202호",
+    "address": "전남광주 담양군 가사문학면 지실길 122",
+    "region": {
+      "sido": "전라남도",
+      "sigungu": "담양군",
+      "eupmyeondong": "가사문학면"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1238449622:76987fd0",
+    "source": "base",
+    "originalName": "설농가 청라점",
+    "originalAddress": "제주 제주시 월랑로 88",
+    "address": "인천 서해구 청라커낼로260번길 15 설농가 청라점",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "서해구",
+      "eupmyeondong": "청라동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1299239727:06db5f04",
+    "source": "base",
+    "originalName": "태성추어탕 고림점",
+    "originalAddress": "충북 청주시 서원구 1순환로1063번길 77 라데팡스 륀느관 202호",
+    "address": "경기 용인시 처인구 경안천로256번길 47-10 105호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 처인구",
+      "eupmyeondong": "고림동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:12023462:91ec45f4",
+    "source": "base",
+    "originalName": "대복정",
+    "originalAddress": "울산 남구 두왕로 329 1, 2층",
+    "address": "인천 영종구 백운로 505 대복정",
+    "region": {
+      "sido": "인천광역시",
+      "sigungu": "영종구",
+      "eupmyeondong": "운북동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1123547311:4ed98d44",
+    "source": "base",
+    "originalName": "죽이야기 제주 연동점",
+    "originalAddress": "인천 남동구 청능대로 596 3층",
+    "address": "제주 제주시 도령로 73",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "제주시",
+      "eupmyeondong": "연동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1853315833:38bf9618",
+    "source": "base",
+    "originalName": "박가네남원추어탕",
+    "originalAddress": "강원 속초시 동해대로 4039 101호",
+    "address": "전남광주 서구 풍금로 29",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "서구",
+      "eupmyeondong": "풍암동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1810848037:cf1567d7",
+    "source": "base",
+    "originalName": "죽이야기 의정부 가능역점",
+    "originalAddress": "경기 김포시 풍무2로 11 202호",
+    "address": "경기 의정부시 평화로 647 104호 죽이야기",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "의정부시",
+      "eupmyeondong": "의정부동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1114831498:88836421",
+    "source": "base",
+    "originalName": "담솥 안국역점",
+    "originalAddress": "강원 강릉시 난설헌로78번길 38-5 솔향기",
+    "address": "서울 종로구 계동2길 4 1층",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": "계동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:2034261281:a49dab0a",
+    "source": "base",
+    "originalName": "율리솥밥집 소트로",
+    "originalAddress": "인천 중구 백운로 51-15",
+    "address": "울산 울주군 청량읍 율리영해1길 105 1층",
+    "region": {
+      "sido": "울산광역시",
+      "sigungu": "울주군",
+      "eupmyeondong": "청량읍"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1216419971:e9150dce",
+    "source": "base",
+    "originalName": "우리가 수원점",
+    "originalAddress": "경기 수원시 권선구 금곡로212번길 25 광일프라자 105호 소분 호매실",
+    "address": "경기 수원시 장안구 파장로 54 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 장안구",
+      "eupmyeondong": "파장동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1310351720:135eda25",
+    "source": "base",
+    "originalName": "솔솥 광주진월점",
+    "originalAddress": "제주 제주시 남광북3길 16 1층",
+    "address": "전남광주 남구 서문대로 729 123호",
+    "region": {
+      "sido": "광주광역시",
+      "sigungu": "남구",
+      "eupmyeondong": "진월동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1025854372:ffb95c87",
+    "source": "base",
+    "originalName": "풍천연화",
+    "originalAddress": "부산 서구 송도해변로 97 2층 202호, 203호",
+    "address": "경기 파주시 미래로 659-25 1층, 2층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "파주시",
+      "eupmyeondong": "당하동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:18190549:33a46064",
+    "source": "base",
+    "originalName": "굴섬",
+    "originalAddress": "경기 용인시 처인구 이동읍 이원로 201",
+    "address": "경기 수원시 장안구 송원로86번길 53 1층 굴섬",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 장안구",
+      "eupmyeondong": "조원동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1120451875:fa9572d0",
+    "source": "base",
+    "originalName": "전복명가",
+    "originalAddress": "강원 강릉시 임영로25번길 35",
+    "address": "대구 수성구 용학로 162 1층",
+    "region": {
+      "sido": "대구광역시",
+      "sigungu": "수성구",
+      "eupmyeondong": "지산동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1103356219:a6d0fcf4",
+    "source": "base",
+    "originalName": "서당골",
+    "originalAddress": "인천 중구 신포로 41 1층",
+    "address": "강원 강릉시 임영로164번길 3",
+    "region": {
+      "sido": "강원특별자치도",
+      "sigungu": "강릉시",
+      "eupmyeondong": "임당동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1771510376:7998f603",
+    "source": "base",
+    "originalName": "김인복국밥&로씨커피",
+    "originalAddress": "인천 남동구 하촌로 15",
+    "address": "제주 제주시 은남1길 24 1층 김인복국밥",
+    "region": {
+      "sido": "제주특별자치도",
+      "sigungu": "제주시",
+      "eupmyeondong": "연동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:37383704:37c60ae6",
+    "source": "base",
+    "originalName": "수지코다리시래기돌솥밥",
+    "originalAddress": "부산 중구 광복로39번길 35 산해갈비",
+    "address": "경기 용인시 수지구 성복2로76번길 25-26 1층",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "용인시 수지구",
+      "eupmyeondong": "성복동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1695654098:b613ae45",
+    "source": "base",
+    "originalName": "맛찬들왕소금구이 과천점",
+    "originalAddress": "경기 군포시 금산로 109 산본두성프라자 107호",
+    "address": "경기 과천시 관문로 92 B동 B-B107호, B108호, B109호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "과천시",
+      "eupmyeondong": "중앙동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1983500320:f59e345e",
+    "source": "base",
+    "originalName": "양주골 숯불 회전오리",
+    "originalAddress": "경기 군포시 속달로 102",
+    "address": "경기 양주시 청담로 23",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "양주시",
+      "eupmyeondong": "고읍동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1767771059:3c27a9ca",
+    "source": "base",
+    "originalName": "수라상",
+    "originalAddress": "경남 김해시 김해대로2529번길 70 덕삼탕 1층 장원정",
+    "address": "경남 김해시 강동로 51 수라상",
+    "region": {
+      "sido": "경상남도",
+      "sigungu": "김해시",
+      "eupmyeondong": "강동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:1605080604:24707436",
+    "source": "base",
+    "originalName": "맛찬들왕소금구이 광교호수공원점",
+    "originalAddress": "인천 미추홀구 미추로 43 1층",
+    "address": "경기 수원시 영통구 광교중앙로 170 107호~110호",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "수원시 영통구",
+      "eupmyeondong": "하동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
+  },
+  {
+    "targetKey": "place:37275429:b5606941",
+    "source": "base",
+    "originalName": "봄봄한정식",
+    "originalAddress": "강원 양구군 양구읍 관공서로 21-4",
+    "address": "경기 성남시 분당구 느티로51번길 19",
+    "region": {
+      "sido": "경기도",
+      "sigungu": "성남시 분당구",
+      "eupmyeondong": "정자동"
+    },
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-address-sync"
   }
 ]
