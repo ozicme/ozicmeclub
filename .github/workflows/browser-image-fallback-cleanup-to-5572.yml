@@ -1,0 +1,216 @@
+name: Chrome 실제 이미지 로딩 실패 식당 삭제 후 5572개 맞춤
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/browser-image-fallback-cleanup-to-5572.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-browser-image-cleanup
+  cancel-in-progress: true
+
+jobs:
+  browser-check-remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Chrome 및 드라이버 확인
+        run: |
+          google-chrome --version || google-chrome-stable --version || chromium --version
+          chromedriver --version
+          python -m pip install --quiet selenium
+
+      - name: 사이트와 동일한 후보 URL 목록 생성
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,load_targets
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(targets)!=5586:
+              raise SystemExit(f'안전 중단: 현재 통합 식당 수 {len(targets)} (예상 5586)')
+          Path('output').mkdir(exist_ok=True)
+          Path('output/browser-image-raw.json').write_text(json.dumps([
+              {'targetKey':k,'name':r.get('name',''),'address':r.get('address',''),'imageUrl':r.get('imageUrl','')}
+              for k,r in targets.items()
+          ],ensure_ascii=False),encoding='utf-8')
+          PY
+          node <<'NODE'
+          const fs=require('fs');
+          require('./image-url-utils.js');
+          const utils=globalThis.OzicmeImageUrls;
+          const rows=JSON.parse(fs.readFileSync('output/browser-image-raw.json','utf8'));
+          const out=rows.map(r=>({...r,candidates:utils.candidateUrls(String(r.imageUrl||''),'https://ozicmeclub.com/')}));
+          fs.writeFileSync('output/browser-image-candidates.json',JSON.stringify(out));
+          console.log('rows',out.length,'empty candidates',out.filter(x=>!x.candidates.length).length);
+          NODE
+
+      - name: Headless Chrome에서 실제 이미지 load/error 판정
+        run: |
+          python - <<'PY'
+          import json, pathlib, shutil, time
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.chrome.service import Service
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          rows=json.loads(pathlib.Path('output/browser-image-candidates.json').read_text(encoding='utf-8'))
+          payload=json.dumps(rows,ensure_ascii=False).replace('</script>','<\\/script>')
+          html=f'''<!doctype html><meta charset="utf-8"><title>scan</title><body><pre id="progress"></pre><script>
+          const rows={payload};
+          const failures=[];
+          let done=0;
+          function loadOne(url,timeout=12000){{
+            return new Promise(resolve=>{{
+              const img=new Image();
+              img.referrerPolicy='no-referrer';
+              let settled=false;
+              const finish=(ok,why)=>{{if(settled)return;settled=true;clearTimeout(timer);img.onload=null;img.onerror=null;img.src='';resolve({{ok,why}});}};
+              const timer=setTimeout(()=>finish(false,'timeout'),timeout);
+              img.onload=()=>{{
+                const ok=img.naturalWidth>0 && img.naturalHeight>0;
+                finish(ok,ok?`load ${{img.naturalWidth}}x${{img.naturalHeight}}`:'load but zero size');
+              }};
+              img.onerror=()=>finish(false,'error');
+              img.src=url;
+            }});
+          }}
+          async function checkRow(row){{
+            const reasons=[];
+            if(!row.candidates || !row.candidates.length) return {{...row,reasons:['no candidates']}};
+            for(const url of row.candidates){{
+              const r=await loadOne(url);
+              reasons.push(`${{url}} => ${{r.why}}`);
+              if(r.ok) return null;
+            }}
+            return {{...row,reasons}};
+          }}
+          async function worker(queue){{
+            while(true){{
+              const idx=queue.next++;
+              if(idx>=rows.length)return;
+              const bad=await checkRow(rows[idx]);
+              if(bad) failures.push(bad);
+              done++;
+              if(done%250===0) document.getElementById('progress').textContent=`${{done}}/${{rows.length}} fail=${{failures.length}}`;
+            }}
+          }}
+          (async()=>{{
+            const queue={{next:0}};
+            await Promise.all(Array.from({{length:40}},()=>worker(queue)));
+            window.__scanResult=JSON.stringify(failures);
+            document.body.dataset.done='1';
+            document.getElementById('progress').textContent=`DONE ${{done}}/${{rows.length}} fail=${{failures.length}}`;
+          }})();
+          </script></body>'''
+          page=pathlib.Path('output/browser-image-scan.html').resolve()
+          page.write_text(html,encoding='utf-8')
+
+          chrome=shutil.which('google-chrome') or shutil.which('google-chrome-stable') or shutil.which('chromium')
+          driver_path=shutil.which('chromedriver')
+          if not chrome or not driver_path:
+              raise SystemExit(f'Chrome/ChromeDriver 없음: chrome={chrome}, driver={driver_path}')
+          opts=Options(); opts.binary_location=chrome
+          for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--window-size=1280,800']:
+              opts.add_argument(arg)
+          driver=webdriver.Chrome(service=Service(driver_path),options=opts)
+          try:
+              driver.set_page_load_timeout(30)
+              driver.get(page.as_uri())
+              WebDriverWait(driver,1200,poll_frequency=2).until(lambda d:d.execute_script("return document.body.dataset.done==='1'"))
+              raw=driver.execute_script('return window.__scanResult')
+              progress=driver.find_element('id','progress').text
+              print(progress)
+              failures=json.loads(raw or '[]')
+              pathlib.Path('output/browser-image-failures.json').write_text(json.dumps(failures,ensure_ascii=False,indent=2),encoding='utf-8')
+              print('Chrome 최종 실패:',len(failures))
+              for x in failures:
+                  print('FAIL |',x.get('name'),'|',x.get('address'),'|',x.get('targetKey'))
+          finally:
+              driver.quit()
+          PY
+
+      - name: 정확히 14개 실패면 원본에서 완전 삭제
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,NAVER_CLEANUP_FILENAME,base_row_to_record,load_targets,target_key
+          bad=json.loads(Path('output/browser-image-failures.json').read_text(encoding='utf-8'))
+          count=len(bad); report=Path('output/browser-image-fallback-removal-2026-08-11.md')
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# Chrome 실제 대표이미지 로딩 검사 결과','',f'- 검사 식당 수: **5586**',f'- 모든 사이트 후보 이미지가 Chrome에서 실패한 식당: **{count}**','']
+          if count!=14:
+              lines += ['- 결과: **삭제 보류 — 정확히 14개가 아니므로 안전 중단**','', '| 번호 | 상호명 | 주소 | 실패사유 |','|---:|---|---|---|']
+              for i,x in enumerate(bad,1): lines.append(f"| {i} | {esc(x.get('name'))} | {esc(x.get('address'))} | {esc(' / '.join(x.get('reasons') or []))} |")
+              report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              Path('output/browser-image-failure-count.txt').write_text(str(count),encoding='utf-8')
+              raise SystemExit(0)
+
+          delete_keys={str(x['targetKey']) for x in bad}; why={str(x['targetKey']):' / '.join(x.get('reasons') or []) for x in bad}
+          occurrences={}; removed=[]
+          def unique_key(rec):
+              b=target_key(rec); n=occurrences.get(b,0)+1; occurrences[b]=n
+              return b if n==1 else f'{b}:duplicate:{n}'
+          with DEFAULT_BASE_CSV.open('r',encoding='utf-8-sig',newline='') as h:
+              rd=csv.DictReader(h); fields=rd.fieldnames; rows=list(rd)
+          kept=[]
+          for row in rows:
+              rec=base_row_to_record(row); k=unique_key(rec)
+              if k in delete_keys: removed.append((k,rec.get('name',''),rec.get('address',''),'base'))
+              else: kept.append(row)
+          with DEFAULT_BASE_CSV.open('w',encoding='utf-8-sig',newline='') as h:
+              wr=csv.DictWriter(h,fieldnames=fields,lineterminator='\n'); wr.writeheader(); wr.writerows(kept)
+          admin=[]
+          if DEFAULT_ADMIN_DATA.exists():
+              vals=json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              for item in vals:
+                  rec={**item,'source':'admin'}; k=unique_key(rec)
+                  if k in delete_keys: removed.append((k,item.get('name',''),item.get('address',''),'admin'))
+                  else: admin.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          cleanup=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          for p in (DEFAULT_OUTPUT,cleanup):
+              if not p.exists(): continue
+              vals=json.loads(p.read_text(encoding='utf-8'))
+              vals=[x for x in vals if not (isinstance(x,dict) and str(x.get('targetKey','')) in delete_keys)]
+              p.write_text(json.dumps(vals,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          if len(removed)!=14 or {x[0] for x in removed}!=delete_keys: raise SystemExit(f'삭제 대조 실패 {len(removed)}')
+          final,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(final)!=5572: raise SystemExit(f'최종 수 불일치 {len(final)}')
+          lines += ['- 결과: **14개 완전 삭제 완료**','- 삭제 후 통합 식당 수: **5572**','', '| 번호 | 상호명 | 주소 | Chrome 실패사유 |','|---:|---|---|---|']
+          for i,(k,n,a,s) in enumerate(sorted(removed,key=lambda x:(x[1],x[2])),1): lines.append(f"| {i} | {esc(n)} | {esc(a)} | {esc(why.get(k))} |")
+          report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('output/browser-image-failure-count.txt').write_text('14',encoding='utf-8')
+          PY
+
+      - name: 결과 커밋
+        run: |
+          rm -f output/browser-image-raw.json output/browser-image-candidates.json output/browser-image-scan.html
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          count="$(cat output/browser-image-failure-count.txt 2>/dev/null || echo unknown)"
+          if [ "$count" = "14" ]; then
+            git commit -m 'Chrome 이미지 실패 식당 14건 삭제 및 5572개 맞춤'
+          else
+            git commit -m "Chrome 대표이미지 실패 ${count}건 (삭제 보류)"
+          fi
+          git push origin HEAD:main
