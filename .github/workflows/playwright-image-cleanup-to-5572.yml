@@ -1,0 +1,188 @@
+name: Playwright 실제 사이트 이미지 실패 식당 삭제 후 5572개 맞춤
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/playwright-image-cleanup-to-5572.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-playwright-image-cleanup
+  cancel-in-progress: true
+
+jobs:
+  check-remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: Playwright Chromium 설치
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: 통합 식당 및 사이트 후보 URL 준비
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,load_targets
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(targets)!=5586:
+              raise SystemExit(f'안전 중단: 현재 통합 식당 수 {len(targets)} (예상 5586)')
+          Path('output').mkdir(exist_ok=True)
+          Path('output/pw-image-raw.json').write_text(json.dumps([
+              {'targetKey':k,'name':r.get('name',''),'address':r.get('address',''),'imageUrl':r.get('imageUrl','')}
+              for k,r in targets.items()
+          ],ensure_ascii=False),encoding='utf-8')
+          PY
+          node <<'NODE'
+          const fs=require('fs');
+          require('./image-url-utils.js');
+          const u=globalThis.OzicmeImageUrls;
+          const rows=JSON.parse(fs.readFileSync('output/pw-image-raw.json','utf8'));
+          const out=rows.map(r=>({...r,candidates:u.candidateUrls(String(r.imageUrl||''),'https://ozicmeclub.com/')}));
+          fs.writeFileSync('output/pw-image-candidates.json',JSON.stringify(out));
+          console.log('rows=',out.length,'empty=',out.filter(x=>x.candidates.length===0).length);
+          NODE
+
+      - name: Chromium에서 no-referrer 실제 이미지 load/error 검사
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const { chromium }=require('playwright');
+          const rows=JSON.parse(fs.readFileSync('output/pw-image-candidates.json','utf8'));
+          (async()=>{
+            const browser=await chromium.launch({headless:true});
+            const context=await browser.newContext({viewport:{width:1280,height:800}});
+            const page=await context.newPage();
+            await page.goto('about:blank');
+            const failures=[];
+            const batchSize=80;
+            for(let start=0;start<rows.length;start+=batchSize){
+              const batch=rows.slice(start,start+batchSize);
+              const result=await page.evaluate(async (items)=>{
+                const loadImage=(url)=>new Promise(resolve=>{
+                  const img=new Image();
+                  img.referrerPolicy='no-referrer';
+                  let done=false;
+                  const finish=(ok,reason)=>{if(done)return;done=true;clearTimeout(timer);img.onload=null;img.onerror=null;img.src='';resolve({ok,reason});};
+                  const timer=setTimeout(()=>finish(false,'timeout'),12000);
+                  img.onload=()=>finish(img.naturalWidth>0&&img.naturalHeight>0,`load ${img.naturalWidth}x${img.naturalHeight}`);
+                  img.onerror=()=>finish(false,'error');
+                  img.src=url;
+                });
+                const check=async item=>{
+                  const reasons=[];
+                  if(!item.candidates?.length) return {...item,reasons:['no candidates']};
+                  for(const url of item.candidates){
+                    const r=await loadImage(url);
+                    reasons.push(`${url} => ${r.reason}`);
+                    if(r.ok) return null;
+                  }
+                  return {...item,reasons};
+                };
+                const queue={next:0}, bad=[];
+                const worker=async()=>{
+                  while(true){
+                    const i=queue.next++;
+                    if(i>=items.length)return;
+                    const x=await check(items[i]);
+                    if(x)bad.push(x);
+                  }
+                };
+                await Promise.all(Array.from({length:20},worker));
+                return bad;
+              },batch);
+              failures.push(...result);
+              console.log(`checked ${Math.min(start+batchSize,rows.length)}/${rows.length}; failures=${failures.length}`);
+            }
+            await browser.close();
+            fs.writeFileSync('output/pw-image-failures.json',JSON.stringify(failures,null,2));
+            console.log('FINAL FAIL=',failures.length);
+            for(const x of failures) console.log('FAIL |',x.name,'|',x.address,'|',x.targetKey);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+
+      - name: 정확히 14개 실패면 완전 삭제
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,NAVER_CLEANUP_FILENAME,base_row_to_record,load_targets,target_key
+          bad=json.loads(Path('output/pw-image-failures.json').read_text(encoding='utf-8'))
+          count=len(bad); report=Path('output/playwright-image-removal-2026-08-11.md')
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# Playwright 실제 대표이미지 로딩 검사','',f'- 검사 식당 수: **5586**',f'- no-referrer + 사이트 후보 전체 실패 식당: **{count}**','']
+          if count!=14:
+              lines += ['- 결과: **삭제 보류 — 정확히 14개가 아니므로 안전 중단**','', '| 번호 | 상호명 | 주소 | 실패사유 |','|---:|---|---|---|']
+              for i,x in enumerate(bad,1): lines.append(f"| {i} | {esc(x.get('name'))} | {esc(x.get('address'))} | {esc(' / '.join(x.get('reasons') or []))} |")
+              report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              Path('output/pw-image-failure-count.txt').write_text(str(count),encoding='utf-8')
+              raise SystemExit(0)
+
+          delete_keys={str(x['targetKey']) for x in bad}; why={str(x['targetKey']):' / '.join(x.get('reasons') or []) for x in bad}
+          occurrences={}; removed=[]
+          def unique_key(rec):
+              b=target_key(rec); n=occurrences.get(b,0)+1; occurrences[b]=n
+              return b if n==1 else f'{b}:duplicate:{n}'
+          with DEFAULT_BASE_CSV.open('r',encoding='utf-8-sig',newline='') as h:
+              rd=csv.DictReader(h); fields=rd.fieldnames; rows=list(rd)
+          kept=[]
+          for row in rows:
+              rec=base_row_to_record(row); k=unique_key(rec)
+              if k in delete_keys: removed.append((k,rec.get('name',''),rec.get('address',''),'base'))
+              else: kept.append(row)
+          with DEFAULT_BASE_CSV.open('w',encoding='utf-8-sig',newline='') as h:
+              wr=csv.DictWriter(h,fieldnames=fields,lineterminator='\n'); wr.writeheader(); wr.writerows(kept)
+          admin=[]
+          if DEFAULT_ADMIN_DATA.exists():
+              vals=json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              for item in vals:
+                  rec={**item,'source':'admin'}; k=unique_key(rec)
+                  if k in delete_keys: removed.append((k,item.get('name',''),item.get('address',''),'admin'))
+                  else: admin.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          cleanup=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          for p in (DEFAULT_OUTPUT,cleanup):
+              if not p.exists(): continue
+              vals=json.loads(p.read_text(encoding='utf-8'))
+              vals=[x for x in vals if not (isinstance(x,dict) and str(x.get('targetKey','')) in delete_keys)]
+              p.write_text(json.dumps(vals,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          if len(removed)!=14 or {x[0] for x in removed}!=delete_keys: raise SystemExit(f'삭제 대조 실패 {len(removed)}')
+          final,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(final)!=5572: raise SystemExit(f'최종 수 불일치 {len(final)}')
+          lines += ['- 결과: **14개 완전 삭제 완료**','- 삭제 후 통합 식당 수: **5572**','', '| 번호 | 상호명 | 주소 | 실패사유 |','|---:|---|---|---|']
+          for i,(k,n,a,s) in enumerate(sorted(removed,key=lambda x:(x[1],x[2])),1): lines.append(f"| {i} | {esc(n)} | {esc(a)} | {esc(why.get(k))} |")
+          report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('output/pw-image-failure-count.txt').write_text('14',encoding='utf-8')
+          PY
+
+      - name: 결과 커밋
+        run: |
+          rm -f output/pw-image-raw.json output/pw-image-candidates.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          count="$(cat output/pw-image-failure-count.txt 2>/dev/null || echo unknown)"
+          if [ "$count" = "14" ]; then
+            git commit -m 'Playwright 이미지 실패 식당 14건 삭제 및 5572개 맞춤'
+          else
+            git commit -m "Playwright 대표이미지 실패 ${count}건 (삭제 보류)"
+          fi
+          git push origin HEAD:main
