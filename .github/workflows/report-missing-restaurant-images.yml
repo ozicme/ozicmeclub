@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/report-missing-restaurant-images.yml"
+      - "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
+      - "data/admin-restaurants.json"
+      - "data/restaurant-overrides.json"
   workflow_dispatch:
 
 permissions:
