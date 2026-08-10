@@ -98,14 +98,12 @@ jobs:
 
       - name: 보고서 커밋
         run: |
-          if git diff --quiet -- output/missing-image-restaurants.md; then
-            echo "변경 없음"
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add output/missing-image-restaurants.md
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+            exit 0
+          fi
           git commit -m "사진 없는 식당 현황 리포트 갱신"
           git push origin HEAD:main
-
-# 2026-08-10 현재 사이트 데이터 기준 점검
