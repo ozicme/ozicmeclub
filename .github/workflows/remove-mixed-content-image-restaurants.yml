@@ -1,0 +1,141 @@
+name: 브라우저 차단 HTTP 이미지 식당 삭제 후 5572개 맞춤
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/remove-mixed-content-image-restaurants.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-mixed-image-cleanup
+  cancel-in-progress: true
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: 통합 식당 데이터 준비
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,load_targets
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(targets)!=5586:
+              raise SystemExit(f'현재 통합 식당 수가 예상 5586과 다릅니다: {len(targets)}')
+          Path('output').mkdir(exist_ok=True)
+          Path('output/mixed-image-input.json').write_text(json.dumps([
+              {'targetKey':k,'name':r.get('name',''),'address':r.get('address',''),'imageUrl':r.get('imageUrl','')}
+              for k,r in targets.items()
+          ],ensure_ascii=False),encoding='utf-8')
+          PY
+
+      - name: HTTPS 페이지에서 차단될 HTTP 이미지 판정
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          require('./image-url-utils.js');
+          const utils=globalThis.OzicmeImageUrls;
+          const rows=JSON.parse(fs.readFileSync('output/mixed-image-input.json','utf8'));
+          const bad=[];
+          for(const r of rows){
+            const normalized=utils.normalize(String(r.imageUrl||''),'https://ozicmeclub.com/');
+            if(normalized && normalized.startsWith('http://')){
+              bad.push({...r,normalized,reason:'HTTPS 페이지에서 HTTP 이미지가 혼합 콘텐츠로 차단될 수 있음'});
+            }
+          }
+          fs.writeFileSync('output/mixed-content-image-restaurants.json',JSON.stringify(bad,null,2));
+          console.log('HTTP 혼합 콘텐츠 이미지:',bad.length);
+          for(const x of bad) console.log('BAD |',x.name,'|',x.address,'|',x.normalized);
+          NODE
+
+      - name: 정확히 14개면 완전 삭제
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,NAVER_CLEANUP_FILENAME,base_row_to_record,load_targets,target_key
+          bad=json.loads(Path('output/mixed-content-image-restaurants.json').read_text(encoding='utf-8'))
+          count=len(bad); report=Path('output/mixed-content-image-removal-2026-08-11.md')
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# 브라우저 차단 HTTP 대표이미지 식당 검사','',f'- 검사 식당 수: **5586**',f'- HTTP 혼합 콘텐츠 후보: **{count}**','']
+          if count!=14:
+              lines += ['- 결과: **삭제 보류 — 정확히 14개가 아님**','', '| 번호 | 상호명 | 주소 | 이미지URL |','|---:|---|---|---|']
+              for i,x in enumerate(bad,1): lines.append(f"| {i} | {esc(x.get('name'))} | {esc(x.get('address'))} | {esc(x.get('normalized'))} |")
+              report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              Path('output/mixed-content-count.txt').write_text(str(count),encoding='utf-8')
+              raise SystemExit(0)
+
+          delete_keys={str(x['targetKey']) for x in bad}; url_by={str(x['targetKey']):x.get('normalized','') for x in bad}
+          occurrences={}; removed=[]
+          def unique_key(rec):
+              b=target_key(rec); n=occurrences.get(b,0)+1; occurrences[b]=n
+              return b if n==1 else f'{b}:duplicate:{n}'
+
+          with DEFAULT_BASE_CSV.open('r',encoding='utf-8-sig',newline='') as h:
+              rd=csv.DictReader(h); fields=rd.fieldnames; rows=list(rd)
+          kept=[]
+          for row in rows:
+              rec=base_row_to_record(row); k=unique_key(rec)
+              if k in delete_keys: removed.append((k,rec.get('name',''),rec.get('address',''),'base'))
+              else: kept.append(row)
+          with DEFAULT_BASE_CSV.open('w',encoding='utf-8-sig',newline='') as h:
+              wr=csv.DictWriter(h,fieldnames=fields,lineterminator='\n'); wr.writeheader(); wr.writerows(kept)
+
+          admin=[]
+          if DEFAULT_ADMIN_DATA.exists():
+              vals=json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              for item in vals:
+                  rec={**item,'source':'admin'}; k=unique_key(rec)
+                  if k in delete_keys: removed.append((k,item.get('name',''),item.get('address',''),'admin'))
+                  else: admin.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          cleanup=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          for p in (DEFAULT_OUTPUT,cleanup):
+              if not p.exists(): continue
+              vals=json.loads(p.read_text(encoding='utf-8'))
+              vals=[x for x in vals if not (isinstance(x,dict) and str(x.get('targetKey','')) in delete_keys)]
+              p.write_text(json.dumps(vals,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          if len(removed)!=14 or {x[0] for x in removed}!=delete_keys:
+              raise SystemExit(f'삭제 대조 실패: {len(removed)}')
+          final,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(final)!=5572: raise SystemExit(f'최종 수 불일치: {len(final)}')
+
+          lines += ['- 결과: **14개 완전 삭제 완료**','- 삭제 후 통합 식당 수: **5572**','', '| 번호 | 상호명 | 주소 | 차단 이미지URL |','|---:|---|---|---|']
+          for i,(k,n,a,s) in enumerate(sorted(removed,key=lambda x:(x[1],x[2])),1): lines.append(f"| {i} | {esc(n)} | {esc(a)} | {esc(url_by.get(k))} |")
+          report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('output/mixed-content-count.txt').write_text('14',encoding='utf-8')
+          PY
+
+      - name: 결과 커밋
+        run: |
+          rm -f output/mixed-image-input.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          count="$(cat output/mixed-content-count.txt 2>/dev/null || echo unknown)"
+          if [ "$count" = "14" ]; then
+            git commit -m '브라우저 차단 이미지 식당 14건 삭제 및 5572개 맞춤'
+          else
+            git commit -m "브라우저 차단 HTTP 이미지 후보 ${count}건 (삭제 보류)"
+          fi
+          git push origin HEAD:main
