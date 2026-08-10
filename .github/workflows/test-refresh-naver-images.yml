@@ -1,0 +1,33 @@
+name: 대표이미지 재수집 로직 테스트
+
+on:
+  pull_request:
+    paths:
+      - scripts/refresh_naver_images.py
+      - scripts/test_refresh_naver_images.py
+      - .github/workflows/refresh-naver-images.yml
+      - .github/workflows/test-refresh-naver-images.yml
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 대표이미지 선정 규칙 테스트
+        run: |
+          python -m py_compile scripts/refresh_naver_images.py
+          python -m unittest scripts/test_refresh_naver_images.py
+
+      - name: 전체 회귀 테스트
+        run: npm run test-admin
