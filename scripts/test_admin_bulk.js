@@ -87,9 +87,20 @@ vm.runInContext(source, context, { filename: "admin.js" });
 (async () => {
   const api = context.__adminTest;
   const catalog = await api.loadCatalog();
-  assert.ok(
-    catalog.records.length >= 6045,
-    "기존 6,045개와 관리자 신규 등록 식당이 모두 포함되어야 합니다."
+  const baseCount = api.csvToObjects(
+    fs.readFileSync(path.join(root, "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"), "utf8")
+  ).length;
+  const adminCount = JSON.parse(
+    fs.readFileSync(path.join(root, "data/admin-restaurants.json"), "utf8")
+  ).length;
+  const deletedCount = [
+    ...JSON.parse(fs.readFileSync(path.join(root, "data/restaurant-overrides.json"), "utf8")),
+    ...JSON.parse(fs.readFileSync(path.join(root, "data/naver-place-cleanup-2026-08-10.json"), "utf8")),
+  ].filter((record) => record.deleted === true).length;
+  assert.equal(
+    catalog.records.length,
+    baseCount + adminCount - deletedCount,
+    "삭제 표식이 있는 식당만 전체 관리 목록에서 제외되어야 합니다."
   );
   assert.equal(
     new Set(catalog.records.map((record) => record.targetKey)).size,
