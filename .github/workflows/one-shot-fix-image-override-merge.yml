@@ -1,4 +1,4 @@
-name: 주소·이미지 오버라이드 병합 오류 일회성 수정
+name: 네이버 빈 대표이미지 실제 DOM 진단
 
 on:
   pull_request:
@@ -10,75 +10,78 @@ on:
       - synchronize
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: read
 
 jobs:
-  fix:
+  diagnose:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
         with:
           ref: agent/fix-image-override-merge
-          fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-python@v6
         with:
-          node-version: "22"
+          python-version: "3.12"
 
-      - name: 오버라이드 병합 로직 수정
+      - name: 현재 병합 데이터 공란 집계
         run: |
           python - <<'PY'
-          from pathlib import Path
-
-          replacements = {
-              Path("script.js"): (
-                  '''  const overrideMap = new Map(\n    [...overrides, ...cleanupOverrides]\n      .filter((item) => item && item.targetKey)\n      .map((item) => [String(item.targetKey), item])\n  );''',
-                  '''  const overrideMap = new Map();\n  [...overrides, ...cleanupOverrides]\n    .filter((item) => item && item.targetKey)\n    .forEach((item) => {\n      const key = String(item.targetKey);\n      const previous = overrideMap.get(key) || {};\n      overrideMap.set(key, {\n        ...previous,\n        ...item,\n        targetKey: key,\n        region: { ...(previous.region || {}), ...(item.region || {}) },\n      });\n    });''',
-              ),
-              Path("admin.js"): (
-                  '''        const overrideMap = new Map(\n          [...overrides, ...cleanupOverrides]\n            .filter((item) => item && item.targetKey)\n            .map((item) => [String(item.targetKey), item])\n        );''',
-                  '''        const overrideMap = new Map();\n        [...overrides, ...cleanupOverrides]\n          .filter((item) => item && item.targetKey)\n          .forEach((item) => {\n            const key = String(item.targetKey);\n            const previous = overrideMap.get(key) || {};\n            overrideMap.set(key, {\n              ...previous,\n              ...item,\n              targetKey: key,\n              region: { ...(previous.region || {}), ...(item.region || {}) },\n            });\n          });''',
-              ),
-          }
-
-          for path, (old, new) in replacements.items():
-              text = path.read_text(encoding="utf-8")
-              if old not in text:
-                  raise SystemExit(f"예상한 기존 병합 코드가 없습니다: {path}")
-              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          from scripts.update_restaurants import DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT, load_targets, place_id_from_url
+          targets, _ = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT)
+          blanks = [r for r in targets.values() if not str(r.get("imageUrl", "")).strip()]
+          short = [r for r in blanks if str(r.get("naverPlaceUrl", "")).strip().rstrip('/').endswith('/' + place_id_from_url(r.get("naverPlaceUrl")))]
+          print(f"현재 공개 병합 대상: {len(targets)}")
+          print(f"대표이미지 공란: {len(blanks)}")
+          print(f"공란 중 짧은 Place URL: {len(short)}")
+          for r in blanks[:10]:
+              print("BLANK", r.get("targetKey"), r.get("name"), r.get("naverPlaceUrl"))
           PY
 
-      - name: 실제 중복 오버라이드 영향 확인
+      - name: Playwright 설치
+        run: |
+          python -m pip install --quiet playwright
+          python -m playwright install chromium
+
+      - name: 국제한우돈 등 실제 렌더링 DOM 이미지 진단
         run: |
           python - <<'PY'
-          import json
-          from pathlib import Path
+          from playwright.sync_api import sync_playwright
+          from scripts.refresh_naver_images import fetch_place_media
 
-          normal = json.loads(Path("data/restaurant-overrides.json").read_text(encoding="utf-8"))
-          cleanup = json.loads(Path("data/naver-place-cleanup-2026-08-10.json").read_text(encoding="utf-8"))
-          normal_by_key = {str(x.get("targetKey")): x for x in normal if x.get("targetKey")}
-          cleanup_by_key = {str(x.get("targetKey")): x for x in cleanup if x.get("targetKey")}
-          overlap = set(normal_by_key) & set(cleanup_by_key)
-          image_overlap = [k for k in overlap if normal_by_key[k].get("imageUrl") and not cleanup_by_key[k].get("imageUrl")]
-          print(f"동일 targetKey 오버라이드 중복: {len(overlap)}")
-          print(f"주소 cleanup 때문에 이미지 override가 가려질 수 있던 건: {len(image_overlap)}")
-          if not image_overlap:
-              raise SystemExit("실제 이미지 가림 사례를 찾지 못했습니다.")
+          samples = [
+              ("38370279", "국제한우돈"),
+              ("1796542659", "우도옥 삼성본점"),
+              ("1446760348", "명품순두부24시"),
+              ("1682608465", "장어명가풍천민물장어직판장"),
+          ]
+
+          for place_id, name in samples:
+              try:
+                  detail = fetch_place_media(place_id)
+                  print(f"APOLLO {place_id} {name} title={detail.get('title')} images={len(detail.get('imageUrls') or [])}")
+                  for u in (detail.get('imageUrls') or [])[:5]:
+                      print("  APOLLO_IMG", u)
+              except Exception as exc:
+                  print(f"APOLLO_FAIL {place_id} {name}: {exc}")
+
+          with sync_playwright() as p:
+              browser = p.chromium.launch(headless=True)
+              context = browser.new_context(locale="ko-KR", user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0 Safari/537.36")
+              page = context.new_page()
+              for place_id, name in samples:
+                  url = f"https://pcmap.place.naver.com/restaurant/{place_id}/home"
+                  try:
+                      page.goto(url, wait_until="domcontentloaded", timeout=60000)
+                      page.wait_for_timeout(5000)
+                      imgs = page.locator("img").evaluate_all("""els => els.map((e,i) => ({i, src:e.getAttribute('src')||'', dataSrc:e.getAttribute('data-src')||'', alt:e.getAttribute('alt')||'', cls:e.className||'', parent:(e.parentElement&&e.parentElement.className)||''}))""")
+                      useful = [x for x in imgs if ('pstatic.net' in (x['src'] or '') or 'pstatic.net' in (x['dataSrc'] or '') or 'naver.net' in (x['src'] or '') or 'naver.net' in (x['dataSrc'] or ''))]
+                      print(f"DOM {place_id} {name} total_img={len(imgs)} useful={len(useful)} title={page.title()}")
+                      for x in useful[:20]:
+                          print("  DOM_IMG", x)
+                  except Exception as exc:
+                      print(f"DOM_FAIL {place_id} {name}: {exc}")
+              browser.close()
           PY
-
-      - name: 검증
-        run: |
-          node --check script.js
-          node --check admin.js
-          npm run test-admin
-          git diff --check
-
-      - name: 일회성 워크플로 제거 후 수정 커밋
-        run: |
-          rm .github/workflows/one-shot-fix-image-override-merge.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add script.js admin.js .github/workflows/one-shot-fix-image-override-merge.yml
-          git commit -m "주소와 이미지 오버라이드 병합 오류 수정"
-          git push origin HEAD:agent/fix-image-override-merge
