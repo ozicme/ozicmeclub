@@ -44,6 +44,30 @@ class RestaurantDataAuditTest(unittest.TestCase):
             },
         )
 
+    def test_precise_region_disambiguates_naver_jeonnam_gwangju_token(self):
+        self.assertEqual(
+            infer_precise_region(
+                "전남광주 광산구 임방울대로 123",
+                "전남광주 광산구 수완동 456-7",
+            ),
+            {
+                "sido": "광주광역시",
+                "sigungu": "광산구",
+                "eupmyeondong": "수완동",
+            },
+        )
+        self.assertEqual(
+            infer_precise_region(
+                "전남광주 나주시 빛가람로 123",
+                "전남광주 나주시 빛가람동 456-7",
+            ),
+            {
+                "sido": "전라남도",
+                "sigungu": "나주시",
+                "eupmyeondong": "빛가람동",
+            },
+        )
+
     def test_exact_candidate_rejects_same_name_at_two_addresses(self):
         first = local_item(road_address="강원 강릉시 길 1")
         second = local_item(road_address="강원 강릉시 길 2")
@@ -226,6 +250,39 @@ class RestaurantDataAuditTest(unittest.TestCase):
 
         self.assertEqual(result["doubleCheck"]["menus"]["matchedCount"], 1)
         self.assertIn("menus_partial_mismatch", result["warnings"])
+
+    def test_disjoint_menu_bundle_blocks_automatic_address_fix(self):
+        candidate = local_item()
+        record = {
+            "targetKey": "place:1874772103:mixed-menu",
+            "source": "base",
+            "name": candidate["title"],
+            "address": "서울 송파구 오금로 544",
+            "naverPlaceUrl": "https://map.naver.com/p/entry/place/1874772103",
+            "imageUrl": "https://example.com/restaurant.jpg",
+            "region": {"sido": "서울특별시", "sigungu": "송파구", "eupmyeondong": ""},
+            "category": "순대,순댓국",
+            "mainDishes": ["초밥", "파스타"],
+            "searchTags": ["초밥"],
+        }
+        detail = {
+            "title": candidate["title"],
+            "roadAddress": candidate["roadAddress"],
+            "address": candidate["address"],
+            "mainDishes": ["순대국밥", "수육"],
+            "imageUrls": [],
+        }
+        result = audit_one(
+            record,
+            LocationHint("강원", "강릉시", "교동"),
+            lambda _query: [candidate],
+            lambda _place_id: detail,
+            check_detail=True,
+        )
+
+        self.assertEqual(result["status"], "review")
+        self.assertEqual(result["changes"], {})
+        self.assertIn("menus_mismatch", result["warnings"])
 
 
 if __name__ == "__main__":
