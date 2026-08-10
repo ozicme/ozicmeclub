@@ -88,8 +88,6 @@ def prepare_updates(
         current = targets.get(key)
         if not current:
             raise SyncError(f"수정 대상을 찾을 수 없습니다: {key}")
-        if clean_text(current.get("updateSource")):
-            raise SyncError(f"이미 검증된 대상을 다시 수정할 수 없습니다: {key}")
 
         expected_name = clean_text(fix.get("name"))
         detail_title = clean_text(fix.get("naverDetailTitle"))
@@ -105,10 +103,6 @@ def prepare_updates(
             raise SyncError(f"네이버 Place ID가 감사 결과와 달라졌습니다: {key}")
         if place_id_counts[current_place_id] != 1:
             raise SyncError(f"여러 행이 같은 Place ID를 사용합니다: {key}")
-
-        expected_current_address = clean_text(fix.get("currentAddress"))
-        if clean_text(current.get("address")) != expected_current_address:
-            raise SyncError(f"현재 주소가 감사 이후 변경되었습니다: {key}")
 
         address = clean_text(fix.get("address"))
         detail_address = clean_text(fix.get("naverDetailAddress"))
@@ -131,6 +125,21 @@ def prepare_updates(
                 raise SyncError(f"주소에서 계산한 지역과 수정 지역이 다릅니다: {key}")
         if fix.get("menuMatched") is not True:
             raise SyncError(f"메뉴 교차 검증이 완료되지 않았습니다: {key}")
+
+        update_source = clean_text(current.get("updateSource"))
+        already_applied = (
+            update_source == "github-naver-address-sync"
+            and clean_text(current.get("address")) == address
+            and (current.get("region") or {}) == region
+        )
+        if already_applied:
+            continue
+        if update_source:
+            raise SyncError(f"이미 다른 방식으로 검증된 대상입니다: {key}")
+
+        expected_current_address = clean_text(fix.get("currentAddress"))
+        if clean_text(current.get("address")) != expected_current_address:
+            raise SyncError(f"현재 주소가 감사 이후 변경되었습니다: {key}")
 
         updates.append(
             {
@@ -157,6 +166,14 @@ def apply_manifest(
     manifest, fixes = load_fix_manifest(fixes_path)
     targets, _ = load_targets(base_csv, admin_data, output)
     updates = prepare_updates(manifest, fixes, targets)
+    if not updates:
+        overrides = json.loads(output.read_text(encoding="utf-8")) if output.exists() else []
+        return {
+            "submitted": 0,
+            "updated": 0,
+            "updatedNames": [],
+            "totalOverrides": len(overrides),
+        }
     return upsert_address_overrides(updates, output)
 
 
