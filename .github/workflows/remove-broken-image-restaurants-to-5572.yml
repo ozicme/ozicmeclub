@@ -1,0 +1,265 @@
+name: 이미지 표시 실패 식당 삭제 후 5572개 맞춤
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/remove-broken-image-restaurants-to-5572.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-data-write
+  cancel-in-progress: false
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 실제 표시 실패 이미지 3회 검증 후 정확히 14개만 삭제
+        run: |
+          python - <<'PY'
+          import csv
+          import json
+          import time
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          from pathlib import Path
+
+          from scripts.update_restaurants import (
+              DEFAULT_BASE_CSV,
+              DEFAULT_ADMIN_DATA,
+              DEFAULT_OUTPUT,
+              NAVER_CLEANUP_FILENAME,
+              base_row_to_record,
+              load_targets,
+              target_key,
+          )
+
+          TARGET_TOTAL = 5572
+          EXPECTED_START = 5586
+          EXPECTED_REMOVE = EXPECTED_START - TARGET_TOTAL
+          ROOT = Path('.')
+          CLEANUP = DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          REPORT = ROOT / 'output' / 'removed-broken-image-restaurants-2026-08-11.md'
+
+          browser_headers = {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36',
+              'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+              'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8',
+              'Referer': 'https://map.naver.com/',
+              'Cache-Control': 'no-cache',
+          }
+
+          def looks_like_image(data, content_type):
+              ct = (content_type or '').lower()
+              if ct.startswith('image/'):
+                  return True
+              if not data:
+                  return False
+              signatures = (
+                  b'\xff\xd8\xff',         # jpeg
+                  b'\x89PNG\r\n\x1a\n',   # png
+                  b'GIF87a', b'GIF89a',
+                  b'RIFF',                   # webp container, checked below
+                  b'<svg', b'<?xml',
+              )
+              if data.startswith(signatures):
+                  if data.startswith(b'RIFF') and b'WEBP' not in data[:16]:
+                      return False
+                  return True
+              return False
+
+          def one_probe(url):
+              req = urllib.request.Request(url, headers=browser_headers, method='GET')
+              try:
+                  with urllib.request.urlopen(req, timeout=12) as response:
+                      status = getattr(response, 'status', 200) or 200
+                      ctype = response.headers.get('Content-Type', '')
+                      data = response.read(512)
+                      if 200 <= status < 400 and looks_like_image(data, ctype):
+                          return True, f'ok:{status}:{ctype}'
+                      return False, f'invalid:{status}:{ctype}'
+              except urllib.error.HTTPError as exc:
+                  return False, f'http:{exc.code}'
+              except Exception as exc:
+                  return False, f'error:{type(exc).__name__}:{exc}'
+
+          def probe_record(item):
+              key, record = item
+              url = str(record.get('imageUrl') or '').strip()
+              if not url:
+                  return key, record, False, ['empty']
+              results = []
+              for attempt in range(3):
+                  ok, reason = one_probe(url)
+                  results.append(reason)
+                  if ok:
+                      return key, record, True, results
+                  if attempt < 2:
+                      time.sleep(0.7 + attempt * 0.6)
+              return key, record, False, results
+
+          targets, _ = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT)
+          if len(targets) != EXPECTED_START:
+              raise SystemExit(f'안전 중단: 현재 통합 식당 수가 {EXPECTED_START}개가 아니라 {len(targets)}개입니다.')
+
+          failures = []
+          with ThreadPoolExecutor(max_workers=24) as pool:
+              futures = [pool.submit(probe_record, item) for item in targets.items()]
+              for index, future in enumerate(as_completed(futures), start=1):
+                  key, record, ok, reasons = future.result()
+                  if not ok:
+                      failures.append((key, record, reasons))
+                  if index % 500 == 0:
+                      print(f'검사 진행 {index}/{len(targets)} / 현재 실패 {len(failures)}')
+
+          failures.sort(key=lambda x: (str(x[1].get('name','')), str(x[1].get('address',''))))
+          print(f'최종 이미지 표시 실패 수: {len(failures)}')
+          for key, record, reasons in failures:
+              print(f"FAIL | {record.get('name')} | {record.get('address')} | {key} | {' / '.join(reasons)}")
+
+          # 사용자가 지정한 5572개가 되기 위한 14개와 정확히 일치할 때만 삭제한다.
+          if len(failures) != EXPECTED_REMOVE:
+              REPORT.parent.mkdir(exist_ok=True)
+              lines = [
+                  '# 이미지 표시 실패 식당 검사 결과', '',
+                  f'- 검사 당시 통합 식당 수: **{len(targets)}**',
+                  f'- 실제 표시 실패 판정 수: **{len(failures)}**',
+                  f'- 삭제 허용 수: **{EXPECTED_REMOVE}**',
+                  '- 결과: **안전장치로 삭제 중단**', '',
+                  '| 상호명 | 주소 | targetKey | 실패 사유 |',
+                  '|---|---|---|---|',
+              ]
+              for key, record, reasons in failures:
+                  def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+                  lines.append(f"| {esc(record.get('name'))} | {esc(record.get('address'))} | {esc(key)} | {esc(' / '.join(reasons))} |")
+              REPORT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+              raise SystemExit(f'안전 중단: 실패 식당이 정확히 {EXPECTED_REMOVE}개가 아닙니다. 실제 {len(failures)}개')
+
+          delete_keys = {key for key, _, _ in failures}
+
+          # 기본 CSV + 관리자 데이터의 unique targetKey를 동일한 방식으로 재구성해 행 자체를 제거한다.
+          occurrences = {}
+          removed = []
+          def unique_key(record):
+              base = target_key(record)
+              n = occurrences.get(base, 0) + 1
+              occurrences[base] = n
+              return base if n == 1 else f'{base}:duplicate:{n}'
+
+          with DEFAULT_BASE_CSV.open('r', encoding='utf-8-sig', newline='') as handle:
+              reader = csv.DictReader(handle)
+              fieldnames = reader.fieldnames
+              rows = list(reader)
+          if not fieldnames:
+              raise SystemExit('기본 CSV 헤더를 읽지 못했습니다.')
+
+          kept_rows = []
+          for row in rows:
+              record = base_row_to_record(row)
+              key = unique_key(record)
+              if key in delete_keys:
+                  removed.append((key, record.get('name',''), record.get('address',''), 'base'))
+              else:
+                  kept_rows.append(row)
+
+          with DEFAULT_BASE_CSV.open('w', encoding='utf-8-sig', newline='') as handle:
+              writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator='\n')
+              writer.writeheader()
+              writer.writerows(kept_rows)
+
+          admin_items = []
+          if DEFAULT_ADMIN_DATA.exists():
+              value = json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              if not isinstance(value, list):
+                  raise SystemExit('admin-restaurants.json 형식 오류')
+              for item in value:
+                  if not isinstance(item, dict):
+                      continue
+                  record = {**item, 'source': 'admin'}
+                  key = unique_key(record)
+                  if key in delete_keys:
+                      removed.append((key, item.get('name',''), item.get('address',''), 'admin'))
+                  else:
+                      admin_items.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin_items, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # 삭제 식당의 모든 오버라이드/정리 레코드도 제거한다.
+          for path in (DEFAULT_OUTPUT, CLEANUP):
+              if not path.exists():
+                  continue
+              value = json.loads(path.read_text(encoding='utf-8'))
+              if not isinstance(value, list):
+                  raise SystemExit(f'{path.name} 형식 오류')
+              kept = [item for item in value if not (isinstance(item, dict) and str(item.get('targetKey','')) in delete_keys)]
+              path.write_text(json.dumps(kept, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          removed_keys = {key for key, *_ in removed}
+          if removed_keys != delete_keys or len(removed) != EXPECTED_REMOVE:
+              raise SystemExit(f'삭제 대상 대조 실패: 식별 {len(delete_keys)} / 실제 행 삭제 {len(removed)} / 누락 {sorted(delete_keys - removed_keys)}')
+
+          final_targets, _ = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT)
+          if len(final_targets) != TARGET_TOTAL:
+              raise SystemExit(f'최종 식당 수 검증 실패: 목표 {TARGET_TOTAL}, 실제 {len(final_targets)}')
+          if delete_keys & set(final_targets):
+              raise SystemExit('삭제 대상 키가 최종 통합 데이터에 남아 있습니다.')
+
+          REPORT.parent.mkdir(exist_ok=True)
+          lines = [
+              '# 이미지 표시 실패 식당 삭제 결과', '',
+              f'- 삭제 전 통합 식당 수: **{EXPECTED_START}**',
+              f'- 이미지 표시 실패 식당: **{EXPECTED_REMOVE}**',
+              f'- 삭제 후 통합 식당 수: **{len(final_targets)}**',
+              '- 검증: 각 이미지 URL을 브라우저 유사 헤더로 최대 3회 GET 확인', '',
+              '| 번호 | 상호명 | 주소 | 데이터소스 | 실패 사유 |',
+              '|---:|---|---|---|---|',
+          ]
+          reason_by_key = {key: reasons for key, _, reasons in failures}
+          for i, (key, name, address, source) in enumerate(sorted(removed, key=lambda x:(x[1],x[2])), start=1):
+              def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+              lines.append(f"| {i} | {esc(name)} | {esc(address)} | {esc(source)} | {esc(' / '.join(reason_by_key[key]))} |")
+          REPORT.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print(REPORT.read_text(encoding='utf-8'))
+          PY
+
+      - name: 삭제 후 무결성 검사
+        run: |
+          python -m unittest scripts/test_image_urls.py scripts/test_update_restaurants.py
+          python -m json.tool data/admin-restaurants.json > /dev/null
+          python -m json.tool data/restaurant-overrides.json > /dev/null
+          python -m json.tool data/naver-place-cleanup-2026-08-10.json > /dev/null
+          git diff --check
+
+      - name: 5572개 반영 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- \
+            '오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv' \
+            data/admin-restaurants.json \
+            data/restaurant-overrides.json \
+            data/naver-place-cleanup-2026-08-10.json \
+            output/removed-broken-image-restaurants-2026-08-11.md
+          if git diff --cached --quiet; then
+            echo '변경 없음'
+            exit 0
+          fi
+          git commit -m '이미지 표시 실패 식당 14건 삭제 및 5572개 맞춤'
+          git push origin HEAD:main
