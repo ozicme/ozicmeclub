@@ -8,6 +8,7 @@ from scripts.add_restaurants import RegistrationError
 from scripts.sync_naver_addresses import (
     apply_verified_results,
     load_reports,
+    repair_composite_gwangju_regions,
     select_shard,
     select_unverified,
     sync_one,
@@ -106,6 +107,31 @@ class SyncNaverAddressesTest(unittest.TestCase):
             [record["targetKey"] for record in select_unverified(records)],
             ["new", "admin"],
         )
+
+    def test_composite_gwangju_region_repair_keeps_true_jeonnam(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "overrides.json"
+            records = [
+                {
+                    "targetKey": "gwangju",
+                    "address": "전남광주 광산구 임방울대로 123",
+                    "region": {"sido": "전라남도", "sigungu": "광산구"},
+                },
+                {
+                    "targetKey": "naju",
+                    "address": "전남광주 나주시 빛가람로 123",
+                    "region": {"sido": "전라남도", "sigungu": "나주시"},
+                },
+            ]
+            output.write_text(
+                json.dumps(records, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+
+            self.assertEqual(repair_composite_gwangju_regions(output), 1)
+            saved = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual(saved[0]["region"]["sido"], "광주광역시")
+            self.assertEqual(saved[1]["region"]["sido"], "전라남도")
 
     def test_load_reports_rejects_missing_shard(self):
         with tempfile.TemporaryDirectory() as temp:
