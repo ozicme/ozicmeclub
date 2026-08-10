@@ -1,0 +1,82 @@
+name: 주소·이미지 오버라이드 병합 오류 일회성 수정
+
+on:
+  push:
+    branches:
+      - agent/fix-image-override-merge
+    paths:
+      - .github/workflows/one-shot-fix-image-override-merge.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/fix-image-override-merge
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 오버라이드 병합 로직 수정
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              Path("script.js"): (
+                  '''  const overrideMap = new Map(\n    [...overrides, ...cleanupOverrides]\n      .filter((item) => item && item.targetKey)\n      .map((item) => [String(item.targetKey), item])\n  );''',
+                  '''  const overrideMap = new Map();\n  [...overrides, ...cleanupOverrides]\n    .filter((item) => item && item.targetKey)\n    .forEach((item) => {\n      const key = String(item.targetKey);\n      const previous = overrideMap.get(key) || {};\n      overrideMap.set(key, {\n        ...previous,\n        ...item,\n        targetKey: key,\n        region: { ...(previous.region || {}), ...(item.region || {}) },\n      });\n    });''',
+              ),
+              Path("admin.js"): (
+                  '''        const overrideMap = new Map(\n          [...overrides, ...cleanupOverrides]\n            .filter((item) => item && item.targetKey)\n            .map((item) => [String(item.targetKey), item])\n        );''',
+                  '''        const overrideMap = new Map();\n        [...overrides, ...cleanupOverrides]\n          .filter((item) => item && item.targetKey)\n          .forEach((item) => {\n            const key = String(item.targetKey);\n            const previous = overrideMap.get(key) || {};\n            overrideMap.set(key, {\n              ...previous,\n              ...item,\n              targetKey: key,\n              region: { ...(previous.region || {}), ...(item.region || {}) },\n            });\n          });''',
+              ),
+          }
+
+          for path, (old, new) in replacements.items():
+              text = path.read_text(encoding="utf-8")
+              if old not in text:
+                  raise SystemExit(f"예상한 기존 병합 코드가 없습니다: {path}")
+              text = text.replace(old, new, 1)
+              path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: 실제 중복 오버라이드 영향 확인
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          normal = json.loads(Path("data/restaurant-overrides.json").read_text(encoding="utf-8"))
+          cleanup = json.loads(Path("data/naver-place-cleanup-2026-08-10.json").read_text(encoding="utf-8"))
+          normal_by_key = {str(x.get("targetKey")): x for x in normal if x.get("targetKey")}
+          cleanup_by_key = {str(x.get("targetKey")): x for x in cleanup if x.get("targetKey")}
+          overlap = set(normal_by_key) & set(cleanup_by_key)
+          image_overlap = [k for k in overlap if normal_by_key[k].get("imageUrl") and not cleanup_by_key[k].get("imageUrl")]
+          print(f"동일 targetKey 오버라이드 중복: {len(overlap)}")
+          print(f"주소 cleanup 때문에 이미지 override가 가려질 수 있던 건: {len(image_overlap)}")
+          if not image_overlap:
+              raise SystemExit("실제 이미지 가림 사례를 찾지 못했습니다.")
+          PY
+
+      - name: 검증
+        run: |
+          node --check script.js
+          node --check admin.js
+          npm run test-admin
+          git diff --check
+
+      - name: 일회성 워크플로 제거 후 수정 커밋
+        run: |
+          rm .github/workflows/one-shot-fix-image-override-merge.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add script.js admin.js .github/workflows/one-shot-fix-image-override-merge.yml
+          git commit -m "주소와 이미지 오버라이드 병합 오류 수정"
+          git push origin HEAD:agent/fix-image-override-merge
