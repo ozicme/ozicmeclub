@@ -1,14 +1,17 @@
 name: 주소·이미지 오버라이드 병합 오류 일회성 수정
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/fix-image-override-merge
-    paths:
-      - .github/workflows/one-shot-fix-image-override-merge.yml
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   fix:
@@ -43,8 +46,7 @@ jobs:
               text = path.read_text(encoding="utf-8")
               if old not in text:
                   raise SystemExit(f"예상한 기존 병합 코드가 없습니다: {path}")
-              text = text.replace(old, new, 1)
-              path.write_text(text, encoding="utf-8")
+              path.write_text(text.replace(old, new, 1), encoding="utf-8")
           PY
 
       - name: 실제 중복 오버라이드 영향 확인
