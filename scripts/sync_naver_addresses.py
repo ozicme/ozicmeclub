@@ -465,7 +465,7 @@ def apply_verified_results(
     updates: list[dict[str, Any]] = []
     rejected: list[dict[str, str]] = []
     for result in results:
-        if result.get("status") not in {"ready-direct", "ready-search"}:
+        if result.get("status") not in {"ready-direct", "ready-search", "unchanged"}:
             continue
         key = clean_text(result.get("targetKey"))
         current = targets.get(key)
@@ -505,8 +505,6 @@ def apply_verified_results(
         )
         if region != expected_region or not clean_text(region.get("sido")):
             rejected.append({"targetKey": key, "reason": "address-region-mismatch"})
-            continue
-        if address == clean_text(current.get("address")) and region == (current.get("region") or {}):
             continue
         updates.append(
             {
