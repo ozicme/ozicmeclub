@@ -52,13 +52,17 @@ jobs:
           python -m json.tool data/restaurant-overrides.json > /dev/null
           git diff --check
           changed_files="$(git diff --name-only)"
-          if [ "$changed_files" != "data/restaurant-overrides.json" ]; then
+          if [ -n "$changed_files" ] && [ "$changed_files" != "data/restaurant-overrides.json" ]; then
             echo "예상 밖 파일이 변경되었습니다: $changed_files" >&2
             exit 1
           fi
 
       - name: 사이트 데이터 커밋
         run: |
+          if git diff --quiet -- data/restaurant-overrides.json; then
+            echo "검증 주소 22건이 이미 반영되어 있습니다."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/restaurant-overrides.json
