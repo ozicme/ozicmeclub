@@ -1,0 +1,198 @@
+name: 주소 불일치 식당 완전 삭제
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/remove-confirmed-address-mismatches.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-admin-data-write
+  cancel-in-progress: false
+
+jobs:
+  remove:
+    name: 확정 주소 불일치 9개 행 제거
+    runs-on: ubuntu-latest
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Python 준비
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: 사이트 데이터에서 대상 완전 제거
+        run: |
+          python - <<'PY'
+          import csv
+          import json
+          from pathlib import Path
+
+          from scripts.update_restaurants import base_row_to_record, target_key
+
+          ROOT = Path('.')
+          BASE = ROOT / '오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv'
+          ADMIN = ROOT / 'data' / 'admin-restaurants.json'
+          OVERRIDES = ROOT / 'data' / 'restaurant-overrides.json'
+
+          DELETE_KEYS = {
+              'place:34268731:8b5de94b',
+              'place:1156119431:56a7dca3',
+              'place:1060973438:08e8d37d',
+              'place:31850070:3f08ec9a',
+              'place:1750390584:0a076d30',
+              'place:1508260607:c48f09a6',
+              'place:1416634808:7d5e0c1e',
+              'place:20299835:b0c3fed5',
+              'place:20299835:358ad43c',
+          }
+
+          expected_names = {
+              '천지연 수원점',
+              '카소미야 동탄점',
+              '순남옥',
+              '꼴통숯불구이',
+              '덕소김밥',
+              '최강금돈까스',
+              '퇴촌중앙갈비',
+              '강화도맛집 숯불생선구이',
+          }
+
+          occurrences = {}
+          removed = []
+
+          def unique_key(record):
+              base_key = target_key(record)
+              count = occurrences.get(base_key, 0) + 1
+              occurrences[base_key] = count
+              return base_key if count == 1 else f'{base_key}:duplicate:{count}'
+
+          # 1) 실제 사이트의 기본 CSV에서 행 자체를 제거
+          with BASE.open('r', encoding='utf-8-sig', newline='') as handle:
+              reader = csv.DictReader(handle)
+              fieldnames = reader.fieldnames
+              rows = list(reader)
+          if not fieldnames:
+              raise SystemExit('기본 CSV 헤더를 읽지 못했습니다.')
+
+          kept_rows = []
+          for row in rows:
+              record = base_row_to_record(row)
+              key = unique_key(record)
+              if key in DELETE_KEYS:
+                  removed.append((key, record.get('name', ''), 'base'))
+              else:
+                  kept_rows.append(row)
+
+          with BASE.open('w', encoding='utf-8-sig', newline='') as handle:
+              writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator='\n')
+              writer.writeheader()
+              writer.writerows(kept_rows)
+
+          # 2) 관리자 추가 데이터에도 동일 대상이 있으면 제거
+          admin_items = []
+          if ADMIN.exists():
+              value = json.loads(ADMIN.read_text(encoding='utf-8'))
+              if not isinstance(value, list):
+                  raise SystemExit('admin-restaurants.json 형식 오류')
+              for item in value:
+                  if not isinstance(item, dict):
+                      continue
+                  record = {**item, 'source': 'admin'}
+                  key = unique_key(record)
+                  if key in DELETE_KEYS:
+                      removed.append((key, item.get('name', ''), 'admin'))
+                  else:
+                      admin_items.append(item)
+              ADMIN.write_text(json.dumps(admin_items, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          # 3) 삭제된 행의 오버라이드도 제거해 재노출 가능성을 차단
+          if OVERRIDES.exists():
+              value = json.loads(OVERRIDES.read_text(encoding='utf-8'))
+              if not isinstance(value, list):
+                  raise SystemExit('restaurant-overrides.json 형식 오류')
+              kept = [item for item in value if not (isinstance(item, dict) and str(item.get('targetKey', '')) in DELETE_KEYS)]
+              OVERRIDES.write_text(json.dumps(kept, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          found_keys = {key for key, _, _ in removed}
+          missing = sorted(DELETE_KEYS - found_keys)
+          unexpected = sorted(found_keys - DELETE_KEYS)
+          if unexpected:
+              raise SystemExit(f'예상 밖 키가 삭제 대상으로 잡혔습니다: {unexpected}')
+          if missing:
+              raise SystemExit(f'삭제 대상 키를 현재 데이터에서 찾지 못했습니다: {missing}')
+          if len(removed) != 9:
+              raise SystemExit(f'정확히 9개 행을 삭제해야 하는데 {len(removed)}개가 선택되었습니다: {removed}')
+
+          removed_names = {name for _, name, _ in removed}
+          if removed_names != expected_names:
+              raise SystemExit(f'삭제 상호명이 예상과 다릅니다: {sorted(removed_names)}')
+
+          print('삭제 완료:')
+          for key, name, source in removed:
+              print(f'- {name} | {key} | {source}')
+          print(f'기본 CSV 행 수: {len(rows)} -> {len(kept_rows)}')
+          PY
+
+      - name: 삭제 후 무결성 확인
+        run: |
+          python - <<'PY'
+          from scripts.update_restaurants import DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT, load_targets
+
+          deleted = {
+              'place:34268731:8b5de94b',
+              'place:1156119431:56a7dca3',
+              'place:1060973438:08e8d37d',
+              'place:31850070:3f08ec9a',
+              'place:1750390584:0a076d30',
+              'place:1508260607:c48f09a6',
+              'place:1416634808:7d5e0c1e',
+              'place:20299835:b0c3fed5',
+              'place:20299835:358ad43c',
+          }
+          targets, overrides = load_targets(DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT)
+          remaining = sorted(deleted & set(targets))
+          if remaining:
+              raise SystemExit(f'삭제한 키가 통합 데이터에 남아 있습니다: {remaining}')
+          override_keys = {str(item.get('targetKey', '')) for item in overrides}
+          remaining_override = sorted(deleted & override_keys)
+          if remaining_override:
+              raise SystemExit(f'삭제한 키의 오버라이드가 남아 있습니다: {remaining_override}')
+          print(f'통합 식당 수: {len(targets)}')
+          print('9개 삭제 키가 통합 데이터와 오버라이드에서 모두 사라졌습니다.')
+          PY
+          python -m unittest \
+            scripts/test_image_urls.py \
+            scripts/test_add_restaurants.py \
+            scripts/test_update_restaurants.py \
+            scripts/test_audit_restaurant_data.py \
+            scripts/test_sync_naver_addresses.py
+          python -m json.tool data/admin-restaurants.json > /dev/null
+          python -m json.tool data/restaurant-overrides.json > /dev/null
+          git diff --check
+
+      - name: 삭제 결과 커밋
+        run: |
+          changed="$(git diff --name-only)"
+          echo "$changed"
+          if [ -z "$changed" ]; then
+            echo "이미 삭제되어 변경할 내용이 없습니다."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- \
+            '오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv' \
+            data/admin-restaurants.json \
+            data/restaurant-overrides.json
+          git commit -m "주소 불일치 식당 9건 사이트에서 완전 삭제"
+          git push origin HEAD:main
