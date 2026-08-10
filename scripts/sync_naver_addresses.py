@@ -392,6 +392,24 @@ def upsert_address_overrides(
     }
 
 
+def repair_composite_gwangju_regions(output: Path) -> int:
+    """Correct only the sido derived from Naver's composite 전남광주 token."""
+    records = load_json_list(output)
+    repaired = 0
+    for record in records:
+        address = clean_text(record.get("address"))
+        if not address.startswith("전남광주 "):
+            continue
+        region = record.get("region") if isinstance(record.get("region"), dict) else {}
+        expected_sido = infer_precise_region(address).get("sido", "")
+        if expected_sido and clean_text(region.get("sido")) != expected_sido:
+            record["region"] = {**region, "sido": expected_sido}
+            repaired += 1
+    if repaired:
+        write_json_atomic(output, records)
+    return repaired
+
+
 def apply_verified_results(
     results: list[dict[str, Any]],
     *,
@@ -494,6 +512,9 @@ def apply_verified_results(
     }
     if updates:
         update_result = upsert_address_overrides(updates, output)
+    region_repairs = repair_composite_gwangju_regions(output)
+    if region_repairs:
+        update_result["totalOverrides"] = len(load_json_list(output))
 
     status_counts = Counter(result.get("status", "review") for result in results)
     issue_counts = Counter(
@@ -505,6 +526,7 @@ def apply_verified_results(
         "statusCounts": dict(sorted(status_counts.items())),
         "issueCounts": dict(sorted(issue_counts.items())),
         "applied": update_result["updated"],
+        "regionRepairs": region_repairs,
         "totalOverrides": update_result["totalOverrides"],
         "rejected": rejected,
         "review": [result for result in results if result.get("status") == "review"],
@@ -518,6 +540,7 @@ def summary_markdown(summary: dict[str, Any]) -> str:
         "",
         f"- 전체 확인: {summary.get('checked', 0):,}개",
         f"- 주소 반영: {summary.get('applied', 0):,}개",
+        f"- 광주·전남 시도 보정: {summary.get('regionRepairs', 0):,}개",
         f"- 이미 일치: {int(counts.get('unchanged', 0)):,}개",
         f"- 자동 판단 보류: {int(counts.get('review', 0)):,}개",
         f"- 전체 수정 이력: {summary.get('totalOverrides', 0):,}개",
