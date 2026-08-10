@@ -1867,9 +1867,11 @@
       "sigungu": "검단구",
       "eupmyeondong": ""
     },
-    "updateSource": "github-naver-address-sync",
+    "updateSource": "duplicate-cleanup-2026-08-11",
     "naverPlaceId": "1732086379",
-    "naverDetailTitle": "봄이보리밥 검단점"
+    "naverDetailTitle": "봄이보리밥 검단점",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address"
   },
   {
     "targetKey": "place:1722022085:35072e06",
@@ -2323,9 +2325,11 @@
       "sigungu": "종로구",
       "eupmyeondong": ""
     },
-    "updateSource": "github-naver-address-sync",
+    "updateSource": "duplicate-cleanup-2026-08-11",
     "naverPlaceId": "13152081",
-    "naverDetailTitle": "전주식당"
+    "naverDetailTitle": "전주식당",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address"
   },
   {
     "targetKey": "place:1497784507:63c26fcf",
@@ -2527,9 +2531,11 @@
       "sigungu": "금천구",
       "eupmyeondong": ""
     },
-    "updateSource": "github-naver-address-sync",
+    "updateSource": "duplicate-cleanup-2026-08-11",
     "naverPlaceId": "1044588978",
-    "naverDetailTitle": "한옥집 숯불갈비 서울본점"
+    "naverDetailTitle": "한옥집 숯불갈비 서울본점",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address"
   },
   {
     "targetKey": "place:1044588978:a68b05da:duplicate:2",
@@ -5542,5 +5548,71 @@
     "deletionReason": "naver-place-title-mismatch",
     "naverPlaceId": "15148170",
     "naverDetailTitle": "대진어촌계활어회센타"
+  },
+  {
+    "targetKey": "place:1340433602:c095916c",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:15584316:f89a3761",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1077408803:ab63059a",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:37837958:175fa8e0",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1453039916:51d885f0",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1890301806:d2a81c3d",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1838768919:0c5a88f2",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1342981831:f4dfb0d8",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:37817485:88c4a11b",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:1183904899:782fa362",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
+  },
+  {
+    "targetKey": "place:17232761:e36a9bde",
+    "deleted": true,
+    "deletionReason": "duplicate-name-address",
+    "updateSource": "duplicate-cleanup-2026-08-11"
   }
 ]
