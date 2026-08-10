@@ -1,0 +1,60 @@
+name: 최종 유효 식당 수 5572개 검증
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-final-5572.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: 실제 통합 식당 수 계산
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT, NAVER_CLEANUP_FILENAME, load_targets
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          cleanup=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          cleanup_rows=json.loads(cleanup.read_text(encoding='utf-8')) if cleanup.exists() else []
+          deleted=[x for x in cleanup_rows if isinstance(x,dict) and x.get('deleted') is True]
+          duplicate_deleted=[x for x in deleted if x.get('deletionReason')=='duplicate-name-address']
+          total=len(targets)
+          lines=[
+            '# 최종 오직미클럽 식당 수 검증','',
+            f'- 실제 통합 유효 식당 수: **{total}**',
+            f'- cleanup 전체 삭제표시 수: **{len(deleted)}**',
+            f'- 이번 중복 삭제표시 수: **{len(duplicate_deleted)}**',
+            f'- 목표 5,572개 일치 여부: **{"PASS" if total==5572 else "FAIL"}**',''
+          ]
+          if duplicate_deleted:
+            lines += ['| targetKey | 삭제사유 |','|---|---|']
+            for x in duplicate_deleted:
+              lines.append(f"| {x.get('targetKey','')} | {x.get('deletionReason','')} |")
+          Path('output').mkdir(exist_ok=True)
+          Path('output/final-restaurant-count-2026-08-11.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          print('\n'.join(lines))
+          if total!=5572:
+            raise SystemExit(f'최종 식당 수 불일치: {total}')
+          PY
+      - name: 검증 결과 커밋
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add output/final-restaurant-count-2026-08-11.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m '최종 유효 식당 5572개 검증 완료'
+          git push origin HEAD:main
