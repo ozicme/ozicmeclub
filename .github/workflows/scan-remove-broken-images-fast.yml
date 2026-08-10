@@ -1,0 +1,183 @@
+name: 대표이미지 표시 실패 빠른 재검증 및 5572개 정리
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/scan-remove-broken-images-fast.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-broken-image-fast-scan
+  cancel-in-progress: true
+
+jobs:
+  scan-remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: 전체 이미지 빠른 검사 + 실패 후보 재검증 + 14건일 때만 삭제
+        run: |
+          python - <<'PY'
+          import csv, json, time, urllib.error, urllib.request
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          from pathlib import Path
+          from scripts.update_restaurants import (
+              DEFAULT_BASE_CSV, DEFAULT_ADMIN_DATA, DEFAULT_OUTPUT,
+              NAVER_CLEANUP_FILENAME, base_row_to_record, load_targets, target_key,
+          )
+
+          START_TOTAL=5586
+          TARGET_TOTAL=5572
+          REMOVE_COUNT=14
+          CLEANUP=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          REPORT=Path('output/broken-image-fast-scan-2026-08-11.md')
+          HEADERS={
+              'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36',
+              'Accept':'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+              'Referer':'https://map.naver.com/',
+              'Range':'bytes=0-1023',
+          }
+
+          def is_image(data,ctype):
+              ct=(ctype or '').lower()
+              if ct.startswith('image/'): return True
+              if not data: return False
+              if data.startswith((b'\xff\xd8\xff',b'\x89PNG\r\n\x1a\n',b'GIF87a',b'GIF89a',b'<svg',b'<?xml')): return True
+              return data.startswith(b'RIFF') and b'WEBP' in data[:16]
+
+          def probe(url,timeout):
+              if not str(url or '').strip(): return False,'empty'
+              req=urllib.request.Request(str(url).strip(),headers=HEADERS,method='GET')
+              try:
+                  with urllib.request.urlopen(req,timeout=timeout) as r:
+                      status=getattr(r,'status',200) or 200
+                      ctype=r.headers.get('Content-Type','')
+                      data=r.read(1024)
+                      ok=200 <= status < 400 and is_image(data,ctype)
+                      return ok,f'{status}:{ctype}'
+              except urllib.error.HTTPError as e:
+                  return False,f'HTTP {e.code}'
+              except Exception as e:
+                  return False,f'{type(e).__name__}: {e}'
+
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(targets)!=START_TOTAL:
+              raise SystemExit(f'안전 중단: 시작 식당 수 {len(targets)} (예상 {START_TOTAL})')
+
+          # 1차: 짧은 타임아웃, 높은 병렬도
+          first_fail=[]
+          def first(item):
+              k,r=item; ok,why=probe(r.get('imageUrl'),4); return k,r,ok,why
+          with ThreadPoolExecutor(max_workers=64) as pool:
+              futs=[pool.submit(first,x) for x in targets.items()]
+              for i,f in enumerate(as_completed(futs),1):
+                  k,r,ok,why=f.result()
+                  if not ok: first_fail.append((k,r,why))
+                  if i%1000==0: print('1차',i,'/',len(targets),'후보',len(first_fail))
+          print('1차 실패 후보:',len(first_fail))
+
+          # 2차: 후보만 낮은 병렬도·긴 타임아웃으로 재확인 2회
+          time.sleep(3)
+          final_fail=[]
+          def recheck(item):
+              k,r,why1=item
+              reasons=[why1]
+              for _ in range(2):
+                  ok,why=probe(r.get('imageUrl'),10)
+                  reasons.append(why)
+                  if ok: return k,r,True,reasons
+                  time.sleep(1)
+              return k,r,False,reasons
+          with ThreadPoolExecutor(max_workers=8) as pool:
+              futs=[pool.submit(recheck,x) for x in first_fail]
+              for f in as_completed(futs):
+                  k,r,ok,reasons=f.result()
+                  if not ok: final_fail.append((k,r,reasons))
+
+          final_fail.sort(key=lambda x:(str(x[1].get('name','')),str(x[1].get('address',''))))
+          print('최종 표시 실패:',len(final_fail))
+          for k,r,reasons in final_fail:
+              print('FAIL',r.get('name'),r.get('address'),k,' / '.join(reasons))
+
+          REPORT.parent.mkdir(exist_ok=True)
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# 대표이미지 표시 실패 빠른 재검증','',f'- 검사 식당 수: **{len(targets)}**',f'- 최종 표시 실패: **{len(final_fail)}**',f'- 목표 삭제 수: **{REMOVE_COUNT}**','']
+
+          if len(final_fail)!=REMOVE_COUNT:
+              lines += ['- 결과: **삭제하지 않음 — 정확히 14건이 아니어서 안전 중단**','', '| 상호명 | 주소 | targetKey | 3회 실패 사유 |','|---|---|---|---|']
+              for k,r,reasons in final_fail:
+                  lines.append(f"| {esc(r.get('name'))} | {esc(r.get('address'))} | {esc(k)} | {esc(' / '.join(reasons))} |")
+              REPORT.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              Path('output/broken-image-scan-count.txt').write_text(str(len(final_fail)),encoding='utf-8')
+              raise SystemExit(0)
+
+          delete_keys={k for k,_,_ in final_fail}
+          reason_by_key={k:reasons for k,_,reasons in final_fail}
+          occurrences={}; removed=[]
+          def unique_key(record):
+              b=target_key(record); n=occurrences.get(b,0)+1; occurrences[b]=n
+              return b if n==1 else f'{b}:duplicate:{n}'
+
+          with DEFAULT_BASE_CSV.open('r',encoding='utf-8-sig',newline='') as h:
+              reader=csv.DictReader(h); fields=reader.fieldnames; rows=list(reader)
+          kept=[]
+          for row in rows:
+              rec=base_row_to_record(row); k=unique_key(rec)
+              if k in delete_keys: removed.append((k,rec.get('name',''),rec.get('address',''),'base'))
+              else: kept.append(row)
+          with DEFAULT_BASE_CSV.open('w',encoding='utf-8-sig',newline='') as h:
+              w=csv.DictWriter(h,fieldnames=fields,lineterminator='\n'); w.writeheader(); w.writerows(kept)
+
+          admin=[]
+          if DEFAULT_ADMIN_DATA.exists():
+              vals=json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              for item in vals:
+                  rec={**item,'source':'admin'}; k=unique_key(rec)
+                  if k in delete_keys: removed.append((k,item.get('name',''),item.get('address',''),'admin'))
+                  else: admin.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          for p in (DEFAULT_OUTPUT,CLEANUP):
+              if not p.exists(): continue
+              vals=json.loads(p.read_text(encoding='utf-8'))
+              vals=[x for x in vals if not (isinstance(x,dict) and str(x.get('targetKey','')) in delete_keys)]
+              p.write_text(json.dumps(vals,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          if len(removed)!=REMOVE_COUNT or {x[0] for x in removed}!=delete_keys:
+              raise SystemExit(f'삭제 행 대조 실패: {len(removed)}')
+          final,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(final)!=TARGET_TOTAL:
+              raise SystemExit(f'최종 수 불일치: {len(final)}')
+
+          lines += ['- 결과: **14건 삭제 완료**',f'- 삭제 후 통합 식당 수: **{len(final)}**','', '| 번호 | 상호명 | 주소 | 3회 실패 사유 |','|---:|---|---|---|']
+          for i,(k,n,a,s) in enumerate(sorted(removed,key=lambda x:(x[1],x[2])),1):
+              lines.append(f"| {i} | {esc(n)} | {esc(a)} | {esc(' / '.join(reason_by_key[k]))} |")
+          REPORT.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('output/broken-image-scan-count.txt').write_text('14',encoding='utf-8')
+          PY
+
+      - name: 검사/삭제 결과 커밋
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          count="$(cat output/broken-image-scan-count.txt 2>/dev/null || echo unknown)"
+          if [ "$count" = "14" ]; then
+            git commit -m '이미지 표시 실패 식당 14건 삭제 및 5572개 맞춤'
+          else
+            git commit -m "대표이미지 표시 실패 재검증 결과 ${count}건 (삭제 보류)"
+          fi
+          git push origin HEAD:main
