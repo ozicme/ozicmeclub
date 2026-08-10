@@ -107,3 +107,5 @@ jobs:
           git add output/missing-image-restaurants.md
           git commit -m "사진 없는 식당 현황 리포트 갱신"
           git push origin HEAD:main
+
+# 2026-08-10 현재 사이트 데이터 기준 점검
