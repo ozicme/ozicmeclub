@@ -95,7 +95,7 @@
     "name": "장어명가풍천민물장어직판장",
     "address": "경기 용인시 처인구 남사읍 처인성로 591",
     "naverPlaceUrl": "https://map.naver.com/p/entry/place/1682608465?c=14.00,0,0,0,dh&placePath=%2Fhome%3FfromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202608090859%26locale%3Dko%26svcName%3Dmap_pcv5",
-    "imageUrl": "",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20190531_17%2F1559310397159uOk5T_JPEG%2F9bgqXyo3Bpq3ZRyPE6ebD-hV.jpg",
     "region": {
       "sido": "경기도",
       "sigungu": "용인시 처인구",
@@ -142,8 +142,8 @@
     "sourceType": "ozicme-admin-edit",
     "evidenceUrl": "",
     "evidenceText": "",
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair"
   },
   {
     "targetKey": "place:13459967:84339e40",
@@ -988,8 +988,8 @@
       "sigungu": "영등포구",
       "eupmyeondong": "영등포동7가"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fnaverbooking-phinf.pstatic.net%2F20240915_221%2F17263287625124xsvF_JPEG%2Fimage.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -1520,7 +1520,9 @@
       "sigungu": "성남시 분당구",
       "eupmyeondong": "정자동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260204_102%2F1770197077499aA4FY_JPEG%2FIMG_7534.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1850239281:1490be07",
@@ -1690,8 +1692,8 @@
       "sigungu": "부산진구",
       "eupmyeondong": "부전동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260731_189%2F1785454191541NaQjI_JPEG%2FSKT_8%25BF%25F9_%25C7%25E0%25BB%25E7.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -3062,8 +3064,8 @@
       "sigungu": "청주시 서원구",
       "eupmyeondong": "현도면"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200901_233%2F1598943325081hWXNM_JPEG%2FqRMrSs9cfjMU3fTjxfJkH8hb.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -4464,8 +4466,8 @@
       "sigungu": "광산구",
       "eupmyeondong": "쌍암동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240705_116%2F1720138743621tP3xS_PNG%2F2.png",
     "updatedAt": "2026-08-10"
   },
   {
@@ -4566,7 +4568,9 @@
       "sigungu": "고양시 일산동구",
       "eupmyeondong": "풍동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260422_116%2F1776863580580a7uzw_JPEG%2FKakaoTalk_Photo_2026-04-22-21-54-48_005.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1454223872:c8731c54",
@@ -4866,8 +4870,8 @@
       "sigungu": "가평군",
       "eupmyeondong": "가평읍"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240919_131%2F17267092293458P2uv_JPEG%2F%25BB%25EA%25C7%25D8%25BC%25BA%25C2%25F9_46.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -6128,7 +6132,9 @@
       "sigungu": "영도구",
       "eupmyeondong": "남항동3가"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260520_134%2F17792046352678d06I_JPEG%2F%25C1%25A6%25B8%25F1%25C0%25BB_%25C0%25D4%25B7%25C2%25C7%25D8%25C1%25D6%25BC%25BC%25BF%25E4._%252810%2529.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1740120012:eedd4fb8",
@@ -6248,7 +6254,9 @@
       "sigungu": "용인시 처인구",
       "eupmyeondong": "역북동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTA5MjlfMjg5%2FMDAxNzU5MTU2OTMyMzc3.iPX-fgzNAFFWnNm33-ZgZP-XJfsHvNJsvK6dmVMylrkg.hdsA6a6j5FGqMn3DsnhvE4qDhbNoCBHIkers1yB9t0Ig.JPEG%2FCBED9488-6DB9-4768-B371-96BA9321D88E.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:13573702:ace6152d",
@@ -6648,8 +6656,8 @@
       "sigungu": "송파구",
       "eupmyeondong": "방이동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260403_53%2F1775183617879zl41c_JPEG%2FKakaoTalk_20260403_113122715.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -6900,8 +6908,8 @@
       "sigungu": "마포구",
       "eupmyeondong": "도화동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA3MDhfMTE0%2FMDAxNzgzNDgwNjk5MTUx.1puTgTGyn3QgkBdXjIfPy5OIFerwXUBAYLHqK-FZu5og.QXFNbf67BaKjkZ8ZoiEiVImMZkapfiLhg3JtwPh8_rkg.JPEG%2F20260708_121351.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -7122,7 +7130,9 @@
       "sigungu": "의정부시",
       "eupmyeondong": "금오동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjAxMDdfNDgg%2FMDAxNzY3NzU2MjU5MDQz.7fqoVdU3n7iEovdqoIwPkFKQtUGB94Vff91MMrqpcg4g.trKY6FNs1qd9D5Tlqtx5ZZ9jU9CqF-oeHp7DU047xWMg.JPEG%2F900%25EF%25BC%25BF1767755983179.jpg%2F900x416",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:2065095153:e5ad5c0b",
@@ -8212,8 +8222,8 @@
       "sigungu": "송파구",
       "eupmyeondong": "삼전동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250718_283%2F1752816222108n5STy_JPEG%2F250715_%25BE%25C8%25C0%25E7%25BD%25C4%25B4%25E78852.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -9104,8 +9114,8 @@
       "sigungu": "북구",
       "eupmyeondong": "용봉동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250411_230%2F1744349701801nzpfc_JPEG%2F1%25B9%25F8.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -9226,7 +9236,9 @@
       "sigungu": "동래구",
       "eupmyeondong": "사직동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNTExMTZfMjY4%2FMDAxNzYzMjg5NTY5MTk2.9i03r65d2ehJkvyuSpekfeHERSLpa0yaLn9_EkObmDwg.3bIgWmNFsD64QKFVNQmKCMk6Bu7QSjQSvSPMnaMRUDMg.JPEG%2FKakaoTalk_20251116_190309640_07.jpg%2F3024x4032",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1342981831:fd8a49c3",
@@ -9526,8 +9538,8 @@
       "sigungu": "평택시",
       "eupmyeondong": "평택동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260219_140%2F1771482781091YBMgf_PNG%2F%25C7%25D1%25BF%25C1%25B8%25B6%25C0%25BB_%25BA%25F1%25BA%25F6%25B9%25E4_%25C0%25FC%25C5%25EB-03.png",
     "updatedAt": "2026-08-10"
   },
   {
@@ -11758,7 +11770,9 @@
       "sigungu": "동대문구",
       "eupmyeondong": "제기동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTA5MDFfMjcz%2FMDAxNzU2NzEyNjg3MjA5.Ruf3VrpZM2dlGbox0j6vy89kp8pjIh4DzfyH-7Eu0ocg.3rVjjUGC0pboU4rf4t3mutYgXXphl1JRVZvcoGVTnvEg.JPEG%2F20250901_121050.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1349804251:386e536c",
@@ -13038,7 +13052,9 @@
       "sigungu": "서대문구",
       "eupmyeondong": "홍제동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTExMTNfMTMg%2FMDAxNzYzMDI3MjU0MDU0.EGthGClURa0GJxp4hu9Zrxkq7ELkDShMpap1iLuvBb0g.ihGmGPRhyM4UmNsc7WEXs0t6NZw6FWsyCGc7qEhWlTgg.JPEG%2F20251113_181947.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:38521798:ba4e1d13",
@@ -13048,7 +13064,9 @@
       "sigungu": "양천구",
       "eupmyeondong": "신월동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTEwMDlfMjk5%2FMDAxNzYwMDA0NzcxOTY0.Bbkd8k_Jor9d916P2p3QUgLJYlCugCDHLRpTIqmbIlcg.O0tlX0IVl_tthaD8HvM6YigslnsaQ8PCKh9JnJ8tP14g.JPEG%2F20251009_174552.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1156053228:8d35fdff",
@@ -14078,7 +14096,9 @@
       "sigungu": "청주시 청원구",
       "eupmyeondong": "우암동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA2MjJfODAg%2FMDAxNzgyMTE1MzE4NDk0.bNEEbDiMdiMKGkBmjJUTBhR0MFbLyhPWeqoqjMGAkK8g.3qWB3lTK0kavNSQHhTeu9jxdZql0QqCqJZNSxEKDvZ4g.JPEG%2F4F71EF58-6567-4103-A626-F9E5B07399DA.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:37810839:c6195d78",
@@ -14938,8 +14958,8 @@
       "sigungu": "동구",
       "eupmyeondong": "판암동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA4MDRfNTkg%2FMDAxNzg1ODQwODI1MTM2.YyVxbFedJ0GUVhI7vg-sFYmrriSXeKm1DSNrKzJ4h80g.5XXcd_IcOMYzy3QEV51Yd3GQ37wz9_4tOZ6LVElBnS8g.JPEG%2F17858408093937450999538671064831.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -15030,7 +15050,9 @@
       "sigungu": "수원시 권선구",
       "eupmyeondong": "구운동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250731_212%2F1753923946732HHYb7_JPEG%2F%25BA%25BB%25C1%25A1-%25B3%25D7%25C0%25CC%25B9%25F6-%25C7%25C3%25B7%25B9%25C0%25CC%25BD%25BA-%25BE%25F7%25C3%25BC%25BB%25E7%25C1%25F8-%25BC%25DB%25B4%25E3%25C1%25A4%25BD%25C4.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1661615469:2a2ad90c",
@@ -15370,7 +15392,9 @@
       "sigungu": "수원시 장안구",
       "eupmyeondong": "조원동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA2MjVfMzIg%2FMDAxNzgyMzgxMDU0NTcy.rOZZvSTHoomE64oI6BpKP_JquWXR62WObJuwY_71PCUg.eyXrIVoRt1-aucuTblA1OGjB2zelkxHpJnk5iy43XN4g.JPEG%2F20260625_133649.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:38410747:d35be0ff",
@@ -15900,8 +15924,8 @@
       "sigungu": "강남구",
       "eupmyeondong": "삼성동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260523_247%2F1779537360923oWWY7_JPEG%2F928D6DEC-D23C-4DE5-BBED-38654ECA38BA.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -16772,8 +16796,8 @@
       "sigungu": "부평구",
       "eupmyeondong": "삼산동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA4MDNfMjI4%2FMDAxNzg1NzY1ODg5MzUz.8jZKZRCnDamJsdMXLheB7UvB-CKLtQsAAMUkJ7Jp1gAg.p1Ug8AVXLjaCk6T9oZXN3MvvB7zanRzYSginWzj1VzUg.JPEG%2FIMG%25EF%25BC%25BF1994.jpg%2F900x1200",
     "updatedAt": "2026-08-10"
   },
   {
@@ -17254,7 +17278,9 @@
       "sigungu": "대덕구",
       "eupmyeondong": "덕암동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MDZfMjgz%2FMDAxNzc4MDcyNjc0Mjg1.2ePAl4eoFp87c-pfsb57euxxRm_boxkrQsALdcjDa5Eg.X8wEJxkzPz-AAa0QWXFzMyr7UOGHruB8NAj8V-xVp8wg.JPEG%2F6E8E907F-565A-44E6-B23B-DFF1DE31F85A.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1557404550:ed5d7702",
@@ -17554,8 +17580,8 @@
       "sigungu": "서초구",
       "eupmyeondong": "양재동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260403_4%2F1775183577440Pe6xU_JPEG%2FKakaoTalk_20260403_113122715.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -17896,8 +17922,8 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260327_112%2F1774602598147eMaRV_JPEG%2F1.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -20488,7 +20514,9 @@
       "sigungu": "강서구",
       "eupmyeondong": "화곡동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA2MDFfNzIg%2FMDAxNzgwMzE1NDU1MjI0.Lf2AK_zDoZz15_NXKXRibdyu9EYw9M8Xo8Q5FT1JH1Qg.Ix3B8VjcMR7rz8W3rKOoNzP26F6KAh7VmbNnTPG_AuEg.JPEG%2FE2C2643A-1316-4472-B3CD-27CEB1A7789B.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1356072026:dd03d4bf",
@@ -20828,7 +20856,9 @@
       "sigungu": "서귀포시",
       "eupmyeondong": "대정읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20210220_60%2F1613814908381qzcLM_JPEG%2FbttPTRo7JlMg-KTHXQXcbEkP.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1026980874:a578e73e",
@@ -21698,8 +21728,8 @@
       "sigungu": "의왕시",
       "eupmyeondong": "학의동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240315_29%2F1710464576163DLgfR_PNG%2F%25A4%25B5%25A4%25B5%25A4%25B5%25A4%25B5%25A4%25B2%25A4%25B2%25A4%25B2.png",
     "updatedAt": "2026-08-10"
   },
   {
@@ -22670,7 +22700,9 @@
       "sigungu": "연수구",
       "eupmyeondong": "동춘동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA1MjZfNDMg%2FMDAxNzc5ODAxOTYyMzI2.0XoZV3FvslbNNNjJYA4lOyunhLVcwDiQGs9SqRVep0gg.dsLV8YGZWtq7ijOGTv9Ra9EgEPteF52if6nf97pbdHwg.JPEG%2FIMG%25EF%25BC%25BF7634.jpg%2F900x676",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:36528232:42aba34b",
@@ -22880,7 +22912,9 @@
       "sigungu": "성남시 분당구",
       "eupmyeondong": "정자동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250501_224%2F1746107929405I03MQ_JPEG%2F1000098293.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1031311428:6f03a46e",
@@ -23040,8 +23074,8 @@
       "sigungu": "용인시 처인구",
       "eupmyeondong": "남사읍"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240626_74%2F1719383449804lBM0x_JPEG%2FKakaoTalk_20240626_152843111_05.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -23132,8 +23166,8 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260403_164%2F1775183562248G2TgQ_JPEG%2FKakaoTalk_20260403_113122715.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -24234,8 +24268,8 @@
       "sigungu": "부평구",
       "eupmyeondong": "부평동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250701_285%2F1751330085608v1zud_JPEG%2FDSC_6434-min.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -24626,8 +24660,8 @@
       "sigungu": "광명시",
       "eupmyeondong": "하안동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260327_293%2F1774602244555YyKVh_JPEG%2F12.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -24738,8 +24772,8 @@
       "sigungu": "오산시",
       "eupmyeondong": "원동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA1MjlfMjU2%2FMDAxNzgwMDE4NDk1OTQ1.FRSHBKV2w4Ts5UzQDYwJI06cB-sIVd-_2_N03BK7wRwg.SZIVaF6ZSgmfYb6I14yd2jYzAFtujAahhOCWiCXSnMgg.JPEG%2FIMG%25EF%25BC%25BF5501.jpg%2F900x1200",
     "updatedAt": "2026-08-10"
   },
   {
@@ -25050,8 +25084,8 @@
       "sigungu": "서대문구",
       "eupmyeondong": "남가좌동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA0MjFfMjgy%2FMDAxNzc2NzczODk2NzY4.jfo34AwLK_3WzmyAZmqYGGKncbwsU08oOx1h1Yw2eh0g.-NTlrW4GwnbDMfjfAiwe5MFG1oiLgCVHE8ZPK8GZ99Ig.JPEG%2FIMG%25EF%25BC%25BF0352.JPG%2F900x1200",
     "updatedAt": "2026-08-10"
   },
   {
@@ -26082,7 +26116,9 @@
       "sigungu": "계양구",
       "eupmyeondong": "작전동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MTRfMjgg%2FMDAxNzc4NzU0NzYwNzE0.ByBpF8HnTcd9-ugWvvQW6rCk0mbkHSbx-NYuQHbEBagg.UMJaEQME_mBclxfy1athDfeJ6PQ_IhS-qnSbAUFvIikg.JPEG%2F20260512_192602.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:16661443:268c23f4",
@@ -26432,8 +26468,8 @@
       "sigungu": "기장군",
       "eupmyeondong": "기장읍"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260722_42%2F1784706309466750DJ_JPEG%2FA_photograph_of_a_Korean_BBQ_dining_table_from_abo-1784704448667.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -26564,7 +26600,9 @@
       "sigungu": "남동구",
       "eupmyeondong": "구월동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTEwMDFfNTcg%2FMDAxNzU5MzE1MzEwMTAz.pJOVryt3hSd_O-VsepKEwDqo6XRwPGJZXbFc4FZPrWcg.4Ofni3uF5iZJzKbyEncM-sVPJ1GBAckR4GlpFMPbo38g.JPEG%2F20250920_140628.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:20585623:66d2386a",
@@ -27054,7 +27092,9 @@
       "sigungu": "중구",
       "eupmyeondong": "저동2가"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTA5MjVfNzYg%2FMDAxNzU4NzYxNjQzMTIy.s6abd6IEZ-pt1XKhBTmOL1b4MzTmhJ-349bsK5pql4kg.Mi-dhFN0p9XT_irigp0gj03vlRHocdHlNuAgPogjmQgg.JPEG%2F2025_09_24_%25C3%2583%25C2%25AC%25C3%2582%25C2%2598%25C3%2582%25C2%25A4%25C3%2583%25C2%25AD%25C3%2582%25C2%259B%25C3%2582%25C2%2584_12_31_Office_Lens.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:674670169:fac71a19",
@@ -27784,7 +27824,9 @@
       "sigungu": "강북구",
       "eupmyeondong": "미아동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250723_77%2F1753247996467ePBMa_JPEG%2FF0082FD3-9E3B-4339-B4B3-3B9D4C011B02.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1662952470:d06442a9",
@@ -29874,7 +29916,9 @@
       "sigungu": "남구",
       "eupmyeondong": "대연동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MjJfMjgx%2FMDAxNzc5NDUzNjMxMDc2.kUV-jlEcygmMDdBoJCYUBgcg-q7CNExPbuVGBr-ve5kg.gFLp3MRYa1PIACbF7TCDCeEz4VSYM-iXQDMwdIeSajgg.JPEG%2F20260522_111129.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1918312337:05ea799d",
@@ -32254,8 +32298,8 @@
       "sigungu": "수원시 영통구",
       "eupmyeondong": "원천동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260605_42%2F17806260471133hFPu_JPEG%2F%25B0%25B9%25C0%25E5%25BE%25EE%25BB%25FE%25BA%25EA%2528%25BA%25B8%25C1%25A4%2529.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -32386,7 +32430,9 @@
       "sigungu": "용인시 처인구",
       "eupmyeondong": "양지읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MjRfMjYz%2FMDAxNzc5NjEzNzk4Nzg1.4hvQmcXRlBNFRRD-76LnHKBgkQDYJUF43CxtFJp3qvEg.000Ie8y3_1e-qmWLZge2-cYHksnITkkGjyGhW7b5YPwg.JPEG%2FIMG_4882.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1336383407:79e7ebd4",
@@ -32476,7 +32522,9 @@
       "sigungu": "중구",
       "eupmyeondong": "서소문동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA3MDNfMTQg%2FMDAxNzgzMDUzODYyOTQ1.IWkranBjrjK9a78eZFF8-ZlmYbguB_fBvatmweFud3Ag.F50T129mb2qao0wdkvIvdM48R1917ljoH2u8P7jQhrEg.JPEG%2FIMG%25EF%25BC%25BF1832.jpg%2F900x658",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:37616634:4c752c8d",
@@ -32796,7 +32844,9 @@
       "sigungu": "동구",
       "eupmyeondong": "수정동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MThfMjkx%2FMDAxNzc5MDYxMTM4ODM0.ozcgZHSqUZOZ6jSWhc-CvRJR5TMqvi--jtiW6e2UDqYg.X8kNxlSZmoQvjdWCK_dmCToZJmbjUxeOKFbiT75HmfMg.JPEG%2F20260516_124554.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1049747599:dabbd402",
@@ -33046,7 +33096,9 @@
       "sigungu": "청주시 청원구",
       "eupmyeondong": "오창읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDA5MjBfMTg2%2FMDAxNzI2NzU5NzU0MzQ2.CwXquzNU1NmenkplvmvKix8laoCpSKgcodM9ykC85Ygg.BuHRgC3EwjeHmfCODeqDx-f1hpVT700--eycUc2GBJ0g.JPEG%2F3DE6A19F-27E5-4631-8AF2-D5430A1D6B78.jpeg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:16014599:547b9d24",
@@ -33276,7 +33328,9 @@
       "sigungu": "강화군",
       "eupmyeondong": "선원면"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDA3MDhfMjcz%2FMDAxNzIwNDM1OTQ0MTUw.HgzVuaVynKP__OB7rDCNdj8J5hVTm4WLoQtm9vXtfrcg._93phZ1ua1bpMsE2-LUUO1N9sv-oxkPN8PQ99WbKt2Ag.JPEG%2F20240708_181158.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1169550805:5efa814e",
@@ -33996,7 +34050,9 @@
       "sigungu": "청주시 청원구",
       "eupmyeondong": "오창읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MjVfMTEy%2FMDAxNzc5Njg0Nzc4OTc3.2cLJH5i4PlEzp0I7Cj_SlNrWFEMDZl8hBTDRkwd7Zikg.WUvy0-kUoHksvF5tw-OCcDPyyiyKxi5ZRC9OJ9RH6Ysg.JPEG%2F1779684552557.jpg.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:1223656316:c18a9ff2",
@@ -34186,8 +34242,8 @@
       "sigungu": "광진구",
       "eupmyeondong": "능동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260403_91%2F17751836308171Cs5z_JPEG%2FKakaoTalk_20260403_113122715.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -34338,7 +34394,9 @@
       "sigungu": "종로구",
       "eupmyeondong": "종로5가"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMzA5MjhfMTg3%2FMDAxNjk1ODU0MzUxMDI2.0xkgzQ0rWtYr2b7ykeAaK4bEycCkJXMcc_TogtxX4ygg.Yn2vol6ZxJYQDcZOxZTRaOY--Y3PcTBC-KM2-TBFpoQg.JPEG%2F20230927_143152.heic.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:17967915:288ab22e",
@@ -34938,8 +34996,8 @@
       "sigungu": "김해시",
       "eupmyeondong": "삼방동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250808_16%2F1754627043917ddJS6_JPEG%2F1000018721.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -35310,8 +35368,8 @@
       "sigungu": "제주시",
       "eupmyeondong": "도두일동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20251028_149%2F17616602727335KLlW_JPEG%2F16.jpg",
     "updatedAt": "2026-08-10"
   },
   {
@@ -35812,7 +35870,9 @@
       "sigungu": "용인시 처인구",
       "eupmyeondong": "모현읍"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260704_276%2F1783132860551xpvwF_JPEG%2F1000004502.jpg",
+    "updatedAt": "2026-08-10"
   },
   {
     "targetKey": "place:19390632:6a926443",
@@ -37882,8 +37942,8 @@
       "sigungu": "도봉구",
       "eupmyeondong": "방학동"
     },
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": "",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260219_89%2F1771479731886eSeYY_PNG%2F%25C7%25D1%25BF%25C1%25B8%25B6%25C0%25BB_%25BA%25F1%25BA%25F6%25B9%25E4_%25C0%25FC%25C5%25EB-03.png",
     "updatedAt": "2026-08-10"
   },
   {
@@ -38869,8 +38929,9 @@
       "sigungu": "서구",
       "eupmyeondong": "쌍촌동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f180_180&src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA1MTNfMTAz%2FMDAxNzE1NTk4NDE1NDgz.g9hP9ZdoARDjkhSyV_RHMXTg7NBjuUZUFwg4Aqle5UYg.PgmwrUgUhbHL8T1w9NtPJp7MdQOIJTDmj0mw_twZwoAg.JPEG%2F20240509%25A3%25DF182059.jpg%23900x956"
   },
   {
     "targetKey": "place:1036576390:2d5888f6",
@@ -39499,8 +39560,9 @@
       "sigungu": "남구",
       "eupmyeondong": "봉선동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f180_180&src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA2MTVfMjky%2FMDAxNzE4NDI1MzA2MTcw.K8Kh-3Kc3C2czLV2S-BUtqX9rgUNKfGQciaDRSoUi6og._pQ_RhNU48o2DslWOFiLO90jQC2IPpRRmCl2wakZ87sg.JPEG%2FIMG_5656.jpg%23900x1200"
   },
   {
     "targetKey": "place:2031152441:5201afe8",
@@ -40326,8 +40388,8 @@
       "eupmyeondong": "역삼동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260718_162%2F178430338679042BnQ_JPEG%2F33%25BC%25BE%25C6%25BC_%25C0%25E5%25BE%25EE.jpg"
   },
   {
     "targetKey": "place:1703616975:1f5a65e4",
@@ -40382,8 +40444,9 @@
       "sigungu": "금천구",
       "eupmyeondong": "시흥동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTEwMzFfMTMx%2FMDAxNzYxOTAyNDg4OTQ1.O85X_M22W9G-WMOJrxkD-0-VzAIpHSr4z8RLvQ_Y4Ckg.QKEPkdTYp2Sd1A-gh8rTMkFZa5B_5LEHUZYm-FWaPScg.JPEG%2FBE4F904A-E9B9-43F9-856E-9414C3D54838.jpeg"
   },
   {
     "targetKey": "place:37792924:000561ff",
@@ -41390,8 +41453,9 @@
       "sigungu": "사상구",
       "eupmyeondong": "엄궁동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA2MDRfMTky%2FMDAxNzgwNTM5MTYzMTY3.xZXz1Z1zookmVy-mW_8-CfwvXMUw0sP0Spd3ZipL4t0g.m1gESdrej-giorAoEdSJBXZm7hefWC2Up73DZuRSeVQg.JPEG%2F20260603_205140.jpg.jpg"
   },
   {
     "targetKey": "place:18756033:3ee7f52e",
@@ -41866,8 +41930,9 @@
       "sigungu": "서해구",
       "eupmyeondong": "심곡동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA1MjdfMjc2%2FMDAxNzc5ODY5MDQyNTA3.e13tXasu5W5uJh4pUZIbkRnbNQoEGEKI_IwGaZinsUwg.pCRBo6F4GKuToSsHEd6uMPF55MUTkh1mv1gnyTqf9IEg.PNG%2F%25EC%25A0%259C%25EB%25AA%25A9%25EC%259D%2584_%25EC%259E%2585%25EB%25A0%25A5%25ED%2595%25B4%25EC%25A3%25BC%25EC%2584%25B8%25EC%259A%2594._(10).png%2F891x1260"
   },
   {
     "targetKey": "place:1438437208:ca45c334",
@@ -43897,8 +43962,8 @@
       "eupmyeondong": "서귀동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230109_204%2F1673240553120KpwS0_JPEG%2F%25B5%25BF%25BF%25F8%25BE%25C6%25BF%25A9%25C7%25E0%25B0%25A1%25C0%25DA2.jpg"
   },
   {
     "targetKey": "place:1179271623:850cc657",
@@ -45255,8 +45320,9 @@
       "sigungu": "고양시 일산동구",
       "eupmyeondong": "설문동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220427_237%2F1651055913909R5a2z_PNG%2F20220427_193652.png"
   },
   {
     "targetKey": "place:1238769370:6ae0ff6d",
@@ -45438,8 +45504,8 @@
       "eupmyeondong": "옥동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250305_106%2F1741161793974eoiz1_JPEG%2FIMG_2457.jpg"
   },
   {
     "targetKey": "place:1056413023:7cab1abc",
@@ -45858,8 +45924,9 @@
       "sigungu": "동해시",
       "eupmyeondong": "천곡동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNTEwMTZfOSAg%2FMDAxNzYwNTkwODgzMTc0.VE8UqZ4XSWAgPcA7T4N03exkZqV7bQuX34ex7G025Tsg.pj08uGWKCgV7AnXOaX5iBpHZb6QlqLyHbQe6_0I9yu4g.JPEG%2FIMG%25EF%25BC%25BF8033.jpg%2F1200x900"
   },
   {
     "targetKey": "place:1504126118:c91841cd",
@@ -46096,8 +46163,9 @@
       "sigungu": "홍천군",
       "eupmyeondong": "홍천읍"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTA5MTBfMjg5%2FMDAxNzU3NTEwMzcwNTc4.0HiYaix17Dy5Ju0B02lNZtF97d0OrqGMvR1DAFgPc_og.WyeEF89CzJflsn-BQPw1351EbSItSib6bShKk9t7k6Mg.JPEG%2F20250910_143329.jpg.jpg"
   },
   {
     "targetKey": "place:1220866423:db45e96a",
@@ -46405,8 +46473,8 @@
       "eupmyeondong": "종로2가"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20240613_75%2F171824668429822zlH_JPEG%2FKakaoTalk_20240610_180531567_07.jpg"
   },
   {
     "targetKey": "place:1288739179:840a394d",
@@ -46909,8 +46977,9 @@
       "sigungu": "북구",
       "eupmyeondong": "용봉동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA1MDVfMTIy%2FMDAxNzc3OTcyNjM1Nzc4.FN5jNpgVscqjiGT64umPn3sVc9HDma6BKOwq6Na4wTQg._BMnjwyvc6iuyhk1N_IZlc6anFv08Z_jGScQuh2-NG8g.JPEG%2F900_20260505_122858.jpg%2F900x675"
   },
   {
     "targetKey": "place:1791313786:9efb15c7",
@@ -47189,8 +47258,9 @@
       "sigungu": "남구",
       "eupmyeondong": "용호동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA3MTVfMjM4%2FMDAxNzg0MDk5MTcwMTU0.aJ5_4bv8RaDm90GyZGypCK-2U5Xvhk-JvEEjA1Ug4A8g.dpkqdDe8S0CuAY0ei3Uuo8uoXo9Ewn9IycMq4zK7p1Eg.JPEG%2FIMG%25EF%25BC%25BF6315.jpg%2F900x1200"
   },
   {
     "targetKey": "place:1365358776:4c216752",
@@ -48324,7 +48394,8 @@
       "eupmyeondong": "영화동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA3MTBfMjY4%2FMDAxNzgzNjU2NTQzOTg3.P2lba1xbG-9-ge-5bN6ncUYxNEoGwdQC68fEKOXLqmUg.bSKJdCfmcxwERZvdRWtV0D9lGNTh_9gi1oHeWazAamQg.JPEG%2F14696.jpg.jpg"
   },
   {
     "targetKey": "place:1004548198:1443efbe",
@@ -48436,7 +48507,8 @@
       "eupmyeondong": "범천동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTA5MDJfMjIx%2FMDAxNzU2ODExMTA0OTMz.H_YUIjX1Dqplb9oDnVZLCIsGpkl4f_9qWqMBJFIBOtYg.FC7NLklNkJgPPa_vJduW7-VJvbv-1BIcQoTamGL-AYEg.JPEG%2F20250823_170433.jpg.jpg"
   },
   {
     "targetKey": "place:31011029:1091e7d8",
@@ -49332,7 +49404,8 @@
       "eupmyeondong": "와부읍"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNTAzMzFfMTgy%2FMDAxNzQzNDE1Mzk5ODMz.yUqLk-Cw8RP7nHyDkwr8VLg4-l73GRKPPZ0-1rpX5OQg.noyXTpoP3AHWuIYrj3qaLRvHwbWFvcFcc1j6nAI2mNMg.JPEG%2F1000105481.jpg.jpg"
   },
   {
     "targetKey": "place:1703488755:425a4fc0",
@@ -51432,8 +51505,8 @@
       "eupmyeondong": "구운동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjA1MTFfMjg5%2FMDAxNzc4NDU0Njk3Nzc5.NGbS6YzpBw2yEa5LXhVWtdY88TImfigaJelhSqJXxoIg.QCwHSTMdopmJ-CcbC7IpdYPiHXY8hwe5WY3mNREc4lEg.JPEG%2FIMG%25EF%25BC%25BF1367.JPG%2F900x1200"
   },
   {
     "targetKey": "place:1253174748:6e1c1c44",
@@ -53253,8 +53326,8 @@
       "eupmyeondong": "구운동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20210520_136%2F16214740292830EIXg_JPEG%2FCVWLwzn-0gDskxK3kleZmi-0.jpg"
   },
   {
     "targetKey": "place:11862504:ba1d0b1f",
@@ -53450,7 +53523,8 @@
       "eupmyeondong": "서둔동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA4MDlfMTU2%2FMDAxNzg2MjgwODczMTMz.5mwFAnaX9AsQmMp0dhOBxZ11KebZeKscET2qA-SPsVgg.dSdlwjgYcJHCD-KzKFtsh0Gkm-3sTB7RFVa7z_X_2y4g.JPEG%2F20260809_121417.jpg.jpg"
   },
   {
     "targetKey": "place:1932695796:09200809",
@@ -54584,7 +54658,8 @@
       "eupmyeondong": "청량리동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fblogfiles.pstatic.net%2FMjAyNjAxMjJfMjc1%2FMDAxNzY5MDYwODMyMjY0.g8dTzyS9uohnp0HUAO4RIKHBo019NhZxC056djbXOdcg.EbpAxX4YsRVC4YS4TCjuD0wY_wfSPCX5jVLy0wLtR2gg.JPEG%2F1769060827777.jpg%2F810x780"
   },
   {
     "targetKey": "place:1613075138:33457e67",
@@ -55872,8 +55947,8 @@
       "eupmyeondong": "연산동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20251027_152%2F1761562513602Kf2cd_JPEG%2FKakaoTalk_20251011_190312255_18_01.jpg"
   },
   {
     "targetKey": "place:1061829891:25c4bc37",
@@ -55957,7 +56032,8 @@
       "eupmyeondong": "진장동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjA1MjJfMjcz%2FMDAxNzc5NDA3Mzc5ODQz._t4_ly9zxGGycaWbthgOpSEhPTQjDPw3r8q6aTHqcEUg._TlTDEevFLVBJHSvkXEnIGOJJbv8g9HxnGNnqHtRFJ0g.JPEG%2F44714EB0-18E4-4C67-83CB-7142B53674D3.jpeg"
   },
   {
     "targetKey": "place:17021436:1bc2317a",
@@ -56811,8 +56887,8 @@
       "eupmyeondong": "노형동"
     },
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh",
-    "imageUrl": ""
+    "updateSource": "github-naver-dom-image-repair",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260424_53%2F1776993770453bKlj8_PNG%2FKakaoTalk_20260423_161311465.png"
   },
   {
     "targetKey": "place:1562237380:1640aeea",
@@ -60330,8 +60406,20 @@
   },
   {
     "targetKey": "place:1830823760:a4551c89",
-    "imageUrl": "",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230602_8%2F1685670811195ClDLo_JPEG%2FDSC06620.jpg",
     "updatedAt": "2026-08-10",
-    "updateSource": "github-naver-image-refresh"
+    "updateSource": "github-naver-dom-image-repair"
+  },
+  {
+    "targetKey": "place:2073156975:886e5d5f",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20260806_4%2F1786024095884XJtXl_JPEG%2F2608_%25BA%25BB%25BF%25EC%25B8%25AE%25B9%25DD%25BB%25F3_%25B0%25A1%25B0%25DD%25C0%25CE%25BB%25F3_%25B8%25DE%25B4%25BA%25C6%25C7%2528%25C6%25C7%25B1%25B3h%25BD%25BA%25C4%25F9%25BE%25EE%25C1%25A1%2529_500x700.jpg",
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair"
+  },
+  {
+    "targetKey": "place:31908684:e7b75747",
+    "imageUrl": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNjAzMzFfMzIg%2FMDAxNzc0OTM1NDY2Njc5.dDNNCXZpgaaAYwnukdFLR68MX3Wz8CAUj_j8UkCI8BIg.P2xjJkRALubNdo2lc9Yh4j0pLq_ZlOs66Yt_D8naVPAg.JPEG%2F1000032356.jpg.jpg",
+    "updatedAt": "2026-08-10",
+    "updateSource": "github-naver-dom-image-repair"
   }
 ]

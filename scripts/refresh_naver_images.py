@@ -8,8 +8,8 @@ Selection rule:
 4. Pick the first usable static JPG/JPEG/PNG/WebP-like image.
 5. If Naver temporarily fails or the page format cannot be read, preserve the
    current image instead of clearing it.
-6. When Naver is readable but no static image is found, clear only a currently
-   non-static (GIF/video) image. Otherwise preserve the existing image.
+6. When the initial Naver payload has no static image, preserve the existing
+   image because visible Place media can be injected only after browser rendering.
 
 The script is shardable so GitHub Actions can keep each Naver session small.
 Shard jobs only emit JSON results. A later merge step applies image-only partial
@@ -423,19 +423,10 @@ def refresh_shard(
                 stats["changed"] += 1
             else:
                 stats["already_current"] += 1
-        elif current and not is_static_image_url(current):
-            # We can confidently enforce the rule on an already non-static
-            # stored URL without deleting a healthy static photo.
-            updates.append(
-                {
-                    "targetKey": str(record["targetKey"]),
-                    "imageUrl": "",
-                    "placeId": place_id,
-                }
-            )
-            stats["cleared_non_static"] += 1
-            stats["changed"] += 1
         else:
+            # The first HTML/Apollo payload does not always contain the media
+            # visible after the Naver Place page renders. Never clear a stored
+            # image solely because this lightweight fetch found no static media.
             stats["no_static_found_preserved"] += 1
 
     return {
