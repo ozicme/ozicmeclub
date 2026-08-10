@@ -31,9 +31,11 @@ try:
     from scripts.audit_restaurant_data import (
         AuditError,
         LocationHint,
+        expanded_values,
         hint_matches_candidate,
         infer_precise_region,
         local_search_items,
+        normalized_token,
         same_candidate,
         unique_exact_candidate,
     )
@@ -57,9 +59,11 @@ except ModuleNotFoundError:  # direct ``python scripts/...`` execution
     from audit_restaurant_data import (  # type: ignore
         AuditError,
         LocationHint,
+        expanded_values,
         hint_matches_candidate,
         infer_precise_region,
         local_search_items,
+        normalized_token,
         same_candidate,
         unique_exact_candidate,
     )
@@ -169,6 +173,19 @@ def result_from_place(
         return result
     if normalized_name(title) != normalized_name(record.get("name")):
         result["issue"] = "naver-place-title-mismatch"
+        return result
+    current_menus = {
+        normalized_token(value)
+        for value in expanded_values(record.get("mainDishes") or [])
+    }
+    naver_menus = {
+        normalized_token(value)
+        for value in expanded_values(detail.get("mainDishes") or [])
+    }
+    current_menus.discard("")
+    naver_menus.discard("")
+    if current_menus and naver_menus and current_menus.isdisjoint(naver_menus):
+        result["issue"] = "naver-place-menu-mismatch"
         return result
     result["status"] = (
         "unchanged"

@@ -66,7 +66,7 @@ jobs:
           --shard-count 32
           --unverified-only
           --delay 0.25
-          --attempts 4
+          --attempts 2
           --output /tmp/naver-address-shard-${{ matrix.shard }}.json
       - name: 분할 결과 보관
         if: always()
