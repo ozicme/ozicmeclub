@@ -1,0 +1,157 @@
+name: 사이트 이미지 준비중 식당 삭제 후 5572개 맞춤
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/remove-site-placeholder-restaurants-to-5572.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-site-placeholder-cleanup
+  cancel-in-progress: true
+
+jobs:
+  remove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - name: 현재 통합 데이터 내보내기
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,load_targets
+          targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(targets)!=5586:
+              raise SystemExit(f'안전 중단: 현재 통합 식당 수 {len(targets)} (예상 5586)')
+          rows=[]
+          for key,r in targets.items():
+              rows.append({
+                  'targetKey':key,
+                  'name':r.get('name',''),
+                  'address':r.get('address',''),
+                  'imageUrl':r.get('imageUrl',''),
+              })
+          Path('output').mkdir(exist_ok=True)
+          Path('output/site-image-scan-input.json').write_text(json.dumps(rows,ensure_ascii=False),encoding='utf-8')
+          print('rows',len(rows))
+          PY
+
+      - name: 사이트와 동일한 이미지 URL 규칙으로 이미지 준비중 대상 판정
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          require('./image-url-utils.js');
+          const utils=globalThis.OzicmeImageUrls;
+          const rows=JSON.parse(fs.readFileSync('output/site-image-scan-input.json','utf8'));
+          const bad=[];
+          for(const row of rows){
+            const value=String(row.imageUrl||'').trim();
+            const normalized=utils.normalize(value,'https://ozicmeclub.com/');
+            const reason=utils.invalidReason(value,'https://ozicmeclub.com/');
+            if(!normalized){
+              bad.push({...row,reason:reason||'대표이미지 URL 없음 또는 사이트 정규화 실패'});
+            }
+          }
+          fs.writeFileSync('output/site-placeholder-restaurants.json',JSON.stringify(bad,null,2));
+          console.log('사이트 이미지 준비중 판정:',bad.length);
+          for(const x of bad) console.log('BAD |',x.name,'|',x.address,'|',x.targetKey,'|',x.reason);
+          NODE
+
+      - name: 정확히 14개일 때만 원본에서 완전 삭제
+        run: |
+          python - <<'PY'
+          import csv,json
+          from pathlib import Path
+          from scripts.update_restaurants import (
+              DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,NAVER_CLEANUP_FILENAME,
+              base_row_to_record,load_targets,target_key,
+          )
+          TARGET=5572
+          bad=json.loads(Path('output/site-placeholder-restaurants.json').read_text(encoding='utf-8'))
+          count=len(bad)
+          report=Path('output/site-placeholder-removal-2026-08-11.md')
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# 사이트 이미지 준비중 식당 정리 결과','',f'- 삭제 전 통합 식당 수: **5586**',f'- 사이트 판정상 이미지 준비중 식당 수: **{count}**','']
+          if count!=14:
+              lines += ['- 결과: **삭제하지 않음 — 정확히 14개가 아니므로 안전 중단**','', '| 번호 | 상호명 | 주소 | 판정사유 |','|---:|---|---|---|']
+              for i,x in enumerate(bad,1): lines.append(f"| {i} | {esc(x.get('name'))} | {esc(x.get('address'))} | {esc(x.get('reason'))} |")
+              report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              Path('output/site-placeholder-count.txt').write_text(str(count),encoding='utf-8')
+              raise SystemExit(0)
+
+          delete_keys={str(x['targetKey']) for x in bad}
+          reason={str(x['targetKey']):x.get('reason','') for x in bad}
+          occurrences={}; removed=[]
+          def unique_key(record):
+              b=target_key(record); n=occurrences.get(b,0)+1; occurrences[b]=n
+              return b if n==1 else f'{b}:duplicate:{n}'
+
+          with DEFAULT_BASE_CSV.open('r',encoding='utf-8-sig',newline='') as h:
+              reader=csv.DictReader(h); fields=reader.fieldnames; rows=list(reader)
+          kept=[]
+          for row in rows:
+              rec=base_row_to_record(row); k=unique_key(rec)
+              if k in delete_keys: removed.append((k,rec.get('name',''),rec.get('address',''),'base'))
+              else: kept.append(row)
+          with DEFAULT_BASE_CSV.open('w',encoding='utf-8-sig',newline='') as h:
+              w=csv.DictWriter(h,fieldnames=fields,lineterminator='\n'); w.writeheader(); w.writerows(kept)
+
+          admin=[]
+          if DEFAULT_ADMIN_DATA.exists():
+              vals=json.loads(DEFAULT_ADMIN_DATA.read_text(encoding='utf-8'))
+              for item in vals:
+                  rec={**item,'source':'admin'}; k=unique_key(rec)
+                  if k in delete_keys: removed.append((k,item.get('name',''),item.get('address',''),'admin'))
+                  else: admin.append(item)
+              DEFAULT_ADMIN_DATA.write_text(json.dumps(admin,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          cleanup=DEFAULT_OUTPUT.with_name(NAVER_CLEANUP_FILENAME)
+          for p in (DEFAULT_OUTPUT,cleanup):
+              if not p.exists(): continue
+              vals=json.loads(p.read_text(encoding='utf-8'))
+              vals=[x for x in vals if not (isinstance(x,dict) and str(x.get('targetKey','')) in delete_keys)]
+              p.write_text(json.dumps(vals,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
+          if len(removed)!=14 or {x[0] for x in removed}!=delete_keys:
+              raise SystemExit(f'삭제 행 대조 실패: 실제 {len(removed)}')
+          final,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
+          if len(final)!=TARGET:
+              raise SystemExit(f'최종 수 불일치: {len(final)}')
+
+          lines += ['- 결과: **14개 완전 삭제 완료**',f'- 삭제 후 통합 식당 수: **{len(final)}**','', '| 번호 | 상호명 | 주소 | 판정사유 |','|---:|---|---|---|']
+          for i,(k,n,a,s) in enumerate(sorted(removed,key=lambda x:(x[1],x[2])),1):
+              lines.append(f"| {i} | {esc(n)} | {esc(a)} | {esc(reason.get(k))} |")
+          report.write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('output/site-placeholder-count.txt').write_text('14',encoding='utf-8')
+          PY
+
+      - name: 결과 커밋
+        run: |
+          rm -f output/site-image-scan-input.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          if git diff --cached --quiet; then exit 0; fi
+          count="$(cat output/site-placeholder-count.txt 2>/dev/null || echo unknown)"
+          if [ "$count" = "14" ]; then
+            git commit -m '사이트 이미지 준비중 식당 14건 삭제 및 5572개 맞춤'
+          else
+            git commit -m "사이트 이미지 준비중 판정 ${count}건 (삭제 보류)"
+          fi
+          git push origin HEAD:main
