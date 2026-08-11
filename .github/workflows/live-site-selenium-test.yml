@@ -1,0 +1,207 @@
+name: 실제 홈페이지 Selenium 점검
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/live-site-selenium-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-live-site-selenium-test
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Selenium 설치
+        run: pip install selenium
+
+      - name: 실제 홈페이지 브라우저 테스트
+        shell: bash
+        run: |
+          mkdir -p output
+          set +e
+          python <<'PY'
+          import json, re, shutil, time, traceback
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait, Select
+          from selenium.webdriver.support import expected_conditions as EC
+
+          URL = 'https://ozicmeclub.com/'
+          TARGET = 5572
+          report = Path('output/live-site-selenium-test-2026-08-11.md')
+          checks = []
+          fatal = ''
+
+          def add(name, ok, detail=''):
+              checks.append((name, bool(ok), str(detail)))
+
+          driver = None
+          try:
+              chrome = next((shutil.which(x) for x in ['google-chrome','google-chrome-stable','chromium','chromium-browser'] if shutil.which(x)), None)
+              chromedriver = shutil.which('chromedriver')
+              add('Chrome 실행파일', bool(chrome), chrome or '찾지 못함')
+              add('ChromeDriver 실행파일', bool(chromedriver), chromedriver or 'Selenium Manager 사용')
+
+              options = Options()
+              options.add_argument('--headless=new')
+              options.add_argument('--no-sandbox')
+              options.add_argument('--disable-dev-shm-usage')
+              options.add_argument('--disable-gpu')
+              options.add_argument('--window-size=1440,1000')
+              options.add_argument('--lang=ko-KR')
+              options.set_capability('goog:loggingPrefs', {'browser': 'ALL'})
+              if chrome:
+                  options.binary_location = chrome
+
+              driver = webdriver.Chrome(options=options)
+              driver.set_page_load_timeout(60)
+              driver.get(URL)
+              add('홈페이지 접속', '오직미클럽' in driver.title, driver.title)
+
+              wait = WebDriverWait(driver, 60)
+              wait.until(lambda d: '불러오는 중' not in d.find_element(By.ID, 'result-count').text)
+              time.sleep(2)
+
+              count_text = driver.find_element(By.ID, 'result-count').text.strip()
+              nums = re.findall(r'[\d,]+', count_text)
+              visible_count = int(nums[0].replace(',','')) if nums else -1
+              try:
+                  js_count = driver.execute_script("return (typeof allStores !== 'undefined') ? allStores.length : -1;")
+              except Exception:
+                  js_count = -1
+              actual_count = js_count if isinstance(js_count, int) and js_count >= 0 else visible_count
+              add('전체 식당 수 5,572개', actual_count == TARGET, f'데이터={actual_count}, 화면={count_text}')
+
+              cards = driver.find_elements(By.CSS_SELECTOR, '.restaurant-card')
+              add('첫 화면 카드 렌더링', len(cards) > 0, f'{len(cards)}개')
+
+              def inspect_images(label):
+                  imgs = driver.find_elements(By.CSS_SELECTOR, '.restaurant-card img')
+                  bad = []
+                  for img in imgs:
+                      info = driver.execute_script("return {w:arguments[0].naturalWidth,h:arguments[0].naturalHeight,src:arguments[0].currentSrc||arguments[0].src,cls:arguments[0].className,fb:arguments[0].dataset.fallbackApplied||''};", img)
+                      if info['w'] <= 0 or info['h'] <= 0 or 'is-fallback' in str(info['cls']) or info['fb'] == '1':
+                          bad.append(img.get_attribute('alt'))
+                  add(label, len(bad) == 0, f'검사 {len(imgs)}장 / 실패 {len(bad)}장' + (f" / {', '.join(bad[:8])}" if bad else ''))
+
+              inspect_images('PC 첫 화면 이미지')
+
+              # 무한스크롤 여러 구간 점검
+              for _ in range(8):
+                  driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+                  time.sleep(1)
+              cards2 = driver.find_elements(By.CSS_SELECTOR, '.restaurant-card')
+              add('무한스크롤', len(cards2) >= 100, f'{len(cards2)}개 카드까지 렌더링')
+              inspect_images('PC 스크롤 구간 이미지')
+
+              # 현재 렌더된 첫 식당명으로 실제 검색
+              titles = driver.find_elements(By.CSS_SELECTOR, '.restaurant-card .card-title')
+              sample = titles[0].text.strip() if titles else ''
+              search = driver.find_element(By.ID, 'search-input')
+              search.clear(); search.send_keys(sample)
+              time.sleep(1)
+              result_titles = [x.text.strip() for x in driver.find_elements(By.CSS_SELECTOR, '.restaurant-card .card-title')]
+              add('식당명 검색', bool(sample) and any(sample in x for x in result_titles), f"검색어='{sample}' / 결과카드 {len(result_titles)}개")
+              search.clear(); search.send_keys(' '); search.clear(); time.sleep(0.8)
+
+              # 시도 필터
+              sel = Select(driver.find_element(By.ID, 'sido-select'))
+              options_text = [(o.get_attribute('value'), o.text) for o in sel.options if o.get_attribute('value')]
+              if options_text:
+                  val, label = options_text[0]
+                  before = driver.find_element(By.ID, 'result-count').text.strip()
+                  sel.select_by_value(val); time.sleep(1)
+                  after = driver.find_element(By.ID, 'result-count').text.strip()
+                  add('시/도 필터', after != before and '불러오는 중' not in after, f'{label}: {after}')
+                  sel.select_by_value(''); time.sleep(0.5)
+              else:
+                  add('시/도 필터', False, '선택 가능한 시/도 없음')
+
+              # 네이버 링크 샘플
+              links = driver.find_elements(By.CSS_SELECTOR, '.restaurant-card .card-actions a')[:20]
+              hrefs = [a.get_attribute('href') or '' for a in links]
+              bad_links = [h for h in hrefs if 'naver.com' not in h and 'naver.me' not in h]
+              add('더 알아보기 네이버 링크', len(hrefs) > 0 and not bad_links, f'샘플 {len(hrefs)}개 / 비네이버 {len(bad_links)}개')
+
+              # PC overflow
+              overflow = driver.execute_script('return document.documentElement.scrollWidth > document.documentElement.clientWidth + 2;')
+              sw, cw = driver.execute_script('return [document.documentElement.scrollWidth, document.documentElement.clientWidth];')
+              add('PC 가로 깨짐', not overflow, f'scrollWidth={sw}, clientWidth={cw}')
+
+              # 모바일
+              driver.set_window_size(390, 844)
+              driver.get(URL)
+              wait.until(lambda d: '불러오는 중' not in d.find_element(By.ID, 'result-count').text)
+              time.sleep(2)
+              mtxt = driver.find_element(By.ID, 'result-count').text.strip()
+              mnums = re.findall(r'[\d,]+', mtxt)
+              mcount = int(mnums[0].replace(',','')) if mnums else -1
+              add('모바일 전체 식당 수', mcount == TARGET, mtxt)
+              mover = driver.execute_script('return document.documentElement.scrollWidth > document.documentElement.clientWidth + 2;')
+              msw, mcw = driver.execute_script('return [document.documentElement.scrollWidth, document.documentElement.clientWidth];')
+              add('모바일 가로 깨짐', not mover, f'scrollWidth={msw}, clientWidth={mcw}')
+              inspect_images('모바일 첫 화면 이미지')
+
+              logs = driver.get_log('browser')
+              severe = [x for x in logs if x.get('level') == 'SEVERE']
+              # favicon 등 비핵심 HTTP 오류와 이미지 fallback은 별도 참고로 남김
+              add('브라우저 JS 오류', len([x for x in severe if 'javascript' in x.get('source','').lower()]) == 0,
+                  '없음' if not severe else ' / '.join(x.get('message','')[:180] for x in severe[:8]))
+
+          except Exception:
+              fatal = traceback.format_exc()
+              add('테스트 실행 완료', False, fatal.splitlines()[-1] if fatal else '알 수 없는 오류')
+          finally:
+              if driver:
+                  try: driver.quit()
+                  except Exception: pass
+
+          passed = sum(1 for _, ok, _ in checks if ok)
+          failed = sum(1 for _, ok, _ in checks if not ok)
+          lines = [
+              '# 오직미클럽 실제 홈페이지 Selenium 테스트', '',
+              f'- 테스트 URL: {URL}',
+              f'- 목표 식당 수: **{TARGET:,}개**',
+              f'- 통과: **{passed}개**',
+              f'- 실패: **{failed}개**',
+              f'- 종합: **{"PASS" if failed == 0 else "CHECK"}**', '',
+              '| 항목 | 결과 | 상세 |', '|---|---|---|',
+          ]
+          for name, ok, detail in checks:
+              detail = detail.replace('|','\\|').replace('\n',' ')
+              lines.append(f'| {name} | {"PASS" if ok else "FAIL"} | {detail} |')
+          if fatal:
+              lines += ['', '## 실행 오류 상세', '', '```text', fatal[:7000], '```']
+          report.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print(report.read_text(encoding='utf-8'))
+          PY
+          exit 0
+
+      - name: 결과 커밋
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/live-site-selenium-test-2026-08-11.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "실제 홈페이지 Selenium 테스트 결과"
+          git push origin HEAD:main
