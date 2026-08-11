@@ -1,0 +1,94 @@
+name: 이미지 로딩 문구 실제 사이트 점검
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-live-image-loading-copy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Selenium 설치
+        run: pip install selenium
+
+      - name: 실제 홈페이지 확인
+        run: |
+          python - <<'PY'
+          import time
+          from pathlib import Path
+          from selenium import webdriver
+          from selenium.webdriver.chrome.options import Options
+          from selenium.webdriver.common.by import By
+          from selenium.webdriver.support.ui import WebDriverWait
+
+          url = 'https://ozicmeclub.com/'
+          options = Options()
+          options.add_argument('--headless=new')
+          options.add_argument('--no-sandbox')
+          options.add_argument('--disable-dev-shm-usage')
+          options.add_argument('--window-size=1440,1000')
+          driver = webdriver.Chrome(options=options)
+          checks = []
+          try:
+              build = ''
+              for _ in range(36):
+                  driver.get(url)
+                  build = driver.find_element(By.ID, 'build-id').text.strip()
+                  if build == '20260811-1':
+                      break
+                  time.sleep(5)
+              checks.append(('최신 BUILD_ID', build == '20260811-1', build))
+
+              wait = WebDriverWait(driver, 60)
+              wait.until(lambda d: '5,572' in d.find_element(By.ID, 'result-count').text)
+              count_text = driver.find_element(By.ID, 'result-count').text.strip()
+              checks.append(('전체 식당 수', '5,572' in count_text, count_text))
+
+              helper = driver.find_elements(By.CSS_SELECTOR, 'script[src*="media-loading-state.js"]')
+              checks.append(('상태 스크립트 반영', len(helper) == 1, f'{len(helper)}개'))
+
+              wait.until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.media-placeholder span:last-child')) > 0)
+              labels = [e.text.strip() for e in driver.find_elements(By.CSS_SELECTOR, '.media-placeholder span:last-child')[:20]]
+              wrong = [x for x in labels if x not in {'이미지 불러오는 중…', '이미지 준비중'}]
+              loading_seen = '이미지 불러오는 중…' in labels
+              checks.append(('로딩 문구 적용', loading_seen and not wrong, ' / '.join(sorted(set(labels)))))
+          finally:
+              driver.quit()
+
+          passed = all(ok for _, ok, _ in checks)
+          lines = ['# 이미지 로딩 문구 실제 홈페이지 점검', '', f'- 종합: **{"PASS" if passed else "CHECK"}**', '', '| 항목 | 결과 | 상세 |', '|---|---|---|']
+          for name, ok, detail in checks:
+              lines.append(f'| {name} | {"PASS" if ok else "FAIL"} | {str(detail).replace("|", "\\|")} |')
+          Path('output').mkdir(exist_ok=True)
+          Path('output/live-image-loading-copy-2026-08-11.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          print('\n'.join(lines))
+          if not passed:
+              raise SystemExit(1)
+          PY
+
+      - name: 결과 커밋
+        if: always()
+        run: |
+          if [ ! -f output/live-image-loading-copy-2026-08-11.md ]; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/live-image-loading-copy-2026-08-11.md
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "이미지 로딩 문구 실제 사이트 점검 결과"
+          git push origin HEAD:main
