@@ -1,0 +1,227 @@
+name: 실제 홈페이지 Chrome 점검
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/live-site-smoke-test.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ozicmeclub-live-site-smoke-test
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: 저장소 가져오기
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Node 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Playwright 설치
+        run: |
+          npm install --no-save playwright@1.54.2
+          npx playwright install --with-deps chromium
+
+      - name: 실제 사이트 점검
+        run: |
+          mkdir -p output
+          node <<'NODE'
+          const fs = require('fs');
+          const { chromium } = require('playwright');
+
+          const TARGET_TOTAL = 5572;
+          const url = 'https://ozicmeclub.com/';
+          const results = [];
+          const consoleErrors = [];
+          const pageErrors = [];
+          const failedRequests = [];
+
+          function add(name, pass, detail) {
+            results.push({ name, pass: !!pass, detail: String(detail || '') });
+          }
+          const esc = (s) => String(s || '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
+
+          async function waitLoaded(page) {
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            await page.waitForFunction(() => {
+              const el = document.querySelector('#result-count');
+              return el && !el.textContent.includes('불러오는 중');
+            }, { timeout: 60000 });
+            await page.waitForTimeout(2500);
+          }
+
+          async function getStoreCount(page) {
+            try {
+              return await page.evaluate(() => allStores.length);
+            } catch (_) {
+              const text = await page.locator('#result-count').innerText();
+              const m = text.replace(/,/g, '').match(/(\d+)/);
+              return m ? Number(m[1]) : NaN;
+            }
+          }
+
+          async function checkVisibleImages(page, label) {
+            await page.waitForTimeout(1500);
+            const data = await page.locator('.restaurant-card img').evaluateAll((imgs) => imgs.map(img => ({
+              alt: img.alt,
+              src: img.currentSrc || img.src,
+              width: img.naturalWidth,
+              height: img.naturalHeight,
+              fallback: img.classList.contains('is-fallback') || img.dataset.fallbackApplied === '1'
+            })));
+            const bad = data.filter(x => x.fallback || x.width <= 0 || x.height <= 0);
+            add(`${label} 카드 이미지`, bad.length === 0, `검사 ${data.length}장 / 실패 ${bad.length}장${bad.length ? ' / ' + bad.slice(0,5).map(x => x.alt).join(', ') : ''}`);
+            return { data, bad };
+          }
+
+          const browser = await chromium.launch({ headless: true });
+          try {
+            const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+            const page = await context.newPage();
+            page.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(msg.text()); });
+            page.on('pageerror', err => pageErrors.push(err.message));
+            page.on('requestfailed', req => failedRequests.push(`${req.method()} ${req.url()} :: ${req.failure()?.errorText || ''}`));
+
+            const response = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+            add('홈페이지 접속', response && response.ok(), `HTTP ${response ? response.status() : '응답없음'}`);
+            await page.waitForFunction(() => {
+              const el = document.querySelector('#result-count');
+              return el && !el.textContent.includes('불러오는 중');
+            }, { timeout: 60000 });
+            await page.waitForTimeout(2500);
+
+            const countText = (await page.locator('#result-count').innerText()).trim();
+            const storeCount = await getStoreCount(page);
+            add('전체 식당 수 5,572개', storeCount === TARGET_TOTAL, `브라우저 데이터 ${storeCount}개 / 화면 '${countText}'`);
+
+            const cardCount = await page.locator('.restaurant-card').count();
+            add('첫 화면 식당 카드 렌더링', cardCount > 0, `${cardCount}개 카드 렌더링`);
+            await checkVisibleImages(page, 'PC 첫 화면');
+
+            // 여러 페이지를 실제 스크롤해 lazy image / 무한스크롤 검사
+            for (let i = 0; i < 9; i += 1) {
+              await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+              await page.waitForTimeout(900);
+            }
+            const scrolledCards = await page.locator('.restaurant-card').count();
+            add('무한스크롤', scrolledCards >= 100, `${scrolledCards}개 카드까지 로드`);
+            await checkVisibleImages(page, 'PC 스크롤 구간');
+
+            // 실제 데이터에서 앞/중간/뒤 이름을 골라 검색 기능 검사
+            const sampleNames = await page.evaluate(() => {
+              if (typeof allStores === 'undefined' || !allStores.length) return [];
+              const idx = [0, Math.floor(allStores.length / 2), allStores.length - 1];
+              return idx.map(i => allStores[i]?.name).filter(Boolean);
+            });
+            let searchPass = sampleNames.length > 0;
+            const searchDetails = [];
+            for (const name of sampleNames) {
+              await page.locator('#search-input').fill(name);
+              await page.waitForTimeout(500);
+              const cards = await page.locator('.restaurant-card').count();
+              const titles = await page.locator('.restaurant-card .card-title').allInnerTexts();
+              const ok = cards > 0 && titles.some(t => t.includes(name));
+              searchPass = searchPass && ok;
+              searchDetails.push(`${name}:${ok ? 'OK' : 'FAIL'}`);
+            }
+            await page.locator('#search-input').fill('');
+            await page.waitForTimeout(500);
+            add('식당명 검색', searchPass, searchDetails.join(' / '));
+
+            // 지역 필터
+            const sidoOptions = await page.locator('#sido-select option').allTextContents();
+            const firstSidoValue = await page.locator('#sido-select option').nth(1).getAttribute('value').catch(() => null);
+            let regionOk = false, regionDetail = `시도 옵션 ${sidoOptions.length}개`;
+            if (firstSidoValue) {
+              await page.locator('#sido-select').selectOption(firstSidoValue);
+              await page.waitForTimeout(600);
+              const filteredCountText = (await page.locator('#result-count').innerText()).trim();
+              regionOk = filteredCountText !== countText && !filteredCountText.includes('불러오는 중');
+              regionDetail += ` / '${firstSidoValue}' 선택 후 '${filteredCountText}'`;
+              await page.locator('#sido-select').selectOption('');
+              await page.waitForTimeout(400);
+            }
+            add('지역 필터', regionOk, regionDetail);
+
+            // 네이버 더 알아보기 링크 샘플
+            const links = await page.locator('.restaurant-card .card-actions a').evaluateAll(as => as.slice(0,20).map(a => a.href));
+            const badLinks = links.filter(h => !/naver\.com|naver\.me/i.test(h));
+            add('더 알아보기 네이버 링크', links.length > 0 && badLinks.length === 0, `샘플 ${links.length}개 / 비네이버 ${badLinks.length}개`);
+
+            // PC 수평 오버플로
+            const pcOverflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+            add('PC 화면 가로 깨짐', !pcOverflow, `scrollWidth=${await page.evaluate(() => document.documentElement.scrollWidth)}, clientWidth=${await page.evaluate(() => document.documentElement.clientWidth)}`);
+
+            await context.close();
+
+            // 모바일 테스트
+            const mobile = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true });
+            const mp = await mobile.newPage();
+            mp.on('console', msg => { if (msg.type() === 'error') consoleErrors.push(`[mobile] ${msg.text()}`); });
+            mp.on('pageerror', err => pageErrors.push(`[mobile] ${err.message}`));
+            await waitLoaded(mp);
+            const mobileCount = await getStoreCount(mp);
+            add('모바일 전체 식당 수', mobileCount === TARGET_TOTAL, `${mobileCount}개`);
+            const mobileOverflow = await mp.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+            add('모바일 가로 깨짐', !mobileOverflow, `scrollWidth=${await mp.evaluate(() => document.documentElement.scrollWidth)}, clientWidth=${await mp.evaluate(() => document.documentElement.clientWidth)}`);
+            await checkVisibleImages(mp, '모바일 첫 화면');
+            await mobile.close();
+
+            // 콘솔 오류: 외부 네트워크성 오류를 상세 기록하되 JS pageerror는 별도 실패
+            add('자바스크립트 실행 오류', pageErrors.length === 0, pageErrors.length ? pageErrors.slice(0,8).join(' / ') : '없음');
+            add('콘솔 error', consoleErrors.length === 0, consoleErrors.length ? consoleErrors.slice(0,8).join(' / ') : '없음');
+
+            const passed = results.filter(r => r.pass).length;
+            const failed = results.filter(r => !r.pass).length;
+            const lines = [
+              '# 오직미클럽 실제 홈페이지 Chrome 테스트', '',
+              `- 테스트 URL: ${url}`,
+              `- 목표 전체 식당 수: **${TARGET_TOTAL.toLocaleString()}개**`,
+              `- 통과: **${passed}개**`,
+              `- 실패: **${failed}개**`,
+              `- 종합 결과: **${failed === 0 ? 'PASS' : 'CHECK'}**`, '',
+              '| 항목 | 결과 | 상세 |',
+              '|---|---|---|',
+              ...results.map(r => `| ${esc(r.name)} | ${r.pass ? 'PASS' : 'FAIL'} | ${esc(r.detail)} |`),
+              '',
+              '## 실패한 네트워크 요청(참고)', '',
+              ...(failedRequests.length ? failedRequests.slice(0,30).map(x => `- ${x}`) : ['- 없음']),
+              ''
+            ];
+            fs.writeFileSync('output/live-site-smoke-test-2026-08-11.md', lines.join('\n'), 'utf8');
+            console.log(lines.join('\n'));
+          } finally {
+            await browser.close();
+          }
+          NODE
+
+      - name: 테스트 결과 커밋
+        if: always()
+        run: |
+          if [ ! -f output/live-site-smoke-test-2026-08-11.md ]; then
+            echo '# 오직미클럽 실제 홈페이지 Chrome 테스트' > output/live-site-smoke-test-2026-08-11.md
+            echo '' >> output/live-site-smoke-test-2026-08-11.md
+            echo '- 테스트 실행 자체가 완료되지 않았습니다.' >> output/live-site-smoke-test-2026-08-11.md
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add output/live-site-smoke-test-2026-08-11.md
+          if git diff --cached --quiet; then
+            echo '보고서 변경 없음'
+            exit 0
+          fi
+          git commit -m '실제 홈페이지 Chrome 테스트 결과'
+          git push origin HEAD:main
