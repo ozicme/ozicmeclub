@@ -202,5 +202,37 @@
     "evidenceText": "",
     "registrationSource": "github-admin",
     "updatedAt": "2026-10-29"
+  },
+  {
+    "id": "admin-1616745e7235",
+    "name": "산촌",
+    "address": "서울 종로구 인사동길 30-13",
+    "naverPlaceUrl": "https://map.naver.com/p/entry/place/11715378?lng=126.9860728&lat=37.5737994&placePath=%2Fhome%3Ffrom%3Dmap%26fromPanelNum%3D1%26additionalHeight%3D76%26timestamp%3D202610300840%26locale%3Dko%26svcName%3Dmap_pcv5&entry=pll&searchType=place&c=15.00,0,0,0,dh",
+    "imageUrl": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNTA1MDZfMTg2%2FMDAxNzQ2NTE1MTE5NTk4.06KOwSWOKAadkm1_MH54Pvl1h8s960pdXXa9kUF6NCkg.xCKJccGM4l2Lv1reDngEiA90OkBQMlDYTXosHDEZ_kIg.JPEG%2F900%25A3%25DF20250503%25A3%25DF181959.jpg%23900x1200",
+    "region": {
+      "sido": "서울특별시",
+      "sigungu": "종로구",
+      "eupmyeondong": ""
+    },
+    "category": "한식",
+    "categoryDetail": "사찰음식",
+    "mainDishes": [
+      "사찰음식"
+    ],
+    "signatureMenus": [
+      "사찰음식"
+    ],
+    "searchTags": [
+      "한식",
+      "사찰음식"
+    ],
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "verifiedMonth": "2026-10",
+    "sourceType": "ozicme-admin",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "registrationSource": "github-admin",
+    "updatedAt": "2026-10-29"
   }
 ]
