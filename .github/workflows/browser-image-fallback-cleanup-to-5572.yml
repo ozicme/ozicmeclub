@@ -140,6 +140,9 @@ jobs:
           if not chrome or not driver_path:
               raise SystemExit(f'Chrome/ChromeDriver 없음: chrome={chrome}, driver={driver_path}')
           opts=Options(); opts.binary_location=chrome
+          # Image workers keep loading after DOMContentLoaded; wait for their
+          # explicit completion flag below, not the page-wide load event.
+          opts.page_load_strategy='eager'
           for arg in ['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--window-size=1280,800']:
               opts.add_argument(arg)
           driver=webdriver.Chrome(service=Service(driver_path),options=opts)
