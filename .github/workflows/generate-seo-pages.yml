@@ -50,6 +50,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add restaurants regions categories menus verified about restaurants-data.json sitemap.xml seo-build-stats.json
           git commit -m "식당 검색노출 페이지 자동 갱신"
+          git pull --rebase origin main
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
       - name: 네이버 IndexNow에 변경 URL 알림
