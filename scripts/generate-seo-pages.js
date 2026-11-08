@@ -518,16 +518,16 @@ const renderRestaurantPage = (item, availableCategories, duplicatedTitles) => {
         <h2>${escapeHtml(item.name)} 식당 안내</h2>
         <p>${escapeHtml(summary)}</p>
       </section>
-      <section class="verification-note">
-        <h2>${item.verifiedBadge ? "오직미클럽 인증 안내" : "등록 정보 안내"}</h2>
-        <p>${
-          item.verifiedBadge
-            ? `${VERIFIED_RICE_DESCRIPTION} 오직미 쌀 거래가 확인되어 초록 배지가 표시됩니다.${
-                item.verifiedMonth ? ` 최근 확인 월은 ${escapeHtml(item.verifiedMonth)}입니다.` : ""
-              }`
-            : GOOD_RICE_DESCRIPTION
-        }</p>
-      </section>
+      ${
+        item.verifiedBadge
+          ? `<section class="verification-note">
+        <h2>오직미클럽 인증 안내</h2>
+        <p>${VERIFIED_RICE_DESCRIPTION} 오직미 쌀 거래가 확인되어 초록 배지가 표시됩니다.${
+              item.verifiedMonth ? ` 최근 확인 월은 ${escapeHtml(item.verifiedMonth)}입니다.` : ""
+            }</p>
+      </section>`
+          : ""
+      }
       ${
         relatedLinks.length
           ? `<nav class="related-links" aria-label="관련 식당 더 보기">
