@@ -23,6 +23,14 @@
       "name": "오직미클럽",
       "url": "https://ozicmeclub.com/",
       "description": "오직미 쌀 거래 확인 식당과 지역별 식당 정보를 찾는 공개 디렉토리",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://ozicmeclub.com/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      },
       "publisher": {
         "@type": "Organization",
         "name": "OZICME",
@@ -71,6 +79,7 @@
           <div class="search-bar">
             <input
               id="search-input"
+              name="q"
               type="search"
               placeholder="식당명 검색"
               autocomplete="off"
@@ -96,6 +105,7 @@
             <input
               class="filter-input"
               id="menu-search-input"
+              name="menu"
               type="search"
               placeholder="메뉴명 검색 (예: 돈가스, 초밥)"
               autocomplete="off"

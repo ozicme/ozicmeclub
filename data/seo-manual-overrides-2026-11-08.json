@@ -2130,5 +2130,201 @@
     "evidenceUrl": "https://www.diningcode.com/profile.php?rid=KH210z3tZhwB",
     "updatedAt": "2026-11-08",
     "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1124131236:c14fb55f",
+    "signatureMenus": ["목살스테이크솥밥", "금태가리비솥밥", "미나리항정솥밥", "한우갈비솥밥"],
+    "evidenceUrl": "https://movementlab.kr/product/detail_alliance.html?cate_no=908&display_group=1&product_no=16233",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1233950952:80c23126",
+    "signatureMenus": ["굴요리"],
+    "evidenceUrl": "https://grt.purpleo.kr/article/55744",
+    "updatedAt": "2026-11-08",
+    "updateSource": "name-and-category-verification"
+  },
+  {
+    "targetKey": "place:1030571563:b64b9293",
+    "signatureMenus": ["약수돌솥정식", "돌솥밥", "더덕구이", "나물반찬"],
+    "evidenceUrl": "https://www.diningcode.com/rank/%EC%9D%B8%EC%B2%9C-%EB%8D%94%EB%8D%95%EA%B5%AC%EC%9D%B4",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:19649423:ca96b381",
+    "signatureMenus": ["돌솥정식", "미나리삼겹살", "된장찌개"],
+    "evidenceUrl": "https://www.onkorea.co.kr/bsaha/dFjmAP2Edwy4",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:2006926437:edd1dc66",
+    "signatureMenus": ["솥밥"],
+    "evidenceUrl": "https://dining.ayo.pe.kr/snack/099ce65a93ced2dd5ca8ce85e01d85e4",
+    "updatedAt": "2026-11-08",
+    "updateSource": "name-and-category-verification"
+  },
+  {
+    "targetKey": "place:17466851:26b71bb7",
+    "signatureMenus": ["청국장", "순두부찌개", "된장찌개", "백반"],
+    "evidenceUrl": "https://www.xn--hy1bj0eiyta.com/%EC%A7%80%EC%97%AD/%EC%B2%AD%EC%A3%BC%EC%8B%9C%20%EC%84%9C%EC%9B%90%EA%B5%AC-%EC%88%98%EA%B3%A11%EB%8F%99/",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1005535119:dd698ec2",
+    "signatureMenus": ["소갈비살", "눈꽃살", "특급생갈비", "한우육회", "영양누룽지솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=pF4ZbsnGU0Uz",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:2141408307:77893b27",
+    "signatureMenus": ["솥밥"],
+    "evidenceUrl": "https://www.114.co.kr/search/detail?comp_id=16891569&comp_tp_cd=GOV&godata_tp_cd=LOCALDATA&upjong_cd=",
+    "updatedAt": "2026-11-08",
+    "updateSource": "name-and-location-verification"
+  },
+  {
+    "targetKey": "place:1005746577:48339b4f",
+    "signatureMenus": ["한우갈비살", "한우모듬", "돼지갈비", "한우국밥", "차돌된장"],
+    "evidenceUrl": "https://enolja.com/d/58131",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1045039072:59bab32c",
+    "signatureMenus": ["하얀순두부와 솥밥", "얼큰순두부", "직화불고기", "콩국수"],
+    "evidenceUrl": "https://xn--hy1bj0eiyta.com/%EC%A7%80%EC%97%AD/%ED%95%B4%EC%9A%B4%EB%8C%80%EA%B5%AC-%EC%86%A1%EC%A0%95%EB%8F%99/",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1574098226:8a5341a1",
+    "signatureMenus": ["솥밥", "콩비지", "제육볶음"],
+    "evidenceUrl": "https://www.diningcode.com/list.dc?query=%EA%B8%88%EC%98%A4%EB%8F%99+%EB%91%90%EB%B6%80%EC%9A%94%EB%A6%AC",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1084136981:4320600b",
+    "signatureMenus": ["해물순두부", "쭈꾸미볶음", "제육볶음", "고등어구이", "솥밥정식"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=XHGy2N4HqKPy",
+    "updatedAt": "2026-11-08",
+    "updateSource": "brand-menu-verification"
+  },
+  {
+    "targetKey": "place:1379447011:bdef8204",
+    "signatureMenus": ["등갈비찜", "생삼겹살", "돼지두루치기", "닭볶음탕"],
+    "evidenceUrl": "https://www.koreatriptips.com/dining/4103213.html",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1194578033:e3aefd24",
+    "signatureMenus": ["솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=ec3SFsSdBxUT",
+    "updatedAt": "2026-11-08",
+    "updateSource": "name-and-category-verification"
+  },
+  {
+    "targetKey": "place:16337791:ce71a314",
+    "signatureMenus": ["솥밥", "갈치요리"],
+    "evidenceUrl": "https://www.diningcode.com/list.dc?query=%EC%98%A5%EA%B5%90%EB%8F%99+%EC%A7%91%EB%B0%A5",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1148098944:c4aa5444",
+    "signatureMenus": ["스테이크버섯솥밥", "불고기솥밥", "매콤제육솥밥", "전복솥밥", "영양낙지솥밥"],
+    "evidenceUrl": "https://www.tabling.co.kr/place/677cd6da66de5f069891b9c2",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1168305242:ccbd81bc",
+    "signatureMenus": ["전주비빔밥", "솥밥"],
+    "evidenceUrl": "https://food.issue-economy.com/restaurant/94745",
+    "updatedAt": "2026-11-08",
+    "updateSource": "brand-and-location-verification"
+  },
+  {
+    "targetKey": "place:1656175520:61fac7c7",
+    "signatureMenus": ["순두부문어죽", "전복죽", "소고기야채죽"],
+    "evidenceUrl": "https://dinner.ambitstock.com/seonbu?place=%EC%83%A4%EB%B8%8C%EC%98%AC%EB%8D%B0%EC%9D%B4+%EC%95%88%EC%82%B0%EC%84%A0%EB%B6%80%EC%A0%90",
+    "updatedAt": "2026-11-08",
+    "updateSource": "branch-and-brand-menu-verification"
+  },
+  {
+    "targetKey": "place:1227807557:236c4fc5",
+    "signatureMenus": ["샘밭막국수", "얼큰황태순두부 주물솥밥", "황태해장국 주물솥밥", "옛날순두부 주물솥밥", "강원나물밥"],
+    "evidenceUrl": "https://enjoeat.com/restarea/000213",
+    "updatedAt": "2026-11-08",
+    "updateSource": "public-data-menu-verification"
+  },
+  {
+    "targetKey": "place:1840064651:bac84c31",
+    "signatureMenus": ["소고기쌀국수", "텐동", "해물볶음밥", "전주비빔밥", "솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=4HkZfBmyRr3H",
+    "updatedAt": "2026-11-08",
+    "updateSource": "food-court-menu-verification"
+  },
+  {
+    "targetKey": "place:1953908875:a2af23de",
+    "signatureMenus": ["전주비빔밥", "육회비빔밥", "떡갈비", "솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/rank/%EC%A4%91%EA%B3%84-%ED%95%9C%EC%8B%9D",
+    "updatedAt": "2026-11-08",
+    "updateSource": "branch-and-brand-menu-verification"
+  },
+  {
+    "targetKey": "place:1238805217:cea4aeaf",
+    "signatureMenus": ["전주비빔밥", "육회비빔밥", "떡갈비", "솥밥"],
+    "evidenceUrl": "https://www.jjbbb.co.kr/41/97?page=3",
+    "updatedAt": "2026-11-08",
+    "updateSource": "official-brand-verification"
+  },
+  {
+    "targetKey": "place:1515213942:edb5508e",
+    "signatureMenus": ["돼지고기구이"],
+    "evidenceUrl": "https://sinnake-town.com/region/4311313300/stores/I2",
+    "updatedAt": "2026-11-08",
+    "updateSource": "category-verification"
+  },
+  {
+    "targetKey": "place:1064761605:558ce29d",
+    "signatureMenus": ["스테이크솥밥", "전복솥밥", "가자미통관자솥밥", "매콤쭈꾸미솥밥", "부타동솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=KeUpLfyQOGua",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1430615762:84a20d19",
+    "signatureMenus": ["스테이크솥밥", "전복가리비솥밥", "연어솥밥", "부타동솥밥", "장어솥밥"],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=YvVglgHgABKb",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1938773694:d1d9a137",
+    "signatureMenus": ["스테이크솥밥", "전복솥밥", "연어솥밥", "부타동솥밥", "장어솥밥"],
+    "evidenceUrl": "https://hohopotrice.com/muse/bbs/board.php?bo_table=store&page=4&wr_id=3",
+    "updatedAt": "2026-11-08",
+    "updateSource": "official-brand-verification"
+  },
+  {
+    "targetKey": "place:38355875:10684764",
+    "signatureMenus": ["돼지고기구이", "백반"],
+    "evidenceUrl": "https://smi.purpleo.kr/article/30910",
+    "updatedAt": "2026-11-08",
+    "updateSource": "category-verification"
+  },
+  {
+    "targetKey": "place:1122874909:ad5cfa7d",
+    "signatureMenus": ["동태탕", "뽈때기탕", "뽈때기찜"],
+    "evidenceUrl": "https://map.naver.com/p/entry/place/1122874909",
+    "updatedAt": "2026-11-08",
+    "updateSource": "name-and-category-verification"
   }
 ]

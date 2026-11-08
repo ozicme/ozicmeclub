@@ -500,8 +500,25 @@ const renderRestaurantPage = (item, availableCategories, duplicatedTitles) => {
     "@type": "Restaurant",
     name: item.name,
     url: canonical,
+    mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     ...(item.imageUrl ? { image: [item.imageUrl] } : {}),
     ...(item.category ? { servesCuisine: item.category } : {}),
+    ...(item.signatureMenus.length
+      ? {
+          hasMenu: {
+            "@type": "Menu",
+            name: `${item.name} 대표 메뉴`,
+            hasMenuSection: {
+              "@type": "MenuSection",
+              name: "대표 메뉴",
+              hasMenuItem: item.signatureMenus.slice(0, 5).map((name) => ({
+                "@type": "MenuItem",
+                name,
+              })),
+            },
+          },
+        }
+      : {}),
     address: {
       "@type": "PostalAddress",
       streetAddress: item.address,

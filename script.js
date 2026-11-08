@@ -842,6 +842,16 @@ const initRestaurantsPage = async () => {
     } else {
       params.delete("sort");
     }
+    if (activeNameQuery) {
+      params.set("q", activeNameQuery);
+    } else {
+      params.delete("q");
+    }
+    if (activeMenuQuery) {
+      params.set("menu", activeMenuQuery);
+    } else {
+      params.delete("menu");
+    }
     const query = params.toString();
     const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
     window.history.replaceState(null, "", nextUrl);
@@ -937,6 +947,7 @@ const initRestaurantsPage = async () => {
     const urlCategory = params.get("category");
     const urlVerified = params.get("verified");
     const urlQuery = params.get("q");
+    const urlMenuQuery = params.get("menu");
 
     filterState.sort = urlSort === DEFAULT_SORT ? DEFAULT_SORT : DEFAULT_SORT;
     filterState.sido = urlSido || "";
@@ -944,7 +955,9 @@ const initRestaurantsPage = async () => {
     filterState.category = urlCategory || "";
     filterState.verifiedOnly = urlVerified === "1";
     activeNameQuery = urlQuery || "";
+    activeMenuQuery = urlMenuQuery || "";
     if (searchInput && activeNameQuery) searchInput.value = activeNameQuery;
+    if (menuSearchInput && activeMenuQuery) menuSearchInput.value = activeMenuQuery;
 
     filtersInitialized = true;
     syncFilterSelects();
