@@ -71,7 +71,9 @@ const buildMenuList = (menus) => {
 };
 
 const getBadgeLabel = (item) =>
-  item.verifiedBadge ? "오직미 인증" : "인증 확인중";
+  item.verifiedBadge
+    ? "좋은 쌀로 정성을 다하는 오직미클럽 인증 식당"
+    : "좋은 쌀로 정성을 다하는 식당";
 
 const debounce = (callback, delay = 200) => {
   let timer;
@@ -616,9 +618,12 @@ const renderCard = (item) => {
 
 const updateMetaTags = (item) => {
   const title = `${item.name} | 오직미`;
+  const restaurantLabel = item.verifiedBadge
+    ? "좋은 쌀로 정성을 다하는 식당이며, 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당"
+    : "좋은 쌀로 정성을 다하는 식당";
   const description = `${formatValue(item.category)} · ${formatValue(
     item.region?.sido
-  )} ${formatValue(item.region?.sigungu)}의 오직미 인증 매장. 네이버 플레이스에서 상세 정보를 확인하세요.`;
+  )} ${formatValue(item.region?.sigungu)}의 ${restaurantLabel}. 대표 메뉴와 위치 정보를 확인하세요.`;
   document.title = title;
   const descTag = document.querySelector('meta[name="description"]');
   if (descTag) descTag.setAttribute("content", description);

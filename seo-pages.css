@@ -133,6 +133,9 @@ h2 { margin: 46px 0 18px; font-size: clamp(1.35rem, 3vw, 2rem); }
 }
 .restaurant-summary h2 { margin: 0 0 8px; }
 .restaurant-summary p { margin: 0; }
+.restaurant-summary .policy-separator { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.policy-list { margin: 0; padding-left: 1.3rem; }
+.policy-list li + li { margin-top: 10px; }
 
 .related-links { margin-top: 44px; }
 .related-links h2 { margin: 0 0 16px; }
@@ -178,6 +181,7 @@ h2 { margin: 46px 0 18px; font-size: clamp(1.35rem, 3vw, 2rem); }
 .mini-badge { padding: 3px 8px; border-radius: 999px; color: white; background: var(--green); font-size: .72rem; font-weight: 800; }
 
 .seo-footer { margin-top: 30px; padding: 30px clamp(20px, 5vw, 60px); color: var(--muted); border-top: 1px solid var(--line); }
+.seo-footer a { color: var(--green-dark); font-weight: 700; }
 
 @media (max-width: 760px) {
   .seo-header { align-items: flex-start; flex-direction: column; }

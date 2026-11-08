@@ -21,6 +21,7 @@ const REGIONS_DIR = path.join(ROOT, "regions");
 const CATEGORIES_DIR = path.join(ROOT, "categories");
 const MENUS_DIR = path.join(ROOT, "menus");
 const VERIFIED_DIR = path.join(ROOT, "verified");
+const ABOUT_DIR = path.join(ROOT, "about");
 const LASTMOD = process.env.SEO_LASTMOD || new Date().toISOString().slice(0, 10);
 const GOOD_RICE_LABEL = "좋은 쌀로 정성을 다하는 식당";
 const GOOD_RICE_DESCRIPTION =
@@ -437,6 +438,7 @@ const baseHeader = () => `
       <a href="/">식당 찾기</a>
       <a href="/verified/">인증 식당</a>
       <a href="/restaurants/">전체 식당 목록</a>
+      <a href="/about/">소개·운영기준</a>
       <a href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>
     </nav>
   </header>`;
@@ -457,7 +459,7 @@ const pageShell = ({ title, description, canonical, image, jsonLd, breadcrumbs =
   <meta property="og:image" content="${escapeHtml(image || `${SITE_URL}/assets/ozicmeclub-share.jpg`)}">
   <meta name="theme-color" content="#1f6b4e">
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/seo-pages.css?v=20261108-3">
+  <link rel="stylesheet" href="/seo-pages.css?v=20261108-4">
   <script type="application/ld+json">${JSON.stringify(
     structuredDataWithBreadcrumbs(jsonLd, breadcrumbs)
   ).replace(/</g, "\\u003c")}</script>
@@ -466,7 +468,7 @@ const pageShell = ({ title, description, canonical, image, jsonLd, breadcrumbs =
   <div class="seo-page">
     ${baseHeader()}
     <main>${body}</main>
-    <footer class="seo-footer">© 2026 OZICME · 오직미클럽 식당 정보</footer>
+    <footer class="seo-footer">© 2026 OZICME · 오직미클럽 식당 정보 · <a href="/about/">소개·운영기준</a></footer>
   </div>
 </body>
 </html>
@@ -500,6 +502,7 @@ const renderRestaurantPage = (item, availableCategories, duplicatedTitles) => {
     "@type": "Restaurant",
     name: item.name,
     url: canonical,
+    dateModified: LASTMOD,
     mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
     ...(item.imageUrl ? { image: [item.imageUrl] } : {}),
     ...(item.category ? { servesCuisine: item.category } : {}),
@@ -617,6 +620,70 @@ const renderRestaurantPage = (item, availableCategories, duplicatedTitles) => {
       { name: "식당 찾기", url: `${SITE_URL}/` },
       { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
       { name: item.name, url: canonical },
+    ],
+    body,
+  });
+};
+
+const renderAboutPage = () => {
+  const title = "오직미클럽 소개·운영기준 | 식당 정보 안내";
+  const description =
+    "오직미클럽 인증 식당과 좋은 쌀로 정성을 다하는 식당의 표시 기준, 대표메뉴와 식당 정보의 수집·갱신 원칙을 안내합니다.";
+  const canonical = `${SITE_URL}/about/`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: title,
+    url: canonical,
+    description,
+    dateModified: LASTMOD,
+    isPartOf: { "@type": "WebSite", name: "오직미클럽", url: SITE_URL },
+    about: {
+      "@type": "Organization",
+      name: "OZICME",
+      url: "https://ozicme.com",
+    },
+  };
+  const body = `
+    <article class="directory-page policy-page">
+      <p class="breadcrumb"><a href="/">식당 찾기</a> / 소개·운영기준</p>
+      <h1>오직미클럽 소개·운영기준</h1>
+      <p class="lead">오직미클럽은 좋은 쌀로 정성을 다하는 식당을 지역·업종·대표메뉴별로 찾을 수 있도록 정리한 공개 식당 디렉토리입니다.</p>
+
+      <section class="restaurant-summary">
+        <h2>식당 표시 기준</h2>
+        <p><strong>${GOOD_RICE_LABEL}</strong><br>${GOOD_RICE_DESCRIPTION}</p>
+        <p class="policy-separator"><strong>${VERIFIED_RICE_LABEL}</strong><br>${VERIFIED_RICE_DESCRIPTION} 오직미 쌀 거래가 확인된 식당에는 초록색 오직미클럽 배지를 표시합니다.</p>
+      </section>
+
+      <section class="restaurant-summary">
+        <h2>식당·대표메뉴 정보 기준</h2>
+        <ul class="policy-list">
+          <li>식당명, 주소, 업종과 지도 연결 정보는 공개된 식당 정보와 관리 자료를 바탕으로 정리합니다.</li>
+          <li>대표메뉴는 해당 지점 정보, 공식 브랜드 메뉴, 공개된 메뉴 자료 순으로 확인해 반영합니다.</li>
+          <li>확인이 어려운 식당은 상호와 업종에서 명확한 메뉴만 최소한으로 안내하며 가격은 추정하지 않습니다.</li>
+          <li>메뉴, 영업시간과 영업 여부는 바뀔 수 있으므로 방문 전 연결된 지도에서 최신 정보를 확인해 주세요.</li>
+        </ul>
+      </section>
+
+      <section class="restaurant-summary">
+        <h2>갱신과 수정 원칙</h2>
+        <p>식당 고유주소를 유지하면서 식당명·주소·대표메뉴·등록 구분의 변경사항을 반영합니다. 중복·폐업·이전·잘못된 메뉴가 확인되면 원자료와 대조해 수정하며, 변경된 페이지는 사이트맵과 검색엔진 갱신 알림에 포함합니다.</p>
+      </section>
+
+      <section class="verification-note">
+        <h2>운영 주체</h2>
+        <p>오직미클럽은 쌀에 대한 모든 것을 다루는 OZICME가 운영합니다. 브랜드와 제품 정보는 <a href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>에서 확인할 수 있습니다.</p>
+      </section>
+    </article>`;
+  return pageShell({
+    title,
+    description,
+    canonical,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "소개·운영기준", url: canonical },
     ],
     body,
   });
@@ -920,6 +987,7 @@ const generate = () => {
   ensureCleanDirectory(CATEGORIES_DIR);
   ensureCleanDirectory(MENUS_DIR);
   ensureCleanDirectory(VERIFIED_DIR);
+  ensureCleanDirectory(ABOUT_DIR);
 
   const availableCategories = new Set(
     Array.from(groupBy(stores, (item) => item.category))
@@ -945,7 +1013,8 @@ const generate = () => {
     );
   }
 
-  const sitemapPaths = ["/", "/restaurants/"];
+  writePage(ABOUT_DIR, renderAboutPage());
+  const sitemapPaths = ["/", "/restaurants/", "/about/"];
   const sidoGroups = groupBy(stores, (item) => item.region.sido);
   const regionEntries = [];
   for (const [sido, sidoStores] of Array.from(sidoGroups).sort(([a], [b]) => a.localeCompare(b, "ko"))) {
@@ -1040,6 +1109,7 @@ const generate = () => {
     categoryPages: categoryEntries.length,
     menuPages: menuEntries.length,
     verifiedPages: 1,
+    aboutPages: 1,
     sitemapUrls: sitemapPaths.length,
     changedSitemapUrls,
   };
