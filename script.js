@@ -10,7 +10,7 @@ const DEFAULT_SORT = "name_asc";
 
 let allStores = [];
 let cursor = 0;
-const pageSize = 12;
+const pageSize = 24;
 let isLoading = false;
 
 const PLACEHOLDER_IMAGE_URL = new URL("./assets/placeholder-image.svg", document.baseURI).toString();
@@ -798,9 +798,24 @@ const initRestaurantsPage = async () => {
     return String(item.category || "").trim() === selectedCategory;
   };
 
+  // Keep one daily order throughout this visit, including searches and load-more.
+  const displayDay = new Intl.DateTimeFormat("sv-SE", { timeZone: "Asia/Seoul" }).format(new Date());
+  const displayScores = new Map();
+  const displayScore = (store) => {
+    const key = String(store.slug || store.id || store.name + "|" + store.address);
+    if (!displayScores.has(key)) {
+      let hash = 2166136261;
+      for (const char of displayDay + "|" + key) {
+        hash = Math.imul(hash ^ char.charCodeAt(0), 16777619);
+      }
+      hash = Math.imul(hash ^ (hash >>> 16), 0x85ebca6b);
+      hash = Math.imul(hash ^ (hash >>> 13), 0xc2b2ae35);
+      displayScores.set(key, (hash ^ (hash >>> 16)) >>> 0);
+    }
+    return displayScores.get(key);
+  };
   const sortStoresForDisplay = (stores) => {
-    // 인증 식당을 먼저 표시하고 각 구분 안에서는 가나다순으로 정렬합니다.
-    stores.sort((a, b) => Number(Boolean(b.verifiedBadge)) - Number(Boolean(a.verifiedBadge)) || a.name.localeCompare(b.name, "ko"));
+    stores.sort((a, b) => displayScore(a) - displayScore(b));
   };
 
   const filterStores = () => {
