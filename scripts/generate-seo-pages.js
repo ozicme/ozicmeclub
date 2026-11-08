@@ -14,6 +14,7 @@ const RESTAURANTS_DIR = path.join(ROOT, "restaurants");
 const REGIONS_DIR = path.join(ROOT, "regions");
 const CATEGORIES_DIR = path.join(ROOT, "categories");
 const MENUS_DIR = path.join(ROOT, "menus");
+const VERIFIED_DIR = path.join(ROOT, "verified");
 const LASTMOD = process.env.SEO_LASTMOD || new Date().toISOString().slice(0, 10);
 
 const MIN_CATEGORY_RESTAURANTS = 15;
@@ -301,6 +302,7 @@ const baseHeader = () => `
     <a class="seo-logo" href="/">OZICME</a>
     <nav aria-label="주요 메뉴">
       <a href="/">식당 찾기</a>
+      <a href="/verified/">인증 식당</a>
       <a href="/restaurants/">전체 식당 목록</a>
       <a href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>
     </nav>
@@ -477,7 +479,7 @@ const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) =>
         .filter((item) => item.verifiedBadge)
         .length.toLocaleString("ko-KR")}곳</p>
       <div class="status-legend">
-        <span class="verification is-verified">오직미 쌀 거래 확인 식당</span>
+        <a class="verification is-verified" href="/verified/">오직미 쌀 거래 확인 식당</a>
         <span class="verification is-external">외부 식당 정보</span>
       </div>
       <h2>지역별 찾기</h2>
@@ -546,6 +548,55 @@ const renderFacetPage = ({ label, kind, stores, pathname }) => {
       <h2>지역별 보기</h2>
       ${facetGrid(regionEntries)}
       <h2>${escapeHtml(label)} 식당 목록</h2>
+      ${restaurantList(stores).trimStart()}
+    </section>`;
+  return pageShell({ title, description, canonical, jsonLd, body });
+};
+
+const renderVerifiedPage = (stores) => {
+  const title = `오직미클럽 인증 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 좋은 쌀 쓰는 식당`;
+  const description = `오직미 쌀 거래가 확인된 오직미클럽 인증 식당 ${stores.length.toLocaleString(
+    "ko-KR"
+  )}곳을 지역별로 확인하세요. 인증 식당은 초록색 오직미클럽 배지로 구분합니다.`;
+  const pathname = "/verified/";
+  const canonical = `${SITE_URL}${pathname}`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: title,
+    url: canonical,
+    description,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: stores.length,
+      itemListElement: stores.slice(0, 100).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        url: publicUrl(item.seoPath),
+      })),
+    },
+  };
+  const regionEntries = Array.from(groupBy(stores, (item) => item.region.sido))
+    .map(([region, regionStores]) => ({
+      label: region,
+      url: `/regions/${slugify(region)}/`,
+      count: regionStores.length,
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
+  const body = `
+    <section class="directory-page">
+      <p class="breadcrumb"><a href="/">식당 찾기</a> / 오직미클럽 인증 식당</p>
+      <span class="verification is-verified">오직미 쌀 거래 확인</span>
+      <h1>오직미클럽 인증 식당</h1>
+      <p class="lead">오직미 쌀 거래가 확인된 식당 ${stores.length.toLocaleString("ko-KR")}곳</p>
+      <div class="verification-note facet-note">
+        <h2>초록 배지의 의미</h2>
+        <p>아래 식당은 오직미 쌀 거래가 확인되어 오직미클럽 초록 배지가 표시됩니다. 외부 식당 정보와 명확히 구분해 제공합니다.</p>
+      </div>
+      <h2>지역별 인증 식당</h2>
+      ${facetGrid(regionEntries)}
+      <h2>인증 식당 전체 목록</h2>
       ${restaurantList(stores).trimStart()}
     </section>`;
   return pageShell({ title, description, canonical, jsonLd, body });
@@ -626,6 +677,7 @@ const generate = () => {
   ensureCleanDirectory(REGIONS_DIR);
   ensureCleanDirectory(CATEGORIES_DIR);
   ensureCleanDirectory(MENUS_DIR);
+  ensureCleanDirectory(VERIFIED_DIR);
 
   for (const item of stores) {
     writePage(path.join(RESTAURANTS_DIR, item.seoId), renderRestaurantPage(item));
@@ -694,6 +746,10 @@ const generate = () => {
     return { label, url: menuPath, count: menuStores.length };
   }).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
 
+  const verifiedStores = stores.filter((item) => item.verifiedBadge);
+  writePage(VERIFIED_DIR, renderVerifiedPage(verifiedStores));
+  sitemapPaths.push("/verified/");
+
   writePage(RESTAURANTS_DIR, renderIndexPage(stores, regionEntries, categoryEntries, menuEntries));
   fs.writeFileSync(
     path.join(ROOT, "restaurants-data.json"),
@@ -716,6 +772,7 @@ const generate = () => {
     regionPages: sitemapPaths.filter((item) => item.startsWith("/regions/")).length,
     categoryPages: categoryEntries.length,
     menuPages: menuEntries.length,
+    verifiedPages: 1,
     sitemapUrls: sitemapPaths.length,
   };
   fs.writeFileSync(path.join(ROOT, "seo-build-stats.json"), `${JSON.stringify(stats, null, 2)}\n`, "utf8");
