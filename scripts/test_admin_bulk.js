@@ -51,7 +51,7 @@ const context = vm.createContext({
     createElement: fakeElement,
   },
   fetch: async (url) => {
-    const relative = String(url).replace(/^\.\//, "");
+    const relative = String(url).replace(/^\.\//, "").split("?")[0];
     const filePath = path.join(root, relative);
     if (!fs.existsSync(filePath)) {
       return { ok: false, status: 404, text: async () => "", json: async () => [] };
