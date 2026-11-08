@@ -5,7 +5,7 @@ const UPDATE_WORKFLOW_URL =
 const BASE_DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
-const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json";
+const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json?v=20261108-2";
 const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
 const imageUrlTools = globalThis.OzicmeImageUrls;
