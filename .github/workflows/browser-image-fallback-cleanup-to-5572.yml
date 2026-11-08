@@ -1,4 +1,4 @@
-name: Chrome 실제 이미지 로딩 실패 식당 삭제 후 5572개 맞춤
+name: Chrome 실제 이미지 검사 (기본 보고 전용, 선택적 5572개 정리)
 
 on:
   push:
@@ -6,6 +6,15 @@ on:
     paths:
       - ".github/workflows/browser-image-fallback-cleanup-to-5572.yml"
   workflow_dispatch:
+    inputs:
+      apply_changes:
+        description: '검사 보고서를 검토한 뒤에만 선택: 기존 5586개 중 실패 14개 삭제'
+        type: boolean
+        default: false
+      reviewed_failure_hash:
+        description: '적용 시 필수: 사전 검사 보고서의 삭제 후보 SHA-256'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -18,6 +27,9 @@ jobs:
   browser-check-remove:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      APPLY_CHANGES: ${{ github.event_name == 'workflow_dispatch' && inputs.apply_changes == true }}
+      REVIEWED_FAILURE_HASH: ${{ inputs.reviewed_failure_hash }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -39,12 +51,13 @@ jobs:
       - name: 사이트와 동일한 후보 URL 목록 생성
         run: |
           python - <<'PY'
-          import json
+          import json, os
           from pathlib import Path
           from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,load_targets
           targets,_=load_targets(DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT)
-          if len(targets)!=5586:
+          if os.environ.get('APPLY_CHANGES') == 'true' and len(targets)!=5586:
               raise SystemExit(f'안전 중단: 현재 통합 식당 수 {len(targets)} (예상 5586)')
+          print(f'검사 대상: {len(targets)}개, 적용 모드: {os.environ.get("APPLY_CHANGES")}')
           Path('output').mkdir(exist_ok=True)
           Path('output/browser-image-raw.json').write_text(json.dumps([
               {'targetKey':k,'name':r.get('name',''),'address':r.get('address',''),'imageUrl':r.get('imageUrl','')}
@@ -85,7 +98,7 @@ jobs:
               const timer=setTimeout(()=>finish(false,'timeout'),timeout);
               img.onload=()=>{{
                 const ok=img.naturalWidth>0 && img.naturalHeight>0;
-                finish(ok,ok?`load ${{img.naturalWidth}}x${{img.naturalHeight}}`:'load but zero size');
+                finish(ok,ok?'load '+img.naturalWidth+'x'+img.naturalHeight:'load but zero size');
               }};
               img.onerror=()=>finish(false,'error');
               img.src=url;
@@ -96,7 +109,7 @@ jobs:
             if(!row.candidates || !row.candidates.length) return {{...row,reasons:['no candidates']}};
             for(const url of row.candidates){{
               const r=await loadOne(url);
-              reasons.push(`${{url}} => ${{r.why}}`);
+              reasons.push(url+' => '+r.why);
               if(r.ok) return null;
             }}
             return {{...row,reasons}};
@@ -108,7 +121,7 @@ jobs:
               const bad=await checkRow(rows[idx]);
               if(bad) failures.push(bad);
               done++;
-              if(done%250===0) document.getElementById('progress').textContent=`${{done}}/${{rows.length}} fail=${{failures.length}}`;
+              if(done%250===0) document.getElementById('progress').textContent=done+'/'+rows.length+' fail='+failures.length;
             }}
           }}
           (async()=>{{
@@ -116,7 +129,7 @@ jobs:
             await Promise.all(Array.from({{length:40}},()=>worker(queue)));
             window.__scanResult=JSON.stringify(failures);
             document.body.dataset.done='1';
-            document.getElementById('progress').textContent=`DONE ${{done}}/${{rows.length}} fail=${{failures.length}}`;
+            document.getElementById('progress').textContent='DONE '+done+'/'+rows.length+' fail='+failures.length;
           }})();
           </script></body>'''
           page=pathlib.Path('output/browser-image-scan.html').resolve()
@@ -146,13 +159,61 @@ jobs:
               driver.quit()
           PY
 
-      - name: 정확히 14개 실패면 원본에서 완전 삭제
+      - name: 삭제 전 검사 결과와 변경 예정 건수 보고
         run: |
           python - <<'PY'
-          import csv,json
+          import hashlib, json, os
+          from pathlib import Path
+          rows=json.loads(Path('output/browser-image-candidates.json').read_text(encoding='utf-8'))
+          bad=json.loads(Path('output/browser-image-failures.json').read_text(encoding='utf-8'))
+          keys=sorted(str(x['targetKey']) for x in bad)
+          digest=hashlib.sha256(json.dumps(keys,ensure_ascii=False,separators=(',',':')).encode('utf-8')).hexdigest()
+          eligible=len(rows)==5586 and len(bad)==14 and len(set(keys))==14
+          planned=len(bad) if eligible else 0
+          def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
+          lines=['# Chrome 이미지 검사 — 삭제 전 보고','',
+              f'- 검사 식당 수: **{len(rows)}**',
+              f'- 모든 후보 이미지 로딩 실패: **{len(bad)}**',
+              f'- 기존 안전 조건 충족 시 변경 예정: **{planned}건**',
+              '- 안전 조건: 검사 대상 5586개, 실패한 고유 식당 14개, 적용 후 5572개',
+              f'- 삭제 후보 SHA-256: `{digest}`',
+              '- 이 보고 단계까지 식당 데이터 변경: **0건**',
+              '- 기본 실행은 보고 전용입니다. 적용하려면 보고서를 검토하고 수동 실행에서 apply_changes와 reviewed_failure_hash를 지정하세요.',
+              '', '| 번호 | 상호명 | 주소 | 실패사유 |','|---:|---|---|---|']
+          for i,x in enumerate(bad,1):
+              lines.append(f"| {i} | {esc(x.get('name'))} | {esc(x.get('address'))} | {esc(' / '.join(x.get('reasons') or []))} |")
+          report='\n'.join(lines)+'\n'
+          Path('output/browser-image-review.md').write_text(report,encoding='utf-8')
+          Path('output/browser-image-failure-count.txt').write_text(str(len(bad)),encoding='utf-8')
+          Path('output/browser-image-failure-hash.txt').write_text(digest,encoding='utf-8')
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a',encoding='utf-8') as summary:
+              summary.write(report)
+          print(report)
+          PY
+
+      - name: 검사 보고서 보관
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-image-inspection
+          path: |
+            output/browser-image-review.md
+            output/browser-image-failures.json
+            output/browser-image-failure-count.txt
+            output/browser-image-failure-hash.txt
+          if-no-files-found: warn
+
+      - name: 검토한 후보가 정확히 14개 실패면 원본에서 완전 삭제
+        if: env.APPLY_CHANGES == 'true'
+        run: |
+          python - <<'PY'
+          import csv,json,os
           from pathlib import Path
           from scripts.update_restaurants import DEFAULT_BASE_CSV,DEFAULT_ADMIN_DATA,DEFAULT_OUTPUT,NAVER_CLEANUP_FILENAME,base_row_to_record,load_targets,target_key
           bad=json.loads(Path('output/browser-image-failures.json').read_text(encoding='utf-8'))
+          digest=Path('output/browser-image-failure-hash.txt').read_text(encoding='utf-8').strip()
+          if os.environ.get('REVIEWED_FAILURE_HASH','').strip()!=digest:
+              raise SystemExit('안전 중단: 사전 검토한 삭제 후보와 이번 검사 후보가 일치하지 않습니다.')
           count=len(bad); report=Path('output/browser-image-fallback-removal-2026-08-11.md')
           def esc(v): return str(v or '').replace('|','\\|').replace('\n',' ')
           lines=['# Chrome 실제 대표이미지 로딩 검사 결과','',f'- 검사 식당 수: **5586**',f'- 모든 사이트 후보 이미지가 Chrome에서 실패한 식당: **{count}**','']
@@ -201,6 +262,7 @@ jobs:
           PY
 
       - name: 결과 커밋
+        if: env.APPLY_CHANGES == 'true'
         run: |
           rm -f output/browser-image-raw.json output/browser-image-candidates.json output/browser-image-scan.html
           git config user.name 'github-actions[bot]'
@@ -214,3 +276,4 @@ jobs:
             git commit -m "Chrome 대표이미지 실패 ${count}건 (삭제 보류)"
           fi
           git push origin HEAD:main
+
