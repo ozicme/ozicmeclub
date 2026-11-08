@@ -11,6 +11,8 @@ on:
       - "data/naver-place-cleanup-2026-08-10.json"
       - "data/seo-manual-overrides-2026-11-08.json"
       - "scripts/generate-seo-pages.js"
+      - "scripts/test_seo_structure.js"
+      - "package.json"
       - "seo-pages.css"
       - "index.html"
       - ".github/workflows/generate-seo-pages.yml"
@@ -31,8 +33,8 @@ jobs:
       - name: 네이버 알림 대상 URL 수집
         run: |
           {
-            git -c core.quotepath=false diff --name-only -- restaurants regions categories menus verified
-            git -c core.quotepath=false ls-files --others --exclude-standard -- restaurants regions categories menus verified
+            git -c core.quotepath=false diff --name-only -- restaurants regions categories menus verified about
+            git -c core.quotepath=false ls-files --others --exclude-standard -- restaurants regions categories menus verified about
             git -c core.quotepath=false diff --name-only HEAD^ HEAD -- index.html
           } | sort -u > /tmp/indexnow-paths.txt
           echo "알림 대상 파일: $(wc -l < /tmp/indexnow-paths.txt)개"
@@ -46,7 +48,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add restaurants regions categories menus verified restaurants-data.json sitemap.xml seo-build-stats.json
+          git add restaurants regions categories menus verified about restaurants-data.json sitemap.xml seo-build-stats.json
           git commit -m "식당 검색노출 페이지 자동 갱신"
           git push
           echo "changed=true" >> "$GITHUB_OUTPUT"
