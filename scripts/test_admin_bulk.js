@@ -103,6 +103,11 @@ vm.runInContext(source, context, { filename: "admin.js" });
     "삭제 표식이 있는 식당만 전체 관리 목록에서 제외되어야 합니다."
   );
   assert.equal(
+    catalog.records.find((record) => record.targetKey === "place:1077408803:1fbed804")?.registrationType,
+    "ozicme",
+    "주소 정리 자료와 배지 지정 자료가 모두 있으면 두 수정 내용을 합쳐야 합니다."
+  );
+  assert.equal(
     new Set(catalog.records.map((record) => record.targetKey)).size,
     catalog.records.length,
     "전체 목록의 수정대상키는 모두 달라야 합니다."
