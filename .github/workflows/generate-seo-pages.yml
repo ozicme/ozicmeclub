@@ -9,9 +9,11 @@ on:
       - "data/admin-restaurants.json"
       - "data/restaurant-overrides.json"
       - "data/naver-place-cleanup-2026-08-10.json"
+      - "data/seo-manual-overrides-2026-11-08.json"
       - "scripts/generate-seo-pages.js"
       - "seo-pages.css"
       - "index.html"
+      - ".github/workflows/generate-seo-pages.yml"
 
 permissions:
   contents: write
