@@ -10,9 +10,8 @@ const DEFAULT_SORT = "name_asc";
 
 let allStores = [];
 let cursor = 0;
-const pageSize = 20;
+const pageSize = 12;
 let isLoading = false;
-let observer = null;
 
 const PLACEHOLDER_IMAGE_URL = new URL("./assets/placeholder-image.svg", document.baseURI).toString();
 const IMAGE_URL_CANDIDATES = [
@@ -647,7 +646,7 @@ const initRestaurantsPage = async () => {
   const listState = document.getElementById("list-state");
   const listLoader = document.getElementById("list-loader");
   const listEnd = document.getElementById("list-end");
-  const sentinel = document.getElementById("scroll-sentinel");
+  const loadMore = document.getElementById("load-more");
   const searchForm = document.getElementById("search-form");
 
   if (
@@ -655,7 +654,7 @@ const initRestaurantsPage = async () => {
     !searchInput ||
     !menuSearchInput ||
     !resultCount ||
-    !sentinel ||
+    !loadMore ||
     !listLoader
   ) return;
 
@@ -799,9 +798,9 @@ const initRestaurantsPage = async () => {
     return String(item.category || "").trim() === selectedCategory;
   };
 
-  const sortStoresByName = (stores) => {
-    // 기본 정렬: 식당명 가나다순(오름차순).
-    stores.sort((a, b) => a.name.localeCompare(b.name, "ko"));
+  const sortStoresForDisplay = (stores) => {
+    // 인증 식당을 먼저 표시하고 각 구분 안에서는 가나다순으로 정렬합니다.
+    stores.sort((a, b) => Number(Boolean(b.verifiedBadge)) - Number(Boolean(a.verifiedBadge)) || a.name.localeCompare(b.name, "ko"));
   };
 
   const filterStores = () => {
@@ -815,7 +814,7 @@ const initRestaurantsPage = async () => {
         nameTokens.every((token) => item.nameSearchText.includes(token)) &&
         menuTokens.every((token) => item.menuSearchText.includes(token))
     );
-    sortStoresByName(filteredStores);
+    sortStoresForDisplay(filteredStores);
     totalCount = filteredStores.length;
     updateResultCount();
   };
@@ -970,42 +969,14 @@ const initRestaurantsPage = async () => {
   };
 
   const renderNextPage = () => {
-    if (isLoading || errorMessage) return;
-    if (cursor >= filteredStores.length) {
-      if (filteredStores.length > 0) {
-        setListEnd("마지막입니다.");
-      }
-      if (observer && cursor >= allStores.length) {
-        observer.disconnect();
-      }
-      return;
-    }
-    isLoading = true;
-    setLoading(true);
+    if (isLoading || errorMessage || !dataReady) return;
+    if (cursor === 0) grid.innerHTML = "";
+    setListState(filteredStores.length ? "" : "조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
     const next = filteredStores.slice(cursor, cursor + pageSize);
-    if (cursor === 0) {
-      grid.innerHTML = "";
-    }
-    if (cursor === 0 && next.length === 0) {
-      setListState("조건에 맞는 매장이 없습니다. 검색어를 바꿔보세요.");
-    } else {
-      setListState("");
-    }
-
-    next.forEach((item) => {
-      grid.appendChild(renderCard(item));
-    });
-
+    next.forEach((item) => grid.appendChild(renderCard(item)));
     cursor += next.length;
-    if (cursor >= filteredStores.length) {
-      setListEnd(filteredStores.length > 0 ? "마지막입니다." : "");
-    }
-    if (observer && cursor >= allStores.length) {
-      observer.disconnect();
-    }
-
-    isLoading = false;
-    setLoading(false);
+    loadMore.hidden = cursor >= filteredStores.length;
+    setListEnd(filteredStores.length ? cursor.toLocaleString() + " / " + filteredStores.length.toLocaleString() + "곳 표시" : "");
   };
 
   const loadAndRender = async () => {
@@ -1039,7 +1010,6 @@ const initRestaurantsPage = async () => {
     setListEnd("");
     renderSkeletons(grid, 8);
     setResultStatus("매장을 불러오는 중...");
-    setupInfiniteScroll();
     filterStores();
     renderNextPage();
   };
@@ -1050,7 +1020,6 @@ const initRestaurantsPage = async () => {
     setListEnd("");
     renderSkeletons(grid, 8);
     setResultStatus("매장을 불러오는 중...");
-    setupInfiniteScroll();
     filterStores();
     renderNextPage();
   };
@@ -1102,23 +1071,7 @@ const initRestaurantsPage = async () => {
     });
   }
 
-  const setupInfiniteScroll = () => {
-    if (!observer) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !isLoading && !errorMessage) {
-              renderNextPage();
-            }
-          });
-        },
-        { rootMargin: "200px" }
-      );
-    }
-    observer.observe(sentinel);
-  };
-
-  setupInfiniteScroll();
+  loadMore.addEventListener("click", renderNextPage);
 
   renderSkeletons(grid, 8);
   setListState("");

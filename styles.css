@@ -1003,3 +1003,7 @@ main {
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
+
+.list-more { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; margin: 0 auto 24px; }
+.list-more [hidden] { display: none; }
+.list-more a { color: var(--green-dark); }
