@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /data/
+Disallow: /restaurants-data.json
 
 Sitemap: https://ozicmeclub.com/sitemap.xml

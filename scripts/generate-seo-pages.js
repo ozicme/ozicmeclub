@@ -12,7 +12,28 @@ const OVERRIDES_JSON = path.join(ROOT, "data", "restaurant-overrides.json");
 const CLEANUP_JSON = path.join(ROOT, "data", "naver-place-cleanup-2026-08-10.json");
 const RESTAURANTS_DIR = path.join(ROOT, "restaurants");
 const REGIONS_DIR = path.join(ROOT, "regions");
+const CATEGORIES_DIR = path.join(ROOT, "categories");
+const MENUS_DIR = path.join(ROOT, "menus");
 const LASTMOD = process.env.SEO_LASTMOD || new Date().toISOString().slice(0, 10);
+
+const MIN_CATEGORY_RESTAURANTS = 15;
+const POPULAR_MENU_PAGES = [
+  { label: "솥밥", terms: ["솥밥", "가마솥밥", "돌솥밥"] },
+  { label: "장어", terms: ["장어"] },
+  { label: "갈비", terms: ["갈비"] },
+  { label: "국밥", terms: ["국밥"] },
+  { label: "순대국", terms: ["순대국", "순댓국"] },
+  { label: "초밥", terms: ["초밥"] },
+  { label: "샤브샤브", terms: ["샤브샤브"] },
+  { label: "삼계탕", terms: ["삼계탕"] },
+  { label: "비빔밥", terms: ["비빔밥"] },
+  { label: "백반", terms: ["백반"] },
+  { label: "보리밥", terms: ["보리밥"] },
+  { label: "해물요리", terms: ["해물", "해산물"] },
+  { label: "고기구이", terms: ["고기구이"] },
+  { label: "오리요리", terms: ["오리"] },
+  { label: "게장", terms: ["게장"] },
+];
 
 const readJson = (filePath) => {
   if (!fs.existsSync(filePath)) return [];
@@ -301,7 +322,7 @@ const pageShell = ({ title, description, canonical, image, jsonLd, body }) => `<
   <meta property="og:image" content="${escapeHtml(image || `${SITE_URL}/assets/ozicmeclub-share.jpg`)}">
   <meta name="theme-color" content="#1f6b4e">
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/seo-pages.css?v=20261108-1">
+  <link rel="stylesheet" href="/seo-pages.css?v=20261108-2">
   <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>
 </head>
 <body>
@@ -426,7 +447,18 @@ const restaurantList = (items) => `
       .join("\n")}
   </ul>`;
 
-const renderIndexPage = (stores, regionEntries) => {
+const facetGrid = (entries) => `<div class="region-grid">
+    ${entries
+      .map(
+        ({ label, url, count }) =>
+          `<a href="${escapeHtml(url)}"><strong>${escapeHtml(label)}</strong><span>${count.toLocaleString(
+            "ko-KR"
+          )}곳</span></a>`
+      )
+      .join("\n")}
+  </div>`;
+
+const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) => {
   const title = `전체 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 오직미클럽`;
   const description = `오직미클럽 인증 식당과 외부 식당 정보를 지역별로 확인하세요. 오직미 쌀 거래 확인 식당은 초록 배지로 구분합니다.`;
   const canonical = `${SITE_URL}/restaurants/`;
@@ -449,18 +481,72 @@ const renderIndexPage = (stores, regionEntries) => {
         <span class="verification is-external">외부 식당 정보</span>
       </div>
       <h2>지역별 찾기</h2>
-      <div class="region-grid">
-        ${regionEntries
-          .map(
-            ({ label, url, count }) =>
-              `<a href="${escapeHtml(url)}"><strong>${escapeHtml(label)}</strong><span>${count.toLocaleString(
-                "ko-KR"
-              )}곳</span></a>`
-          )
-          .join("\n")}
-      </div>
+      ${facetGrid(regionEntries)}
+      <h2>많이 찾는 메뉴</h2>
+      ${facetGrid(menuEntries)}
+      <h2>업종별 찾기</h2>
+      ${facetGrid(categoryEntries)}
       <h2>식당명으로 찾기</h2>
-      ${restaurantList(stores)}
+      ${restaurantList(stores).trimStart()}
+    </section>`;
+  return pageShell({ title, description, canonical, jsonLd, body });
+};
+
+const renderFacetPage = ({ label, kind, stores, pathname }) => {
+  const verifiedCount = stores.filter((item) => item.verifiedBadge).length;
+  const isMenu = kind === "메뉴";
+  const title = isMenu
+    ? `${label} 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 오직미클럽`
+    : `${label} 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 업종별 식당 찾기`;
+  const description = `${label} 관련 식당 ${stores.length.toLocaleString(
+    "ko-KR"
+  )}곳을 지역과 대표 메뉴로 비교해 보세요. 오직미 쌀 거래 확인 식당 ${verifiedCount.toLocaleString(
+    "ko-KR"
+  )}곳은 초록 배지로 구분됩니다.`;
+  const canonical = publicUrl(pathname);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: title,
+    url: canonical,
+    description,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: stores.length,
+      itemListElement: stores.slice(0, 100).map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        url: publicUrl(item.seoPath),
+      })),
+    },
+  };
+  const regionEntries = Array.from(groupBy(stores, (item) => item.region.sido))
+    .map(([region, regionStores]) => ({
+      label: region,
+      url: `/regions/${slugify(region)}/`,
+      count: regionStores.length,
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
+  const body = `
+    <section class="directory-page">
+      <p class="breadcrumb"><a href="/">식당 찾기</a> / <a href="/restaurants/">전체 식당</a> / ${escapeHtml(
+        label
+      )}</p>
+      <h1>${escapeHtml(label)} ${isMenu ? "식당" : "업종 식당"} 찾기</h1>
+      <p class="lead">전체 ${stores.length.toLocaleString(
+        "ko-KR"
+      )}곳 · 오직미클럽 인증 ${verifiedCount.toLocaleString("ko-KR")}곳</p>
+      <div class="verification-note facet-note">
+        <h2>${escapeHtml(label)} 식당 안내</h2>
+        <p>식당명, 업종 및 등록된 대표 메뉴에 ${escapeHtml(
+          label
+        )} 관련 정보가 있는 식당을 모았습니다. 방문 전 최신 메뉴와 영업 정보는 네이버 지도에서 확인해 주세요.</p>
+      </div>
+      <h2>지역별 보기</h2>
+      ${facetGrid(regionEntries)}
+      <h2>${escapeHtml(label)} 식당 목록</h2>
+      ${restaurantList(stores).trimStart()}
     </section>`;
   return pageShell({ title, description, canonical, jsonLd, body });
 };
@@ -538,6 +624,8 @@ const generate = () => {
 
   ensureCleanDirectory(RESTAURANTS_DIR);
   ensureCleanDirectory(REGIONS_DIR);
+  ensureCleanDirectory(CATEGORIES_DIR);
+  ensureCleanDirectory(MENUS_DIR);
 
   for (const item of stores) {
     writePage(path.join(RESTAURANTS_DIR, item.seoId), renderRestaurantPage(item));
@@ -571,7 +659,42 @@ const generate = () => {
     sitemapPaths.push(sidoPath);
   }
 
-  writePage(RESTAURANTS_DIR, renderIndexPage(stores, regionEntries));
+  const categoryEntries = Array.from(groupBy(stores, (item) => item.category))
+    .filter(
+      ([category, categoryStores]) =>
+        category && category !== "기타" && categoryStores.length >= MIN_CATEGORY_RESTAURANTS
+    )
+    .map(([category, categoryStores]) => {
+      const categoryPath = `/categories/${slugify(category)}/`;
+      writePage(
+        path.join(CATEGORIES_DIR, slugify(category)),
+        renderFacetPage({ label: category, kind: "업종", stores: categoryStores, pathname: categoryPath })
+      );
+      sitemapPaths.push(categoryPath);
+      return { label: category, url: categoryPath, count: categoryStores.length };
+    })
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
+
+  const searchableText = (item) =>
+    [item.name, item.category, item.categoryDetail, ...item.signatureMenus]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+  const menuEntries = POPULAR_MENU_PAGES.map(({ label, terms }) => {
+    const menuStores = stores.filter((item) => {
+      const text = searchableText(item);
+      return terms.some((term) => text.includes(term.toLowerCase()));
+    });
+    const menuPath = `/menus/${slugify(label)}/`;
+    writePage(
+      path.join(MENUS_DIR, slugify(label)),
+      renderFacetPage({ label, kind: "메뉴", stores: menuStores, pathname: menuPath })
+    );
+    sitemapPaths.push(menuPath);
+    return { label, url: menuPath, count: menuStores.length };
+  }).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
+
+  writePage(RESTAURANTS_DIR, renderIndexPage(stores, regionEntries, categoryEntries, menuEntries));
   fs.writeFileSync(
     path.join(ROOT, "restaurants-data.json"),
     `${JSON.stringify(stores)}\n`,
@@ -591,6 +714,8 @@ const generate = () => {
     verifiedRestaurants: stores.filter((item) => item.verifiedBadge).length,
     externalRestaurants: stores.filter((item) => !item.verifiedBadge).length,
     regionPages: sitemapPaths.filter((item) => item.startsWith("/regions/")).length,
+    categoryPages: categoryEntries.length,
+    menuPages: menuEntries.length,
     sitemapUrls: sitemapPaths.length,
   };
   fs.writeFileSync(path.join(ROOT, "seo-build-stats.json"), `${JSON.stringify(stats, null, 2)}\n`, "utf8");

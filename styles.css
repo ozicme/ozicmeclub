@@ -236,6 +236,56 @@ main {
   text-align: center;
 }
 
+.popular-search-links {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 18px 28px;
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.popular-search-links h2,
+.popular-search-links p { margin: 0; }
+
+.popular-search-links h2 {
+  color: var(--green-dark);
+  font-size: 1.15rem;
+}
+
+.popular-search-eyebrow {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.popular-search-links nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.popular-search-links a {
+  padding: 7px 12px;
+  border: 1px solid rgba(31, 107, 78, 0.22);
+  border-radius: 999px;
+  color: var(--green-dark);
+  background: var(--green-soft);
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.popular-search-links a:hover {
+  border-color: var(--green);
+  background: #dff0e7;
+}
+
 #search-form,
 #restaurant-grid {
   scroll-margin-top: 84px;
@@ -792,6 +842,11 @@ main {
 }
 
 @media (max-width: 520px) {
+  .popular-search-links {
+    grid-template-columns: 1fr;
+    padding: 17px;
+  }
+
   .hero {
     padding: 26px 16px 20px;
     border-radius: 22px;

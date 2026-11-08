@@ -11,6 +11,7 @@ on:
       - "data/naver-place-cleanup-2026-08-10.json"
       - "scripts/generate-seo-pages.js"
       - "seo-pages.css"
+      - "index.html"
 
 permissions:
   contents: write
@@ -23,16 +24,70 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: 식당 상세·지역 페이지와 사이트맵 생성
+      - name: 식당 상세·지역·메뉴·업종 페이지와 사이트맵 생성
         run: npm run build:seo
+      - name: 네이버 알림 대상 URL 수집
+        run: |
+          {
+            git -c core.quotepath=false diff --name-only -- restaurants regions categories menus
+            git -c core.quotepath=false ls-files --others --exclude-standard -- restaurants regions categories menus
+            git -c core.quotepath=false diff --name-only HEAD^ HEAD -- index.html
+          } | sort -u > /tmp/indexnow-paths.txt
+          echo "알림 대상 파일: $(wc -l < /tmp/indexnow-paths.txt)개"
       - name: 변경사항 저장
+        id: save_changes
         run: |
           if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
             echo "갱신할 검색노출 페이지가 없습니다."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add restaurants regions restaurants-data.json sitemap.xml seo-build-stats.json
+          git add restaurants regions categories menus restaurants-data.json sitemap.xml seo-build-stats.json
           git commit -m "식당 검색노출 페이지 자동 갱신"
           git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+      - name: 네이버 IndexNow에 변경 URL 알림
+        if: steps.save_changes.outputs.changed == 'true'
+        continue-on-error: true
+        env:
+          INDEXNOW_KEY: 5e7a9d4c8b2f4136a1c0e9f7d3b62485
+        run: |
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            published_key="$(curl -fsSL "https://ozicmeclub.com/${INDEXNOW_KEY}.txt" || true)"
+            if [ "$published_key" = "$INDEXNOW_KEY" ]; then
+              break
+            fi
+            sleep 10
+          done
+          node <<'NODE'
+          const fs = require("fs");
+          const base = "https://ozicmeclub.com";
+          const key = process.env.INDEXNOW_KEY;
+          const files = fs.readFileSync("/tmp/indexnow-paths.txt", "utf8").split(/\r?\n/).filter(Boolean);
+          const toUrl = (file) => {
+            if (file === "index.html") return `${base}/`;
+            if (!file.endsWith("/index.html")) return null;
+            const pathname = `/${file.slice(0, -"index.html".length)}`;
+            return `${base}${pathname.split("/").map(encodeURIComponent).join("/")}`;
+          };
+          const urlList = [...new Set(files.map(toUrl).filter(Boolean))].slice(0, 10000);
+          if (!urlList.length) process.exit(0);
+          fs.writeFileSync(
+            "/tmp/indexnow-payload.json",
+            JSON.stringify({
+              host: "ozicmeclub.com",
+              key,
+              keyLocation: `${base}/${key}.txt`,
+              urlList,
+            })
+          );
+          console.log(`IndexNow 알림 URL: ${urlList.length}개`);
+          NODE
+          if [ -s /tmp/indexnow-payload.json ]; then
+            curl --fail-with-body --silent --show-error \
+              -H "Content-Type: application/json; charset=utf-8" \
+              --data-binary @/tmp/indexnow-payload.json \
+              https://searchadvisor.naver.com/indexnow
+          fi
