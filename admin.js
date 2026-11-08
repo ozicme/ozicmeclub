@@ -5,7 +5,7 @@ const UPDATE_WORKFLOW_URL =
 const BASE_DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
-const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json?v=20261108-2";
+const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json?v=20261108-3";
 const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
 const MAX_WORKFLOW_INPUT_LENGTH = 50000;
 const imageUrlTools = globalThis.OzicmeImageUrls;
@@ -226,11 +226,18 @@ const loadCatalog = () => {
       loadOptionalJson(OVERRIDE_DATA_URL),
       loadOptionalJson(CLEANUP_DATA_URL),
     ]).then(([content, adminRows, overrides, cleanupOverrides]) => {
-        const overrideMap = new Map(
-          [...overrides, ...cleanupOverrides]
-            .filter((item) => item && item.targetKey)
-            .map((item) => [String(item.targetKey), item])
-        );
+        const overrideMap = [...overrides, ...cleanupOverrides]
+          .filter((item) => item && item.targetKey)
+          .reduce((map, item) => {
+            const key = String(item.targetKey);
+            const current = map.get(key) || {};
+            map.set(key, {
+              ...current,
+              ...item,
+              region: { ...(current.region || {}), ...(item.region || {}) },
+            });
+            return map;
+          }, new Map());
         const records = assignUniqueTargetKeys([
           ...csvToObjects(content).map((row) => catalogRecord(row, "base")),
           ...adminRows.map((row) => catalogRecord(row, "admin")),
