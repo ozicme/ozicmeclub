@@ -1,0 +1,115 @@
+[
+  {
+    "targetKey": "place:2017590776:d5d01c91",
+    "category": "육류,고기요리",
+    "categoryDetail": "고기/구이",
+    "signatureMenus": [
+      "한돈 양념 뼈갈비 400g",
+      "한우 육회 비빔밥",
+      "쌍도끼왕갈비탕",
+      "시그니처 안창살 양념구이 300g",
+      "갓 지은 솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2017590776/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:20136339:5eade508",
+    "category": "두부요리",
+    "categoryDetail": "두부요리",
+    "signatureMenus": ["콩국수"],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/20136339/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2073156975:886e5d5f",
+    "category": "한식",
+    "categoryDetail": "정식/백반",
+    "signatureMenus": [
+      "가지소고기 솥밥 반상",
+      "남도 꼬막 솥밥 반상",
+      "버섯영양솥밥과 되비지찌개 반상",
+      "항정살 솥밥 반상",
+      "부채살 스테이크 솥밥 반상"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2073156975/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:13329786:a857f914",
+    "category": "추어탕",
+    "categoryDetail": "국밥/탕",
+    "signatureMenus": [
+      "송담정식",
+      "코다리정식",
+      "송담 추어탕",
+      "수제왕등심돈가스"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/13329786/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2021734190:a463b94b",
+    "category": "한식",
+    "categoryDetail": "국밥/탕",
+    "signatureMenus": [
+      "온계 닭전골",
+      "온계 편백정식",
+      "온계 닭한마리",
+      "온계 한방 삼계탕",
+      "닭반마리 곰탕 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2021734190/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1670697103:4e1027bb",
+    "category": "한식",
+    "categoryDetail": "정식/백반",
+    "signatureMenus": [
+      "코소롱 건강솥밥",
+      "김치삼겹솥밥",
+      "아보카도명란솥밥",
+      "문어부추솥밥",
+      "돼지불고기정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1670697103/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1702270721:e57da109",
+    "category": "아귀찜,해물찜",
+    "categoryDetail": "해산물/회",
+    "signatureMenus": [
+      "아구찜",
+      "왕갈치조림(솥밥포함)",
+      "생우럭매운탕",
+      "아구탕",
+      "솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1702270721/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:215663565:811e696c",
+    "category": "일식당",
+    "categoryDetail": "일식",
+    "signatureMenus": [
+      "당일바리 고등어 봉초밥",
+      "점심 특선",
+      "관서식 스키야키(한우1++등심)",
+      "도미 솥밥",
+      "한우 세이로무시"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/215663565/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  }
+]

@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const ROOT = path.resolve(__dirname, "..");
 const SITE_URL = "https://ozicmeclub.com";
@@ -10,6 +11,11 @@ const BASE_CSV = path.join(
 const ADMIN_JSON = path.join(ROOT, "data", "admin-restaurants.json");
 const OVERRIDES_JSON = path.join(ROOT, "data", "restaurant-overrides.json");
 const CLEANUP_JSON = path.join(ROOT, "data", "naver-place-cleanup-2026-08-10.json");
+const SEO_MANUAL_OVERRIDES_JSON = path.join(
+  ROOT,
+  "data",
+  "seo-manual-overrides-2026-11-08.json"
+);
 const RESTAURANTS_DIR = path.join(ROOT, "restaurants");
 const REGIONS_DIR = path.join(ROOT, "regions");
 const CATEGORIES_DIR = path.join(ROOT, "categories");
@@ -152,8 +158,14 @@ const restaurantTargetKey = (record) => {
   return `record:${fingerprint}`;
 };
 
-const mergeRestaurantOverrides = (baseStores, adminStores, overrides, cleanupOverrides) => {
-  const overrideMap = [...overrides, ...cleanupOverrides]
+const mergeRestaurantOverrides = (
+  baseStores,
+  adminStores,
+  overrides,
+  cleanupOverrides,
+  seoManualOverrides
+) => {
+  const overrideMap = [...overrides, ...cleanupOverrides, ...seoManualOverrides]
     .filter((item) => item && item.targetKey)
     .reduce((map, item) => {
       const key = String(item.targetKey);
@@ -299,6 +311,35 @@ const publicUrl = (pathname) =>
     .map((part) => encodeURIComponent(part))
     .join("/")}`;
 
+const pageFilePath = (pathname) => {
+  if (pathname === "/") return path.join(ROOT, "index.html");
+  return path.join(ROOT, pathname.replace(/^\/+|\/+$/g, ""), "index.html");
+};
+
+const fileHash = (filePath) => {
+  if (!fs.existsSync(filePath)) return "";
+  return crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex");
+};
+
+const readPreviousPageState = () => {
+  const sitemapPath = path.join(ROOT, "sitemap.xml");
+  if (!fs.existsSync(sitemapPath)) return new Map();
+  const xml = fs.readFileSync(sitemapPath, "utf8");
+  const state = new Map();
+  for (const match of xml.matchAll(/<url>\s*<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>\s*<\/url>/g)) {
+    try {
+      const pathname = decodeURIComponent(new URL(match[1]).pathname);
+      state.set(pathname, {
+        lastmod: match[2],
+        hash: fileHash(pageFilePath(pathname)),
+      });
+    } catch (error) {
+      // 잘못된 이전 항목은 새 항목으로 다시 기록합니다.
+    }
+  }
+  return state;
+};
+
 const menuText = (item) => item.signatureMenus.slice(0, 5).join(" · ") || "대표 메뉴 정보 준비 중";
 const regionText = (item) =>
   [item.region.sido, item.region.sigungu, item.region.eupmyeondong].filter(Boolean).join(" ");
@@ -358,7 +399,14 @@ const restaurantRelatedLinks = (item, availableCategories) => {
   if (item.verifiedBadge) {
     links.push({ label: "오직미클럽 인증 식당", url: "/verified/" });
   }
-  return links.slice(0, 6);
+  const seenLabels = new Set();
+  return links
+    .filter((link) => {
+      if (seenLabels.has(link.label)) return false;
+      seenLabels.add(link.label);
+      return true;
+    })
+    .slice(0, 6);
 };
 
 const structuredDataWithBreadcrumbs = (jsonLd, breadcrumbs = []) => {
@@ -830,12 +878,14 @@ const writePage = (directory, content) => {
 };
 
 const generate = () => {
+  const previousPageState = readPreviousPageState();
   const baseStores = parseCsv(fs.readFileSync(BASE_CSV, "utf8"));
   const merged = mergeRestaurantOverrides(
     baseStores,
     readJson(ADMIN_JSON),
     readJson(OVERRIDES_JSON),
-    readJson(CLEANUP_JSON)
+    readJson(CLEANUP_JSON),
+    readJson(SEO_MANUAL_OVERRIDES_JSON)
   );
   const seen = new Set();
   const stores = merged
@@ -947,9 +997,19 @@ const generate = () => {
     "utf8"
   );
   sitemapPaths.push(...stores.map((item) => item.seoPath));
+  let changedSitemapUrls = 0;
+  const sitemapEntries = sitemapPaths.map((pathname) => {
+    const previous = previousPageState.get(pathname);
+    const currentHash = fileHash(pageFilePath(pathname));
+    const changed = !previous || !previous.hash || previous.hash !== currentHash;
+    if (changed) changedSitemapUrls += 1;
+    return { pathname, lastmod: changed ? LASTMOD : previous.lastmod };
+  });
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths
     .map(
-      (pathname) => `  <url>\n    <loc>${escapeHtml(publicUrl(pathname))}</loc>\n    <lastmod>${LASTMOD}</lastmod>\n  </url>`
+      (_, index) => `  <url>\n    <loc>${escapeHtml(
+        publicUrl(sitemapEntries[index].pathname)
+      )}</loc>\n    <lastmod>${sitemapEntries[index].lastmod}</lastmod>\n  </url>`
     )
     .join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemap, "utf8");
@@ -964,6 +1024,7 @@ const generate = () => {
     menuPages: menuEntries.length,
     verifiedPages: 1,
     sitemapUrls: sitemapPaths.length,
+    changedSitemapUrls,
   };
   fs.writeFileSync(path.join(ROOT, "seo-build-stats.json"), `${JSON.stringify(stats, null, 2)}\n`, "utf8");
   console.log(JSON.stringify(stats, null, 2));
