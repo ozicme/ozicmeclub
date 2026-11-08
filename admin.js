@@ -173,8 +173,15 @@ const imageUrlError = (value) => {
 
 const catalogRecord = (row, source = "base") => {
   const regionValue = row.region && typeof row.region === "object" ? row.region : {};
-  const registrationType = row.registrationType
-    || (source === "base" || row.verifiedBadge !== false ? "ozicme" : "external");
+  const explicitRegistrationType = String(row.registrationType || "")
+    .trim()
+    .toLowerCase();
+  const registrationType =
+    explicitRegistrationType === "ozicme" || explicitRegistrationType === "external"
+      ? explicitRegistrationType
+      : row.verifiedBadge === true
+        ? "ozicme"
+        : "external";
   const record = {
     id: valueOf(row, "id"),
     source,
