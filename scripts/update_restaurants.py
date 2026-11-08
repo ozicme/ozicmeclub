@@ -177,8 +177,8 @@ def base_row_to_record(row: dict[str, Any]) -> dict[str, Any]:
         "categoryDetail": first_value(row, "식당유형_세부", "categoryDetail"),
         "mainDishes": as_list(first_value(row, "주요리_대표", "mainDishes")),
         "searchTags": as_list(first_value(row, "검색태그", "searchTags")),
-        "verifiedBadge": True,
-        "registrationType": "ozicme",
+        "verifiedBadge": False,
+        "registrationType": "external",
         "source": "base",
     }
 
