@@ -1,5 +1,6 @@
 const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
+const SEO_DATA_URL = "./restaurants-data.json?v=20261108-1";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json?v=20261108-3";
 const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
@@ -48,6 +49,13 @@ const getImageUrl = (item) => item?.imageUrl || "";
 
 const getPlaceLink = (item) =>
   item.naverPlaceUrl || item.naver_place_url || "";
+
+const getRestaurantSeoPath = (item) => {
+  const placeId = restaurantPlaceId(getPlaceLink(item));
+  const fingerprint = restaurantFingerprint(item?.name, buildAddress(item));
+  const seoId = placeId ? `p-${placeId}-${fingerprint}` : `r-${fingerprint}`;
+  return `/restaurants/${seoId}/`;
+};
 
 const buildAddress = (item) =>
   item.address ||
@@ -312,6 +320,11 @@ const mergeRestaurantOverrides = (baseStores, adminStores, overrides, cleanupOve
 };
 
 const loadMergedRestaurantRows = async () => {
+  try {
+    return await loadRestaurantSource(SEO_DATA_URL);
+  } catch (error) {
+    console.warn("검색노출용 통합 데이터 로드 실패, 기존 데이터로 전환합니다.", error);
+  }
   const [baseStores, adminStores, overrides, cleanupOverrides] = await Promise.all([
     loadRestaurantSource(DATA_URL),
     loadRestaurantSource(ADMIN_DATA_URL, true),
@@ -576,23 +589,25 @@ const renderCard = (item) => {
   `;
 
   const actions = document.createElement("div");
-  actions.className = "card-actions is-single";
+  actions.className = "card-actions";
   actions.appendChild(
-    placeLink
-      ? buildActionButton({
-          label: "더 알아보기",
-          href: placeLink,
-          primary: true,
-          external: true,
-          ariaLabel: `${item.name} 더 알아보기`,
-        })
-      : buildActionButton({
-          label: "링크 없음",
-          primary: true,
-          disabled: true,
-          ariaLabel: `${item.name} 링크 없음`,
-        })
+    buildActionButton({
+      label: "식당 상세 보기",
+      href: getRestaurantSeoPath(item),
+      primary: true,
+      ariaLabel: `${item.name} 상세 정보 보기`,
+    })
   );
+  if (placeLink) {
+    actions.appendChild(
+      buildActionButton({
+        label: "네이버 지도",
+        href: placeLink,
+        external: true,
+        ariaLabel: `${item.name} 네이버 지도 보기`,
+      })
+    );
+  }
 
   cardBody.appendChild(actions);
   card.append(mediaFrame, cardBody);
@@ -621,6 +636,7 @@ const initRestaurantsPage = async () => {
   const sidoSelect = document.getElementById("sido-select");
   const sigunguSelect = document.getElementById("sigungu-select");
   const categorySelect = document.getElementById("category-select");
+  const verifiedOnlyCheckbox = document.getElementById("verified-only");
   const resultCount = document.getElementById("result-count");
   const grid = document.getElementById("restaurant-grid");
   const listState = document.getElementById("list-state");
@@ -670,6 +686,7 @@ const initRestaurantsPage = async () => {
     sido: "",
     sigungu: "",
     category: "",
+    verifiedOnly: false,
     sort: DEFAULT_SORT,
   };
 
@@ -703,7 +720,8 @@ const initRestaurantsPage = async () => {
       activeMenuQuery ||
       filterState.sido ||
       filterState.sigungu ||
-      filterState.category
+      filterState.category ||
+      filterState.verifiedOnly
     );
     if (hasActiveFilter) {
       resultCount.textContent = `검색 결과 ${totalCount.toLocaleString()}개`;
@@ -788,6 +806,7 @@ const initRestaurantsPage = async () => {
       (item) =>
         matchesRegion(item, filterState.sido, filterState.sigungu) &&
         matchesCategory(item, filterState.category) &&
+        (!filterState.verifiedOnly || item.verifiedBadge) &&
         nameTokens.every((token) => item.nameSearchText.includes(token)) &&
         menuTokens.every((token) => item.menuSearchText.includes(token))
     );
@@ -812,6 +831,11 @@ const initRestaurantsPage = async () => {
       params.set("category", filterState.category);
     } else {
       params.delete("category");
+    }
+    if (filterState.verifiedOnly) {
+      params.set("verified", "1");
+    } else {
+      params.delete("verified");
     }
     if (filterState.sort !== DEFAULT_SORT) {
       params.set("sort", filterState.sort);
@@ -899,18 +923,28 @@ const initRestaurantsPage = async () => {
     if (categorySelect) {
       categorySelect.value = filterState.category || "";
     }
+    if (verifiedOnlyCheckbox) {
+      verifiedOnlyCheckbox.checked = filterState.verifiedOnly;
+    }
   };
 
   const initializeDefaultFilters = () => {
     if (filtersInitialized) return;
     const params = new URLSearchParams(window.location.search);
     const urlSort = params.get("sort");
+    const urlSido = params.get("sido");
+    const urlSigungu = params.get("sigungu");
+    const urlCategory = params.get("category");
+    const urlVerified = params.get("verified");
+    const urlQuery = params.get("q");
 
     filterState.sort = urlSort === DEFAULT_SORT ? DEFAULT_SORT : DEFAULT_SORT;
-    // 첫 접속은 전체 시/도 + 전체 시/군/구 + 전체 업종으로 시작합니다.
-    filterState.sido = "";
-    filterState.sigungu = "";
-    filterState.category = "";
+    filterState.sido = urlSido || "";
+    filterState.sigungu = urlSigungu || "";
+    filterState.category = urlCategory || "";
+    filterState.verifiedOnly = urlVerified === "1";
+    activeNameQuery = urlQuery || "";
+    if (searchInput && activeNameQuery) searchInput.value = activeNameQuery;
 
     filtersInitialized = true;
     syncFilterSelects();
@@ -1037,6 +1071,14 @@ const initRestaurantsPage = async () => {
   if (categorySelect) {
     categorySelect.addEventListener("change", () => {
       filterState.category = categorySelect.value;
+      updateUrlState();
+      applyFilters();
+    });
+  }
+
+  if (verifiedOnlyCheckbox) {
+    verifiedOnlyCheckbox.addEventListener("change", () => {
+      filterState.verifiedOnly = verifiedOnlyCheckbox.checked;
       updateUrlState();
       applyFilters();
     });

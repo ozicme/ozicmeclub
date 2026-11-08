@@ -1,0 +1,38 @@
+name: 검색노출 페이지 자동 갱신
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"
+      - "data/admin-restaurants.json"
+      - "data/restaurant-overrides.json"
+      - "data/naver-place-cleanup-2026-08-10.json"
+      - "scripts/generate-seo-pages.js"
+      - "seo-pages.css"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: 식당 상세·지역 페이지와 사이트맵 생성
+        run: npm run build:seo
+      - name: 변경사항 저장
+        run: |
+          if git diff --quiet && [ -z "$(git status --porcelain)" ]; then
+            echo "갱신할 검색노출 페이지가 없습니다."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add restaurants regions restaurants-data.json sitemap.xml seo-build-stats.json
+          git commit -m "식당 검색노출 페이지 자동 갱신"
+          git push

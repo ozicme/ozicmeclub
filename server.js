@@ -3,7 +3,9 @@ const fs = require("fs");
 const path = require("path");
 const { URL } = require("url");
 
-const PORT = process.env.PORT || 3000;
+const portFlagIndex = process.argv.indexOf("--port");
+const portFlagValue = portFlagIndex >= 0 ? process.argv[portFlagIndex + 1] : "";
+const PORT = Number(portFlagValue || process.env.PORT || 3000);
 const ROOT_DIR = __dirname;
 
 const CONTENT_TYPES = {
@@ -14,7 +16,10 @@ const CONTENT_TYPES = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
   ".svg": "image/svg+xml",
+  ".xml": "application/xml; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
 };
 
 const serveFile = (res, filePath) => {
@@ -34,7 +39,15 @@ const serveFile = (res, filePath) => {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  let filePath = path.join(ROOT_DIR, url.pathname === "/" ? "index.html" : url.pathname);
+  let pathname;
+  try {
+    pathname = decodeURIComponent(url.pathname);
+  } catch (error) {
+    res.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+    res.end("Bad Request");
+    return;
+  }
+  let filePath = path.join(ROOT_DIR, pathname === "/" ? "index.html" : pathname);
   if (!filePath.startsWith(ROOT_DIR)) {
     res.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
     res.end("Forbidden");
@@ -42,6 +55,11 @@ const server = http.createServer((req, res) => {
   }
 
   fs.stat(filePath, (err, stats) => {
+    if (!err && stats.isDirectory()) {
+      filePath = path.join(filePath, "index.html");
+      serveFile(res, filePath);
+      return;
+    }
     if (err || !stats.isFile()) {
       res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
       res.end("Not Found");

@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "dev": "node server.js",
+    "build:seo": "node scripts/generate-seo-pages.js",
     "seed": "node scripts/convert-restaurants.js",
     "verify-api": "node scripts/verify-api.js",
     "merge-data": "python scripts/build_restaurant_pipeline.py",
