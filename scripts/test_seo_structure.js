@@ -24,6 +24,16 @@ if (!applicationHtml.includes('action="https://formsubmit.co/ozic@ozicme.com"'))
 if (!applicationHtml.includes('name="사용_쌀_품종"')) {
   throw new Error("등재 요청 페이지에 쌀 품종 입력란이 없습니다.");
 }
+if (
+  !applicationHtml.includes(
+    "<h1><span>좋은 쌀로 밥하는 식당</span><span>오직미클럽에</span><span>등재해드립니다.</span></h1>"
+  )
+) {
+  throw new Error("등재 요청 페이지 제목이 지정된 3줄 문구가 아닙니다.");
+}
+if (applicationHtml.includes('name="담당자명"') || applicationHtml.includes('name="연락처"')) {
+  throw new Error("등재 요청 페이지에 삭제한 담당자명 또는 전화번호 입력란이 남아 있습니다.");
+}
 if (!sitemapXml.includes("https://ozicmeclub.com/apply/")) {
   throw new Error("사이트맵에 식당 등재 요청 페이지가 없습니다.");
 }

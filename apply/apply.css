@@ -34,7 +34,8 @@ main { padding: clamp(30px, 5vw, 64px); }
   background: linear-gradient(135deg, var(--green-soft), #fff 66%); border: 1px solid #cfe2d7;
 }
 .eyebrow { margin: 0 0 8px; color: var(--green); font-size: .82rem; font-weight: 900; letter-spacing: .08em; }
-h1 { margin: 0; font-size: clamp(2rem, 5vw, 3.65rem); line-height: 1.18; letter-spacing: -.035em; }
+h1 { margin: 0; font-size: clamp(1.4rem, 6.5vw, 3.35rem); line-height: 1.2; letter-spacing: -.035em; }
+h1 span { display: block; white-space: nowrap; }
 .hero-copy { max-width: 680px; margin: 20px 0 0; color: #4f6057; font-size: 1.05rem; }
 .process { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .process li {
