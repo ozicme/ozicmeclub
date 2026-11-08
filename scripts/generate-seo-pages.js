@@ -958,7 +958,7 @@ const renderVerifiedPage = (stores) => {
   });
 };
 
-const renderRegionPage = ({ label, stores, pathname, childRegions = [] }) => {
+const renderRegionPage = ({ label, stores, pathname, childRegions = [], parentRegion = null }) => {
   const verifiedCount = stores.filter((item) => item.verifiedBadge).length;
   const title = `${label} 오직미클럽·식당 목록 ${stores.length.toLocaleString("ko-KR")}곳`;
   const description = `${label} 식당 ${stores.length.toLocaleString(
@@ -976,9 +976,11 @@ const renderRegionPage = ({ label, stores, pathname, childRegions = [] }) => {
   };
   const body = `
     <section class="directory-page">
-      <p class="breadcrumb"><a href="/">식당 찾기</a> / <a href="/restaurants/">전체 식당</a> / ${escapeHtml(
-        label
-      )}</p>
+      <p class="breadcrumb"><a href="/">식당 찾기</a> / <a href="/restaurants/">전체 식당</a> / ${
+        parentRegion
+          ? `<a href="${escapeHtml(parentRegion.url)}">${escapeHtml(parentRegion.label)}</a> / `
+          : ""
+      }${escapeHtml(label)}</p>
       <h1>${escapeHtml(label)} 식당 찾기</h1>
       <p class="lead">전체 ${stores.length.toLocaleString(
         "ko-KR"
@@ -1005,6 +1007,7 @@ const renderRegionPage = ({ label, stores, pathname, childRegions = [] }) => {
     breadcrumbs: [
       { name: "식당 찾기", url: `${SITE_URL}/` },
       { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
+      ...(parentRegion ? [{ name: parentRegion.label, url: publicUrl(parentRegion.url) }] : []),
       { name: label, url: canonical },
     ],
     body,
@@ -1089,7 +1092,12 @@ const generate = () => {
       const sigunguPath = `/regions/${sidoSlug}/${sigunguSlug}/`;
       writePage(
         path.join(REGIONS_DIR, sidoSlug, sigunguSlug),
-        renderRegionPage({ label: `${sido} ${sigungu}`, stores: sigunguStores, pathname: sigunguPath })
+        renderRegionPage({
+          label: `${sido} ${sigungu}`,
+          stores: sigunguStores,
+          pathname: sigunguPath,
+          parentRegion: { label: sido, url: sidoPath },
+        })
       );
       childRegions.push({ label: sigungu, url: sigunguPath, count: sigunguStores.length });
       sitemapPaths.push(sigunguPath);
@@ -1200,3 +1208,4 @@ const generate = () => {
 };
 
 generate();
+
