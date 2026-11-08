@@ -1,6 +1,6 @@
 const DATA_URL =
   "./오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv";
-const SEO_DATA_URL = "./restaurants-data.json?v=20261108-1";
+const SEO_DATA_URL = "./restaurants-data.json?v=20261109-3";
 const ADMIN_DATA_URL = "./data/admin-restaurants.json";
 const OVERRIDE_DATA_URL = "./data/restaurant-overrides.json?v=20261108-3";
 const CLEANUP_DATA_URL = "./data/naver-place-cleanup-2026-08-10.json";
@@ -816,6 +816,24 @@ const initRestaurantsPage = async () => {
   };
   const sortStoresForDisplay = (stores) => {
     stores.sort((a, b) => displayScore(a) - displayScore(b));
+    // Selected restaurants share the first two 24-card batches with other stores.
+    // Use name/address fingerprints to distinguish branches and support CSV fallback.
+    const featuredKeys = new Set([
+      "4429831e", "5ec389a0", "37bf5ed6", "3a314324", "f9dba0ba",
+      "9880f89f", "e49fc3f5", "1bd6cc34", "f8ba9f6d", "6e0c7afe", "b8e6110d",
+    ]);
+    const featured = [];
+    const others = [];
+    for (const store of stores) {
+      (featuredKeys.has(restaurantFingerprint(store.name, store.address)) ? featured : others).push(store);
+    }
+    let featuredIndex = 0;
+    let otherIndex = 0;
+    for (let index = 0; index < stores.length; index += 1) {
+      const takeFeatured = featuredIndex < featured.length &&
+        (index % 4 === 3 || otherIndex >= others.length);
+      stores[index] = takeFeatured ? featured[featuredIndex++] : others[otherIndex++];
+    }
   };
 
   const filterStores = () => {
