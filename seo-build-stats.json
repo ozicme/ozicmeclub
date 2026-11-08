@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-11-08",
-  "totalRestaurants": 5573,
-  "verifiedRestaurants": 326,
+  "totalRestaurants": 5576,
+  "verifiedRestaurants": 329,
   "goodRiceRestaurants": 5247,
   "regionPages": 216,
   "categoryPages": 33,
@@ -10,6 +10,6 @@
   "aboutPages": 1,
   "applicationPages": 1,
   "directoryPages": 28,
-  "sitemapUrls": 5869,
-  "changedSitemapUrls": 0
+  "sitemapUrls": 5872,
+  "changedSitemapUrls": 41
 }
