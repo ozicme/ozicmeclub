@@ -4590,7 +4590,14 @@
       "sigungu": "고양시 일산서구",
       "eupmyeondong": "대화동"
     },
-    "updateSource": "github-naver-address-sync"
+    "updateSource": "github-admin-badge-fix",
+    "registrationType": "ozicme",
+    "verifiedBadge": true,
+    "badgeLabel": "오직미클럽",
+    "sourceType": "ozicme-admin-edit",
+    "evidenceUrl": "",
+    "evidenceText": "",
+    "updatedAt": "2026-11-08"
   },
   {
     "targetKey": "place:1215952257:4408bc69",
