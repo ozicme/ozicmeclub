@@ -45310,14 +45310,15 @@
     "source": "base",
     "originalName": "참솥킨텍스점",
     "originalAddress": "",
+    "deleted": true,
     "address": "경기 고양시 일산서구 한류월드로 300 2층 2081, 2082호",
     "region": {
       "sido": "경기도",
       "sigungu": "고양시 일산서구",
       "eupmyeondong": "대화동"
     },
-    "updatedAt": "2026-08-09",
-    "updateSource": "github-naver-address-sync"
+    "updatedAt": "2026-11-08",
+    "updateSource": "github-admin-duplicate-delete"
   },
   {
     "targetKey": "place:11816207:3484a04e",
