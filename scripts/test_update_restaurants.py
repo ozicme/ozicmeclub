@@ -203,6 +203,25 @@ class UpdateRestaurantsTest(unittest.TestCase):
         self.assertEqual(saved[0]["source"], "admin")
         self.assertEqual(saved[0]["name"], "관리자추가식당 수정")
 
+    def test_base_restaurant_defaults_to_external_without_registration_type(self):
+        payload = {
+            "targetKey": self.base_key,
+            "name": "기존식당",
+            "address": "서울 강남구 테헤란로 1",
+            "naverPlaceUrl": "https://map.naver.com/p/entry/place/1284913565",
+            "region": {"sido": "서울특별시", "sigungu": "강남구", "eupmyeondong": "역삼동"},
+        }
+        update_restaurants(
+            json.dumps(payload, ensure_ascii=False),
+            self.base_csv,
+            self.admin_data,
+            self.output,
+            now=self.now,
+        )
+        saved = json.loads(self.output.read_text(encoding="utf-8"))
+        self.assertEqual(saved[0]["registrationType"], "external")
+        self.assertFalse(saved[0]["verifiedBadge"])
+
     def test_accepts_external_restaurant_without_evidence(self):
         payload = {
             "targetKey": self.base_key,
