@@ -7,9 +7,16 @@ const homeHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const aboutHtml = fs.readFileSync(path.join(root, "about", "index.html"), "utf8");
 const applicationHtml = fs.readFileSync(path.join(root, "apply", "index.html"), "utf8");
 const sitemapXml = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+const rssXml = fs.readFileSync(path.join(root, "rss.xml"), "utf8");
 
 if (!homeHtml.includes('"@type": "SearchAction"')) {
   throw new Error("홈페이지 WebSite 구조화 정보에 SearchAction이 없습니다.");
+}
+if (!homeHtml.includes('href="/regions/서울특별시/"')) {
+  throw new Error("홈페이지에 시도별 정적 탐색 링크가 없습니다.");
+}
+if (!homeHtml.includes('type="application/rss+xml"') || !rssXml.includes("/restaurants/")) {
+  throw new Error("홈페이지의 RSS 발견 링크 또는 식당 목록 RSS 항목이 없습니다.");
 }
 
 if (!aboutHtml.includes('"@type":"AboutPage"')) {
@@ -40,8 +47,27 @@ if (!sitemapXml.includes("https://ozicmeclub.com/apply/")) {
 
 const restaurantDirectories = fs
   .readdirSync(restaurantRoot, { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
+  .filter((entry) => entry.isDirectory() && /^(?:p-|r-)/.test(entry.name))
   .map((entry) => entry.name);
+
+const directoryHtml = fs.readFileSync(path.join(restaurantRoot, "index.html"), "utf8");
+if (!directoryHtml.includes('"@type":"ItemList"')) {
+  throw new Error("전체 식당 첫 페이지에 ItemList 구조화 정보가 없습니다.");
+}
+const directoryPageDirectories = fs
+  .readdirSync(restaurantRoot, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory() && /^page-\d+$/.test(entry.name))
+  .map((entry) => entry.name);
+const expectedDirectoryPages = Math.ceil(restaurantDirectories.length / 200);
+if (directoryPageDirectories.length !== Math.max(0, expectedDirectoryPages - 1)) {
+  throw new Error("전체 식당 페이지 분할 수가 식당 수와 맞지 않습니다.");
+}
+if (
+  expectedDirectoryPages > 1 &&
+  !sitemapXml.includes(`https://ozicmeclub.com/restaurants/page-${expectedDirectoryPages}/`)
+) {
+  throw new Error("사이트맵에 마지막 식당 목록 페이지가 없습니다.");
+}
 
 let menuPageCount = 0;
 for (const directory of restaurantDirectories) {

@@ -31,6 +31,7 @@ const VERIFIED_RICE_DESCRIPTION =
   "좋은 쌀로 정성을 다하는 식당이며, 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당입니다.";
 
 const MIN_CATEGORY_RESTAURANTS = 15;
+const DIRECTORY_PAGE_SIZE = 200;
 const POPULAR_MENU_PAGES = [
   { label: "솥밥", terms: ["솥밥", "가마솥밥", "돌솥밥"] },
   { label: "장어", terms: ["장어"] },
@@ -726,25 +727,78 @@ const facetGrid = (entries) => `<div class="region-grid">
       .join("\n")}
   </div>`;
 
-const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) => {
-  const title = `전체 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 오직미클럽`;
-  const description = `좋은 쌀로 정성을 다하는 식당을 지역별로 확인하세요. 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당은 초록 배지로 구분합니다.`;
-  const canonical = `${SITE_URL}/restaurants/`;
+const directoryPagePath = (pageNumber) =>
+  pageNumber === 1 ? "/restaurants/" : `/restaurants/page-${pageNumber}/`;
+
+const directoryPagination = (pageNumber, pageCount) => {
+  if (pageCount <= 1) return "";
+  const pageLinks = Array.from({ length: pageCount }, (_, index) => index + 1)
+    .map((number) => {
+      const current = number === pageNumber;
+      return `<a href="${directoryPagePath(number)}"${
+        current ? ' aria-current="page" class="is-current"' : ""
+      }>${number}</a>`;
+    })
+    .join("\n");
+  const controls = [];
+  if (pageNumber > 1) {
+    controls.push(`<a class="pagination-step" href="${directoryPagePath(pageNumber - 1)}">이전</a>`);
+  }
+  controls.push(`<div>${pageLinks}</div>`);
+  if (pageNumber < pageCount) {
+    controls.push(`<a class="pagination-step" href="${directoryPagePath(pageNumber + 1)}">다음</a>`);
+  }
+  return `<nav class="directory-pagination" aria-label="전체 식당 목록 페이지">
+    ${controls.join("\n    ")}
+  </nav>`;
+};
+
+const renderIndexPage = ({
+  stores,
+  pageStores,
+  regionEntries,
+  categoryEntries,
+  menuEntries,
+  pageNumber,
+  pageCount,
+}) => {
+  const pageLabel = pageNumber > 1 ? ` ${pageNumber}페이지` : "";
+  const title = `전체 식당 ${stores.length.toLocaleString("ko-KR")}곳${pageLabel} | 오직미클럽`;
+  const description = `좋은 쌀로 정성을 다하는 식당 ${stores.length.toLocaleString(
+    "ko-KR"
+  )}곳 중 ${pageNumber}페이지입니다. 지역과 대표 메뉴로 식당을 찾고, 초록 배지로 오직미클럽 인증 식당을 확인하세요.`;
+  const pathname = directoryPagePath(pageNumber);
+  const canonical = publicUrl(pathname);
+  const startPosition = (pageNumber - 1) * DIRECTORY_PAGE_SIZE;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: title,
     url: canonical,
     description,
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: pageStores.length,
+      itemListElement: pageStores.map((item, index) => ({
+        "@type": "ListItem",
+        position: startPosition + index + 1,
+        name: item.name,
+        url: publicUrl(item.seoPath),
+      })),
+    },
   };
   const body = `
     <section class="directory-page">
-      <p class="breadcrumb"><a href="/">식당 찾기</a> / 전체 식당</p>
-      <h1>전체 식당 목록</h1>
+      <p class="breadcrumb"><a href="/">식당 찾기</a> / <a href="/restaurants/">전체 식당</a>${
+        pageNumber > 1 ? ` / ${pageNumber}페이지` : ""
+      }</p>
+      <h1>전체 식당 목록${pageNumber > 1 ? ` ${pageNumber}페이지` : ""}</h1>
       <p class="lead">총 ${stores.length.toLocaleString("ko-KR")}곳 · 오직미클럽 인증 ${stores
         .filter((item) => item.verifiedBadge)
         .length.toLocaleString("ko-KR")}곳</p>
-      <div class="status-legend">
+      ${
+        pageNumber === 1
+          ? `<div class="status-legend">
         <a class="verification is-verified" href="/verified/">${VERIFIED_RICE_LABEL}</a>
         <span class="verification is-external">${GOOD_RICE_LABEL}</span>
       </div>
@@ -753,9 +807,13 @@ const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) =>
       <h2>많이 찾는 메뉴</h2>
       ${facetGrid(menuEntries)}
       <h2>업종별 찾기</h2>
-      ${facetGrid(categoryEntries)}
-      <h2>식당명으로 찾기</h2>
-      ${restaurantList(stores).trimStart()}
+      ${facetGrid(categoryEntries)}`
+          : ""
+      }
+      <h2>식당명으로 찾기 <small>${pageNumber} / ${pageCount}페이지</small></h2>
+      ${directoryPagination(pageNumber, pageCount)}
+      ${restaurantList(pageStores).trimStart()}
+      ${directoryPagination(pageNumber, pageCount)}
     </section>`;
   return pageShell({
     title,
@@ -764,7 +822,8 @@ const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) =>
     jsonLd,
     breadcrumbs: [
       { name: "식당 찾기", url: `${SITE_URL}/` },
-      { name: "전체 식당", url: canonical },
+      { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
+      ...(pageNumber > 1 ? [{ name: `${pageNumber}페이지`, url: canonical }] : []),
     ],
     body,
   });
@@ -1077,7 +1136,27 @@ const generate = () => {
   writePage(VERIFIED_DIR, renderVerifiedPage(verifiedStores));
   sitemapPaths.push("/verified/");
 
-  writePage(RESTAURANTS_DIR, renderIndexPage(stores, regionEntries, categoryEntries, menuEntries));
+  const directoryPageCount = Math.ceil(stores.length / DIRECTORY_PAGE_SIZE);
+  for (let pageNumber = 1; pageNumber <= directoryPageCount; pageNumber += 1) {
+    const pathname = directoryPagePath(pageNumber);
+    const pageStores = stores.slice(
+      (pageNumber - 1) * DIRECTORY_PAGE_SIZE,
+      pageNumber * DIRECTORY_PAGE_SIZE
+    );
+    writePage(
+      pageNumber === 1 ? RESTAURANTS_DIR : path.join(RESTAURANTS_DIR, `page-${pageNumber}`),
+      renderIndexPage({
+        stores,
+        pageStores,
+        regionEntries,
+        categoryEntries,
+        menuEntries,
+        pageNumber,
+        pageCount: directoryPageCount,
+      })
+    );
+    if (pageNumber > 1) sitemapPaths.push(pathname);
+  }
   fs.writeFileSync(
     path.join(ROOT, "restaurants-data.json"),
     `${JSON.stringify(stores)}\n`,
@@ -1112,6 +1191,7 @@ const generate = () => {
     verifiedPages: 1,
     aboutPages: 1,
     applicationPages: 1,
+    directoryPages: directoryPageCount,
     sitemapUrls: sitemapPaths.length,
     changedSitemapUrls,
   };

@@ -178,6 +178,45 @@ h2 { margin: 46px 0 18px; font-size: clamp(1.35rem, 3vw, 2rem); }
 .restaurant-link-list a { color: var(--green-dark); font-weight: 800; text-decoration: none; }
 .restaurant-link-list a:hover { text-decoration: underline; }
 .restaurant-link-list small { color: var(--muted); }
+
+.directory-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 22px 0;
+}
+
+.directory-pagination div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.directory-pagination a {
+  display: inline-flex;
+  min-width: 38px;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--green-dark);
+  background: #fff;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.directory-pagination a:hover,
+.directory-pagination a.is-current {
+  border-color: var(--green);
+  color: #fff;
+  background: var(--green);
+}
+
+.directory-pagination .pagination-step { padding-inline: 14px; }
 .mini-badge { padding: 3px 8px; border-radius: 999px; color: white; background: var(--green); font-size: .72rem; font-weight: 800; }
 
 .seo-footer { margin-top: 30px; padding: 30px clamp(20px, 5vw, 60px); color: var(--muted); border-top: 1px solid var(--line); }
