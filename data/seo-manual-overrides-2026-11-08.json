@@ -18,7 +18,9 @@
     "targetKey": "place:20136339:5eade508",
     "category": "두부요리",
     "categoryDetail": "두부요리",
-    "signatureMenus": ["콩국수"],
+    "signatureMenus": [
+      "콩국수"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/20136339/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
@@ -140,7 +142,11 @@
   },
   {
     "targetKey": "place:2040098168:7e9c10b3",
-    "signatureMenus": ["부대찌개", "김치찌개", "통삼겹살 180g"],
+    "signatureMenus": [
+      "부대찌개",
+      "김치찌개",
+      "통삼겹살 180g"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2040098168/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
@@ -263,21 +269,39 @@
   },
   {
     "targetKey": "place:1846803734:5ec2ae26",
-    "signatureMenus": ["김가네김밥", "더블치즈김밥", "참치김밥", "돈가스롤", "쫄면"],
+    "signatureMenus": [
+      "김가네김밥",
+      "더블치즈김밥",
+      "참치김밥",
+      "돈가스롤",
+      "쫄면"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1846803734/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
   },
   {
     "targetKey": "place:1260553025:a8256a60",
-    "signatureMenus": ["스팸김치볶음밥", "쫄면", "김가네김밥", "냉소바", "순두부찌개"],
+    "signatureMenus": [
+      "스팸김치볶음밥",
+      "쫄면",
+      "김가네김밥",
+      "냉소바",
+      "순두부찌개"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1260553025/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
   },
   {
     "targetKey": "place:18470134:2ae6ae7f",
-    "signatureMenus": ["라볶이", "철판낙지덮밥", "소고기김밥", "잔치국수", "콩국수"],
+    "signatureMenus": [
+      "라볶이",
+      "철판낙지덮밥",
+      "소고기김밥",
+      "잔치국수",
+      "콩국수"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18470134/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
@@ -348,7 +372,12 @@
   },
   {
     "targetKey": "place:2045248758:e63304f3",
-    "signatureMenus": ["삼겹살", "가브리살", "항정살", "오겹살"],
+    "signatureMenus": [
+      "삼겹살",
+      "가브리살",
+      "항정살",
+      "오겹살"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2045248758/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
@@ -381,7 +410,13 @@
   },
   {
     "targetKey": "place:2022685949:5e320222",
-    "signatureMenus": ["솥밥", "소머리 수육 대", "황태해장국", "설렁탕", "소머리곰탕"],
+    "signatureMenus": [
+      "솥밥",
+      "소머리 수육 대",
+      "황태해장국",
+      "설렁탕",
+      "소머리곰탕"
+    ],
     "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2022685949/menu/list",
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
@@ -399,1206 +434,1701 @@
     "updatedAt": "2026-11-08",
     "updateSource": "naver-place-manual-verification"
   },
-{
-  "targetKey": "place:1227827066:14c6d176",
-  "signatureMenus": [
-    "기본중자 정식(1인) 1미",
-    "간장게장(특선)",
-    "매콤 양념게장 특선",
-    "소자 암꽃게 정식(1인) 2미",
-    "꽃게탕(2인분)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1227827066/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:38255393:1e44bb5f",
-  "signatureMenus": [
-    "황태제육정식",
-    "보쌈",
-    "냉면",
-    "갑오징어보쌈정식",
-    "제주흑돼지 180g"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38255393/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:137031877:d3e355ce",
-  "signatureMenus": [
-    "코다리찜(미니)",
-    "코다리찜(소)",
-    "코다리찜(중)",
-    "코다리찜(대)",
-    "갈비 코다리찜(소)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/137031877/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:34933023:b212aee6",
-  "signatureMenus": [
-    "맥반석 불뼈구이(대)",
-    "맥반석 불뼈구이(중)",
-    "맥반석 불뼈구이(소)",
-    "맥반석 간장목뼈구이(대)",
-    "맥반석 간장목뼈구이(중)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/34933023/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1278793305:8a7fd279",
-  "signatureMenus": [
-    "해물순두부",
-    "쫄면 순두부",
-    "들깨순두부",
-    "소고기 순두부",
-    "돼지순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1278793305/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1895284913:f2ce1bf8",
-  "signatureMenus": [
-    "능이 한방 오리백숙+단호박 찹쌀죽",
-    "생오리 로스 반마리",
-    "생오리 주물럭 (간장마늘,고추장)",
-    "생오리 주물럭 명품 한 상 정식",
-    "장수연(長壽宴) 세트 1300g"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1895284913/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1572397830:9f4262d3",
-  "signatureMenus": [
-    "토정장어구이"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1572397830/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1974473215:0465fef3",
-  "signatureMenus": [
-    "남도식 암꽃게장+능이아구지리탕 상차림",
-    "남도식 한돈떡갈비+능이아구지리탕 한상",
-    "얼큰한 알탕",
-    "양념순살비빔 한상차림",
-    "능이아구지리탕 상차림"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1974473215/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:18088298:c6f893ba",
-  "signatureMenus": [
-    "해물순두부",
-    "섞어순두부",
-    "소고기순두부",
-    "불고기",
-    "만두순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18088298/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1895089875:393e5a01",
-  "signatureMenus": [
-    "해물순두부",
-    "순두부보쌈정식",
-    "떡갈비정식",
-    "생선구이정식",
-    "들깨순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1895089875/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1515131670:8674cc7e",
-  "signatureMenus": [
-    "[BEST] 편지차림 [평일/주말]",
-    "마음차림 [평일/주말]",
-    "진심 한상 [평일/주말]",
-    "직화 쭈꾸미 비빔소반 [평일점심]",
-    "한우육회 비빔소반 [평일점심]"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1515131670/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1997024469:4db3cda7",
-  "signatureMenus": [
-    "시래기고등어조림정식",
-    "고등어한마리구이정식",
-    "간장게장 정식",
-    "조기한마리구이정식",
-    "갈치한마리구이정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1997024469/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:35744298:704f1490",
-  "signatureMenus": [
-    "매콤코다리조림(대)",
-    "매콤코다리조림(중)",
-    "매콤코다리조림(소)",
-    "무청시래기 코다리조림(소)",
-    "무청시래기 코다리조림(중)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/35744298/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1392822936:faaf471f",
-  "signatureMenus": [
-    "소갈비살(800g)",
-    "돼지갈비양념목살(1kg)",
-    "마늘양념소갈비살(900g)",
-    "갈비탕+솥밥",
-    "마늘양념소갈비살(450g)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1392822936/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1068891396:7b893d13",
-  "signatureMenus": [
-    "나홀로쭈꾸미",
-    "쭈꾸미 2인세트",
-    "쭈꾸미 3인세트",
-    "쭈꾸미 4인세트",
-    "직화쭈꾸미삼겹(2인분)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1068891396/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1086183001:3c055ae7",
-  "signatureMenus": [
-    "고등어구이포장(1마리)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1086183001/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1469783606:f7fddd98",
-  "signatureMenus": [
-    "고등어+LA갈비 2인 한상차림",
-    "고등어+고추장불고기 2인 한상차림",
-    "LA갈비 1인 한상차림",
-    "고추장불고기 1인 한상차림",
-    "북창동순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1469783606/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:13494107:7d3d6a65",
-  "signatureMenus": [
-    "LA갈비 순두부정식",
-    "북창동보쌈 순두부정식",
-    "소곱창순두부",
-    "북창동순두부",
-    "햄치즈순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/13494107/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1615187452:8a66c417",
-  "signatureMenus": [
-    "히츠마부시 한상",
-    "스폐셜 카이센동 한상",
-    "모듬사시미",
-    "특 히츠마부시 한상"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1615187452/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1461732445:2e59f024",
-  "signatureMenus": [
-    "해물뚝배기",
-    "반상 / 1~2인용",
-    "한상 / 3~4인용",
-    "전복구이 6마리",
-    "해산물모듬"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1461732445/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1388135664:3f08615a",
-  "signatureMenus": [
-    "대방어 코스(2인 이상 주문 가능)",
-    "제철 회 코스(2인 이상 주문 가능)",
-    "완도 전복솥밥 정식",
-    "통영 굴 솥밥 정식",
-    "제철 물회 밥상"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1388135664/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1397817783:465db202",
-  "signatureMenus": [
-    "소불고기 한상 1인",
-    "떡갈비 한상 1인",
-    "소고기 육전",
-    "제육 한상 1인",
-    "갈치 한상 1인"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1397817783/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1244382800:afa3a117",
-  "signatureMenus": [
-    "전복돌솥밥 1인",
-    "B코스 (2인기준)",
-    "스페셜 A코스 (4인기준)",
-    "전복뚝배기",
-    "전복물회"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1244382800/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2038516645:cf794d56",
-  "signatureMenus": [
-    "순살갈치조림+돌솥밥+옥돔구이",
-    "옥돔구이+김치찜+돌솥밥 한정식",
-    "한우진곰탕+돌솥밥 한정식",
-    "해물칼국수",
-    "옥돔구이 1마리"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2038516645/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1567431329:70b9a596",
-  "signatureMenus": [
-    "모듬 1인 특선 (300g)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1567431329/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1046614273:91ef020f",
-  "signatureMenus": [
-    "산해성찬 1인 정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1046614273/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1085540356:5a80e4c5",
-  "signatureMenus": [
-    "모듬구이 2인",
-    "한우곱창 220g",
-    "모듬구이 4인",
-    "대창구이 200g",
-    "특양구이 200g"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1085540356/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2144193062:7935cda0",
-  "signatureMenus": [
-    "청국장",
-    "순두부",
-    "된장찌개",
-    "김치찌개",
-    "조기찌개"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2144193062/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:16512525:38273696",
-  "signatureMenus": [
-    "장어한판",
-    "장어특가",
-    "반마리덮밥+장어탕",
-    "파김치 장어전골(2마리)",
-    "파김치 장어전골(3마리)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/16512525/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2048148587:5e2e5718",
-  "signatureMenus": [
-    "갈치, 곤드레 솥밥",
-    "수육, 청어알 무김치, 시금장",
-    "육회 묵은지말이, 고추장 마요",
-    "맥적 닭구이, 표고 와사비",
-    "전복, 들깨 칼비빔"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2048148587/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:36947530:6c4ec19e",
-  "signatureMenus": [
-    "파티세트",
-    "단짝세트",
-    "커플세트",
-    "패밀리세트",
-    "친구세트"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/36947530/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:11828179:df002de6",
-  "signatureMenus": [
-    "간장게장 정식",
-    "소갈비찜 정식",
-    "양념게장 정식",
-    "보리굴비 정식",
-    "옥돔구이 정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/11828179/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:13570719:0b7b0ab7",
-  "signatureMenus": [
-    "간장게장 정식",
-    "보리굴비 정식",
-    "간장게장 실속세트",
-    "양념게장 정식",
-    "고등어구이 정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/13570719/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1531009599:6073ca4b",
-  "signatureMenus": [
-    "시래기 명태조림(大)",
-    "시래기 명태조림(中)",
-    "시래기 명태조림(小)",
-    "갈치조림(중)",
-    "갈치조림(대)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1531009599/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1025209204:859ba382",
-  "signatureMenus": [
-    "고등어김치찜(2인)",
-    "고등어조림(2인)",
-    "고등어구이정식(1인)",
-    "조기구이정식(1인)",
-    "모듬생선구이정식(3인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1025209204/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1404947841:722626a1",
-  "signatureMenus": [
-    "등갈비김치찜+솥밥2개",
-    "모듬해물장",
-    "장어솥밥",
-    "스테이크 솥밥",
-    "훈제오리솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1404947841/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1349388237:28acde24",
-  "signatureMenus": [
-    "철판닭갈비",
-    "눈꽃치즈닭갈비",
-    "쟁반막국수",
-    "닭갈비정식",
-    "치즈닭갈비정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1349388237/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1567617443:075ffd3d",
-  "signatureMenus": [
-    "삼겹살",
-    "오겹살+멸젓",
-    "계란찜",
-    "물냉면",
-    "비빔냉면"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1567617443/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1754233508:1aa1790e",
-  "signatureMenus": [
-    "고등어솥밥",
-    "연어솥밥",
-    "김치찜 솥밥",
-    "가지 솥밥",
-    "곤드레솥밥 정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1754233508/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2141771628:1299ff5d",
-  "signatureMenus": [
-    "고추장불고기솥밥",
-    "고등어솥밥",
-    "꼬막솥밥",
-    "가지솥밥",
-    "우삼겹숙주솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2141771628/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1072349502:d6b7ce52",
-  "signatureMenus": [
-    "고인돌 낙지 갈비찜(2인분)",
-    "고인돌 낙지 갈비찜(3인분)",
-    "고인돌 낙지 갈비찜(4인분)",
-    "수제마늘갈비(2인)",
-    "수제마늘갈비(3인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1072349502/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1455461770:f1fbaa57",
-  "signatureMenus": [
-    "갈치조림영양솥밥정식",
-    "비빔냉면",
-    "물냉면",
-    "고등어구이영양솥밥정식",
-    "삼치구이영양솥밥정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1455461770/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:18600759:d2ca570e",
-  "signatureMenus": [
-    "모듬생선구이 2인",
-    "북어양념구이",
-    "고등어구이",
-    "임연수구이"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18600759/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1820899443:7c368abd",
-  "signatureMenus": [
-    "고등어구이 영양돌솥밥",
-    "삼치구이 영양돌솥밥",
-    "이면수구이 영양돌솥밥",
-    "부대찌개",
-    "청국장+솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1820899443/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1583938382:a0616cce",
-  "signatureMenus": [
-    "보리굴비 돌솥정식",
-    "굴비 돌솥정식",
-    "굴비돌솥특정식",
-    "보리굴비 돌솥특정식",
-    "박대구이정식 1인"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1583938382/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1914801563:fc4f40fa",
-  "signatureMenus": [
-    "간장 숯불고기 쌈밥정식 (1인)",
-    "고추장 숯불고기 쌈밥정식 (1인)",
-    "간장 숯불고기 추가 (250g)",
-    "고추장 숯불고기 추가 (250g)",
-    "된장찌개"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1914801563/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1596104463:70009661",
-  "signatureMenus": [
-    "속초명물 가오리조림(소)",
-    "산지직송 시래기명태조림2인",
-    "산지직송 명태조림 소/2마리",
-    "불향 쭈꾸미볶음 2인",
-    "산지직송 명태조림 중/3마리"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1596104463/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1184978041:c970838d",
-  "signatureMenus": [
-    "옛날 김치찌개+갓지은 솥밥(1인)",
-    "돼지고기 두루치기(소)2인",
-    "왕계란말이",
-    "갓지은솥밥",
-    "포장 김치찌개 2인"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1184978041/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1972533448:9b59cdb9",
-  "signatureMenus": [
-    "제육 덮밥",
-    "불고기 덮밥",
-    "돼지고기 김치찌개",
-    "장터국밥",
-    "순대국밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1972533448/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1314498290:e28f97ce",
-  "signatureMenus": [
-    "쭈제쌈",
-    "약선보리굴비",
-    "두쌈(수육쌈밥)",
-    "용쌈(제육쌈밥)",
-    "국물불고기"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1314498290/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1122190206:78262b39",
-  "signatureMenus": [
-    "Course A",
-    "Course B"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1122190206/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:32242788:9f193ed4",
-  "signatureMenus": [
-    "솥밥왕갈비탕",
-    "솥밥한우국밥",
-    "한우꽃등심 150g",
-    "꽃갈비살 150g",
-    "흑돼지삼겹살 160g"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/32242788/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:37098012:5cb8e16c",
-  "signatureMenus": [
-    "은빛돌솥밥정식",
-    "오리세트(주물럭+로스+훈제)",
-    "고등어구이",
-    "시래기갈치조림(2인 이상)",
-    "대구탕"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/37098012/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:38322052:f7371b3c",
-  "signatureMenus": [
-    "생선구이 모듬정식(2인)",
-    "알고니찜",
-    "고등어구이+양푼이동태탕 2인세트",
-    "고등어구이+갈치조림 2인세트",
-    "고등어구이 정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38322052/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1754692452:f1c77dac",
-  "signatureMenus": [
-    "능이토종닭 누룽지백숙",
-    "누룽지삼계탕정식",
-    "청국장순두부 정식",
-    "누룽지백숙 16호",
-    "누룽지백숙 20호"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1754692452/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1293496951:46f8713c",
-  "signatureMenus": [
-    "모둠숙성회",
-    "숙성뱃살스페셜",
-    "이춘명 스페셜",
-    "참치 대뱃살(오도로)",
-    "단품숙성회(1인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1293496951/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2026609650:4bc43aab",
-  "signatureMenus": [
-    "일품순두부",
-    "해물순두부",
-    "굴순두부",
-    "만두순두부",
-    "해장순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2026609650/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1095753197:ae3714d7",
-  "signatureMenus": [
-    "일품순두부",
-    "고등어구이",
-    "냉면(물·비빔)",
-    "해물순두부",
-    "해장순두부"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1095753197/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:31040562:59ec39f2",
-  "signatureMenus": [
-    "소 이동갈비구이(280g)",
-    "돼지 수제양념구이 비조리(250g)",
-    "돼지 수제양념구이 조리(250g)",
-    "민물장어구이(1마리)",
-    "민물장어구이(2마리)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/31040562/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:38402606:e7be872a",
-  "signatureMenus": [
-    "통갈치양념구이+통갈치조림세트(소)",
-    "순살갈치조림(대)",
-    "순살갈치조림(중)",
-    "은갈치조림과 솥밥",
-    "통갈치구이+갈치조림"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38402606/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1717467182:b1dc8c46",
-  "signatureMenus": [
-    "제철솥밥정식(1인)",
-    "모둠구이솥밥정식(1인)",
-    "모듬조림솥밥정식(1인)",
-    "전복장솥밥정식(1인)",
-    "은갈치구이솥밥정식(1인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1717467182/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1356025719:ec30e6f2",
-  "signatureMenus": [
-    "코다리찜+쭈꾸미새우연포탕 세트(대)",
-    "코다리찜+쭈꾸미새우연포탕 세트(중)",
-    "코다리찜+쭈꾸미새우연포탕 세트(소)",
-    "코다리찜+쭈꾸미새우연포탕 세트(2인)",
-    "명태코다리시래기조림(2인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1356025719/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1815939738:d4976329",
-  "signatureMenus": [
-    "팥죽(동지죽)",
-    "완도전복죽",
-    "한우야채죽",
-    "낙지김치죽",
-    "호박죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1815939738/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1353069334:92c3114b",
-  "signatureMenus": [
-    "자연송이전복죽",
-    "한우버섯죽",
-    "한우야채죽",
-    "모듬해물죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1353069334/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:12793518:a766155d",
-  "signatureMenus": [
-    "진품전복내장죽 전복3배",
-    "특전복내장죽 전복2배",
-    "전복내장자연송이죽",
-    "전복내장한우닭죽",
-    "전복내장닭죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/12793518/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1605682519:f710f316",
-  "signatureMenus": [
-    "완도전복죽",
-    "불낙죽(매운맛)",
-    "모듬해물죽",
-    "한우야채죽",
-    "호박죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1605682519/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1057435922:136567e6",
-  "signatureMenus": [
-    "완도전복죽",
-    "한우야채죽",
-    "낙지김치죽",
-    "인삼닭죽",
-    "호박죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1057435922/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1362439224:c983abfe",
-  "signatureMenus": [
-    "완도전복죽",
-    "불낙죽(매운맛)",
-    "모듬해물죽",
-    "한우야채죽",
-    "호박죽"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1362439224/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:11829787:739c2b4e",
-  "signatureMenus": [
-    "울정식",
-    "돌정식",
-    "목정식",
-    "기코스",
-    "능이전복영양솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/11829787/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1354205901:6a1641fd",
-  "signatureMenus": [
-    "명란솥밥과 된장찌개 반상",
-    "안동식 간고등어구이 솥밥",
-    "콩비지찌개 곤드레솥밥 반상",
-    "가지소보로 솥밥과 된장찌개 반상",
-    "떡갈비구이와 순두부찌개 솥밥반상"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1354205901/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:34738686:ab6713c4",
-  "signatureMenus": [
-    "황태해장국",
-    "날치알순두부찌개",
-    "참치김치찌개",
-    "제육돌솥밥",
-    "김치베이컨볶음밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/34738686/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1979577601:07937b98",
-  "signatureMenus": [
-    "본가장미정식",
-    "1% 돼지본갈비",
-    "1% 본가 소양념갈비",
-    "봄동비빔밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1979577601/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1588484096:4f5d85df",
-  "signatureMenus": [
-    "문어해물솥밥",
-    "명란아보카도솥밥",
-    "우삼겹쌈장솥밥",
-    "소불고기솥밥",
-    "스테이크솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1588484096/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1063090375:04ab7604",
-  "signatureMenus": [
-    "염소탕(1인분)",
-    "소갈비탕(1인)",
-    "소갈비탕(2인)",
-    "소갈비탕 2인세트",
-    "소갈비찜(1인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1063090375/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1991237587:087b0dc4",
-  "signatureMenus": [
-    "차돌구이 샤브세트",
-    "특제양념 한우구이정식",
-    "한우드라이에이징 티본 1+ (100g)",
-    "샤토브리앙(120g)",
-    "1++ 새우살(120g)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1991237587/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1440604323:0da806db",
-  "signatureMenus": [
-    "파지감자탕 소",
-    "묵은지 감자탕 소",
-    "우거지감자탕 소",
-    "매운뼈찜 소",
-    "뼈찜 소"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1440604323/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:37810839:c6195d78",
-  "signatureMenus": [
-    "고등어구이",
-    "갈치구이",
-    "모듬생선구이(2인)",
-    "아구찜",
-    "모듬생선구이(3인)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/37810839/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1472151765:43588362",
-  "signatureMenus": [
-    "생돼지미박김치찌개+갓지은솥밥",
-    "들기름 계란후라이(3알)",
-    "30cm 봉평부추메밀전",
-    "봉평부추메밀전+막걸리세트",
-    "푸짐이토핑"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1472151765/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1232627546:00be3dec",
-  "signatureMenus": [
-    "매콤왕코다리&시래기조림",
-    "매콤왕코다리조림",
-    "매콤왕코다리&갈비조림",
-    "매콤왕코다리&문어조림",
-    "코다리대감일품조림"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1232627546/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1010727519:bf05b011",
-  "signatureMenus": [
-    "스테이크 솥밥 한상",
-    "민물장어덮밥 솥밥",
-    "대왕장어솥밥(K히츠마부시)"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1010727519/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:19866434:21df350e",
-  "signatureMenus": [
-    "80년 손맛 16첩 토담 한상",
-    "옛날 고추장 제육볶음 한상",
-    "직화 고등어구이 한상",
-    "직화 삼치구이 한상",
-    "직화 임연수구이 한상"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/19866434/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1327095728:60428b27",
-  "signatureMenus": [
-    "화덕 바다솥밥한상 2인",
-    "화덕 바다솥밥한상 3인",
-    "화덕 바다솥밥한상 4인",
-    "화덕 임연수구이+들깨미역국정식",
-    "직화 한돈제육+들깨미역국정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1327095728/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1459991854:46223ded",
-  "signatureMenus": [
-    "연어 솥밥",
-    "녹두전",
-    "마늘전",
-    "감자채전",
-    "스테이크 솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1459991854/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:2081779180:c45478dd",
-  "signatureMenus": [
-    "국내산 삼겹살 200g",
-    "국내산 목살 200g",
-    "명품 한강 불고기 150g",
-    "즉석양념소갈비",
-    "점심특선 불고기+버섯·당면+솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2081779180/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1593714975:dc48d4f5",
-  "signatureMenus": [
-    "해넘이세트",
-    "돼지양념구이",
-    "매운양념구이",
-    "돼지생갈비",
-    "한방갈비탕"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1593714975/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1152125771:6a610963",
-  "signatureMenus": [
-    "해녀밥상 단일메뉴"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1152125771/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1838952735:9f613713",
-  "signatureMenus": [
-    "감태와 생연어롤",
-    "매콤가지튀김 돌솥덮밥",
-    "고등어돌솥밥&미소된장국",
-    "회를 비벼먹는 바질페스토 파스타",
-    "갈치속젓파스타"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1838952735/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1358980493:9144ef99",
-  "signatureMenus": [
-    "솥밥정식"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1358980493/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1296260038:9b136fea",
-  "signatureMenus": [
-    "꿀광어",
-    "홍합참나물솥밥",
-    "흑임자소스와 쑥갓닭전",
-    "전복국수",
-    "고수와 깐풍육"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1296260038/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1174124604:d402659f",
-  "signatureMenus": [
-    "가자미솥밥",
-    "혜준당 황태북어해장국밥",
-    "고기 칼국수",
-    "들기름 메밀김밥",
-    "고기 떡만두국"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1174124604/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1387492368:95d51d99",
-  "signatureMenus": [
-    "화덕구이통삼겹살",
-    "화덕구이양념닭갈비",
-    "화덕구이소금닭갈비",
-    "화덕매운맛불고기",
-    "화덕갈비맛불고기"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1387492368/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:369761486:6f58cf47",
-  "signatureMenus": [
-    "고등어찜",
-    "알탕",
-    "가자미구이",
-    "박대구이",
-    "꽁치구이"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/369761486/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:18156909:f46f76bd",
-  "signatureMenus": [
-    "돌솥비빔밥",
-    "생선구이정식",
-    "뚝배기불고기",
-    "김치찌개",
-    "영양돌솥밥"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18156909/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1151530368:98f2cec5",
-  "signatureMenus": [
-    "가마솥콩나물국밥",
-    "콩나물국밥",
-    "삶은오징어",
-    "편육 중",
-    "고기만두"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1151530368/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-},
-{
-  "targetKey": "place:1828250802:5ef24d8b",
-  "signatureMenus": [
-    "특상갈비살 한우1++(9) 일품정식",
-    "포천이동 양념갈비정식",
-    "포천이동 생갈비정식",
-    "1++(9) 명품한우 화 SET",
-    "1++(9) 명품한우 우 SET"
-  ],
-  "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1828250802/menu/list",
-  "updatedAt": "2026-11-08",
-  "updateSource": "naver-place-manual-verification"
-}
+  {
+    "targetKey": "place:1227827066:14c6d176",
+    "signatureMenus": [
+      "기본중자 정식(1인) 1미",
+      "간장게장(특선)",
+      "매콤 양념게장 특선",
+      "소자 암꽃게 정식(1인) 2미",
+      "꽃게탕(2인분)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1227827066/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:38255393:1e44bb5f",
+    "signatureMenus": [
+      "황태제육정식",
+      "보쌈",
+      "냉면",
+      "갑오징어보쌈정식",
+      "제주흑돼지 180g"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38255393/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:137031877:d3e355ce",
+    "signatureMenus": [
+      "코다리찜(미니)",
+      "코다리찜(소)",
+      "코다리찜(중)",
+      "코다리찜(대)",
+      "갈비 코다리찜(소)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/137031877/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:34933023:b212aee6",
+    "signatureMenus": [
+      "맥반석 불뼈구이(대)",
+      "맥반석 불뼈구이(중)",
+      "맥반석 불뼈구이(소)",
+      "맥반석 간장목뼈구이(대)",
+      "맥반석 간장목뼈구이(중)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/34933023/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1278793305:8a7fd279",
+    "signatureMenus": [
+      "해물순두부",
+      "쫄면 순두부",
+      "들깨순두부",
+      "소고기 순두부",
+      "돼지순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1278793305/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1895284913:f2ce1bf8",
+    "signatureMenus": [
+      "능이 한방 오리백숙+단호박 찹쌀죽",
+      "생오리 로스 반마리",
+      "생오리 주물럭 (간장마늘,고추장)",
+      "생오리 주물럭 명품 한 상 정식",
+      "장수연(長壽宴) 세트 1300g"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1895284913/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1572397830:9f4262d3",
+    "signatureMenus": [
+      "토정장어구이"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1572397830/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1974473215:0465fef3",
+    "signatureMenus": [
+      "남도식 암꽃게장+능이아구지리탕 상차림",
+      "남도식 한돈떡갈비+능이아구지리탕 한상",
+      "얼큰한 알탕",
+      "양념순살비빔 한상차림",
+      "능이아구지리탕 상차림"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1974473215/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:18088298:c6f893ba",
+    "signatureMenus": [
+      "해물순두부",
+      "섞어순두부",
+      "소고기순두부",
+      "불고기",
+      "만두순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18088298/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1895089875:393e5a01",
+    "signatureMenus": [
+      "해물순두부",
+      "순두부보쌈정식",
+      "떡갈비정식",
+      "생선구이정식",
+      "들깨순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1895089875/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1515131670:8674cc7e",
+    "signatureMenus": [
+      "[BEST] 편지차림 [평일/주말]",
+      "마음차림 [평일/주말]",
+      "진심 한상 [평일/주말]",
+      "직화 쭈꾸미 비빔소반 [평일점심]",
+      "한우육회 비빔소반 [평일점심]"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1515131670/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1997024469:4db3cda7",
+    "signatureMenus": [
+      "시래기고등어조림정식",
+      "고등어한마리구이정식",
+      "간장게장 정식",
+      "조기한마리구이정식",
+      "갈치한마리구이정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1997024469/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:35744298:704f1490",
+    "signatureMenus": [
+      "매콤코다리조림(대)",
+      "매콤코다리조림(중)",
+      "매콤코다리조림(소)",
+      "무청시래기 코다리조림(소)",
+      "무청시래기 코다리조림(중)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/35744298/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1392822936:faaf471f",
+    "signatureMenus": [
+      "소갈비살(800g)",
+      "돼지갈비양념목살(1kg)",
+      "마늘양념소갈비살(900g)",
+      "갈비탕+솥밥",
+      "마늘양념소갈비살(450g)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1392822936/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1068891396:7b893d13",
+    "signatureMenus": [
+      "나홀로쭈꾸미",
+      "쭈꾸미 2인세트",
+      "쭈꾸미 3인세트",
+      "쭈꾸미 4인세트",
+      "직화쭈꾸미삼겹(2인분)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1068891396/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1086183001:3c055ae7",
+    "signatureMenus": [
+      "고등어구이포장(1마리)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1086183001/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1469783606:f7fddd98",
+    "signatureMenus": [
+      "고등어+LA갈비 2인 한상차림",
+      "고등어+고추장불고기 2인 한상차림",
+      "LA갈비 1인 한상차림",
+      "고추장불고기 1인 한상차림",
+      "북창동순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1469783606/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:13494107:7d3d6a65",
+    "signatureMenus": [
+      "LA갈비 순두부정식",
+      "북창동보쌈 순두부정식",
+      "소곱창순두부",
+      "북창동순두부",
+      "햄치즈순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/13494107/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1615187452:8a66c417",
+    "signatureMenus": [
+      "히츠마부시 한상",
+      "스폐셜 카이센동 한상",
+      "모듬사시미",
+      "특 히츠마부시 한상"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1615187452/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1461732445:2e59f024",
+    "signatureMenus": [
+      "해물뚝배기",
+      "반상 / 1~2인용",
+      "한상 / 3~4인용",
+      "전복구이 6마리",
+      "해산물모듬"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1461732445/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1388135664:3f08615a",
+    "signatureMenus": [
+      "대방어 코스(2인 이상 주문 가능)",
+      "제철 회 코스(2인 이상 주문 가능)",
+      "완도 전복솥밥 정식",
+      "통영 굴 솥밥 정식",
+      "제철 물회 밥상"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1388135664/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1397817783:465db202",
+    "signatureMenus": [
+      "소불고기 한상 1인",
+      "떡갈비 한상 1인",
+      "소고기 육전",
+      "제육 한상 1인",
+      "갈치 한상 1인"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1397817783/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1244382800:afa3a117",
+    "signatureMenus": [
+      "전복돌솥밥 1인",
+      "B코스 (2인기준)",
+      "스페셜 A코스 (4인기준)",
+      "전복뚝배기",
+      "전복물회"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1244382800/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2038516645:cf794d56",
+    "signatureMenus": [
+      "순살갈치조림+돌솥밥+옥돔구이",
+      "옥돔구이+김치찜+돌솥밥 한정식",
+      "한우진곰탕+돌솥밥 한정식",
+      "해물칼국수",
+      "옥돔구이 1마리"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2038516645/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1567431329:70b9a596",
+    "signatureMenus": [
+      "모듬 1인 특선 (300g)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1567431329/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1046614273:91ef020f",
+    "signatureMenus": [
+      "산해성찬 1인 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1046614273/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1085540356:5a80e4c5",
+    "signatureMenus": [
+      "모듬구이 2인",
+      "한우곱창 220g",
+      "모듬구이 4인",
+      "대창구이 200g",
+      "특양구이 200g"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1085540356/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2144193062:7935cda0",
+    "signatureMenus": [
+      "청국장",
+      "순두부",
+      "된장찌개",
+      "김치찌개",
+      "조기찌개"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2144193062/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:16512525:38273696",
+    "signatureMenus": [
+      "장어한판",
+      "장어특가",
+      "반마리덮밥+장어탕",
+      "파김치 장어전골(2마리)",
+      "파김치 장어전골(3마리)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/16512525/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2048148587:5e2e5718",
+    "signatureMenus": [
+      "갈치, 곤드레 솥밥",
+      "수육, 청어알 무김치, 시금장",
+      "육회 묵은지말이, 고추장 마요",
+      "맥적 닭구이, 표고 와사비",
+      "전복, 들깨 칼비빔"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2048148587/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:36947530:6c4ec19e",
+    "signatureMenus": [
+      "파티세트",
+      "단짝세트",
+      "커플세트",
+      "패밀리세트",
+      "친구세트"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/36947530/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:11828179:df002de6",
+    "signatureMenus": [
+      "간장게장 정식",
+      "소갈비찜 정식",
+      "양념게장 정식",
+      "보리굴비 정식",
+      "옥돔구이 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/11828179/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:13570719:0b7b0ab7",
+    "signatureMenus": [
+      "간장게장 정식",
+      "보리굴비 정식",
+      "간장게장 실속세트",
+      "양념게장 정식",
+      "고등어구이 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/13570719/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1531009599:6073ca4b",
+    "signatureMenus": [
+      "시래기 명태조림(大)",
+      "시래기 명태조림(中)",
+      "시래기 명태조림(小)",
+      "갈치조림(중)",
+      "갈치조림(대)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1531009599/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1025209204:859ba382",
+    "signatureMenus": [
+      "고등어김치찜(2인)",
+      "고등어조림(2인)",
+      "고등어구이정식(1인)",
+      "조기구이정식(1인)",
+      "모듬생선구이정식(3인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1025209204/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1404947841:722626a1",
+    "signatureMenus": [
+      "등갈비김치찜+솥밥2개",
+      "모듬해물장",
+      "장어솥밥",
+      "스테이크 솥밥",
+      "훈제오리솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1404947841/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1349388237:28acde24",
+    "signatureMenus": [
+      "철판닭갈비",
+      "눈꽃치즈닭갈비",
+      "쟁반막국수",
+      "닭갈비정식",
+      "치즈닭갈비정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1349388237/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1567617443:075ffd3d",
+    "signatureMenus": [
+      "삼겹살",
+      "오겹살+멸젓",
+      "계란찜",
+      "물냉면",
+      "비빔냉면"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1567617443/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1754233508:1aa1790e",
+    "signatureMenus": [
+      "고등어솥밥",
+      "연어솥밥",
+      "김치찜 솥밥",
+      "가지 솥밥",
+      "곤드레솥밥 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1754233508/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2141771628:1299ff5d",
+    "signatureMenus": [
+      "고추장불고기솥밥",
+      "고등어솥밥",
+      "꼬막솥밥",
+      "가지솥밥",
+      "우삼겹숙주솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2141771628/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1072349502:d6b7ce52",
+    "signatureMenus": [
+      "고인돌 낙지 갈비찜(2인분)",
+      "고인돌 낙지 갈비찜(3인분)",
+      "고인돌 낙지 갈비찜(4인분)",
+      "수제마늘갈비(2인)",
+      "수제마늘갈비(3인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1072349502/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1455461770:f1fbaa57",
+    "signatureMenus": [
+      "갈치조림영양솥밥정식",
+      "비빔냉면",
+      "물냉면",
+      "고등어구이영양솥밥정식",
+      "삼치구이영양솥밥정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1455461770/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:18600759:d2ca570e",
+    "signatureMenus": [
+      "모듬생선구이 2인",
+      "북어양념구이",
+      "고등어구이",
+      "임연수구이"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18600759/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1820899443:7c368abd",
+    "signatureMenus": [
+      "고등어구이 영양돌솥밥",
+      "삼치구이 영양돌솥밥",
+      "이면수구이 영양돌솥밥",
+      "부대찌개",
+      "청국장+솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1820899443/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1583938382:a0616cce",
+    "signatureMenus": [
+      "보리굴비 돌솥정식",
+      "굴비 돌솥정식",
+      "굴비돌솥특정식",
+      "보리굴비 돌솥특정식",
+      "박대구이정식 1인"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1583938382/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1914801563:fc4f40fa",
+    "signatureMenus": [
+      "간장 숯불고기 쌈밥정식 (1인)",
+      "고추장 숯불고기 쌈밥정식 (1인)",
+      "간장 숯불고기 추가 (250g)",
+      "고추장 숯불고기 추가 (250g)",
+      "된장찌개"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1914801563/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1596104463:70009661",
+    "signatureMenus": [
+      "속초명물 가오리조림(소)",
+      "산지직송 시래기명태조림2인",
+      "산지직송 명태조림 소/2마리",
+      "불향 쭈꾸미볶음 2인",
+      "산지직송 명태조림 중/3마리"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1596104463/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1184978041:c970838d",
+    "signatureMenus": [
+      "옛날 김치찌개+갓지은 솥밥(1인)",
+      "돼지고기 두루치기(소)2인",
+      "왕계란말이",
+      "갓지은솥밥",
+      "포장 김치찌개 2인"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1184978041/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1972533448:9b59cdb9",
+    "signatureMenus": [
+      "제육 덮밥",
+      "불고기 덮밥",
+      "돼지고기 김치찌개",
+      "장터국밥",
+      "순대국밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1972533448/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1314498290:e28f97ce",
+    "signatureMenus": [
+      "쭈제쌈",
+      "약선보리굴비",
+      "두쌈(수육쌈밥)",
+      "용쌈(제육쌈밥)",
+      "국물불고기"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1314498290/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1122190206:78262b39",
+    "signatureMenus": [
+      "Course A",
+      "Course B"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1122190206/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:32242788:9f193ed4",
+    "signatureMenus": [
+      "솥밥왕갈비탕",
+      "솥밥한우국밥",
+      "한우꽃등심 150g",
+      "꽃갈비살 150g",
+      "흑돼지삼겹살 160g"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/32242788/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:37098012:5cb8e16c",
+    "signatureMenus": [
+      "은빛돌솥밥정식",
+      "오리세트(주물럭+로스+훈제)",
+      "고등어구이",
+      "시래기갈치조림(2인 이상)",
+      "대구탕"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/37098012/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:38322052:f7371b3c",
+    "signatureMenus": [
+      "생선구이 모듬정식(2인)",
+      "알고니찜",
+      "고등어구이+양푼이동태탕 2인세트",
+      "고등어구이+갈치조림 2인세트",
+      "고등어구이 정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38322052/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1754692452:f1c77dac",
+    "signatureMenus": [
+      "능이토종닭 누룽지백숙",
+      "누룽지삼계탕정식",
+      "청국장순두부 정식",
+      "누룽지백숙 16호",
+      "누룽지백숙 20호"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1754692452/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1293496951:46f8713c",
+    "signatureMenus": [
+      "모둠숙성회",
+      "숙성뱃살스페셜",
+      "이춘명 스페셜",
+      "참치 대뱃살(오도로)",
+      "단품숙성회(1인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1293496951/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2026609650:4bc43aab",
+    "signatureMenus": [
+      "일품순두부",
+      "해물순두부",
+      "굴순두부",
+      "만두순두부",
+      "해장순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2026609650/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1095753197:ae3714d7",
+    "signatureMenus": [
+      "일품순두부",
+      "고등어구이",
+      "냉면(물·비빔)",
+      "해물순두부",
+      "해장순두부"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1095753197/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:31040562:59ec39f2",
+    "signatureMenus": [
+      "소 이동갈비구이(280g)",
+      "돼지 수제양념구이 비조리(250g)",
+      "돼지 수제양념구이 조리(250g)",
+      "민물장어구이(1마리)",
+      "민물장어구이(2마리)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/31040562/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:38402606:e7be872a",
+    "signatureMenus": [
+      "통갈치양념구이+통갈치조림세트(소)",
+      "순살갈치조림(대)",
+      "순살갈치조림(중)",
+      "은갈치조림과 솥밥",
+      "통갈치구이+갈치조림"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/38402606/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1717467182:b1dc8c46",
+    "signatureMenus": [
+      "제철솥밥정식(1인)",
+      "모둠구이솥밥정식(1인)",
+      "모듬조림솥밥정식(1인)",
+      "전복장솥밥정식(1인)",
+      "은갈치구이솥밥정식(1인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1717467182/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1356025719:ec30e6f2",
+    "signatureMenus": [
+      "코다리찜+쭈꾸미새우연포탕 세트(대)",
+      "코다리찜+쭈꾸미새우연포탕 세트(중)",
+      "코다리찜+쭈꾸미새우연포탕 세트(소)",
+      "코다리찜+쭈꾸미새우연포탕 세트(2인)",
+      "명태코다리시래기조림(2인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1356025719/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1815939738:d4976329",
+    "signatureMenus": [
+      "팥죽(동지죽)",
+      "완도전복죽",
+      "한우야채죽",
+      "낙지김치죽",
+      "호박죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1815939738/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1353069334:92c3114b",
+    "signatureMenus": [
+      "자연송이전복죽",
+      "한우버섯죽",
+      "한우야채죽",
+      "모듬해물죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1353069334/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:12793518:a766155d",
+    "signatureMenus": [
+      "진품전복내장죽 전복3배",
+      "특전복내장죽 전복2배",
+      "전복내장자연송이죽",
+      "전복내장한우닭죽",
+      "전복내장닭죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/12793518/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1605682519:f710f316",
+    "signatureMenus": [
+      "완도전복죽",
+      "불낙죽(매운맛)",
+      "모듬해물죽",
+      "한우야채죽",
+      "호박죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1605682519/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1057435922:136567e6",
+    "signatureMenus": [
+      "완도전복죽",
+      "한우야채죽",
+      "낙지김치죽",
+      "인삼닭죽",
+      "호박죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1057435922/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1362439224:c983abfe",
+    "signatureMenus": [
+      "완도전복죽",
+      "불낙죽(매운맛)",
+      "모듬해물죽",
+      "한우야채죽",
+      "호박죽"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1362439224/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:11829787:739c2b4e",
+    "signatureMenus": [
+      "울정식",
+      "돌정식",
+      "목정식",
+      "기코스",
+      "능이전복영양솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/11829787/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1354205901:6a1641fd",
+    "signatureMenus": [
+      "명란솥밥과 된장찌개 반상",
+      "안동식 간고등어구이 솥밥",
+      "콩비지찌개 곤드레솥밥 반상",
+      "가지소보로 솥밥과 된장찌개 반상",
+      "떡갈비구이와 순두부찌개 솥밥반상"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1354205901/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:34738686:ab6713c4",
+    "signatureMenus": [
+      "황태해장국",
+      "날치알순두부찌개",
+      "참치김치찌개",
+      "제육돌솥밥",
+      "김치베이컨볶음밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/34738686/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1979577601:07937b98",
+    "signatureMenus": [
+      "본가장미정식",
+      "1% 돼지본갈비",
+      "1% 본가 소양념갈비",
+      "봄동비빔밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1979577601/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1588484096:4f5d85df",
+    "signatureMenus": [
+      "문어해물솥밥",
+      "명란아보카도솥밥",
+      "우삼겹쌈장솥밥",
+      "소불고기솥밥",
+      "스테이크솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1588484096/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1063090375:04ab7604",
+    "signatureMenus": [
+      "염소탕(1인분)",
+      "소갈비탕(1인)",
+      "소갈비탕(2인)",
+      "소갈비탕 2인세트",
+      "소갈비찜(1인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1063090375/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1991237587:087b0dc4",
+    "signatureMenus": [
+      "차돌구이 샤브세트",
+      "특제양념 한우구이정식",
+      "한우드라이에이징 티본 1+ (100g)",
+      "샤토브리앙(120g)",
+      "1++ 새우살(120g)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1991237587/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1440604323:0da806db",
+    "signatureMenus": [
+      "파지감자탕 소",
+      "묵은지 감자탕 소",
+      "우거지감자탕 소",
+      "매운뼈찜 소",
+      "뼈찜 소"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1440604323/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:37810839:c6195d78",
+    "signatureMenus": [
+      "고등어구이",
+      "갈치구이",
+      "모듬생선구이(2인)",
+      "아구찜",
+      "모듬생선구이(3인)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/37810839/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1472151765:43588362",
+    "signatureMenus": [
+      "생돼지미박김치찌개+갓지은솥밥",
+      "들기름 계란후라이(3알)",
+      "30cm 봉평부추메밀전",
+      "봉평부추메밀전+막걸리세트",
+      "푸짐이토핑"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1472151765/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1232627546:00be3dec",
+    "signatureMenus": [
+      "매콤왕코다리&시래기조림",
+      "매콤왕코다리조림",
+      "매콤왕코다리&갈비조림",
+      "매콤왕코다리&문어조림",
+      "코다리대감일품조림"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1232627546/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1010727519:bf05b011",
+    "signatureMenus": [
+      "스테이크 솥밥 한상",
+      "민물장어덮밥 솥밥",
+      "대왕장어솥밥(K히츠마부시)"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1010727519/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:19866434:21df350e",
+    "signatureMenus": [
+      "80년 손맛 16첩 토담 한상",
+      "옛날 고추장 제육볶음 한상",
+      "직화 고등어구이 한상",
+      "직화 삼치구이 한상",
+      "직화 임연수구이 한상"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/19866434/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1327095728:60428b27",
+    "signatureMenus": [
+      "화덕 바다솥밥한상 2인",
+      "화덕 바다솥밥한상 3인",
+      "화덕 바다솥밥한상 4인",
+      "화덕 임연수구이+들깨미역국정식",
+      "직화 한돈제육+들깨미역국정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1327095728/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1459991854:46223ded",
+    "signatureMenus": [
+      "연어 솥밥",
+      "녹두전",
+      "마늘전",
+      "감자채전",
+      "스테이크 솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1459991854/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:2081779180:c45478dd",
+    "signatureMenus": [
+      "국내산 삼겹살 200g",
+      "국내산 목살 200g",
+      "명품 한강 불고기 150g",
+      "즉석양념소갈비",
+      "점심특선 불고기+버섯·당면+솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/2081779180/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1593714975:dc48d4f5",
+    "signatureMenus": [
+      "해넘이세트",
+      "돼지양념구이",
+      "매운양념구이",
+      "돼지생갈비",
+      "한방갈비탕"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1593714975/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1152125771:6a610963",
+    "signatureMenus": [
+      "해녀밥상 단일메뉴"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1152125771/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1838952735:9f613713",
+    "signatureMenus": [
+      "감태와 생연어롤",
+      "매콤가지튀김 돌솥덮밥",
+      "고등어돌솥밥&미소된장국",
+      "회를 비벼먹는 바질페스토 파스타",
+      "갈치속젓파스타"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1838952735/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1358980493:9144ef99",
+    "signatureMenus": [
+      "솥밥정식"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1358980493/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1296260038:9b136fea",
+    "signatureMenus": [
+      "꿀광어",
+      "홍합참나물솥밥",
+      "흑임자소스와 쑥갓닭전",
+      "전복국수",
+      "고수와 깐풍육"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1296260038/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1174124604:d402659f",
+    "signatureMenus": [
+      "가자미솥밥",
+      "혜준당 황태북어해장국밥",
+      "고기 칼국수",
+      "들기름 메밀김밥",
+      "고기 떡만두국"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1174124604/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1387492368:95d51d99",
+    "signatureMenus": [
+      "화덕구이통삼겹살",
+      "화덕구이양념닭갈비",
+      "화덕구이소금닭갈비",
+      "화덕매운맛불고기",
+      "화덕갈비맛불고기"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1387492368/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:369761486:6f58cf47",
+    "signatureMenus": [
+      "고등어찜",
+      "알탕",
+      "가자미구이",
+      "박대구이",
+      "꽁치구이"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/369761486/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:18156909:f46f76bd",
+    "signatureMenus": [
+      "돌솥비빔밥",
+      "생선구이정식",
+      "뚝배기불고기",
+      "김치찌개",
+      "영양돌솥밥"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/18156909/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1151530368:98f2cec5",
+    "signatureMenus": [
+      "가마솥콩나물국밥",
+      "콩나물국밥",
+      "삶은오징어",
+      "편육 중",
+      "고기만두"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1151530368/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1828250802:5ef24d8b",
+    "signatureMenus": [
+      "특상갈비살 한우1++(9) 일품정식",
+      "포천이동 양념갈비정식",
+      "포천이동 생갈비정식",
+      "1++(9) 명품한우 화 SET",
+      "1++(9) 명품한우 우 SET"
+    ],
+    "evidenceUrl": "https://pcmap.place.naver.com/restaurant/1828250802/menu/list",
+    "updatedAt": "2026-11-08",
+    "updateSource": "naver-place-manual-verification"
+  },
+  {
+    "targetKey": "place:1488935745:23b774e3",
+    "signatureMenus": [
+      "갈치조림",
+      "코다리찜",
+      "등갈비김치찜",
+      "고등어구이"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=Zyel5at84S96",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1510740346:150014c2",
+    "signatureMenus": [
+      "한식뷔페",
+      "불고기",
+      "제육볶음",
+      "삼겹살"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=hhByhu5DY5rY",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:37168809:bc9af288",
+    "signatureMenus": [
+      "시래기고등어조림",
+      "시래기소고기등심찜",
+      "숯불제육",
+      "쭈꾸미볶음",
+      "LA꽃갈비직화구이"
+    ],
+    "evidenceUrl": "https://vnfmal.tistory.com/entry/%EA%B3%A0%EB%AF%B8%EA%BD%83%EC%8B%9C%EB%9E%98-%EC%98%A4%ED%8F%AC%EB%8A%A5%ED%8F%89%EB%B3%B8%EC%A0%90-%ED%95%9C%EC%A0%95%EC%8B%9D-%EC%A7%91%EB%B0%A5%EC%9D%98-%EB%94%B0%EB%9C%BB%ED%95%A8%EA%B3%BC-%EB%84%93%EC%9D%80-%EA%B3%B5%EA%B0%84-%EC%85%80%ED%94%84%EB%B0%94%EA%B9%8C%EC%A7%80-%EA%B0%96%EC%B6%98-%EA%B4%91%EC%A3%BC-%EC%98%A4%ED%8F%AC-%ED%95%9C%EC%A0%95%EC%8B%9D-%EB%A7%9B%EC%A7%91-%F0%9F%A5%98",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1357482340:d0780b33",
+    "signatureMenus": [
+      "민물장어덮밥",
+      "민물장어덮밥 특",
+      "전복솥밥",
+      "금태솥밥",
+      "연어알덮밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=f4NhR75ocy5U",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1251930621:f98e0124",
+    "signatureMenus": [
+      "김가네김밥",
+      "쫄면",
+      "소고기돌솥비빔밥",
+      "부대찌개",
+      "튀김우동"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=GiYb1enXJovu",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1803234745:fa820bc7",
+    "signatureMenus": [
+      "가정식 백반",
+      "찰솥밥",
+      "생선조림",
+      "미역국"
+    ],
+    "evidenceUrl": "https://youchuca.popit.kr/place/6a784adae2cbe92948a04ade",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:16767967:e92a1096",
+    "signatureMenus": [
+      "추어탕",
+      "추어튀김",
+      "한우소머리국밥",
+      "돌솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=63ZKP1MytEcv",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1787238799:37b30bda",
+    "signatureMenus": [
+      "추어탕",
+      "영양솥밥",
+      "추어튀김"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=KyYihr3wFj4f",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1673381571:c33a48d0",
+    "signatureMenus": [
+      "김치찜 솥밥",
+      "모듬 김치찜 솥밥",
+      "오징어볶음 솥밥",
+      "오징어 삼겹볶음 솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=i7CyNwcgTSHa",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1896626202:f311909d",
+    "signatureMenus": [
+      "햄치즈순두부 솥밥",
+      "김치순두부 솥밥",
+      "떡갈비정식과 순두부",
+      "고등어구이",
+      "쭈꾸미볶음"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=NTMl34jCrqtA",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1673776106:8fd87eea",
+    "signatureMenus": [
+      "김치찌개",
+      "솥밥",
+      "냉동삼겹살",
+      "제육볶음"
+    ],
+    "evidenceUrl": "https://conyplace.com/%EB%A7%A8%EB%82%A0%EB%A8%B9%EB%8A%94%EA%B9%80%EC%B9%98%EC%B0%8C%EA%B0%9C-%EC%95%88%EC%96%91%ED%98%B8%EA%B3%84%EC%A0%90-%EA%B3%A0%EA%B8%B0%EC%99%80-%EA%B9%80%EC%B9%98%EC%B0%8C%EA%B0%9C%EC%9D%98/",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1408900403:ee7fae88",
+    "signatureMenus": [
+      "황태해장국",
+      "명태조림",
+      "감자황태해장국",
+      "얼큰선지해장국"
+    ],
+    "evidenceUrl": "https://conyplace.com/%EB%AA%85%ED%83%9C%EC%B2%9C%EA%B5%AD-%EC%9D%98%EC%A0%95%EB%B6%80%EC%9D%98-%EA%B0%80%EC%84%B1%EB%B9%84-%EC%A2%8B%EC%9D%80-%ED%95%B4%EC%9E%A5%EA%B5%AD-%EB%A7%9B%EC%A7%91/",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1446760348:c358fbce",
+    "signatureMenus": [
+      "명품순두부",
+      "해물순두부",
+      "섞어순두부",
+      "굴순두부",
+      "해물파전"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=SU0GFGolgZPV",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:18106769:b9545666",
+    "signatureMenus": [
+      "김치찌개",
+      "솥밥",
+      "라면사리",
+      "떡사리"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=7asDHdGd8OvK",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1961863024:ac4b4c51",
+    "signatureMenus": [
+      "대구탕",
+      "대구내장탕",
+      "아구탕",
+      "낙지돌솥밥",
+      "코다리조림"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=x0eYpVVuvdFJ",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1511149243:374f79a2",
+    "signatureMenus": [
+      "해물순두부",
+      "쭈꾸미볶음",
+      "제육볶음",
+      "고등어구이",
+      "솥밥정식"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=XHGy2N4HqKPy",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:31908684:e7b75747",
+    "signatureMenus": [
+      "돌솥밥한상",
+      "간고등어정식과 된장찌개",
+      "두루치기정식과 된장찌개"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=2MKkkxuuYZxC",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1294913395:4e63f850",
+    "signatureMenus": [
+      "김치찌개",
+      "삼겹살",
+      "가마솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=a9kg50b9V9kr",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1565009552:0523544a",
+    "signatureMenus": [
+      "목살",
+      "삼겹살",
+      "가브리살",
+      "모듬구이",
+      "갓지은 솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=3dtTHJoZUAbd",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1095888665:fcea72e8",
+    "signatureMenus": [
+      "모둠생선구이정식",
+      "1인 생선구이",
+      "시래기생선조림",
+      "간장게장"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=EZIQtK9DTSVz",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1263673687:af3cf2a9",
+    "signatureMenus": [
+      "명품오리 로스구이",
+      "한돈양념구이",
+      "오리탕"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=Qy9BTPkbGoCx",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1412431184:bbebbbf2",
+    "signatureMenus": [
+      "김치찜솥밥",
+      "고등어구이솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=qvs3ONSKMQ0j",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1009369320:f7dbceb6",
+    "signatureMenus": [
+      "가지솥밥",
+      "쭈꾸미불고기솥밥",
+      "고등어솥밥",
+      "전복꼬막솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=f5e9K075aJaQ",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1653228081:7e3443c3",
+    "signatureMenus": [
+      "꼬막솥밥",
+      "스테이크솥밥",
+      "우삼겹숙주솥밥",
+      "고추장불고기솥밥",
+      "전복꼬막솥밥"
+    ],
+    "evidenceUrl": "https://bienhui.tistory.com/entry/%EC%9D%98%EC%99%95-%EB%A1%AF%EB%8D%B0%ED%94%84%EB%A6%AC%EB%AF%B8%EC%97%84%EC%95%84%EC%9A%B8%EB%A0%9B-%EB%A7%9B%EC%A7%91-%EC%86%A5%EB%B0%A5%EC%98%88%EC%B0%AC-%ED%9B%84%EA%B8%B0",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1431225711:56f2cd14",
+    "signatureMenus": [
+      "연어솥밥",
+      "제육솥밥",
+      "꼬막솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=8kqctNeqywcP",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1552176802:93c3b95b",
+    "signatureMenus": [
+      "꼬막솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/rank/%EB%85%B8%EC%9B%90%EA%B5%AC-%EC%86%A5%EB%B0%A5",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1326372673:63568d60",
+    "signatureMenus": [
+      "스테이크솥밥",
+      "전복솥밥",
+      "도미관자솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=EMR01naKNs68",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:2086974382:4e22e84e",
+    "signatureMenus": [
+      "수라샤브",
+      "어묵과 우동 세트",
+      "욱날개"
+    ],
+    "evidenceUrl": "https://autoup.kr/go/all?category=food&channel=clip&sido=%EC%84%9C%EC%9A%B8&sigungu=%EA%B0%95%EB%B6%81%EA%B5%AC&sort=deadline",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1577153199:f64117fb",
+    "signatureMenus": [
+      "남원추어탕",
+      "청도추어탕",
+      "해물순두부",
+      "고등어구이",
+      "솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=wPeSQA6ehBPN",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1077128004:42b40577",
+    "signatureMenus": [
+      "소갈비찜",
+      "시래기코다리갈비찜"
+    ],
+    "evidenceUrl": "https://hamgae.com/place/50309/%EC%96%91%ED%8F%89%EC%A7%84%EC%84%A0%EB%AF%B8%EA%B0%80/",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:18664049:5487d7eb",
+    "signatureMenus": [
+      "고등어구이",
+      "제육볶음",
+      "콩비지",
+      "시골청국장"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=u3cST6f9aRov",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1398505182:549ed95f",
+    "signatureMenus": [
+      "쌈밥정식",
+      "고추장불고기정식",
+      "돼지갈비정식",
+      "한우떡갈비정식"
+    ],
+    "evidenceUrl": "https://www.ktourmap.com/spotDetails.jsp?contentId=835909",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:2065276594:d245c364",
+    "signatureMenus": [
+      "곤드레두부솥밥",
+      "전복솥밥",
+      "스테이크솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=u7FBGnWGKDOx",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1400020553:246457dd",
+    "signatureMenus": [
+      "곤드레두부솥밥",
+      "차돌가지솥밥",
+      "트러플소고기버섯솥밥",
+      "전복솥밥",
+      "스테이크솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=EDHezScYNr3j",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:16448347:89e54f6e",
+    "signatureMenus": [
+      "한방돼지갈비",
+      "한우생등심",
+      "생삼겹살",
+      "생목살",
+      "영양돌솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=t2ym9ok9OfWn",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:2058942332:b1da9eca",
+    "signatureMenus": [
+      "오리불고기",
+      "손칼국수",
+      "미역손수제비",
+      "냉콩국수",
+      "부추전"
+    ],
+    "evidenceUrl": "https://www.koreatriptips.com/dining/2872551.html",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:19400321:bb06f823",
+    "signatureMenus": [
+      "추어탕",
+      "우렁추어탕",
+      "다슬기추어탕",
+      "전복추어탕",
+      "추어튀김"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=ITbriLACsV2W",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1239067947:015a333b",
+    "signatureMenus": [
+      "으뜸순두부",
+      "김치돼지순두부",
+      "굴순두부",
+      "제육볶음",
+      "두부전골"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=pR532MKcU2gP",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1403500710:5308288b",
+    "signatureMenus": [
+      "이천불백",
+      "삼겹반상",
+      "소불고기반상",
+      "고등어반상",
+      "김치찌개반상"
+    ],
+    "evidenceUrl": "https://fotae.tistory.com/entry/%EA%B0%95%EB%82%A8-%EC%BD%94%EC%97%91%EC%8A%A4%EC%9D%98-%EB%B6%88%EB%B0%B1%EC%A7%91-%EC%9D%B4%EC%B2%9C%EA%B0%80%EB%93%A0-%EB%B3%B8%EC%A0%90",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:1972905256:5dd26625",
+    "signatureMenus": [
+      "삼겹살",
+      "솥뚜껑삼겹살",
+      "오겹살",
+      "돼지갈비",
+      "영양솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/rank/%EC%96%91%EC%A7%80-%EC%82%BC%EA%B2%B9%EC%82%B4",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  },
+  {
+    "targetKey": "place:17021436:1bc2317a",
+    "signatureMenus": [
+      "제주오겹살",
+      "제주목살",
+      "제주항정살",
+      "돼지양념갈비",
+      "돌솥밥"
+    ],
+    "evidenceUrl": "https://www.diningcode.com/profile.php?rid=KH210z3tZhwB",
+    "updatedAt": "2026-11-08",
+    "updateSource": "web-search-manual-verification"
+  }
 ]
