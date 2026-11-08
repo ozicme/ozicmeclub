@@ -438,6 +438,7 @@ const baseHeader = () => `
       <a href="/">식당 찾기</a>
       <a href="/verified/">인증 식당</a>
       <a href="/restaurants/">전체 식당 목록</a>
+      <a href="/apply/">식당 등재 요청</a>
       <a href="/about/">소개·운영기준</a>
       <a href="https://ozicme.com" target="_blank" rel="noopener">오직미 공식 사이트</a>
     </nav>
@@ -468,7 +469,7 @@ const pageShell = ({ title, description, canonical, image, jsonLd, breadcrumbs =
   <div class="seo-page">
     ${baseHeader()}
     <main>${body}</main>
-    <footer class="seo-footer">© 2026 OZICME · 오직미클럽 식당 정보 · <a href="/about/">소개·운영기준</a></footer>
+    <footer class="seo-footer">© 2026 OZICME · 오직미클럽 식당 정보 · <a href="/about/">소개·운영기준</a> · <a href="/apply/">식당 등재 요청</a></footer>
   </div>
 </body>
 </html>
@@ -1014,7 +1015,7 @@ const generate = () => {
   }
 
   writePage(ABOUT_DIR, renderAboutPage());
-  const sitemapPaths = ["/", "/restaurants/", "/about/"];
+  const sitemapPaths = ["/", "/restaurants/", "/about/", "/apply/"];
   const sidoGroups = groupBy(stores, (item) => item.region.sido);
   const regionEntries = [];
   for (const [sido, sidoStores] of Array.from(sidoGroups).sort(([a], [b]) => a.localeCompare(b, "ko"))) {
@@ -1110,6 +1111,7 @@ const generate = () => {
     menuPages: menuEntries.length,
     verifiedPages: 1,
     aboutPages: 1,
+    applicationPages: 1,
     sitemapUrls: sitemapPaths.length,
     changedSitemapUrls,
   };

@@ -1056,3 +1056,15 @@ setGitHubButtonReady(false);
 setEditGitHubButtonReady(false);
 updateEvidenceFields();
 updateEditEvidenceFields();
+const copyRequestSubjectButton = $("#copy-request-subject");
+const copyRequestStatus = $("#copy-request-status");
+if (copyRequestSubjectButton && copyRequestStatus) {
+  copyRequestSubjectButton.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText("[오직미클럽 등재요청]");
+      copyRequestStatus.textContent = "메일함 검색 제목을 복사했습니다.";
+    } catch (error) {
+      copyRequestStatus.textContent = "복사하지 못했습니다. [오직미클럽 등재요청]을 직접 검색해 주세요.";
+    }
+  });
+}

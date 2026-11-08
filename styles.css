@@ -66,6 +66,12 @@ img {
   font-size: 1rem;
 }
 
+.site-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn {
   border-radius: 999px;
   padding: 10px 20px;
@@ -229,6 +235,26 @@ main {
   text-align: center;
   backdrop-filter: blur(6px);
 }
+
+.restaurant-apply-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(22px, 4vw, 34px);
+  border: 1px solid #c9ded2;
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--green-soft), #fff);
+}
+
+.restaurant-apply-banner h2 {
+  margin: 0 0 6px;
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+}
+
+.restaurant-apply-banner p { margin: 0; color: var(--muted); }
+.restaurant-apply-eyebrow { color: var(--green) !important; font-size: .78rem; font-weight: 850; letter-spacing: .05em; }
+.restaurant-apply-banner .btn { flex: 0 0 auto; }
 
 .list-search {
   display: grid;
@@ -842,6 +868,11 @@ main {
 }
 
 @media (max-width: 520px) {
+  .site-header { align-items: flex-start; }
+  .site-header-actions { align-items: stretch; flex-direction: column; }
+  .site-header-actions .btn { min-height: 38px; padding: 7px 12px; font-size: .78rem; }
+  .restaurant-apply-banner { align-items: stretch; flex-direction: column; }
+  .restaurant-apply-banner .btn { width: 100%; }
   .popular-search-links {
     grid-template-columns: 1fr;
     padding: 17px;

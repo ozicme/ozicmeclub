@@ -5,6 +5,7 @@ const root = path.resolve(__dirname, "..");
 const restaurantRoot = path.join(root, "restaurants");
 const homeHtml = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const aboutHtml = fs.readFileSync(path.join(root, "about", "index.html"), "utf8");
+const applicationHtml = fs.readFileSync(path.join(root, "apply", "index.html"), "utf8");
 const sitemapXml = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
 
 if (!homeHtml.includes('"@type": "SearchAction"')) {
@@ -16,6 +17,15 @@ if (!aboutHtml.includes('"@type":"AboutPage"')) {
 }
 if (!sitemapXml.includes("https://ozicmeclub.com/about/")) {
   throw new Error("사이트맵에 소개·운영기준 페이지가 없습니다.");
+}
+if (!applicationHtml.includes('action="https://formsubmit.co/ozic@ozicme.com"')) {
+  throw new Error("등재 요청 페이지의 오직미 접수 주소가 올바르지 않습니다.");
+}
+if (!applicationHtml.includes('name="사용_쌀_품종"')) {
+  throw new Error("등재 요청 페이지에 쌀 품종 입력란이 없습니다.");
+}
+if (!sitemapXml.includes("https://ozicmeclub.com/apply/")) {
+  throw new Error("사이트맵에 식당 등재 요청 페이지가 없습니다.");
 }
 
 const restaurantDirectories = fs

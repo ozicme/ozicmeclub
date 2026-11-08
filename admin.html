@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex,nofollow" />
   <title>오직미클럽 관리자 | 식당 등록·수정</title>
   <meta name="theme-color" content="#1f6b4e" />
-  <link rel="stylesheet" href="admin.css?v=20260808-4" />
+  <link rel="stylesheet" href="admin.css?v=20261108-1" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
@@ -19,6 +19,18 @@
   </header>
 
   <main class="admin-main">
+    <section class="request-inbox-card" aria-labelledby="request-inbox-title">
+      <div>
+        <p class="eyebrow">식당 등재 요청</p>
+        <h2 id="request-inbox-title">신청 내용은 ozic@ozicme.com으로 도착합니다.</h2>
+        <p>메일함에서 제목 <strong>[오직미클럽 등재요청]</strong>을 검색해 식당명, 쌀 품종, 대표메뉴와 담당자 연락처를 검토하세요.</p>
+      </div>
+      <div class="request-inbox-actions">
+        <a class="button secondary" href="/apply/" target="_blank" rel="noopener">신청 화면 보기</a>
+        <button class="button primary" id="copy-request-subject" type="button">검색 제목 복사</button>
+      </div>
+      <p class="copy-request-status" id="copy-request-status" aria-live="polite"></p>
+    </section>
     <section class="intro-card">
       <p class="eyebrow">안전한 관리자 관리</p>
       <h1>식당을 새로 등록하거나 기존 정보를 수정합니다.</h1>
@@ -306,6 +318,6 @@
     <span>관리자 등록·수정 데이터는 GitHub 승인 전까지 서버에 저장되지 않습니다.</span>
   </footer>
   <script src="image-url-utils.js?v=20260809-1" defer></script>
-  <script src="admin.js?v=20261108-3" defer></script>
+  <script src="admin.js?v=20261108-4" defer></script>
 </body>
 </html>
