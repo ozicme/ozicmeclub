@@ -250,7 +250,7 @@ def load_targets(
 def normalize_registration_type(value: Any, current: dict[str, Any]) -> str:
     normalized = clean_text(value).lower().replace(" ", "")
     if not normalized:
-        return "ozicme" if bool(current.get("verifiedBadge", True)) else "external"
+        return "ozicme" if bool(current.get("verifiedBadge", False)) else "external"
     if normalized in {"1", "ozicme", "오직미", "오직미쌀거래식당", "오직미거래식당"}:
         return "ozicme"
     if normalized in {"0", "2", "external", "외부", "외부좋은쌀식당"}:
