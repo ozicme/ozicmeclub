@@ -124,6 +124,30 @@ h2 { margin: 46px 0 18px; font-size: clamp(1.35rem, 3vw, 2rem); }
 .verification-note p { margin: 0; }
 .verification-note.facet-note { margin-top: 28px; }
 
+.restaurant-summary {
+  margin-top: 50px;
+  padding: clamp(24px, 4vw, 38px);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--cream);
+}
+.restaurant-summary h2 { margin: 0 0 8px; }
+.restaurant-summary p { margin: 0; }
+
+.related-links { margin-top: 44px; }
+.related-links h2 { margin: 0 0 16px; }
+.related-links > div { display: flex; flex-wrap: wrap; gap: 10px; }
+.related-links a {
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--green-dark);
+  font-weight: 750;
+  text-decoration: none;
+  background: var(--white);
+}
+.related-links a:hover { border-color: var(--green); background: var(--green-soft); }
+
 .status-legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 34px; }
 .region-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
 .region-grid a {

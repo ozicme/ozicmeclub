@@ -16,6 +16,12 @@ const CATEGORIES_DIR = path.join(ROOT, "categories");
 const MENUS_DIR = path.join(ROOT, "menus");
 const VERIFIED_DIR = path.join(ROOT, "verified");
 const LASTMOD = process.env.SEO_LASTMOD || new Date().toISOString().slice(0, 10);
+const GOOD_RICE_LABEL = "좋은 쌀로 정성을 다하는 식당";
+const GOOD_RICE_DESCRIPTION =
+  "메뉴는 식당마다 다르지만 좋은 쌀로 밥을 제공하며 정성을 다하는 식당입니다.";
+const VERIFIED_RICE_LABEL = "좋은 쌀로 정성을 다하는 오직미클럽 인증 식당";
+const VERIFIED_RICE_DESCRIPTION =
+  "좋은 쌀로 정성을 다하는 식당이며, 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당입니다.";
 
 const MIN_CATEGORY_RESTAURANTS = 15;
 const POPULAR_MENU_PAGES = [
@@ -297,6 +303,85 @@ const menuText = (item) => item.signatureMenus.slice(0, 5).join(" · ") || "대�
 const regionText = (item) =>
   [item.region.sido, item.region.sigungu, item.region.eupmyeondong].filter(Boolean).join(" ");
 
+const searchableText = (item) =>
+  [item.name, item.category, item.categoryDetail, ...item.signatureMenus]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+
+const regionPath = (item) => {
+  if (item.region.sido && item.region.sigungu) {
+    return `/regions/${slugify(item.region.sido)}/${slugify(item.region.sigungu)}/`;
+  }
+  if (item.region.sido) return `/regions/${slugify(item.region.sido)}/`;
+  return "/restaurants/";
+};
+
+const hasFinalConsonant = (value) => {
+  const characters = Array.from(String(value || "").trim());
+  if (!characters.length) return false;
+  const code = characters.at(-1).codePointAt(0);
+  return code >= 0xac00 && code <= 0xd7a3 && (code - 0xac00) % 28 !== 0;
+};
+
+const topicName = (name) => `${name}${hasFinalConsonant(name) ? "은" : "는"}`;
+
+const restaurantSummary = (item) => {
+  const area = regionText(item) || "등록된 지역";
+  const category = [item.category, item.categoryDetail].filter(Boolean).join("·") || "음식";
+  const menuSentence = item.signatureMenus.length
+    ? `대표 메뉴로 ${item.signatureMenus.slice(0, 5).join(", ")} 등을 안내하고 있습니다.`
+    : "대표 메뉴와 최신 영업 정보는 방문 전에 확인해 주세요.";
+  const statusSentence = item.verifiedBadge
+    ? VERIFIED_RICE_DESCRIPTION
+    : GOOD_RICE_DESCRIPTION;
+  return `${area}에 위치한 ${topicName(item.name)} ${category} 식당입니다. ${menuSentence} ${statusSentence}`;
+};
+
+const restaurantRelatedLinks = (item, availableCategories) => {
+  const links = [];
+  if (item.region.sigungu || item.region.sido) {
+    links.push({
+      label: `${item.region.sigungu || item.region.sido} 식당`,
+      url: regionPath(item),
+    });
+  }
+  if (item.category && availableCategories.has(item.category)) {
+    links.push({ label: `${item.category} 식당`, url: `/categories/${slugify(item.category)}/` });
+  }
+  const text = searchableText(item);
+  for (const { label, terms } of POPULAR_MENU_PAGES) {
+    if (terms.some((term) => text.includes(term.toLowerCase()))) {
+      links.push({ label: `${label} 식당`, url: `/menus/${slugify(label)}/` });
+    }
+  }
+  if (item.verifiedBadge) {
+    links.push({ label: "오직미클럽 인증 식당", url: "/verified/" });
+  }
+  return links.slice(0, 6);
+};
+
+const structuredDataWithBreadcrumbs = (jsonLd, breadcrumbs = []) => {
+  if (!breadcrumbs.length) return jsonLd;
+  const entity = { ...jsonLd };
+  delete entity["@context"];
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      entity,
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbs.map((item, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          name: item.name,
+          item: item.url,
+        })),
+      },
+    ],
+  };
+};
+
 const baseHeader = () => `
   <header class="seo-header">
     <a class="seo-logo" href="/">OZICME</a>
@@ -308,7 +393,7 @@ const baseHeader = () => `
     </nav>
   </header>`;
 
-const pageShell = ({ title, description, canonical, image, jsonLd, body }) => `<!doctype html>
+const pageShell = ({ title, description, canonical, image, jsonLd, breadcrumbs = [], body }) => `<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -324,8 +409,10 @@ const pageShell = ({ title, description, canonical, image, jsonLd, body }) => `<
   <meta property="og:image" content="${escapeHtml(image || `${SITE_URL}/assets/ozicmeclub-share.jpg`)}">
   <meta name="theme-color" content="#1f6b4e">
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/seo-pages.css?v=20261108-2">
-  <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, "\\u003c")}</script>
+  <link rel="stylesheet" href="/seo-pages.css?v=20261108-3">
+  <script type="application/ld+json">${JSON.stringify(
+    structuredDataWithBreadcrumbs(jsonLd, breadcrumbs)
+  ).replace(/</g, "\\u003c")}</script>
 </head>
 <body>
   <div class="seo-page">
@@ -337,14 +424,25 @@ const pageShell = ({ title, description, canonical, image, jsonLd, body }) => `<
 </html>
 `;
 
-const renderRestaurantPage = (item) => {
+const restaurantTitleBase = (item) => {
+  const titleArea = [item.region.sigungu, item.region.eupmyeondong, item.category]
+    .filter(Boolean)
+    .join(" ");
+  return item.verifiedBadge
+    ? `${item.name} | ${titleArea || item.region.sido} 오직미클럽 인증 식당`
+    : `${item.name} | ${titleArea || item.region.sido} 식당 정보`;
+};
+
+const renderRestaurantPage = (item, availableCategories, duplicatedTitles) => {
   const verifiedLabel = item.verifiedBadge
-    ? "오직미 쌀 거래 확인 식당"
-    : "외부 식당 정보 · 오직미클럽 인증 식당 아님";
+    ? VERIFIED_RICE_LABEL
+    : GOOD_RICE_LABEL;
   const area = regionText(item) || "지역 정보 준비 중";
-  const title = item.verifiedBadge
-    ? `${item.name} | ${item.region.sigungu || item.region.sido} 오직미클럽 인증 식당`
-    : `${item.name} | ${item.region.sigungu || item.region.sido} 식당 정보`;
+  const baseTitle = restaurantTitleBase(item);
+  const addressDetail = item.address.split(/\s+/).slice(2).join(" ");
+  const title = duplicatedTitles.has(baseTitle)
+    ? `${item.name} | ${addressDetail || item.address} 식당 정보`
+    : baseTitle;
   const description = `${area} ${item.category || "식당"} ${item.name}. 대표 메뉴: ${menuText(
     item
   )}. ${verifiedLabel}.`;
@@ -365,13 +463,21 @@ const renderRestaurantPage = (item) => {
     },
     ...(item.naverPlaceUrl ? { sameAs: [item.naverPlaceUrl] } : {}),
     isPartOf: { "@type": "WebSite", name: "오직미클럽", url: SITE_URL },
-    additionalProperty: {
-      "@type": "PropertyValue",
-      name: "오직미클럽 인증 여부",
-      value: item.verifiedBadge ? "오직미 쌀 거래 확인" : "인증 아님",
-    },
+    additionalProperty: item.verifiedBadge
+      ? {
+          "@type": "PropertyValue",
+          name: "오직미클럽 등록 안내",
+          value: VERIFIED_RICE_LABEL,
+        }
+      : {
+          "@type": "PropertyValue",
+          name: "식당 안내",
+          value: GOOD_RICE_LABEL,
+        },
   };
   const badgeClass = item.verifiedBadge ? "is-verified" : "is-external";
+  const summary = restaurantSummary(item);
+  const relatedLinks = restaurantRelatedLinks(item, availableCategories);
   const image = item.imageUrl
     ? `<img class="restaurant-image" src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(
         item.name
@@ -404,24 +510,51 @@ const renderRestaurantPage = (item) => {
                   )}" target="_blank" rel="noopener">네이버 지도에서 보기</a>`
                 : ""
             }
-            <a class="seo-button" href="/?sido=${encodeURIComponent(
-              item.region.sido
-            )}&sigungu=${encodeURIComponent(item.region.sigungu)}">같은 지역 식당 찾기</a>
+            <a class="seo-button" href="${escapeHtml(regionPath(item))}">같은 지역 식당 찾기</a>
           </div>
         </div>
       </div>
+      <section class="restaurant-summary">
+        <h2>${escapeHtml(item.name)} 식당 안내</h2>
+        <p>${escapeHtml(summary)}</p>
+      </section>
       <section class="verification-note">
         <h2>${item.verifiedBadge ? "오직미클럽 인증 안내" : "등록 정보 안내"}</h2>
         <p>${
           item.verifiedBadge
-            ? `이 식당은 오직미 쌀 거래가 확인되어 오직미클럽 초록 배지가 표시됩니다.${
+            ? `${VERIFIED_RICE_DESCRIPTION} 오직미 쌀 거래가 확인되어 초록 배지가 표시됩니다.${
                 item.verifiedMonth ? ` 최근 확인 월은 ${escapeHtml(item.verifiedMonth)}입니다.` : ""
               }`
-            : "이 페이지는 식당 검색을 위한 외부 정보입니다. 현재 오직미 쌀 거래가 확인된 오직미클럽 인증 식당은 아닙니다."
+            : GOOD_RICE_DESCRIPTION
         }</p>
       </section>
+      ${
+        relatedLinks.length
+          ? `<nav class="related-links" aria-label="관련 식당 더 보기">
+        <h2>관련 식당 더 보기</h2>
+        <div>${relatedLinks
+          .map(
+            (link) =>
+              `<a href="${escapeHtml(link.url)}">${escapeHtml(link.label)}</a>`
+          )
+          .join("\n")}</div>
+      </nav>`
+          : ""
+      }
     </article>`;
-  return pageShell({ title, description, canonical, image: item.imageUrl, jsonLd, body });
+  return pageShell({
+    title,
+    description,
+    canonical,
+    image: item.imageUrl,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
+      { name: item.name, url: canonical },
+    ],
+    body,
+  });
 };
 
 const groupBy = (items, keyOf) => {
@@ -462,7 +595,7 @@ const facetGrid = (entries) => `<div class="region-grid">
 
 const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) => {
   const title = `전체 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 오직미클럽`;
-  const description = `오직미클럽 인증 식당과 외부 식당 정보를 지역별로 확인하세요. 오직미 쌀 거래 확인 식당은 초록 배지로 구분합니다.`;
+  const description = `좋은 쌀로 정성을 다하는 식당을 지역별로 확인하세요. 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당은 초록 배지로 구분합니다.`;
   const canonical = `${SITE_URL}/restaurants/`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -479,8 +612,8 @@ const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) =>
         .filter((item) => item.verifiedBadge)
         .length.toLocaleString("ko-KR")}곳</p>
       <div class="status-legend">
-        <a class="verification is-verified" href="/verified/">오직미 쌀 거래 확인 식당</a>
-        <span class="verification is-external">외부 식당 정보</span>
+        <a class="verification is-verified" href="/verified/">${VERIFIED_RICE_LABEL}</a>
+        <span class="verification is-external">${GOOD_RICE_LABEL}</span>
       </div>
       <h2>지역별 찾기</h2>
       ${facetGrid(regionEntries)}
@@ -491,7 +624,17 @@ const renderIndexPage = (stores, regionEntries, categoryEntries, menuEntries) =>
       <h2>식당명으로 찾기</h2>
       ${restaurantList(stores).trimStart()}
     </section>`;
-  return pageShell({ title, description, canonical, jsonLd, body });
+  return pageShell({
+    title,
+    description,
+    canonical,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "전체 식당", url: canonical },
+    ],
+    body,
+  });
 };
 
 const renderFacetPage = ({ label, kind, stores, pathname }) => {
@@ -550,12 +693,23 @@ const renderFacetPage = ({ label, kind, stores, pathname }) => {
       <h2>${escapeHtml(label)} 식당 목록</h2>
       ${restaurantList(stores).trimStart()}
     </section>`;
-  return pageShell({ title, description, canonical, jsonLd, body });
+  return pageShell({
+    title,
+    description,
+    canonical,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
+      { name: label, url: canonical },
+    ],
+    body,
+  });
 };
 
 const renderVerifiedPage = (stores) => {
-  const title = `오직미클럽 인증 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 좋은 쌀 쓰는 식당`;
-  const description = `오직미 쌀 거래가 확인된 오직미클럽 인증 식당 ${stores.length.toLocaleString(
+  const title = `오직미클럽 인증 식당 ${stores.length.toLocaleString("ko-KR")}곳 | 단일품종 맛있는 쌀로 밥하는 식당`;
+  const description = `좋은 쌀로 정성을 다하며 오직미가 판매하는 단일품종 맛있는 쌀로 밥하는 오직미클럽 인증 식당 ${stores.length.toLocaleString(
     "ko-KR"
   )}곳을 지역별로 확인하세요. 인증 식당은 초록색 오직미클럽 배지로 구분합니다.`;
   const pathname = "/verified/";
@@ -587,19 +741,29 @@ const renderVerifiedPage = (stores) => {
   const body = `
     <section class="directory-page">
       <p class="breadcrumb"><a href="/">식당 찾기</a> / 오직미클럽 인증 식당</p>
-      <span class="verification is-verified">오직미 쌀 거래 확인</span>
+      <span class="verification is-verified">${VERIFIED_RICE_LABEL}</span>
       <h1>오직미클럽 인증 식당</h1>
       <p class="lead">오직미 쌀 거래가 확인된 식당 ${stores.length.toLocaleString("ko-KR")}곳</p>
       <div class="verification-note facet-note">
         <h2>초록 배지의 의미</h2>
-        <p>아래 식당은 오직미 쌀 거래가 확인되어 오직미클럽 초록 배지가 표시됩니다. 외부 식당 정보와 명확히 구분해 제공합니다.</p>
+        <p>${VERIFIED_RICE_DESCRIPTION} 오직미 쌀 거래가 확인된 식당에는 초록 배지가 표시됩니다.</p>
       </div>
       <h2>지역별 인증 식당</h2>
       ${facetGrid(regionEntries)}
       <h2>인증 식당 전체 목록</h2>
       ${restaurantList(stores).trimStart()}
     </section>`;
-  return pageShell({ title, description, canonical, jsonLd, body });
+  return pageShell({
+    title,
+    description,
+    canonical,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "오직미클럽 인증 식당", url: canonical },
+    ],
+    body,
+  });
 };
 
 const renderRegionPage = ({ label, stores, pathname, childRegions = [] }) => {
@@ -641,7 +805,18 @@ const renderRegionPage = ({ label, stores, pathname, childRegions = [] }) => {
       }
       ${restaurantList(stores)}
     </section>`;
-  return pageShell({ title, description, canonical, jsonLd, body });
+  return pageShell({
+    title,
+    description,
+    canonical,
+    jsonLd,
+    breadcrumbs: [
+      { name: "식당 찾기", url: `${SITE_URL}/` },
+      { name: "전체 식당", url: `${SITE_URL}/restaurants/` },
+      { name: label, url: canonical },
+    ],
+    body,
+  });
 };
 
 const ensureCleanDirectory = (directory) => {
@@ -679,8 +854,28 @@ const generate = () => {
   ensureCleanDirectory(MENUS_DIR);
   ensureCleanDirectory(VERIFIED_DIR);
 
+  const availableCategories = new Set(
+    Array.from(groupBy(stores, (item) => item.category))
+      .filter(
+        ([category, categoryStores]) =>
+          category && category !== "기타" && categoryStores.length >= MIN_CATEGORY_RESTAURANTS
+      )
+      .map(([category]) => category)
+  );
+  const titleCounts = stores.reduce((counts, item) => {
+    const title = restaurantTitleBase(item);
+    counts.set(title, (counts.get(title) || 0) + 1);
+    return counts;
+  }, new Map());
+  const duplicatedTitles = new Set(
+    Array.from(titleCounts).filter(([, count]) => count > 1).map(([title]) => title)
+  );
+
   for (const item of stores) {
-    writePage(path.join(RESTAURANTS_DIR, item.seoId), renderRestaurantPage(item));
+    writePage(
+      path.join(RESTAURANTS_DIR, item.seoId),
+      renderRestaurantPage(item, availableCategories, duplicatedTitles)
+    );
   }
 
   const sitemapPaths = ["/", "/restaurants/"];
@@ -727,11 +922,6 @@ const generate = () => {
     })
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label, "ko"));
 
-  const searchableText = (item) =>
-    [item.name, item.category, item.categoryDetail, ...item.signatureMenus]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase();
   const menuEntries = POPULAR_MENU_PAGES.map(({ label, terms }) => {
     const menuStores = stores.filter((item) => {
       const text = searchableText(item);
@@ -768,7 +958,7 @@ const generate = () => {
     generatedAt: LASTMOD,
     totalRestaurants: stores.length,
     verifiedRestaurants: stores.filter((item) => item.verifiedBadge).length,
-    externalRestaurants: stores.filter((item) => !item.verifiedBadge).length,
+    goodRiceRestaurants: stores.filter((item) => !item.verifiedBadge).length,
     regionPages: sitemapPaths.filter((item) => item.startsWith("/regions/")).length,
     categoryPages: categoryEntries.length,
     menuPages: menuEntries.length,
