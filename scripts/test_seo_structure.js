@@ -22,7 +22,7 @@ if (!homeHtml.includes('type="application/rss+xml"') || !rssXml.includes("/resta
 if (!aboutHtml.includes('"@type":"AboutPage"')) {
   throw new Error("소개·운영기준 페이지에 AboutPage 구조화 정보가 없습니다.");
 }
-if (!sitemapXml.includes("https://ozicmeclub.com/about/")) {
+if (!sitemapXml.includes("https://ozicmeclub.kr/about/")) {
   throw new Error("사이트맵에 소개·운영기준 페이지가 없습니다.");
 }
 if (!applicationHtml.includes('action="https://formsubmit.co/ozic@ozicme.com"')) {
@@ -41,7 +41,7 @@ if (
 if (applicationHtml.includes('name="담당자명"') || applicationHtml.includes('name="연락처"')) {
   throw new Error("등재 요청 페이지에 삭제한 담당자명 또는 전화번호 입력란이 남아 있습니다.");
 }
-if (!sitemapXml.includes("https://ozicmeclub.com/apply/")) {
+if (!sitemapXml.includes("https://ozicmeclub.kr/apply/")) {
   throw new Error("사이트맵에 식당 등재 요청 페이지가 없습니다.");
 }
 
@@ -64,7 +64,7 @@ if (directoryPageDirectories.length !== Math.max(0, expectedDirectoryPages - 1))
 }
 if (
   expectedDirectoryPages > 1 &&
-  !sitemapXml.includes(`https://ozicmeclub.com/restaurants/page-${expectedDirectoryPages}/`)
+  !sitemapXml.includes(`https://ozicmeclub.kr/restaurants/page-${expectedDirectoryPages}/`)
 ) {
   throw new Error("사이트맵에 마지막 식당 목록 페이지가 없습니다.");
 }

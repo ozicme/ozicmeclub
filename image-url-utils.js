@@ -26,7 +26,7 @@
     );
   };
 
-  const invalidReason = (value, baseUrl = "https://ozicmeclub.com/") => {
+  const invalidReason = (value, baseUrl = "https://ozicmeclub.kr/") => {
     const text = textOf(value);
     if (!text) return "";
     if (text.includes("…")) {
@@ -60,7 +60,7 @@
     return "";
   };
 
-  const normalize = (value, baseUrl = "https://ozicmeclub.com/") => {
+  const normalize = (value, baseUrl = "https://ozicmeclub.kr/") => {
     if (invalidReason(value, baseUrl)) return "";
     const url = parseHttpUrl(value, baseUrl);
     if (!url) return "";
@@ -70,7 +70,7 @@
     return url.toString();
   };
 
-  const candidateUrls = (value, baseUrl = "https://ozicmeclub.com/") => {
+  const candidateUrls = (value, baseUrl = "https://ozicmeclub.kr/") => {
     const primary = normalize(value, baseUrl);
     if (!primary) return [];
 

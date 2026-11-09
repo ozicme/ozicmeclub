@@ -3,7 +3,7 @@ const path = require("path");
 const crypto = require("crypto");
 
 const ROOT = path.resolve(__dirname, "..");
-const SITE_URL = "https://ozicmeclub.com";
+const SITE_URL = "https://ozicmeclub.kr";
 const BASE_CSV = path.join(
   ROOT,
   "오직미_식당리스트 - 오직미_식당디렉토리_사이트개발용_최종정비.csv"

@@ -4,4 +4,4 @@ Disallow: /admin.html
 Disallow: /data/
 Disallow: /restaurants-data.json
 
-Sitemap: https://ozicmeclub.com/sitemap.xml
+Sitemap: https://ozicmeclub.kr/sitemap.xml

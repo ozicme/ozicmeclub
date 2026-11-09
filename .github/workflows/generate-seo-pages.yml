@@ -60,7 +60,7 @@ jobs:
           INDEXNOW_KEY: 5e7a9d4c8b2f4136a1c0e9f7d3b62485
         run: |
           for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
-            published_key="$(curl -fsSL "https://ozicmeclub.com/${INDEXNOW_KEY}.txt" || true)"
+            published_key="$(curl -fsSL "https://ozicmeclub.kr/${INDEXNOW_KEY}.txt" || true)"
             if [ "$published_key" = "$INDEXNOW_KEY" ]; then
               break
             fi
@@ -68,7 +68,7 @@ jobs:
           done
           node <<'NODE'
           const fs = require("fs");
-          const base = "https://ozicmeclub.com";
+          const base = "https://ozicmeclub.kr";
           const key = process.env.INDEXNOW_KEY;
           const files = fs.readFileSync("/tmp/indexnow-paths.txt", "utf8").split(/\r?\n/).filter(Boolean);
           const toUrl = (file) => {
@@ -82,7 +82,7 @@ jobs:
           fs.writeFileSync(
             "/tmp/indexnow-payload.json",
             JSON.stringify({
-              host: "ozicmeclub.com",
+              host: "ozicmeclub.kr",
               key,
               keyLocation: `${base}/${key}.txt`,
               urlList,
